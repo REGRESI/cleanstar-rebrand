@@ -101,7 +101,7 @@ export default function Process() {
             />
           </div>
           <div data-reveal>
-            <Picture id="team-briefing" sizes="(min-width:1024px) 50vw, 100vw" />
+            <Picture id="trial-clean" sizes="(min-width:1024px) 50vw, 100vw" />
           </div>
         </div>
       </section>

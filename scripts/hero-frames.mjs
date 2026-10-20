@@ -70,6 +70,8 @@ for (let n = 1; n <= total; n++) {
 
 // 3. Hochformat-Standbilder (Handy-Einstieg): Bildmitte als Anteil der Breite, Gebäude bzw. Büro im Fokus
 const STILL_CENTER = { aussen: 0.4, morgen: 0.5 }
+/** Bildmitte im Handy-Foto des Gebäudes (bilder/hero/hero-aussen-mobil.jpg) */
+const MOBILE_INTRO_CENTER = 0.45
 
 async function render(item) {
   const base = sharp(frame(item.a))
@@ -119,6 +121,7 @@ for (const [name, item] of [
   writeFileSync(join(OUT, `still-${name}-d.webp`), await sharp(buf).webp({ quality: 82 }).toBuffer())
   writeFileSync(join(OUT, `still-${name}-m.webp`), await portraitStill(buf, STILL_CENTER[name]).webp({ quality: 82 }).toBuffer())
 }
+await mobileIntroStill()
 
 // 5. Schlüsselmomente: Position in der Sequenz suchen (bestes Frame zum Standbild) und das Standbild
 //    aus bilder/hero/ in voller Qualität als JPG ablegen. Die Website blendet es ein, wenn man dort stehen bleibt.
@@ -156,3 +159,18 @@ for (const f of readdirSync(OUT).filter((x) => /^key-.*-m\.jpg$/.test(x))) rmSyn
 console.log('✓ Schlüsselmomente', keys.map((k) => `${k.name} ${k.progress}`).join(', '))
 console.log(`✓ Standbilder, Zeitleiste ${timeline.length} von ${total} Frames`)
 rmSync(tmp, { recursive: true, force: true })
+
+/**
+ * Handy-Einstieg: Liegt bilder/hero/hero-aussen-mobil.jpg vor (eigenes Foto, schärfer als ein Videoframe),
+ * wird daraus das Hochformat-Standbild geschnitten. Nur Ausschnitt, nie hochskaliert.
+ */
+async function mobileIntroStill() {
+  const src = `${SRC}/hero-aussen-mobil.jpg`
+  if (!existsSync(src)) return
+  const { width: w, height: h } = await sharp(src).metadata()
+  const pw = Math.min(w, Math.round(h / 2))
+  const left = Math.min(w - pw, Math.max(0, Math.round(MOBILE_INTRO_CENTER * w - pw / 2)))
+  const out = await sharp(src).extract({ left, top: 0, width: pw, height: h }).webp({ quality: 88 }).toBuffer()
+  writeFileSync(join(OUT, 'still-aussen-m.webp'), out)
+  console.log(`✓ Handy-Einstieg aus ${src}: ${pw}×${h}`)
+}
