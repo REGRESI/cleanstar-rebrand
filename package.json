@@ -12,12 +12,11 @@
     "lint": "eslint .",
     "typecheck": "tsc -b",
     "images": "node scripts/images.mjs",
+    "hero": "node scripts/hero-frames.mjs",
     "docs:bilder": "node scripts/gen-bilder-md.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^6.0.0",
-    "@react-three/drei": "^10.7.9",
-    "@react-three/fiber": "^9.8.2",
     "framer-motion": "^14.4.0",
     "gsap": "^3.15.0",
     "lenis": "^1.3.27",
@@ -27,7 +26,6 @@
     "react-helmet-async": "^1.3.0",
     "react-hook-form": "^7.90.0",
     "react-router-dom": "^6.30.6",
-    "three": "^0.182.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -36,7 +34,6 @@
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@types/three": "^0.182.0",
     "@vitejs/plugin-react": "^5.2.0",
     "beasties": "^0.1.0",
     "eslint": "^10.13.0",

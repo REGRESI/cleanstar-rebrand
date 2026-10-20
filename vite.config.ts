@@ -52,10 +52,48 @@ function previewImagesPlugin(inline: boolean): Plugin {
   }
 }
 
+/**
+ * Hero-Scroll-Video: Bildsequenzen aus public/hero (erzeugt mit npm run hero).
+ * Live-Build: Pfade, Frames werden im Browser nachgeladen.
+ * Vorschau-Datei: reduzierte Sequenz (public/hero/p) und Standbilder als data-URI.
+ */
+function heroFramesPlugin(inline: boolean): Plugin {
+  const id = 'virtual:hero-frames'
+  const dir = `${root}public/hero`
+  const list = (sub: string) =>
+    existsSync(`${dir}/${sub}`)
+      ? readdirSync(`${dir}/${sub}`)
+          .filter((f) => f.endsWith('.webp'))
+          .sort()
+      : []
+  const data = (file: string) => 'data:image/webp;base64,' + readFileSync(`${dir}/${file}`).toString('base64')
+  return {
+    name: 'cleanstar-hero-frames',
+    resolveId: (source) => (source === id ? '\0' + id : null),
+    load(loadId) {
+      if (loadId !== '\0' + id) return null
+      const stills = ['aussen-d', 'aussen-m', 'morgen-d', 'morgen-m']
+      const still = Object.fromEntries(stills.map((k) => [k, inline ? data(`still-${k}.webp`) : `/hero/still-${k}.webp`]))
+      const desktop = inline ? list('p').map((f) => data(`p/${f}`)) : list('d').map((f) => `/hero/d/${f}`)
+      const mobile = list('m').map((f) => `/hero/m/${f}`)
+      // In der Vorschau nutzen Handy und Desktop dieselbe eingebettete Sequenz: nur einmal einbetten
+      if (inline) return `const d = ${JSON.stringify(desktop)}\nexport default { desktop: d, mobile: d, still: ${JSON.stringify(still)}, inline: true }`
+      return `export default ${JSON.stringify({ desktop, mobile, still, inline })}`
+    },
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const isPreview = mode === 'preview'
   return {
-    plugins: [react(), tailwindcss(), downloadsPlugin(isPreview), previewImagesPlugin(isPreview), ...(isPreview ? [viteSingleFile({ removeViteModuleLoader: true })] : [])],
+    plugins: [
+      react(),
+      tailwindcss(),
+      downloadsPlugin(isPreview),
+      previewImagesPlugin(isPreview),
+      heroFramesPlugin(isPreview),
+      ...(isPreview ? [viteSingleFile({ removeViteModuleLoader: true })] : []),
+    ],
     resolve: { alias: { '@': `${root}src` } },
     define: { __PREVIEW__: JSON.stringify(isPreview) },
     build: isPreview

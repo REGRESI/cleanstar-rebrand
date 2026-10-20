@@ -21,8 +21,10 @@ export const home = {
     eyebrow: 'Büroreinigung im Ortenaukreis',
     headline: 'Saubere Büros. Jeden Tag. Ohne dass Sie sich darum kümmern müssen.',
     sub: 'Fester Ansprechpartner, eingespieltes Team, Ersatzkraft bei Ausfall. Wir sehen uns Ihr Objekt kostenlos an und schicken Ihnen in 48 Stunden ein Angebot.',
-    scrollHint: 'Scrollen Sie, um durch das Büro zu gehen',
-    sceneSteps: ['Ihr Büro am Abend', 'Wir kommen, wenn Sie gehen', 'Am Morgen: makellos'],
+    /** Untertitel zum Scroll-Video: Flug ins Gebäude, Feierabend und Reinigung, Morgen */
+    sceneSteps: ['Scrollen Sie, um durch das Büro zu gehen', 'Wir kommen, wenn Sie gehen', 'Am Morgen: makellos'],
+    imageAlt: 'Bürogebäude in der Abenddämmerung vor bewaldeten Hügeln',
+    imageAltMorning: 'Aufgeräumtes, sauberes Großraumbüro am Morgen',
   },
   problems: {
     eyebrow: 'Das kennen Sie vielleicht',

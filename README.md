@@ -18,6 +18,7 @@ Neue Website für CleanStar Dienstleistungen GbR, Offenburg. Büroreinigung für
 | `npm run serve` | den Live-Build lokal ansehen |
 | `npm run lint` / `npm run typecheck` | Code prüfen |
 | `npm run images` | Fotos aus `bilder/` in AVIF/WebP umwandeln (siehe BILDER.md) |
+| `npm run hero` | Bildsequenzen für das Scroll-Video aus `bilder/hero/hero-1..3.mp4` erzeugen (benötigt ffmpeg) |
 | `npm run docs:bilder` | `BILDER.md` neu erzeugen |
 | `node scripts/generate-assets.mjs` | Favicons, OG-Bild, Logo-PNG und Checklisten-PDF neu erzeugen |
 
@@ -87,6 +88,13 @@ Alle Inhalte stehen in `src/content/partner.ts`. Die Seite ist bewusst nicht in 
 
 Wichtig: keine Umsatz-, Gewinn- oder Einkommensangaben und keine erfundenen Partnerzahlen auf die Seite schreiben (vorvertragliche Aufklärungspflichten bei Franchise-Systemen).
 
+### Hero-Video austauschen
+
+1. Neue Clips als `bilder/hero/hero-1.mp4`, `hero-2.mp4`, `hero-3.mp4` ablegen (Reihenfolge = Abspielreihenfolge).
+2. `npm run hero` ausführen. Das Skript verbindet die Clips mit kurzer Überblendung, entfernt den Ton und erzeugt die Bildsequenzen in `public/hero/`.
+3. In `scripts/hero-frames.mjs` gibt es zwei Stellschrauben: `CUT_FROM`/`CUT_TO` (übersprungene Frames, aktuell eine Doppelbelichtung im Quellvideo) und `CROP_KEYS` (Bildausschnitt im Hochformat). Beide passen nur zu den aktuellen Clips und müssen bei neuen Videos geprüft werden.
+4. Untertitel zum Video: `src/content/site.ts → home.hero.sceneSteps`.
+
 ### Testimonials und Kundenlogos
 
 In `site.ts` vorbereitet, aber ausgeblendet (`enabled: false`). Nur echte Zitate bzw. freigegebene Logos eintragen, dann `enabled: true`.
@@ -111,14 +119,14 @@ Domain ändern: `company.ts → siteUrl`, `public/robots.txt` und `scripts/postb
 - Vite 7, React 19, TypeScript, React Router 6, Tailwind CSS 4
 - Live-Build mit `vite-react-ssg` (jede Seite eigenes HTML mit Title, Description, Canonical, Open Graph, Twitter Card, JSON-LD), Vorschau mit `vite-plugin-singlefile` + Hash-Routing
 - GSAP + ScrollTrigger (Scroll-Animationen), Lenis (Smooth Scroll), Framer Motion (Microinteractions)
-- React Three Fiber + drei: 3D-Hero, komplett prozedural (kein 3D-Modell zum Laden)
+- Hero: Scroll-Video als Bildsequenz auf `<canvas>` (kein `<video>`-Scrubbing, ruckelfrei auch auf iOS)
 - React Hook Form + Zod für Formulare
 - Strukturierte Daten: `ProfessionalService` (LocalBusiness), `Service`, `FAQPage`, `BreadcrumbList`
 
 **Performance und Barrierefreiheit**
 
-- 3D lädt erst im Leerlauf (Desktop) bzw. bei der ersten Interaktion (Handy), rendert nur, wenn der Hero sichtbar ist, und vereinfacht sich automatisch (niedrigere Auflösung, weniger Partikel) auf schwachen Geräten oder bei sinkender Bildrate. Ohne WebGL: statische Grafik.
-- `prefers-reduced-motion`: keine 3D-Szene, keine Scroll-Animationen, kein Smooth Scroll, kein Custom Cursor. Alle Inhalte statisch sichtbar.
+- Hero-Video: Das erste Frame ist ein normales Bild (schnelles LCP). Die übrigen Frames laden erst nach dem Seitenaufbau, grob nach fein (jedes 16., 8., 4. … Frame), mit dezenter Fortschrittslinie. Desktop 150 Frames (1600 px), Hochformat 90 Frames (900 × 1600, Ausschnitt folgt dem Motiv). Datensparmodus oder Ladefehler: Standbild.
+- `prefers-reduced-motion`: kein Scroll-Video (nur das Morgenbild), keine Scroll-Animationen, kein Smooth Scroll, kein Custom Cursor. Alle Inhalte statisch sichtbar.
 - Lighthouse (Mobil, lokal gemessen): Performance 92–96, Accessibility 98–100, Best Practices 100, SEO 100 auf allen Seiten (die 404-Seite ist absichtlich `noindex`).
 - Keine Cookies, keine externen Schriften, eigene SVG-Karte statt Google Maps. Externe Dienste (Cal.com) erst nach Klick.
 

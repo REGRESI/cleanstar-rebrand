@@ -24,28 +24,3 @@ export const useFinePointer = () => useSyncExternalStore(finePointer.subscribe, 
 export const useIsDesktop = () => useSyncExternalStore(desktop.subscribe, desktop.get, () => false)
 
 export const prefersReducedMotion = () => reduced.get()
-
-export type DeviceTier = 'high' | 'low'
-
-/** Grobe Einschätzung der Geräteleistung für 3D. */
-export function getDeviceTier(): DeviceTier {
-  if (!isBrowser) return 'low'
-  const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } }
-  const cores = nav.hardwareConcurrency ?? 4
-  const mem = nav.deviceMemory ?? 4
-  const small = window.matchMedia('(max-width: 767px)').matches
-  if (nav.connection?.saveData) return 'low'
-  if (cores <= 4 || mem <= 2) return 'low'
-  if (small && (cores <= 6 || mem <= 4)) return 'low'
-  return 'high'
-}
-
-export function hasWebGL(): boolean {
-  if (!isBrowser) return false
-  try {
-    const c = document.createElement('canvas')
-    return !!(c.getContext('webgl2') || c.getContext('webgl'))
-  } catch {
-    return false
-  }
-}
