@@ -48,6 +48,7 @@ export default function Contact() {
       />
       <PageHero
         trail={trail}
+        image="contact"
         eyebrow="Kontakt"
         title="Sprechen wir über Ihr Objekt."
         lead="Rufen Sie an, schreiben Sie uns oder buchen Sie direkt einen Termin für die kostenlose Besichtigung. Wir melden uns innerhalb von 24 Stunden."

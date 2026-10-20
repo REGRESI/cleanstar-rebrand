@@ -10,7 +10,7 @@ Alle 23 Bilder, die die Website braucht. Bis ein Foto vorliegt, zeigt die Websit
 4. In `src/content/images.ts` beim Bild `available: true` setzen.
 5. `npm run build` ausführen.
 
-Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) zeigt immer die Platzhalter, damit sie klein bleibt.
+Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) bettet alle vorhandenen Fotos aus `bilder/` als stark komprimiertes WebP (1200 px) ein.
 
 ## Einheitlicher Look (an jeden Prompt anhängen)
 
@@ -55,7 +55,7 @@ Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) zeigt immer
 - **Verwendet auf:** Startseite (Vorher/Nachher), Büroreinigung
 - **Inhalt:** VORHER: Arbeitsplatz am Abend, benutzte Tassen, Krümel, Fingerabdrücke, Staub, 16:9
 - **Alt-Text:** Schreibtisch vor der Reinigung mit Kaffeetassen, Krümeln und Staub auf dem Monitor
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -72,7 +72,7 @@ Modern open-plan office desk in the evening after a workday, used coffee mugs, c
 - **Verwendet auf:** Startseite (Vorher/Nachher), Büroreinigung
 - **Inhalt:** NACHHER: derselbe Arbeitsplatz, identischer Bildausschnitt, makellos sauber, 16:9
 - **Alt-Text:** Derselbe Schreibtisch nach der Reinigung, aufgeräumt, glänzende Oberflächen
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -89,7 +89,7 @@ The exact same modern open-plan office desk from the identical camera position, 
 - **Verwendet auf:** Büroreinigung (Hero), Leistungskarte
 - **Inhalt:** Reinigungskraft wischt Schreibtisch in modernem Großraumbüro, abends, warmes Licht, 16:9
 - **Alt-Text:** Reinigungskraft wischt einen Schreibtisch in einem modernen Großraumbüro am Abend
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -106,7 +106,7 @@ Professional cleaner in a navy uniform wiping a white desk in a modern open-plan
 - **Verwendet auf:** Büroreinigung
 - **Inhalt:** Detail: Mikrofasertuch auf Tastatur und Telefon, Nahaufnahme, 4:3
 - **Alt-Text:** Nahaufnahme: Mikrofasertuch reinigt eine Tastatur und einen Telefonhörer
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -123,7 +123,7 @@ Close-up of a gloved hand with a blue microfiber cloth cleaning a keyboard and d
 - **Verwendet auf:** Unterhaltsreinigung (Hero), Leistungskarte
 - **Inhalt:** Empfangsbereich eines Unternehmens, frisch gewischter Steinboden, Morgenlicht, 16:9
 - **Alt-Text:** Heller Empfangsbereich eines Unternehmens mit frisch gewischtem Boden
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -140,7 +140,7 @@ Bright corporate reception area in the early morning, freshly mopped light stone
 - **Verwendet auf:** Fensterreinigung (Hero), Leistungskarte
 - **Inhalt:** Fensterreinigung: Abzieher auf großer Glasfläche, streifenfrei, Gegenlicht, 16:9
 - **Alt-Text:** Glasfassade eines Bürogebäudes wird mit Abzieher gereinigt
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -157,7 +157,7 @@ Window cleaner using a squeegee on a large floor-to-ceiling office window, strea
 - **Verwendet auf:** Treppenhausreinigung (Hero), Leistungskarte
 - **Inhalt:** Helles Treppenhaus eines Geschäftshauses, sauberer Handlauf, Stufen von oben, 16:9
 - **Alt-Text:** Sauberes, helles Treppenhaus eines Geschäftshauses mit glänzendem Handlauf
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -174,7 +174,7 @@ Clean bright stairwell of a modern commercial building seen from above, polished
 - **Verwendet auf:** Hallenreinigung (Hero), Leistungskarte
 - **Inhalt:** Gewerbehalle, Scheuersaugmaschine auf sauberem Hallenboden, weite Perspektive, 16:9
 - **Alt-Text:** Große Gewerbehalle mit sauberem Boden und Scheuersaugmaschine
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -191,7 +191,7 @@ Large clean commercial warehouse hall with high ceilings, a ride-on floor scrubb
 - **Verwendet auf:** Hygienereinigung (Hero), Leistungskarte
 - **Inhalt:** Sanitärbereich im Büro, glänzende Armaturen, frisch gereinigt, kühles Licht, 16:9
 - **Alt-Text:** Gereinigter Sanitärbereich in einem Bürogebäude mit glänzenden Armaturen
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -259,7 +259,7 @@ Optional third founder portrait (real person), same setting, light and styling a
 - **Verwendet auf:** Über uns, Karriere
 - **Inhalt:** Team im Einsatz: zwei Reinigungskräfte in einheitlicher Kleidung im Büroflur, 16:9
 - **Alt-Text:** Reinigungsteam von CleanStar bei der Arbeit in einem Büro
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -276,7 +276,7 @@ Two professional cleaners in matching navy uniforms working calmly in a bright o
 - **Verwendet auf:** Ablauf, Karriere
 - **Inhalt:** Teambesprechung: Objektleitung zeigt Checkliste auf Tablet, 4:3
 - **Alt-Text:** Objektleitung bespricht mit dem Team eine Checkliste auf einem Tablet
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -293,7 +293,7 @@ Cleaning team supervisor showing a checklist on a tablet to two team members in 
 - **Verwendet auf:** Qualitätsgarantie
 - **Inhalt:** Qualitätskontrolle: Hand mit Tablet-Checkliste prüft Schreibtischkante, 16:9
 - **Alt-Text:** Qualitätskontrolle: Prüfung eines gereinigten Schreibtischs mit Checkliste
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -310,7 +310,7 @@ Quality inspection in a clean office: a hand holding a tablet with a checklist w
 - **Verwendet auf:** Ablauf
 - **Inhalt:** Objektbesichtigung: zwei Personen gehen durch leeres Büro, eine macht Notizen, 16:9
 - **Alt-Text:** Objektbesichtigung: Begehung eines Büros mit Notizen zur Fläche
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -327,7 +327,7 @@ Two professionals walking through an empty modern office during a site inspectio
 - **Verwendet auf:** Karriere
 - **Inhalt:** Karriere: Mitarbeiterin mit Reinigungswagen im Flur, freundlich, natürlich, 16:9
 - **Alt-Text:** Zufriedene Mitarbeiterin von CleanStar mit Reinigungswagen im Büroflur
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -344,7 +344,7 @@ Friendly cleaning staff member in a navy uniform with a well-organized cleaning 
 - **Verwendet auf:** Einzugsgebiet
 - **Inhalt:** Region: modernes Bürogebäude, im Hintergrund Schwarzwaldhügel und Weinberge, 21:9
 - **Alt-Text:** Gewerbegebiet mit modernen Bürogebäuden vor den Hügeln des Schwarzwalds
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -361,7 +361,7 @@ Modern low-rise office building in a small southern German town business park, v
 - **Verwendet auf:** Kontakt
 - **Inhalt:** Kontakt: aufgeräumter Schreibtisch mit Smartphone und Notizblock, Draufsicht, 4:3
 - **Alt-Text:** Telefon und Notizblock auf einem aufgeräumten Schreibtisch
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -378,7 +378,7 @@ Top-down view of a tidy light desk with a smartphone, a notebook with a pen and 
 - **Verwendet auf:** Partnerprogramm (Hero)
 - **Inhalt:** Partner: zwei Unternehmer per Handschlag im hellen Besprechungsraum, Tablet und Unterlagen auf dem Tisch, 16:9
 - **Alt-Text:** Zwei Unternehmer geben sich in einem hellen Besprechungsraum die Hand
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -395,7 +395,7 @@ Two business owners in their late thirties shaking hands in a bright modern offi
 - **Verwendet auf:** Partnerprogramm (Weg Gründung)
 - **Inhalt:** Partner Gründung: junger Unternehmer mit weißem Transporter und Reinigungswagen vor Bürogebäude, morgens, 4:3
 - **Alt-Text:** Gründer steht neben einem weißen Transporter und einem Reinigungswagen vor einem Bürogebäude
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -412,7 +412,7 @@ Young entrepreneur standing next to a clean white compact van and a neatly packe
 - **Verwendet auf:** Partnerprogramm (Weg bestehende Firma)
 - **Inhalt:** Partner bestehende Firma: Inhaber im aufgeräumten Materiallager mit Tablet-Checkliste, 4:3
 - **Alt-Text:** Inhaberin einer Reinigungsfirma prüft im Materiallager eine Checkliste auf dem Tablet
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 
@@ -429,7 +429,7 @@ Owner of a small cleaning company in a tidy storage room with shelves of labeled
 - **Verwendet auf:** Partnerprogramm (Modul Einarbeitung und Support)
 - **Inhalt:** Partner Einarbeitung: Trainer erklärt Ablauf am großen Bildschirm, drei Teilnehmende mit Notizbüchern, 16:9
 - **Alt-Text:** Einarbeitung: Trainer erklärt drei neuen Partnern einen Ablauf am Bildschirm
-- **Status:** fehlt (Platzhalter aktiv)
+- **Status:** vorhanden
 
 **Prompt:**
 

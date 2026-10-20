@@ -2,7 +2,8 @@ import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { viteSingleFile } from 'vite-plugin-singlefile'
-import { readFileSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
+import sharp from 'sharp'
 import { fileURLToPath, URL } from 'node:url'
 
 const root = fileURLToPath(new URL('.', import.meta.url))
@@ -29,10 +30,32 @@ function downloadsPlugin(inline: boolean): Plugin {
   }
 }
 
+/**
+ * Bilder für die Einzeldatei-Vorschau: stark komprimierte WebP (1200 px) als data-URI.
+ * Im Live-Build bleibt das Modul leer, dort kommen die responsiven Dateien aus public/images.
+ */
+function previewImagesPlugin(inline: boolean): Plugin {
+  const id = 'virtual:preview-images'
+  return {
+    name: 'cleanstar-preview-images',
+    resolveId: (source) => (source === id ? '\0' + id : null),
+    async load(loadId) {
+      if (loadId !== '\0' + id) return null
+      if (!inline || !existsSync(`${root}bilder`)) return 'export default {}'
+      const entries: string[] = []
+      for (const f of readdirSync(`${root}bilder`).filter((x) => /\.(jpe?g|png|webp)$/i.test(x))) {
+        const buf = await sharp(`${root}bilder/${f}`).resize({ width: 1200, withoutEnlargement: true }).webp({ quality: 52, effort: 6 }).toBuffer()
+        entries.push(`  ${JSON.stringify(f.replace(/\.[^.]+$/, ''))}: ${JSON.stringify('data:image/webp;base64,' + buf.toString('base64'))},`)
+      }
+      return `export default {\n${entries.join('\n')}\n}`
+    },
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const isPreview = mode === 'preview'
   return {
-    plugins: [react(), tailwindcss(), downloadsPlugin(isPreview), ...(isPreview ? [viteSingleFile({ removeViteModuleLoader: true })] : [])],
+    plugins: [react(), tailwindcss(), downloadsPlugin(isPreview), previewImagesPlugin(isPreview), ...(isPreview ? [viteSingleFile({ removeViteModuleLoader: true })] : [])],
     resolve: { alias: { '@': `${root}src` } },
     define: { __PREVIEW__: JSON.stringify(isPreview) },
     build: isPreview

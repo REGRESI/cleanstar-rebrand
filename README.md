@@ -72,7 +72,7 @@ Die Anfrage kommt übersichtlich formatiert als E-Mail (alle Angaben inkl. gewä
 
 ### Bilder
 
-Siehe **BILDER.md**: Liste aller 23 Bilder mit Dateiname, Seitenverhältnis, Mindestauflösung und fertigem Bild-Prompt. Ablauf: Foto nach `bilder/` → `npm run images` → in `images.ts` `available: true` → `npm run build`.
+Siehe **BILDER.md**: Liste aller 23 Bilder mit Dateiname, Seitenverhältnis, Mindestauflösung und fertigem Bild-Prompt. Ablauf: Foto nach `bilder/` → `npm run images` → in `images.ts` `available: true` → `npm run build`. Die Vorschau-Datei bettet vorhandene Fotos automatisch komprimiert ein (`npm run build:preview`). Bildausschnitt bei Bedarf pro Bild mit `position` (z. B. `'50% 30%'`) in `images.ts` steuern.
 
 ### Partnerprogramm pflegen (`/partner`)
 
@@ -155,6 +155,6 @@ preview/          ← fertige Einzeldatei-Vorschau
 
 **Rechtlich prüfen lassen:** Impressum (Verbraucherstreitbeilegung), Datenschutzerklärung (gelb markierte Stellen: Hoster und AV-Vertrag, Formular-Dienst und Drittlandübermittlung, Cal.com, Speicherdauer Bewerbungen, Datenschutzbeauftragter, § 25 TDDDG).
 
-**Bilder:** alle 23 Bilder laut BILDER.md (inkl. 4 für das Partnerprogramm).
+**Bilder:** 20 von 23 Bildern sind eingebaut. Es fehlen die Gründerporträts (`gruender-1` bis `gruender-3`). Die gelieferten Bilder sind 1672 bzw. 1448 px breit, also kleiner als die empfohlene Mindestbreite; für gestochen scharfe Darstellung auf großen Bildschirmen später höher aufgelöste Versionen nachliefern.
 
 **Partnerprogramm:** alle `TODO`-Punkte in `src/content/partner.ts` (Module, FAQ, Konditionen) bestätigen und die Seite vor dem Livegang anwaltlich prüfen lassen.

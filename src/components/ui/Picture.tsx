@@ -1,4 +1,5 @@
 import { ImageIcon } from 'lucide-react'
+import previewImages from 'virtual:preview-images'
 import { images, IMAGE_WIDTHS, type ImageId } from '@/content/images'
 import { cn } from '@/lib/cn'
 
@@ -33,6 +34,18 @@ export function Picture({ id, className, ratio, sizes = '100vw', priority, compa
   const spec = images[id]
   const aspect = ratioClass[ratio ?? spec.ratio]
 
+  const objectPosition = spec.position ?? '50% 50%'
+
+  // Vorschau-Datei: eingebettete, stark komprimierte WebP-Version
+  const inlineSrc = __PREVIEW__ && spec.available ? previewImages[spec.file] : undefined
+  if (inlineSrc) {
+    return (
+      <div className={cn('block overflow-hidden', aspect, rounded, className)}>
+        <img src={inlineSrc} alt={spec.alt} loading={priority ? 'eager' : 'lazy'} decoding="async" className="size-full object-cover" style={{ objectPosition }} />
+      </div>
+    )
+  }
+
   if (spec.available && !__PREVIEW__) {
     const set = (ext: string) => IMAGE_WIDTHS.map((w) => `/images/${spec.file}-${w}.${ext} ${w}w`).join(', ')
     return (
@@ -46,6 +59,7 @@ export function Picture({ id, className, ratio, sizes = '100vw', priority, compa
           fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"
           className="size-full object-cover"
+          style={{ objectPosition }}
         />
       </picture>
     )

@@ -25,6 +25,8 @@ export interface ImageSpec {
   prompt: string
   /** true, sobald das echte Bild unter public/images liegt */
   available: boolean
+  /** Bildausschnitt, wenn das Foto beschnitten wird (CSS object-position), z. B. '50% 30%' */
+  position?: string
   /** Wo das Bild verwendet wird (nur zur Dokumentation) */
   usedOn: string
 }
@@ -38,6 +40,7 @@ const img = (s: Omit<ImageSpec, 'available'> & { available?: boolean }): ImageSp
 export const images = {
   'before-office': img({
     file: 'vorher-buero',
+    available: true,
     ratio: '16:9',
     minWidth: 1920,
     alt: 'Schreibtisch vor der Reinigung mit Kaffeetassen, Krümeln und Staub auf dem Monitor',
@@ -48,6 +51,7 @@ export const images = {
   }),
   'after-office': img({
     file: 'nachher-buero',
+    available: true,
     ratio: '16:9',
     minWidth: 1920,
     alt: 'Derselbe Schreibtisch nach der Reinigung, aufgeräumt, glänzende Oberflächen',
@@ -58,6 +62,7 @@ export const images = {
   }),
   'svc-buero': img({
     file: 'leistung-bueroreinigung',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Reinigungskraft wischt einen Schreibtisch in einem modernen Großraumbüro am Abend',
@@ -68,6 +73,7 @@ export const images = {
   }),
   'svc-buero-detail': img({
     file: 'bueroreinigung-detail',
+    available: true,
     ratio: '4:3',
     minWidth: 1600,
     alt: 'Nahaufnahme: Mikrofasertuch reinigt eine Tastatur und einen Telefonhörer',
@@ -77,6 +83,7 @@ export const images = {
   }),
   'svc-unterhalt': img({
     file: 'leistung-unterhaltsreinigung',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Heller Empfangsbereich eines Unternehmens mit frisch gewischtem Boden',
@@ -87,6 +94,7 @@ export const images = {
   }),
   'svc-fenster': img({
     file: 'leistung-fensterreinigung',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Glasfassade eines Bürogebäudes wird mit Abzieher gereinigt',
@@ -97,6 +105,7 @@ export const images = {
   }),
   'svc-treppenhaus': img({
     file: 'leistung-treppenhausreinigung',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Sauberes, helles Treppenhaus eines Geschäftshauses mit glänzendem Handlauf',
@@ -107,6 +116,7 @@ export const images = {
   }),
   'svc-halle': img({
     file: 'leistung-hallenreinigung',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Große Gewerbehalle mit sauberem Boden und Scheuersaugmaschine',
@@ -117,6 +127,7 @@ export const images = {
   }),
   'svc-hygiene': img({
     file: 'leistung-hygienereinigung',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Gereinigter Sanitärbereich in einem Bürogebäude mit glänzenden Armaturen',
@@ -156,6 +167,7 @@ export const images = {
   }),
   'team-work': img({
     file: 'team-im-einsatz',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Reinigungsteam von CleanStar bei der Arbeit in einem Büro',
@@ -166,6 +178,7 @@ export const images = {
   }),
   'team-briefing': img({
     file: 'team-besprechung',
+    available: true,
     ratio: '4:3',
     minWidth: 1600,
     alt: 'Objektleitung bespricht mit dem Team eine Checkliste auf einem Tablet',
@@ -175,6 +188,7 @@ export const images = {
   }),
   'quality-check': img({
     file: 'qualitaetskontrolle',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Qualitätskontrolle: Prüfung eines gereinigten Schreibtischs mit Checkliste',
@@ -185,6 +199,7 @@ export const images = {
   }),
   inspection: img({
     file: 'objektbesichtigung',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Objektbesichtigung: Begehung eines Büros mit Notizen zur Fläche',
@@ -195,6 +210,7 @@ export const images = {
   }),
   careers: img({
     file: 'karriere',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Zufriedene Mitarbeiterin von CleanStar mit Reinigungswagen im Büroflur',
@@ -205,6 +221,7 @@ export const images = {
   }),
   region: img({
     file: 'region-ortenau',
+    available: true,
     ratio: '21:9',
     minWidth: 2560,
     alt: 'Gewerbegebiet mit modernen Bürogebäuden vor den Hügeln des Schwarzwalds',
@@ -215,6 +232,7 @@ export const images = {
   }),
   contact: img({
     file: 'kontakt',
+    available: true,
     ratio: '4:3',
     minWidth: 1600,
     alt: 'Telefon und Notizblock auf einem aufgeräumten Schreibtisch',
@@ -224,6 +242,7 @@ export const images = {
   }),
   'partner-hero': img({
     file: 'partner-hero',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Zwei Unternehmer geben sich in einem hellen Besprechungsraum die Hand',
@@ -234,6 +253,7 @@ export const images = {
   }),
   'partner-founder': img({
     file: 'partner-gruender',
+    available: true,
     ratio: '4:3',
     minWidth: 1600,
     alt: 'Gründer steht neben einem weißen Transporter und einem Reinigungswagen vor einem Bürogebäude',
@@ -244,6 +264,7 @@ export const images = {
   }),
   'partner-existing': img({
     file: 'partner-bestand',
+    available: true,
     ratio: '4:3',
     minWidth: 1600,
     alt: 'Inhaberin einer Reinigungsfirma prüft im Materiallager eine Checkliste auf dem Tablet',
@@ -254,6 +275,7 @@ export const images = {
   }),
   'partner-onboarding': img({
     file: 'partner-einarbeitung',
+    available: true,
     ratio: '16:9',
     minWidth: 2400,
     alt: 'Einarbeitung: Trainer erklärt drei neuen Partnern einen Ablauf am Bildschirm',

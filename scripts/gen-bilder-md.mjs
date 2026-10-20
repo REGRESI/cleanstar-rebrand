@@ -23,7 +23,7 @@ Alle ${entries.length} Bilder, die die Website braucht. Bis ein Foto vorliegt, z
 4. In \`src/content/images.ts\` beim Bild \`available: true\` setzen.
 5. \`npm run build\` ausführen.
 
-Hinweis: Die Einzeldatei-Vorschau (\`preview/cleanstar-website.html\`) zeigt immer die Platzhalter, damit sie klein bleibt.
+Hinweis: Die Einzeldatei-Vorschau (\`preview/cleanstar-website.html\`) bettet alle vorhandenen Fotos aus \`bilder/\` als stark komprimiertes WebP (1200 px) ein.
 
 ## Einheitlicher Look (an jeden Prompt anhängen)
 

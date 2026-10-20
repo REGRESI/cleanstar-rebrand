@@ -52,7 +52,7 @@ export function BeforeAfter({ before, after, className, label = 'Vorher-Nachher-
       >
         <Picture id={after} rounded="rounded-none" />
         <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-          <Picture id={before} rounded="rounded-none" className="h-full grayscale-[35%] sepia-[15%]" />
+          <Picture id={before} rounded="rounded-none" className="h-full" />
         </div>
         <span className="pointer-events-none absolute top-4 left-4 rounded-full bg-ink/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur">Vorher</span>
         <span className="pointer-events-none absolute top-4 right-4 rounded-full bg-blue px-3 py-1 text-xs font-semibold text-white">Nachher</span>

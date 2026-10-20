@@ -53,7 +53,7 @@ export function PageHero({
             {children}
           </div>
           {image && (
-            <div className="fade-up-now lg:col-span-6" style={{ ['--d' as string]: '0.3s' }}>
+            <div className="lg:col-span-6">
               <Picture id={image} priority sizes="(min-width:1024px) 50vw, 100vw" tone={dark ? 'dark' : 'light'} rounded="rounded-panel" />
             </div>
           )}
