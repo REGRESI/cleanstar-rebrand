@@ -18,13 +18,21 @@ export const home = {
   seoDescription:
     'CleanStar Dienstleistungen aus Offenburg: Büroreinigung für Unternehmen im Ortenaukreis. Fester Ansprechpartner, Ersatzkraft bei Ausfall, Qualitätsgarantie. Kostenlose Besichtigung, Angebot in 48 Stunden.',
   hero: {
-    eyebrow: 'Büroreinigung im Ortenaukreis',
-    headline: 'Saubere Büros. Jeden Tag. Ohne dass Sie sich darum kümmern müssen.',
-    sub: 'Fester Ansprechpartner, eingespieltes Team, Ersatzkraft bei Ausfall. Wir sehen uns Ihr Objekt kostenlos an und schicken Ihnen in 48 Stunden ein Angebot.',
+    eyebrow: 'Büroreinigung in Offenburg und der Ortenau',
+    headline: 'Büroreinigung, auf die Verlass ist.',
+    sub: 'Feste Teams. Fester Ansprechpartner. Ersatz bei Ausfall.',
+    cta: 'Kostenlose Besichtigung',
     /** Untertitel zum Scroll-Video: Flug ins Gebäude, Feierabend und Reinigung, Morgen */
     sceneSteps: ['Scrollen Sie, um durch das Büro zu gehen', 'Wir kommen, wenn Sie gehen', 'Am Morgen: makellos'],
     imageAlt: 'Bürogebäude in der Abenddämmerung vor bewaldeten Hügeln',
     imageAltMorning: 'Aufgeräumtes, sauberes Großraumbüro am Morgen',
+    /** Handy: Sequenz als Karte mit Überschrift und drei Schritten */
+    sequenceTitle: 'Ihr Büro über Nacht',
+    sequenceSteps: [
+      { title: 'Feierabend', text: 'Ihr Team geht nach Hause.' },
+      { title: 'Reinigung', text: 'Wir kommen, wenn Sie gehen.' },
+      { title: 'Am Morgen makellos', text: 'Alles bereit, bevor der Erste kommt.' },
+    ],
   },
   problems: {
     eyebrow: 'Das kennen Sie vielleicht',

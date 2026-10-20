@@ -72,23 +72,22 @@ function heroFramesPlugin(inline: boolean): Plugin {
     resolveId: (source) => (source === id ? '\0' + id : null),
     load(loadId) {
       if (loadId !== '\0' + id) return null
-      const manifest = existsSync(`${dir}/keys.json`) ? JSON.parse(readFileSync(`${dir}/keys.json`, 'utf8')) : { keys: [], previewCrop: [] }
+      const manifest = existsSync(`${dir}/keys.json`) ? JSON.parse(readFileSync(`${dir}/keys.json`, 'utf8')) : { keys: [] }
       const stillNames = ['aussen-d', 'aussen-m', 'morgen-d', 'morgen-m']
       const still = Object.fromEntries(stillNames.map((k) => [k, inline ? data(`still-${k}.webp`) : `/hero/still-${k}.webp`]))
       const keys = manifest.keys.map((k: { name: string; progress: number }) => ({
         ...k,
         d: inline ? data(`key-${k.name}-p.jpg`) : `/hero/key-${k.name}-d.jpg`,
-        m: inline ? null : `/hero/key-${k.name}-m.jpg`,
+        m: inline ? null : `/hero/key-${k.name}-p.jpg`,
       }))
       if (inline) {
-        // In der Vorschau nutzen Handy und Desktop dieselbe eingebettete Sequenz (nur einmal einbetten).
-        // Auf dem Handy wird sie mit previewCrop im 4:5-Ausschnitt gezeichnet.
+        // In der Vorschau nutzen Handy und Desktop dieselbe eingebettete 16:9-Sequenz (nur einmal einbetten).
         const desktop = list('p').map((f) => data(`p/${f}`))
-        return `const d = ${JSON.stringify(desktop)}\nexport default { desktop: d, mobile: d, mobileCrop: ${JSON.stringify(manifest.previewCrop)}, still: ${JSON.stringify(still)}, keys: ${JSON.stringify(keys)}, inline: true }`
+        return `const d = ${JSON.stringify(desktop)}\nexport default { desktop: d, mobile: d, still: ${JSON.stringify(still)}, keys: ${JSON.stringify(keys)}, inline: true }`
       }
       const desktop = list('d').map((f) => `/hero/d/${f}`)
       const mobile = list('m').map((f) => `/hero/m/${f}`)
-      return `export default ${JSON.stringify({ desktop, mobile, mobileCrop: null, still, keys, inline })}`
+      return `export default ${JSON.stringify({ desktop, mobile, still, keys, inline })}`
     },
   }
 }

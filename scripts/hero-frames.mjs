@@ -3,10 +3,10 @@
 //
 // Ergebnis:
 //   public/hero/d/0000.webp …  Desktop, 120 Frames, native 1918 × 1080 px, WebP 82
-//   public/hero/m/0000.webp …  Handy, 90 Frames, 4:5-Ausschnitt in nativer Größe 864 × 1080 px, WebP 80
+//   public/hero/m/0000.webp …  Handy, 90 Frames, 16:9, 1280 × 720 px, WebP 80 (Sequenz als Karte)
 //   public/hero/p/0000.webp …  Vorschau-Datei, 60 Frames, 1600 px, WebP 70
-//   public/hero/still-*.webp   Standbilder (Fallback, reduzierte Bewegung)
-//   public/hero/key-*.jpg      Schlüsselmomente in voller Qualität (aus bilder/hero/*.jpg), quer und 4:5
+//   public/hero/still-*.webp   Standbilder: quer (-d) und hochkant 1:2 für den Handy-Einstieg (-m), Gebäude im Fokus
+//   public/hero/key-*.jpg      Schlüsselmomente in voller Qualität (aus bilder/hero/*.jpg): -d nativ, -p 1600 px
 //   public/hero/keys.json      Position der Schlüsselmomente in der Sequenz (0 … 1)
 import { execFileSync } from 'node:child_process'
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
@@ -68,35 +68,8 @@ for (let n = 1; n <= total; n++) {
   timeline.push({ a: n, pos: n })
 }
 
-// 3. Bildausschnitt im Hochformat: horizontale Bildmitte (Anteil der Breite), folgt Gebäude bzw. Reinigungskraft
-const CROP_KEYS = [
-  [1, 0.42],
-  [60, 0.45],
-  [110, 0.5],
-  [190, 0.46],
-  [205, 0.28],
-  [225, 0.33],
-  [241, 0.4],
-  [285, 0.38],
-  [310, 0.4],
-  [321, 0.55],
-  [331, 0.65],
-  [352, 0.68],
-  [362, 0.44],
-  [372, 0.3],
-  [386, 0.38],
-  [405, 0.5],
-  [438, 0.5],
-]
-const smooth = (t) => t * t * (3 - 2 * t)
-function cropCenter(pos) {
-  for (let i = 0; i < CROP_KEYS.length - 1; i++) {
-    const [p0, c0] = CROP_KEYS[i]
-    const [p1, c1] = CROP_KEYS[i + 1]
-    if (pos <= p1) return c0 + (c1 - c0) * smooth(Math.max(0, (pos - p0) / (p1 - p0)))
-  }
-  return CROP_KEYS.at(-1)[1]
-}
+// 3. Hochformat-Standbilder (Handy-Einstieg): Bildmitte als Anteil der Breite, Gebäude bzw. Büro im Fokus
+const STILL_CENTER = { aussen: 0.4, morgen: 0.5 }
 
 async function render(item) {
   const base = sharp(frame(item.a))
@@ -123,19 +96,19 @@ async function build(dir, count, make) {
 }
 
 const { width: W, height: H } = await sharp(frame(1)).metadata()
-// Hochformat-Ausschnitt 4:5 in nativer Größe (nie hochskalieren)
-const MW = Math.round((H * 4) / 5)
-const crop = (buf, pos) => {
-  const left = Math.min(W - MW, Math.max(0, Math.round(cropCenter(pos) * W - MW / 2)))
-  return sharp(buf).extract({ left, top: 0, width: MW, height: H })
+// Hochformat 1:2 in nativer Höhe (nie hochskalieren) für den bildschirmfüllenden Einstieg auf dem Handy
+const PW = Math.round(H / 2)
+const portraitStill = (buf, center) => {
+  const left = Math.min(W - PW, Math.max(0, Math.round(center * W - PW / 2)))
+  return sharp(buf).extract({ left, top: 0, width: PW, height: H })
 }
 
 mkdirSync(OUT, { recursive: true })
 await build('d', 120, (buf) => sharp(buf).webp({ quality: 82, effort: 5 }).toBuffer())
-await build('m', 90, (buf, item) => crop(buf, item.pos).webp({ quality: 80, effort: 5 }).toBuffer())
+await build('m', 90, (buf) => sharp(buf).resize(1280).webp({ quality: 80, effort: 5 }).toBuffer())
 await build('p', 60, (buf) => sharp(buf).resize(1600).webp({ quality: 70, effort: 5 }).toBuffer())
 
-// 4. Standbilder für Fallbacks: Außenansicht (erstes Frame) und Morgen (letztes Frame), quer und 4:5
+// 4. Standbilder: Außenansicht (erstes Frame) und Morgen (letztes Frame), quer und hochkant
 const first = timeline[0]
 const last = timeline.at(-1)
 for (const [name, item] of [
@@ -144,7 +117,7 @@ for (const [name, item] of [
 ]) {
   const buf = await render(item)
   writeFileSync(join(OUT, `still-${name}-d.webp`), await sharp(buf).webp({ quality: 82 }).toBuffer())
-  writeFileSync(join(OUT, `still-${name}-m.webp`), await crop(buf, item.pos).webp({ quality: 80 }).toBuffer())
+  writeFileSync(join(OUT, `still-${name}-m.webp`), await portraitStill(buf, STILL_CENTER[name]).webp({ quality: 82 }).toBuffer())
 }
 
 // 5. Schlüsselmomente: Position in der Sequenz suchen (bestes Frame zum Standbild) und das Standbild
@@ -169,22 +142,17 @@ for (const [name, from, to] of KEYS) {
     for (let k = 0; k < t.length; k++) d += (t[k] - ref[k]) ** 2
     if (d < best.d) best = { d, i }
   }
-  const pos = timeline[best.i].pos
   keys.push({ name, progress: +(best.i / (timeline.length - 1)).toFixed(4) })
   await sharp(src)
     .jpeg({ quality: 90, mozjpeg: true })
     .toFile(join(OUT, `key-${name}-d.jpg`))
-  await crop(await sharp(src).toBuffer(), pos)
-    .jpeg({ quality: 90, mozjpeg: true })
-    .toFile(join(OUT, `key-${name}-m.jpg`))
   await sharp(src)
     .resize(1600)
     .jpeg({ quality: 82, mozjpeg: true })
     .toFile(join(OUT, `key-${name}-p.jpg`))
 }
-// Bildmitte je Vorschau-Frame (Anteil der Breite), damit die Vorschau auf dem Handy den 4:5-Ausschnitt mitführen kann
-const previewCrop = pick(60).map((item) => +cropCenter(item.pos).toFixed(3))
-writeFileSync(join(OUT, 'keys.json'), JSON.stringify({ keys, previewCrop }, null, 2) + '\n')
+writeFileSync(join(OUT, 'keys.json'), JSON.stringify({ keys }, null, 2) + '\n')
+for (const f of readdirSync(OUT).filter((x) => /^key-.*-m\.jpg$/.test(x))) rmSync(join(OUT, f))
 console.log('✓ Schlüsselmomente', keys.map((k) => `${k.name} ${k.progress}`).join(', '))
 console.log(`✓ Standbilder, Zeitleiste ${timeline.length} von ${total} Frames`)
 rmSync(tmp, { recursive: true, force: true })

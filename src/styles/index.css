@@ -268,7 +268,7 @@ html.lenis body {
   display: flex;
 }
 
-/* Hero-Bildfläche: höchstens native Framegröße (Desktop), 4:5 im Hochformat */
+/* Hero-Bildfläche: höchstens native Framegröße (Desktop) */
 .hero-stage {
   left: 50%;
   top: 50%;
@@ -276,15 +276,17 @@ html.lenis body {
   height: min(100%, var(--fh));
   transform: translate(-50%, -50%);
 }
-@media (max-aspect-ratio: 4/5) {
-  .hero-stage {
-    --lift: 0;
-    top: auto;
-    bottom: 0;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    /* startet am unteren Rand und gleitet beim Scrollen in die Bildschirmmitte */
-    transform: translate(-50%, calc(var(--lift) * (125vw - 100svh) / 2));
+/* Handy-Einstieg: weicher Verlauf von unten, oben bleibt das Gebäude frei */
+@media (max-width: 767px) {
+  .hero-shade {
+    background-image: linear-gradient(
+      to bottom,
+      rgb(10 22 40 / 0) 0%,
+      rgb(10 22 40 / 0) 30%,
+      rgb(10 22 40 / 0.35) 45%,
+      rgb(10 22 40 / 0.75) 62%,
+      rgb(10 22 40 / 0.92) 80%,
+      rgb(10 22 40 / 0.96) 100%
+    );
   }
 }

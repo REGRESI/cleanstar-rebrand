@@ -24,3 +24,7 @@ export const useFinePointer = () => useSyncExternalStore(finePointer.subscribe, 
 export const useIsDesktop = () => useSyncExternalStore(desktop.subscribe, desktop.get, () => false)
 
 export const prefersReducedMotion = () => reduced.get()
+
+const mobile = mediaStore('(max-width: 767px)')
+/** Handy-Layout (unter 768 px). Auf dem Server immer false. */
+export const useIsMobile = () => useSyncExternalStore(mobile.subscribe, mobile.get, () => false)
