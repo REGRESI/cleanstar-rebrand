@@ -528,7 +528,7 @@ function Rig({
     const free = 1 - clamp01(p / 0.32)
     const cam = camera as THREE.PerspectiveCamera
     if (portrait) cam.setViewOffset(size.width, size.height, 0, -size.height * 0.36 * free, size.width, size.height)
-    else cam.setViewOffset(size.width, size.height, -size.width * 0.17 * free, 0, size.width, size.height)
+    else cam.setViewOffset(size.width, size.height, -size.width * 0.21 * free, 0, size.width, size.height)
     // Glasfront ausblenden, wenn die Kamera hindurchfährt
     if (glassFront.current) glassFront.current.opacity = 0.32 * (1 - clamp01((tc - 0.55) / 0.15))
     // Scan: 0.55 … 0.95 der Scrollstrecke

@@ -146,9 +146,11 @@ for (const [a, b] of rows) {
   y += 26
 }
 doc.moveDown(2)
-doc
-  .fillColor(muted)
-  .fontSize(9)
-  .text('CleanStar Dienstleistungen GbR · Prinz-Eugen-Str. 80 · 77654 Offenburg · 0173 8512107 · info@cleanstar-dienstleistungen.de', 56, 770, { width: 483, align: 'center' })
+doc.page.margins.bottom = 0
+doc.fillColor(muted).fontSize(8).text('CleanStar Dienstleistungen GbR · Prinz-Eugen-Str. 80 · 77654 Offenburg · 0173 8512107 · info@cleanstar-dienstleistungen.de', 56, 790, {
+  width: 483,
+  align: 'center',
+  lineBreak: false,
+})
 doc.end()
 console.log('✓ Assets erzeugt')

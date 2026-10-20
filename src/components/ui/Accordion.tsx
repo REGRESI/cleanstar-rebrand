@@ -9,7 +9,21 @@ export interface AccordionItem {
 }
 
 /** Barrierefreies Accordion (Button + Region, Tastatur über native Buttons). */
-export function Accordion({ items, className, dark, defaultOpen = -1 }: { items: AccordionItem[]; className?: string; dark?: boolean; defaultOpen?: number }) {
+export function Accordion({
+  items,
+  className,
+  dark,
+  defaultOpen = -1,
+  headingLevel = 'h3',
+}: {
+  items: AccordionItem[]
+  className?: string
+  dark?: boolean
+  defaultOpen?: number
+  /** Überschriftenebene der Fragen (für eine korrekte Gliederung) */
+  headingLevel?: 'h2' | 'h3'
+}) {
+  const H = headingLevel
   const [open, setOpen] = useState<number>(defaultOpen)
   const uid = useId()
   return (
@@ -20,7 +34,7 @@ export function Accordion({ items, className, dark, defaultOpen = -1 }: { items:
         const pid = `${uid}-p${i}`
         return (
           <div key={i}>
-            <h3 className="m-0">
+            <H className="m-0">
               <button
                 id={bid}
                 type="button"
@@ -44,7 +58,7 @@ export function Accordion({ items, className, dark, defaultOpen = -1 }: { items:
                   <Plus className="size-4" />
                 </span>
               </button>
-            </h3>
+            </H>
             <motion.div
               id={pid}
               role="region"

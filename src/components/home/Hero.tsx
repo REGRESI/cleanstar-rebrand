@@ -119,7 +119,7 @@ export function Hero() {
         />
 
         {/* Text */}
-        <div className="container-site relative flex h-full flex-col pt-28 pb-10 sm:pt-36 lg:justify-center lg:pt-24">
+        <div className="container-site relative flex h-full flex-col pt-28 pb-10 sm:pt-36 lg:justify-center lg:pt-32">
           <div ref={copy} className="max-w-[40rem] will-change-transform">
             <p className="eyebrow fade-up-now mb-5" style={{ ['--d' as string]: '0.05s' }}>
               <span aria-hidden className="h-px w-6 bg-current" />
@@ -148,7 +148,7 @@ export function Hero() {
 
         {/* Szenen-Untertitel beim Scrollen */}
         {animated && (
-          <div aria-hidden className={cn('pointer-events-none absolute inset-x-0 bottom-24 justify-center lg:bottom-12', step === 0 ? 'hidden sm:flex' : 'flex')}>
+          <div aria-hidden className={cn('pointer-events-none absolute inset-x-0 bottom-24 justify-center lg:bottom-5', step === 0 ? 'hidden sm:flex' : 'flex')}>
             <div className="glass flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-medium text-ink shadow-soft ring-1 ring-line">
               <span className="flex gap-1">
                 {home.hero.sceneSteps.map((_, i) => (

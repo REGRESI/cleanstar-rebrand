@@ -75,14 +75,14 @@ export default function Contact() {
               </a>
             ))}
             <div className="rounded-card bg-glacier p-6" data-reveal>
-              <p className="flex items-start gap-3">
+              <div className="flex items-start gap-3">
                 <MapPin aria-hidden className="mt-1 size-5 shrink-0 text-blue" />
                 <span>
                   <span className="block font-semibold">{company.legalName}</span>
                   <address className="text-muted not-italic">{fullAddress()}</address>
                 </span>
-              </p>
-              <p className="mt-4 flex items-start gap-3">
+              </div>
+              <div className="mt-4 flex items-start gap-3">
                 <Clock aria-hidden className="mt-1 size-5 shrink-0 text-blue" />
                 <span>
                   <span className="block font-semibold">Erreichbarkeit</span>
@@ -100,7 +100,7 @@ export default function Contact() {
                     )}
                   </span>
                 </span>
-              </p>
+              </div>
             </div>
           </div>
           <div className="lg:col-span-7">

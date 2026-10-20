@@ -127,7 +127,7 @@ html.lenis body {
     @apply text-fresh;
   }
   .heading-display {
-    @apply text-[2.5rem] leading-[1.02] font-semibold sm:text-6xl lg:text-[5.25rem];
+    @apply text-[2.5rem] leading-[1.02] font-semibold sm:text-6xl lg:text-[clamp(3.5rem,min(5.6vw,9.2vh),5.25rem)];
     letter-spacing: -0.035em;
   }
   .heading-1 {

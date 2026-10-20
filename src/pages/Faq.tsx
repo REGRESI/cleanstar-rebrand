@@ -76,6 +76,7 @@ export default function Faq() {
               <p className="text-muted">Keine passende Frage gefunden. Rufen Sie uns gern an.</p>
             ) : (
               <Accordion
+                headingLevel="h2"
                 key={cat + term}
                 items={list.map((f) => ({
                   title: f.q,

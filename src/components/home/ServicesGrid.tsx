@@ -9,6 +9,7 @@ import { cn } from '@/lib/cn'
 
 /** Interaktive Leistungskarten mit 3D-Tilt. Büroreinigung hervorgehoben. */
 export function ServicesGrid({ heading = true }: { heading?: boolean }) {
+  const Title = heading ? 'h3' : 'h2'
   return (
     <section className="relative bg-glacier py-24 sm:py-32" aria-labelledby={heading ? 'services-title' : undefined}>
       <div aria-hidden className="bg-grid absolute inset-0 opacity-50 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]" />
@@ -45,7 +46,7 @@ export function ServicesGrid({ heading = true }: { heading?: boolean }) {
                     </span>
                     {s.featured && <span className="rounded-full bg-fresh/15 px-3 py-1 text-xs font-semibold tracking-wide text-fresh">Kernleistung</span>}
                   </div>
-                  <h3 className={cn('relative mt-6 font-semibold tracking-tight', s.featured ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl')}>{s.name}</h3>
+                  <Title className={cn('relative mt-6 font-semibold tracking-tight', s.featured ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl')}>{s.name}</Title>
                   <p className={cn('relative mt-3 leading-relaxed', s.featured ? 'max-w-md text-lg text-muted-dark' : 'text-muted')}>{s.short}</p>
                   {s.featured && (
                     <div className="relative mt-8 flex-1">
