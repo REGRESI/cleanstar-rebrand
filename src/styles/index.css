@@ -267,3 +267,24 @@ html.lenis body {
 .js-motion .wipe-overlay {
   display: flex;
 }
+
+/* Hero-Bildfläche: höchstens native Framegröße (Desktop), 4:5 im Hochformat */
+.hero-stage {
+  left: 50%;
+  top: 50%;
+  width: min(100%, var(--fw));
+  height: min(100%, var(--fh));
+  transform: translate(-50%, -50%);
+}
+@media (max-aspect-ratio: 4/5) {
+  .hero-stage {
+    --lift: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    /* startet am unteren Rand und gleitet beim Scrollen in die Bildschirmmitte */
+    transform: translate(-50%, calc(var(--lift) * (125vw - 100svh) / 2));
+  }
+}

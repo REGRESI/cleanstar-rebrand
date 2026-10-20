@@ -18,6 +18,15 @@ const PORTRAIT = '(max-aspect-ratio: 4/5)'
 const PLAY = 0.84
 /** Ab hier weicher Übergang zur nächsten Sektion */
 const OUTRO = 0.9
+/** Native Größe der Desktop-Frames: Die Bildfläche wird nie größer, damit nichts über 100 % gestreckt wird */
+const FRAME_W = 1918
+const FRAME_H = 1080
+/** Breite des 4:5-Ausschnitts relativ zur vollen Framebreite (für die Vorschau-Datei) */
+const CROP_A = (FRAME_H * 4) / 5 / FRAME_W
+/** Ruhezeit, nach der an einem Schlüsselmoment das scharfe Standbild eingeblendet wird */
+const IDLE_MS = 150
+/** Toleranz um einen Schlüsselmoment (Anteil der Sequenz) */
+const KEY_RANGE = 0.03
 
 type Mode = 'video' | 'static-first' | 'static-morning'
 
@@ -40,14 +49,19 @@ export function Hero() {
   const copy = useRef<HTMLDivElement>(null)
   const outro = useRef<HTMLDivElement>(null)
   const shade = useRef<HTMLDivElement>(null)
+  const stage = useRef<HTMLDivElement>(null)
   const target = useRef(0)
+  const scrollP = useRef(0)
   const [mode, setMode] = useState<Mode>('video')
   const [portrait, setPortrait] = useState(false)
   const [load, setLoad] = useState(false)
   const [drawn, setDrawn] = useState(false)
   const [step, setStep] = useState(0)
+  const [activeKey, setActiveKey] = useState<string | null>(null)
+  const [keysReady, setKeysReady] = useState<Record<string, boolean>>({})
 
   const urls = useMemo(() => (portrait ? hero.mobile : hero.desktop), [portrait])
+  const mobileCrop = portrait ? hero.mobileCrop : null
   const { nearest, progress, failed } = useFrameSequence(urls, mode === 'video' && load)
 
   // Modus festlegen (nur im Browser)
@@ -75,6 +89,7 @@ export function Hero() {
   // Gepinnte Sektion + Scrollfortschritt
   useEffect(() => {
     if (mode !== 'video' || !section.current || !pin.current) return
+    let timer = 0
     const length = () => window.innerHeight * (window.matchMedia(PORTRAIT).matches ? 2.6 : 3.2)
     const st = ScrollTrigger.create({
       trigger: section.current,
@@ -95,11 +110,31 @@ export function Hero() {
         // Dunkler Verlauf nur, solange der Text sichtbar ist; danach wirkt das Video hell und klar
         if (shade.current) shade.current.style.opacity = String(Math.max(0, 1 - p / 0.14))
         if (outro.current) outro.current.style.opacity = String(Math.max(0, (p - OUTRO) / (1 - OUTRO)))
+        // Hochformat: 4:5-Bildfläche gleitet vom unteren Rand in die Mitte, sobald der Text ausgeblendet ist
+        stage.current?.style.setProperty('--lift', String(Math.min(1, p / 0.12)))
+        scrollP.current = p
         const sp = target.current
-        setStep(sp < 0.29 ? 0 : sp < 0.89 ? 1 : 2)
+        setStep(sp < 0.33 ? 0 : sp < 0.9 ? 1 : 2)
+        onScrollActivity()
       },
     })
-    return () => st.kill()
+    // Schlüsselmomente: nach kurzer Ruhe das scharfe Standbild einblenden, beim Weiterscrollen ausblenden
+    function onScrollActivity() {
+      setActiveKey(null)
+      window.clearTimeout(timer)
+      timer = window.setTimeout(() => {
+        const t = target.current
+        const key = hero.keys.find((k) => Math.abs(k.progress - t) <= KEY_RANGE)
+        if (!key) return
+        target.current = key.progress // Canvas läuft exakt auf das passende Frame
+        setActiveKey(key.name)
+      }, IDLE_MS)
+    }
+    onScrollActivity()
+    return () => {
+      window.clearTimeout(timer)
+      st.kill()
+    }
   }, [mode])
 
   // Zeichnen: weich zum Ziel-Frame interpolieren, nur neu zeichnen, wenn sich etwas ändert
@@ -111,30 +146,32 @@ export function Hero() {
     let raf = 0
     let current = target.current
     let lastImg: HTMLImageElement | null = null
-    let lastW = 0
-    let lastH = 0
     const drawnRef = { current: false }
     const loop = () => {
       raf = requestAnimationFrame(loop)
       current += (target.current - current) * 0.22
       if (Math.abs(target.current - current) < 0.0005) current = target.current
-      const img = nearest(Math.round(current * (urls.length - 1)))
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      const w = Math.round(cv.clientWidth * dpr)
-      const h = Math.round(cv.clientHeight * dpr)
-      if (!img || (img === lastImg && w === lastW && h === lastH)) return
-      if (cv.width !== w || cv.height !== h) {
-        cv.width = w
-        cv.height = h
+      const index = Math.round(current * (urls.length - 1))
+      const img = nearest(index)
+      if (!img || img === lastImg) return
+      // 1:1 zeichnen, ohne Skalierung. Die Darstellung übernimmt der Browser per object-fit (wie bei einem <img>).
+      let sx = 0
+      let sw = img.naturalWidth
+      const sh = img.naturalHeight
+      if (mobileCrop) {
+        // Vorschau-Datei auf dem Handy: 4:5-Ausschnitt aus dem Querformat, Mitte folgt dem Motiv
+        sw = Math.round(sh * 0.8)
+        const c = mobileCrop[Math.min(mobileCrop.length - 1, index)] ?? 0.5
+        sx = Math.min(img.naturalWidth - sw, Math.max(0, Math.round(c * img.naturalWidth - sw / 2)))
       }
-      // wie object-fit: cover
-      const s = Math.max(w / img.naturalWidth, h / img.naturalHeight)
-      const dw = img.naturalWidth * s
-      const dh = img.naturalHeight * s
-      ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh)
+      if (cv.width !== sw || cv.height !== sh) {
+        cv.width = sw
+        cv.height = sh
+        ctx.imageSmoothingEnabled = true
+        ctx.imageSmoothingQuality = 'high'
+      }
+      ctx.drawImage(img, sx, 0, sw, sh, 0, 0, sw, sh)
       lastImg = img
-      lastW = w
-      lastH = h
       if (!drawnRef.current) {
         drawnRef.current = true
         setDrawn(true)
@@ -151,33 +188,65 @@ export function Hero() {
       cancelAnimationFrame(raf)
       io.disconnect()
     }
-  }, [mode, load, urls, nearest])
+  }, [mode, load, urls, nearest, mobileCrop])
 
   const video = mode === 'video' && !reduced
+
+  /** Standbild für einen Schlüsselmoment (4:5 auf dem Handy) und Bildausschnitt für die Vorschau-Datei */
+  const keySrc = (k: (typeof hero.keys)[number]) => (portrait ? (k.m ?? k.d) : k.d)
+  const keyPosition = (k: (typeof hero.keys)[number]) => {
+    if (!portrait || k.m || !hero.mobileCrop) return undefined
+    const c = hero.mobileCrop[Math.round(k.progress * (hero.mobileCrop.length - 1))] ?? 0.5
+    return `${Math.min(100, Math.max(0, ((c - CROP_A / 2) / (1 - CROP_A)) * 100))}% 50%`
+  }
   const loadingVisible = video && load && progress < 1
 
   return (
     <section ref={section} aria-labelledby="hero-title" className="relative">
       <div ref={pin} className="relative h-[100svh] min-h-[560px] overflow-hidden bg-ink">
-        {/* Erstes Frame bzw. Standbild als normales Bild (LCP). Reduzierte Bewegung: per <source> direkt das Morgenbild. */}
-        <picture>
-          {mode === 'static-first' ? null : (
-            <>
-              <source media={`(prefers-reduced-motion: reduce) and ${PORTRAIT}`} srcSet={hero.still['morgen-m']} />
-              <source media="(prefers-reduced-motion: reduce)" srcSet={hero.still['morgen-d']} />
-            </>
-          )}
-          <source media={PORTRAIT} srcSet={hero.mobile[0] ?? hero.still['aussen-m']} />
-          <img
-            src={hero.desktop[0] ?? hero.still['aussen-d']}
-            alt={mode === 'static-morning' ? home.hero.imageAltMorning : home.hero.imageAlt}
-            fetchPriority="high"
-            decoding="async"
-            className="absolute inset-0 size-full object-cover"
-          />
-        </picture>
+        {/* Bildfläche: Desktop höchstens in nativer Framegröße (keine Streckung über 100 %), Hochformat 4:5 */}
+        <div ref={stage} className="hero-stage absolute overflow-hidden" style={{ ['--fw' as string]: `${FRAME_W}px`, ['--fh' as string]: `${FRAME_H}px` }}>
+          {/* Erstes Frame bzw. Standbild als normales Bild (LCP). Reduzierte Bewegung: per <source> direkt das Morgenbild. */}
+          <picture>
+            {mode === 'static-first' ? null : (
+              <>
+                <source media={`(prefers-reduced-motion: reduce) and ${PORTRAIT}`} srcSet={hero.still['morgen-m']} />
+                <source media="(prefers-reduced-motion: reduce)" srcSet={hero.still['morgen-d']} />
+              </>
+            )}
+            <source media={PORTRAIT} srcSet={hero.inline ? hero.still['aussen-m'] : (hero.mobile[0] ?? hero.still['aussen-m'])} />
+            <img
+              src={hero.desktop[0] ?? hero.still['aussen-d']}
+              alt={mode === 'static-morning' ? home.hero.imageAltMorning : home.hero.imageAlt}
+              fetchPriority="high"
+              decoding="async"
+              className="absolute inset-0 size-full object-cover"
+            />
+          </picture>
 
-        {video && <canvas ref={canvas} aria-hidden className={cn('absolute inset-0 size-full transition-opacity duration-300', drawn ? 'opacity-100' : 'opacity-0')} />}
+          {video && (
+            <canvas ref={canvas} aria-hidden className={cn('absolute inset-0 size-full object-cover transition-opacity duration-300', drawn ? 'opacity-100' : 'opacity-0')} />
+          )}
+
+          {/* Schlüsselmomente in voller Qualität, erst nach dem Start der Sequenz geladen */}
+          {video &&
+            load &&
+            hero.keys.map((k) => (
+              <img
+                key={`${k.name}-${portrait ? 'm' : 'd'}`}
+                src={keySrc(k)}
+                alt=""
+                aria-hidden
+                decoding="async"
+                onLoad={() => setKeysReady((r) => ({ ...r, [k.name]: true }))}
+                style={{ objectPosition: keyPosition(k) }}
+                className={cn(
+                  'pointer-events-none absolute inset-0 size-full object-cover transition-opacity ease-out',
+                  activeKey === k.name && keysReady[k.name] ? 'opacity-100 duration-500' : 'opacity-0 duration-200',
+                )}
+              />
+            ))}
+        </div>
 
         {/* Lesbarkeit: dunkler Verlauf hinter dem Text */}
         <div

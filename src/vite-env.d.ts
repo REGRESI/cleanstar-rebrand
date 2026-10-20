@@ -16,7 +16,11 @@ declare module 'virtual:hero-frames' {
   const hero: {
     desktop: string[]
     mobile: string[]
+    /** Nur Vorschau: Bildmitte je Frame für den 4:5-Ausschnitt auf dem Handy (sonst null) */
+    mobileCrop: number[] | null
     still: Record<'aussen-d' | 'aussen-m' | 'morgen-d' | 'morgen-m', string>
+    /** Schlüsselmomente: Position in der Sequenz (0 … 1) und Standbild quer (d) bzw. 4:5 (m, null = d verwenden) */
+    keys: { name: string; progress: number; d: string; m: string | null }[]
     /** true in der Vorschau-Datei (alles eingebettet) */
     inline: boolean
   }

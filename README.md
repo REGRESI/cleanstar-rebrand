@@ -125,7 +125,7 @@ Domain ändern: `company.ts → siteUrl`, `public/robots.txt` und `scripts/postb
 
 **Performance und Barrierefreiheit**
 
-- Hero-Video: Das erste Frame ist ein normales Bild (schnelles LCP). Die übrigen Frames laden erst nach dem Seitenaufbau, grob nach fein (jedes 16., 8., 4. … Frame), mit dezenter Fortschrittslinie. Desktop 150 Frames (1600 px), Hochformat 90 Frames (900 × 1600, Ausschnitt folgt dem Motiv). Datensparmodus oder Ladefehler: Standbild.
+- Hero-Video: Das erste Frame ist ein normales Bild (schnelles LCP). Die übrigen Frames laden erst nach dem Seitenaufbau, grob nach fein (jedes 16., 8., 4. … Frame), mit dezenter Fortschrittslinie. Desktop 120 Frames in nativer Auflösung (1918 × 1080, WebP 82), Hochformat 90 Frames im 4:5-Ausschnitt in nativer Größe (864 × 1080, WebP 80, Ausschnitt folgt dem Motiv), Vorschau 60 Frames (1600 px, WebP 70). Der Canvas zeichnet 1:1 ohne Skalierung, die Bildfläche wird nie größer als 1918 × 1080 CSS-Pixel. Bleibt man an einem der vier Schlüsselmomente stehen (150 ms), blendet das scharfe Standbild (JPG aus `bilder/hero/`) weich darüber. Datensparmodus oder Ladefehler: Standbild.
 - `prefers-reduced-motion`: kein Scroll-Video (nur das Morgenbild), keine Scroll-Animationen, kein Smooth Scroll, kein Custom Cursor. Alle Inhalte statisch sichtbar.
 - Lighthouse (Mobil, lokal gemessen): Performance 92–96, Accessibility 98–100, Best Practices 100, SEO 100 auf allen Seiten (die 404-Seite ist absichtlich `noindex`).
 - Keine Cookies, keine externen Schriften, eigene SVG-Karte statt Google Maps. Externe Dienste (Cal.com) erst nach Klick.
