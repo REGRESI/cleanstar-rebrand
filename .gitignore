@@ -1,0 +1,7 @@
+node_modules
+dist
+dist-preview
+.vite-ssg-temp
+*.log
+.DS_Store
+.lighthouse

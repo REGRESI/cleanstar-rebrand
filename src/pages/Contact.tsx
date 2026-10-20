@@ -1,0 +1,130 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
+import { Seo } from '@/components/ui/Seo'
+import { PageHero } from '@/components/ui/PageHero'
+import { SectionHeading } from '@/components/ui/SectionHeading'
+import { Fact } from '@/components/ui/Todo'
+import { ContactForm } from '@/features/forms/ContactForm'
+import { BookingEmbed } from '@/features/booking/BookingEmbed'
+import { company, fullAddress } from '@/content/company'
+import { breadcrumbSchema, localBusinessSchema } from '@/lib/schema'
+import { getLenis } from '@/lib/smooth-scroll'
+
+const trail = [
+  { name: 'Start', path: '/' },
+  { name: 'Kontakt', path: '/kontakt' },
+]
+
+export default function Contact() {
+  const { hash } = useLocation()
+  useEffect(() => {
+    if (!hash) return
+    const t = window.setTimeout(() => {
+      const el = document.getElementById(hash.slice(1))
+      if (!el) return
+      const lenis = getLenis()
+      if (lenis) lenis.scrollTo(el, { offset: -96 })
+      else el.scrollIntoView({ behavior: 'smooth' })
+    }, 350)
+    return () => window.clearTimeout(t)
+  }, [hash])
+
+  const cards = [
+    { icon: Phone, label: 'Telefon', value: company.phone.display, href: company.phone.href, note: 'Direkt anrufen' },
+    { icon: Mail, label: 'E-Mail', value: company.email, href: `mailto:${company.email}`, note: `Antwort innerhalb von ${company.promises.responseHours} Stunden` },
+    ...(company.whatsapp.enabled
+      ? [{ icon: MessageCircle, label: 'WhatsApp', value: 'Nachricht schreiben', href: `https://wa.me/${company.whatsapp.number}`, note: 'Öffnet WhatsApp' }]
+      : []),
+  ]
+
+  return (
+    <>
+      <Seo
+        title="Kontakt: Reinigungsfirma in Offenburg"
+        description={`Kontakt zu CleanStar Dienstleistungen in Offenburg: Telefon ${company.phone.display}, E-Mail ${company.email}. Kostenlose Objektbesichtigung buchen.`}
+        path="/kontakt"
+        schema={[localBusinessSchema(), breadcrumbSchema(trail)]}
+      />
+      <PageHero
+        trail={trail}
+        eyebrow="Kontakt"
+        title="Sprechen wir über Ihr Objekt."
+        lead="Rufen Sie an, schreiben Sie uns oder buchen Sie direkt einen Termin für die kostenlose Besichtigung. Wir melden uns innerhalb von 24 Stunden."
+      />
+
+      <section className="py-20 sm:py-28" aria-label="Kontaktwege">
+        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
+          <div className="space-y-4 lg:col-span-5">
+            {cards.map((c) => (
+              <a
+                key={c.label}
+                href={c.href}
+                {...(c.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                className="group flex items-center gap-5 rounded-card bg-white p-5 ring-1 ring-line transition hover:shadow-soft hover:ring-blue/30 sm:p-6"
+                data-reveal
+              >
+                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-blue text-white">
+                  <c.icon aria-hidden className="size-5" />
+                </span>
+                <span>
+                  <span className="block text-sm text-muted">{c.label}</span>
+                  <span className="block text-lg font-semibold break-all text-ink group-hover:text-blue">{c.value}</span>
+                  <span className="block text-xs text-muted">{c.note}</span>
+                </span>
+              </a>
+            ))}
+            <div className="rounded-card bg-glacier p-6" data-reveal>
+              <p className="flex items-start gap-3">
+                <MapPin aria-hidden className="mt-1 size-5 shrink-0 text-blue" />
+                <span>
+                  <span className="block font-semibold">{company.legalName}</span>
+                  <address className="text-muted not-italic">{fullAddress()}</address>
+                </span>
+              </p>
+              <p className="mt-4 flex items-start gap-3">
+                <Clock aria-hidden className="mt-1 size-5 shrink-0 text-blue" />
+                <span>
+                  <span className="block font-semibold">Erreichbarkeit</span>
+                  <span className="text-muted">
+                    {company.openingHours ? (
+                      <ul>
+                        {company.openingHours.map((h) => (
+                          <li key={h.days}>
+                            {h.days}: {h.hours}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <Fact value={null} fallback="Telefonisch und per E-Mail" todo="Öffnungszeiten in company.ts eintragen" />
+                    )}
+                  </span>
+                </span>
+              </p>
+            </div>
+          </div>
+          <div className="lg:col-span-7">
+            <h2 className="mb-6 text-2xl font-semibold tracking-tight" data-reveal>
+              Schreiben Sie uns
+            </h2>
+            <ContactForm />
+          </div>
+        </div>
+      </section>
+
+      <section id="besichtigung" className="scroll-mt-28 bg-glacier py-24 sm:py-32" aria-labelledby="booking-title">
+        <div className="container-site">
+          <SectionHeading
+            eyebrow="Objektbesichtigung"
+            title="Kostenlose Besichtigung buchen."
+            id="booking-title"
+            text="Wir sehen uns Ihre Räume an und schicken Ihnen innerhalb von 48 Stunden ein schriftliches Angebot."
+          />
+          <div className="mt-12" data-reveal>
+            <BookingEmbed />
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}

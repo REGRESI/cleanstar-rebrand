@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="format-detection" content="telephone=no" />
+    <script>
+      ;(function () {
+        var d = document.documentElement
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) d.classList.add("js-motion")
+        // Sicherheitsnetz: falls JavaScript nicht startet, Inhalte nach 3 s trotzdem zeigen
+        setTimeout(function () { if (!window.__csReady) d.classList.remove("js-motion") }, 3000)
+      })()
+    </script>
+    <title>CleanStar Dienstleistungen | Vorschau</title>
+    <link rel="icon" href="__FAVICON__" type="image/svg+xml" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.preview.tsx"></script>
+  </body>
+</html>
