@@ -23,7 +23,6 @@ export function BookingEmbed() {
 
   return (
     <div className="relative overflow-hidden rounded-panel bg-white p-6 ring-1 ring-line sm:p-10">
-      <div aria-hidden className="bg-grid absolute inset-0 opacity-60" />
       <div className="relative mx-auto max-w-lg text-center">
         <span aria-hidden className="mx-auto grid size-14 place-items-center rounded-2xl bg-glacier text-blue">
           <CalendarCheck className="size-7" />

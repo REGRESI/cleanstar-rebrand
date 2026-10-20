@@ -21,7 +21,6 @@ export default function Quote() {
         schema={[breadcrumbSchema(trail)]}
       />
       <section className="relative overflow-hidden bg-glacier pt-32 pb-24 sm:pt-40">
-        <div aria-hidden className="bg-grid absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
         <div className="container-site relative grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Breadcrumbs trail={trail} />

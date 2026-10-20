@@ -120,11 +120,12 @@ html.lenis body {
   .container-site {
     @apply mx-auto w-full max-w-[84rem] px-5 sm:px-8 lg:px-12;
   }
+  /* Kleine Dachzeile über Überschriften: ruhig, ohne Striche, auf dunklem Grund zurückhaltend hell */
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-[0.8125rem] font-semibold tracking-[0.14em] text-blue uppercase;
+    @apply inline-flex items-center gap-2 text-[0.8125rem] font-semibold tracking-[0.12em] text-blue-hover uppercase;
   }
   .on-dark .eyebrow {
-    @apply text-fresh;
+    @apply text-white/65;
   }
   .heading-display {
     @apply text-[2.5rem] leading-[1.02] font-semibold sm:text-6xl lg:text-[clamp(3.5rem,min(5.6vw,9.2vh),5.25rem)];
@@ -260,12 +261,25 @@ html.lenis body {
   animation-delay: var(--d, 0.5s);
 }
 
-/* Problem-Karten: Überlagerung nur, wenn die Wisch-Animation aktiv ist */
+/* Problem-Karten: Die Problem-Ebene wird von links nach rechts weggewischt (--wipe von 0 % bis 100 %).
+   Ohne Bewegung bzw. ohne JavaScript bleibt sie ausgeblendet, man sieht direkt die Lösung. */
 .wipe-overlay {
   display: none;
 }
 .js-motion .wipe-overlay {
   display: flex;
+  clip-path: inset(0 0 0 var(--wipe, 0%));
+}
+/* Durchstreichen pro Zeile, auch bei Umbruch */
+.strike-text {
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 58% / var(--strike, 100%) 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.wipe-squeegee {
+  left: calc(var(--wipe, 0%) - 2rem);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.9) 45%, rgb(45 212 191 / 0.55) 50%, rgb(255 255 255 / 0.9) 55%, transparent);
+  filter: blur(1px);
 }
 
 /* Hero-Bildfläche: höchstens native Framegröße (Desktop) */
@@ -289,4 +303,16 @@ html.lenis body {
       rgb(10 22 40 / 0.96) 100%
     );
   }
+}
+
+/* Reklamationsablauf: aktive Schritte leuchten auf (ohne Bewegung: alle aktiv) */
+.flow-step.is-on .flow-dot,
+:root:not(.js-motion) .flow-dot {
+  background: var(--color-blue);
+  color: #fff;
+  box-shadow: 0 0 0 6px rgb(31 94 255 / 0.18);
+}
+.flow-step.is-on .flow-body,
+:root:not(.js-motion) .flow-body {
+  background: rgb(255 255 255 / 0.08);
 }

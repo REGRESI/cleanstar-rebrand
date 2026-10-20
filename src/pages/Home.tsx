@@ -50,9 +50,9 @@ export default function Home() {
         <section className="bg-glacier py-24 sm:py-32" aria-labelledby="ba-title">
           <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-4">
-              <SectionHeading eyebrow="Vorher / Nachher" title="Der Unterschied zeigt sich am Morgen danach." id="ba-title" />
+              <SectionHeading eyebrow={home.beforeAfter.eyebrow} title={home.beforeAfter.headline} id="ba-title" />
               <p className="lead mt-5" data-reveal>
-                Derselbe Arbeitsplatz, abends nach Feierabend und morgens nach unserem Einsatz.
+                {home.beforeAfter.lead}
               </p>
             </div>
             <div className="lg:col-span-8" data-reveal>

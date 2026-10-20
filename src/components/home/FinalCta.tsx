@@ -16,13 +16,11 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
   const { open } = useQuote()
   return (
     <section className="on-dark relative overflow-hidden bg-ink py-24 text-white sm:py-32" aria-labelledby="cta-title">
-      <div aria-hidden className="bg-grid-dark absolute inset-0" />
       <div aria-hidden className="absolute -bottom-40 -left-20 size-[36rem] rounded-full bg-blue/30 blur-[120px]" />
       <div aria-hidden className="absolute -top-40 right-0 size-[28rem] rounded-full bg-fresh/10 blur-[100px]" />
       <div className="container-site relative grid grid-cols-1 gap-14 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-7">
           <p className="eyebrow mb-5" data-reveal>
-            <span aria-hidden className="h-px w-6 bg-current" />
             {home.finalCta.eyebrow}
           </p>
           <RevealText as="h2" id="cta-title" text={headline} className="heading-1" />

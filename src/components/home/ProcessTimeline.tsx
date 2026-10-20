@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { processSteps } from '@/content/site'
+import { home, processSteps } from '@/content/site'
 import { ScrollTrigger } from '@/lib/gsap'
 import { useIsDesktop, useReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
+import { StepCarousel } from './StepCarousel'
 
 /**
  * Ablauf als horizontale Scroll-Timeline (Desktop, Sektion bleibt stehen).
- * Auf dem Handy und bei reduzierter Bewegung: vertikale Timeline.
+ * Auf Handy und Tablet sowie bei reduzierter Bewegung: wischbare Kartenreihe.
  */
 export function ProcessTimeline({
-  title = 'Vom ersten Anruf bis zur sauberen Routine.',
-  eyebrow = 'So arbeiten wir zusammen',
+  title = home.process.headline,
+  eyebrow = home.process.eyebrow,
   steps = processSteps,
   id = 'process-title',
 }: {
@@ -55,24 +56,12 @@ export function ProcessTimeline({
 
   if (!horizontal) {
     return (
-      <section className="py-24 sm:py-32" aria-labelledby={id}>
+      <section className="overflow-hidden bg-glacier py-24 sm:py-32" aria-labelledby={id}>
         <div className="container-site">
           <SectionHeading eyebrow={eyebrow} title={title} id={id} />
-          <ol className="relative mt-14 space-y-10 border-l border-line pl-8 sm:pl-10">
-            {steps.map((s, i) => (
-              <li key={s.title} className="relative" data-reveal>
-                <span
-                  aria-hidden
-                  className="absolute top-0 -left-[calc(2rem+1px)] grid size-8 -translate-x-1/2 place-items-center rounded-full bg-blue text-sm font-semibold text-white ring-4 ring-white sm:-left-[calc(2.5rem+1px)]"
-                >
-                  {i + 1}
-                </span>
-                <p className="text-xs font-semibold tracking-[0.12em] text-fresh-ink uppercase">{s.duration}</p>
-                <h3 className="mt-1 text-xl font-semibold tracking-tight">{s.title}</h3>
-                <p className="mt-2 max-w-xl text-muted">{s.text}</p>
-              </li>
-            ))}
-          </ol>
+        </div>
+        <div className="mt-10" data-reveal>
+          <StepCarousel steps={steps} label={title} />
         </div>
       </section>
     )

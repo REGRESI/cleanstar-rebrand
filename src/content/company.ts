@@ -18,8 +18,14 @@ export interface Person {
   role: string
   /** Kurzes persönliches Statement (1–2 Sätze, in Ich-Form). null = Platzhalter */
   statement: string | null
+  /** Ein Satz zur Person (Hintergrund, Rolle im Betrieb) */
+  bio: string
+  /** Wofür die Person zuständig ist */
+  focus: string[]
   /** Bild-ID aus src/content/images.ts */
   image: string
+  /** Hinweis, solange Texte nicht freigegeben sind (null = freigegeben) */
+  draft: string | null
 }
 
 export interface TimelineEntry {
@@ -122,9 +128,38 @@ export const company = {
   },
 
   /** Anzahl der Gründer-Porträts auf der Über-uns-Seite (2 oder 3) */
+  /**
+   * Gründer. Namen, Fotos und Freigabe der Texte fehlen noch (TODO).
+   * Statements und Zuständigkeiten sind Entwürfe nach Absprache, bitte prüfen und dann draft: null setzen.
+   */
   founders: [
-    { name: null, role: 'Gründer und Gesellschafter', statement: null, image: 'founder-1' },
-    { name: null, role: 'Gründer und Gesellschafter', statement: null, image: 'founder-2' },
+    {
+      name: null,
+      role: 'Gründer · Finanzen und Neukunden',
+      bio: 'Studiert Wirtschaftsmathematik und sorgt dafür, dass jedes Angebot nachvollziehbar kalkuliert ist und jede Rechnung stimmt.',
+      focus: ['Kalkulation und Angebote', 'Buchhaltung und Rechnungen', 'Erstgespräche mit neuen Kunden'],
+      statement: 'Ein Angebot muss man nachrechnen können. Bei uns sehen Sie, welche Stunden wir kalkulieren und warum. Dann gibt es später keine Überraschungen.',
+      image: 'founder-1',
+      draft: 'Name, Foto und Texte bitte freigeben',
+    },
+    {
+      name: null,
+      role: 'Gründer · Kunden und Teams',
+      bio: 'Arbeitet hauptberuflich im Vertrieb und weiß, was Kunden von einem Dienstleister erwarten: dass er erreichbar ist und Wort hält.',
+      focus: ['Betreuung unserer Kunden', 'Einsatzplanung der Teams', 'Mitarbeiter und Einarbeitung'],
+      statement: 'Wenn ich Ihnen etwas zusage, dann gilt das. Und wenn etwas nicht passt, will ich es von Ihnen hören, bevor es ein Problem wird.',
+      image: 'founder-2',
+      draft: 'Name, Foto und Texte bitte freigeben',
+    },
+    {
+      name: null,
+      role: 'Gründer · Kunden und Qualität',
+      bio: 'Ebenfalls hauptberuflich im Vertrieb. Hält den direkten Draht zu unseren Kunden und achtet darauf, dass die Qualität dauerhaft stimmt.',
+      focus: ['Betreuung unserer Kunden', 'Qualitätskontrollen', 'Personal und Vertretungen'],
+      statement: 'Sauber ist nicht, was am ersten Tag glänzt. Sauber ist, wenn es nach einem Jahr noch genauso aussieht.',
+      image: 'founder-3',
+      draft: 'Name, Foto und Texte bitte freigeben',
+    },
   ] as Person[],
 
   /** Firmengeschichte. Nur Einträge mit confirmed: true erscheinen auf der Website. */

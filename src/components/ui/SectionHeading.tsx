@@ -23,7 +23,6 @@ export function SectionHeading({
     <div className={cn('max-w-3xl', align === 'center' && 'mx-auto text-center', className)}>
       {eyebrow && (
         <p className="eyebrow mb-4" data-reveal>
-          <span aria-hidden className="h-px w-6 bg-current" />
           {eyebrow}
         </p>
       )}

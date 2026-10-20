@@ -6,7 +6,6 @@ import { home } from '@/content/site'
 export function GuaranteeTeaser() {
   return (
     <section className="on-dark relative overflow-hidden bg-ink py-28 text-white sm:py-40" aria-labelledby="guarantee-title">
-      <div aria-hidden className="bg-grid-dark absolute inset-0" />
       <div aria-hidden className="absolute top-1/2 left-1/2 size-[48rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue/25 blur-[120px]" />
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-fresh/60 to-transparent" />
       <div className="container-site relative text-center">

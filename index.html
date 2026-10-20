@@ -9,8 +9,8 @@
       ;(function () {
         var d = document.documentElement
         if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) d.classList.add("js-motion")
-        // Sicherheitsnetz: falls JavaScript nicht startet, Inhalte nach 3 s trotzdem zeigen
-        setTimeout(function () { if (!window.__csReady) d.classList.remove("js-motion") }, 3000)
+        // Sicherheitsnetz: falls JavaScript gar nicht startet, Inhalte nach 10 s trotzdem zeigen
+        setTimeout(function () { if (!window.__csReady) d.classList.remove("js-motion") }, 10000)
       })()
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

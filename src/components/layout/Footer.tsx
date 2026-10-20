@@ -21,7 +21,6 @@ export function Footer() {
   const year = new Date().getFullYear()
   return (
     <footer className="relative overflow-hidden border-t border-line bg-glacier pb-28 lg:pb-0">
-      <div aria-hidden className="bg-grid pointer-events-none absolute inset-0 opacity-60 [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
       <div className="container-site relative pt-16 sm:pt-20">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">

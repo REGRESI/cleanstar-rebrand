@@ -35,7 +35,7 @@ export const services: Service[] = [
   {
     slug: 'bueroreinigung',
     name: 'Büroreinigung',
-    short: 'Unsere Kernleistung. Arbeitsplätze, Besprechungsräume, Küchen und Sanitär, verlässlich nach festem Plan.',
+    short: 'Arbeitsplätze, Besprechungsräume, Küchen und Sanitär, verlässlich nach festem Plan.',
     seoTitle: 'Büroreinigung in Offenburg und im Ortenaukreis',
     seoDescription:
       'Büroreinigung für Unternehmen im Ortenaukreis: fester Ansprechpartner, eingespieltes Team, Qualitätsgarantie. Kostenlose Objektbesichtigung, Angebot in 48 Stunden.',

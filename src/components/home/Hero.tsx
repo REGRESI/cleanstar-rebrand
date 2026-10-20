@@ -139,7 +139,6 @@ export function Hero() {
         <div className="on-dark container-site relative flex h-full flex-col pt-28 pb-10 text-white max-md:justify-end max-md:pt-0 max-md:pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:pt-36 lg:justify-center lg:pt-32">
           <div ref={copy} className="max-w-[40rem] will-change-transform">
             <p className="eyebrow fade-up-now mb-5 max-md:mb-3" style={{ ['--d' as string]: '0.05s' }}>
-              <span aria-hidden className="h-px w-6 bg-current" />
               {home.hero.eyebrow}
             </p>
             <RevealText as="h1" id="hero-title" text={home.hero.headline} immediate className="heading-display text-white [text-shadow:0_2px_24px_rgb(10_22_40/0.35)]" />

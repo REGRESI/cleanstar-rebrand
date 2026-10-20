@@ -40,10 +40,7 @@ export function HeroMobileSequence({ onFailed }: { onFailed: () => void }) {
   return (
     <section ref={section} aria-labelledby="hero-seq-title" className="relative md:hidden">
       <div ref={pin} className="relative flex h-[100svh] flex-col justify-center bg-gradient-to-b from-white to-glacier px-5 pt-20 pb-24">
-        <p className="eyebrow mb-3">
-          <span aria-hidden className="h-px w-6 bg-current" />
-          So arbeiten wir
-        </p>
+        <p className="eyebrow mb-3">So arbeiten wir</p>
         <h2 id="hero-seq-title" className="text-[1.875rem] leading-tight font-semibold tracking-tight text-ink">
           {home.hero.sequenceTitle}
         </h2>

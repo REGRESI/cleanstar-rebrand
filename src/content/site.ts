@@ -35,42 +35,56 @@ export const home = {
     ],
   },
   problems: {
-    eyebrow: 'Das kennen Sie vielleicht',
-    headline: 'Typischer Ärger mit Reinigungsfirmen. Und wie wir ihn abstellen.',
+    eyebrow: 'Was Sie nicht mehr erleben werden',
+    headline: 'Sie haben Wichtigeres zu tun, als Ihrer Reinigungsfirma hinterherzutelefonieren.',
+    lead: 'Vier Ärgernisse, die fast jeder Geschäftsführer kennt. Bei uns sind sie von Anfang an geregelt, schriftlich und überprüfbar.',
     items: [
       {
         problem: 'Die Reinigung kommt, wann sie will.',
-        solution: 'Feste Tage, feste Zeitfenster, schriftlich vereinbart. Sie wissen immer, wann wir da sind.',
+        solution: 'Feste Tage und Zeitfenster, schriftlich vereinbart. Sie wissen jederzeit, wann wir bei Ihnen sind.',
       },
       {
         problem: 'Jede Woche ein anderes Gesicht.',
-        solution: 'Ein festes Team für Ihr Objekt. Ersatzkräfte sind eingewiesen, bevor sie einspringen.',
+        solution: 'Ihr Objekt hat ein festes Team. Wer einspringt, ist vorher eingewiesen und kennt Ihre Räume.',
       },
       {
         problem: 'Niemand geht ans Telefon.',
-        solution: 'Ein fester Ansprechpartner mit direkter Nummer. Antwort innerhalb von 24 Stunden, meist schneller.',
+        solution: 'Sie haben einen Namen und eine direkte Nummer. Rückmeldung innerhalb von 24 Stunden.',
       },
       {
-        problem: 'Am Anfang top, nach drei Monaten lässt es nach.',
-        solution: 'Regelmäßige Qualitätskontrollen mit Checkliste. Und wenn doch etwas fehlt: kostenlose Nachreinigung.',
+        problem: 'Nach drei Monaten lässt die Qualität nach.',
+        solution: 'Wir kontrollieren selbst nach Checkliste. Fehlt doch etwas, reinigen wir kostenlos nach.',
       },
     ],
   },
+  services: {
+    eyebrow: 'Leistungen',
+    headline: 'Wir reinigen Büros. Und zwar richtig.',
+    lead: 'Büroreinigung ist unser Kern. Fenster, Treppenhaus, Halle und Hygiene kommen dazu, wenn Sie sie brauchen. Mit demselben Team und demselben Ansprechpartner.',
+  },
   guarantee: {
     eyebrow: 'Qualitätsgarantie',
-    statement: 'Wenn etwas nicht passt, reinigen wir nach. Kostenlos, schnell und ohne Diskussion.',
-    text: 'Und wir finden heraus, warum es passiert ist, damit es nicht wieder vorkommt. So sieht Verlässlichkeit für uns aus.',
+    statement: 'Passt etwas nicht, reinigen wir nach. Kostenlos und ohne Diskussion.',
+    text: 'Danach klären wir mit dem Team die Ursache, damit es kein zweites Mal passiert. Das ist kein Werbeversprechen, sondern unser fester Ablauf.',
+  },
+  process: {
+    eyebrow: 'So arbeiten wir zusammen',
+    headline: 'Sechs Schritte. Ihr Aufwand: ein Termin.',
+  },
+  beforeAfter: {
+    eyebrow: 'Vorher / Nachher',
+    headline: 'Der Unterschied zeigt sich am Morgen danach.',
+    lead: 'Derselbe Arbeitsplatz, abends nach Feierabend und morgens nach unserem Einsatz. So soll es bei Ihnen jeden Tag aussehen.',
   },
   about: {
     eyebrow: 'Über uns',
-    headline: 'Ein Betrieb aus Offenburg. Keine Zentrale, kein Callcenter.',
-    text: 'Hinter CleanStar stehen Menschen, die Sie persönlich kennenlernen. Wir übernehmen Verantwortung für jedes Objekt, das wir reinigen, und sind direkt erreichbar, wenn Sie uns brauchen.',
-    todo: 'Persönliches Statement und Namen der Gründer in company.ts eintragen.',
+    headline: 'Drei Gründer aus Offenburg. Alle drei erreichbar.',
+    text: 'Bei CleanStar sprechen Sie mit den Menschen, die entscheiden. Kein Callcenter, keine Zentrale in einer anderen Stadt. Wer bei uns anruft, erreicht jemanden, der sein Wort hält.',
   },
   finalCta: {
-    eyebrow: 'In 60 Sekunden zum Angebot',
-    headline: 'Erzählen Sie uns kurz von Ihrem Objekt. Den Rest übernehmen wir.',
-    text: 'Ein paar Klicks, dann melden wir uns innerhalb von 24 Stunden. Die Besichtigung ist kostenlos, das Angebot kommt in 48 Stunden.',
+    eyebrow: 'In 60 Sekunden zur Anfrage',
+    headline: 'Ein Gespräch. Eine Besichtigung. Ein klares Angebot.',
+    text: 'Sagen Sie uns kurz, was gereinigt werden soll. Wir melden uns innerhalb von 24 Stunden, sehen uns Ihre Räume kostenlos an und schicken Ihnen in 48 Stunden ein schriftliches Angebot.',
   },
 }
 
@@ -151,10 +165,10 @@ export const guaranteePoints = [
 ]
 
 export const complaintSteps = [
-  { title: 'Sie melden sich', text: 'Per Telefon oder E-Mail bei Ihrem festen Ansprechpartner. Ein Foto hilft, ist aber kein Muss.' },
-  { title: 'Wir bestätigen', text: 'Sie bekommen eine Rückmeldung, wann nachgereinigt wird.' },
+  { title: 'Sie sagen Bescheid', text: 'Per Telefon oder E-Mail an Ihren festen Ansprechpartner. Ein Foto hilft, ist aber kein Muss.' },
+  { title: 'Wir melden uns', text: 'Sie erfahren, wann nachgereinigt wird. Sie müssen nicht nachhaken.' },
   { title: 'Wir reinigen nach', text: 'Kostenlos und innerhalb der vereinbarten Frist.' },
-  { title: 'Wir klären die Ursache', text: 'Mit dem Team und im Leistungsverzeichnis, damit es nicht wieder vorkommt.' },
+  { title: 'Wir stellen ab, was dahintersteckt', text: 'Wir klären die Ursache mit dem Team und passen, falls nötig, den Ablauf an. Damit es kein zweites Mal vorkommt.' },
 ]
 
 export const values = [

@@ -4,6 +4,9 @@ import { HelmetProvider } from 'react-helmet-async'
 import { routes } from './routes'
 import './styles/index.css'
 
+// Skript läuft: Sicherheitsnetz aus index.html nicht mehr nötig (sonst würden Animationen bei langsamem Laden abgeschaltet)
+if (typeof window !== 'undefined') (window as Window & { __csReady?: boolean }).__csReady = true
+
 /** Vorschau-Datei: alle Seiten in einer HTML-Datei über Hash-Routing (#/leistungen …). */
 const router = createHashRouter(routes as RouteObject[])
 

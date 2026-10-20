@@ -8,7 +8,6 @@ export default function NotFound() {
     <>
       <Seo title="Seite nicht gefunden" description="Diese Seite gibt es nicht (mehr)." path="/404" noindex />
       <section className="relative flex min-h-[90svh] items-center overflow-hidden bg-glacier pt-32 pb-20">
-        <div aria-hidden className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
         <div className="container-site relative text-center">
           <p aria-hidden className="bg-gradient-to-b from-ink to-ink/20 bg-clip-text text-[7rem] leading-none font-semibold tracking-tighter text-transparent sm:text-[11rem]">
             404

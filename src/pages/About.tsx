@@ -1,3 +1,4 @@
+import { Check } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -9,7 +10,6 @@ import { company } from '@/content/company'
 import { values } from '@/content/site'
 import type { ImageId } from '@/content/images'
 import { breadcrumbSchema } from '@/lib/schema'
-import { cn } from '@/lib/cn'
 
 const trail = [
   { name: 'Start', path: '/' },
@@ -30,24 +30,46 @@ export default function About() {
       <PageHero
         trail={trail}
         eyebrow="Über uns"
-        title="Reinigung mit Gesicht. Aus Offenburg."
-        lead="CleanStar ist kein anonymer Konzern mit Hotline. Hinter jedem Objekt stehen Menschen, die Sie kennen, und Ansprechpartner, die direkt erreichbar sind."
+        title="Ein Reinigungsdienst, den Sie persönlich kennen."
+        lead="Keine Hotline, keine Zentrale, kein wechselndes Personal. Sie sprechen mit den Gründern selbst, und das Team in Ihrem Büro bleibt dasselbe."
       />
 
       <section className="py-24 sm:py-32" aria-labelledby="founders-title">
         <div className="container-site">
-          <SectionHeading eyebrow="Die Gründer" title="Wer hinter CleanStar steht." id="founders-title" />
-          <ul className={cn('mt-14 grid gap-8', founders.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2 lg:max-w-4xl')}>
+          <SectionHeading
+            eyebrow="Die Gründer"
+            title="Drei Menschen. Klare Zuständigkeiten."
+            id="founders-title"
+            text="Bei uns wissen Sie, wen Sie anrufen. Jeder von uns hat seinen Bereich, und alle drei kennen Ihr Objekt."
+          />
+          <ul className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
             {founders.map((f, i) => (
-              <li key={i} data-reveal>
-                <Picture id={f.image as ImageId} sizes="(min-width:640px) 33vw, 100vw" />
-                <h3 className="mt-5 text-xl font-semibold tracking-tight">
-                  <Fact value={f.name} fallback={`Gründer ${i + 1}`} todo="Name in company.ts eintragen" />
-                </h3>
-                <p className="text-muted">{f.role}</p>
-                <p className="mt-4 leading-relaxed text-ink/85">
-                  <Fact value={f.statement} fallback="Kurzes persönliches Statement: Was treibt mich an, was verspreche ich unseren Kunden?" todo="Statement eintragen" />
-                </p>
+              <li key={i} className="flex flex-col overflow-hidden rounded-panel bg-white ring-1 ring-line" data-reveal>
+                <Picture id={f.image as ImageId} rounded="rounded-none" sizes="(min-width:768px) 33vw, 100vw" />
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
+                  <h3 className="text-xl font-semibold tracking-tight">
+                    <Fact value={f.name} fallback={`Gründer ${i + 1}`} todo="Name" />
+                  </h3>
+                  <p className="text-sm font-semibold text-blue">{f.role.replace('Gründer · ', '')}</p>
+                  <p className="mt-4 leading-relaxed text-muted">{f.bio}</p>
+                  <p className="mt-6 text-xs font-semibold tracking-[0.12em] text-ink/60 uppercase">Zuständig für</p>
+                  <ul className="mt-3 space-y-2">
+                    {f.focus.map((x) => (
+                      <li key={x} className="flex items-start gap-2.5 text-ink">
+                        <Check aria-hidden className="mt-1 size-4 shrink-0 text-fresh-ink" strokeWidth={3} />
+                        {x}
+                      </li>
+                    ))}
+                  </ul>
+                  <blockquote className="mt-auto pt-7">
+                    <p className="border-l-2 border-blue pl-4 leading-relaxed text-ink/85">„{f.statement}“</p>
+                    {f.draft && (
+                      <footer className="mt-2 pl-4">
+                        <Todo title={f.draft}>Entwurf</Todo>
+                      </footer>
+                    )}
+                  </blockquote>
+                </div>
               </li>
             ))}
           </ul>

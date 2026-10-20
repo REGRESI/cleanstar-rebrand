@@ -27,15 +27,13 @@ export function PageHero({
 }) {
   return (
     <section className={cn('relative overflow-hidden pt-32 pb-16 sm:pt-40 sm:pb-24', dark ? 'on-dark bg-ink text-white' : 'bg-glacier')}>
-      <div aria-hidden className={cn('absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent)]', dark ? 'bg-grid-dark' : 'bg-grid')} />
-      <div aria-hidden className={cn('absolute -top-40 -right-40 size-[40rem] rounded-full blur-[120px]', dark ? 'bg-blue/30' : 'bg-blue/10')} />
+      <div aria-hidden className={cn('absolute -top-40 -right-40 size-[40rem] rounded-full blur-[120px]', dark ? 'bg-blue/30' : 'bg-blue/[0.05]')} />
       <div className="container-site relative">
         <Breadcrumbs trail={trail} dark={dark} />
         <div className={cn('grid gap-12', image && 'lg:grid-cols-12 lg:items-center')}>
           <div className={cn(image ? 'lg:col-span-6' : 'max-w-4xl')}>
             {eyebrow && (
               <p className="eyebrow fade-up-now mb-5" style={{ ['--d' as string]: '0s' }}>
-                <span aria-hidden className="h-px w-6 bg-current" />
                 {eyebrow}
               </p>
             )}
