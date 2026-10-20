@@ -3,6 +3,6 @@
 declare const __PREVIEW__: boolean
 
 declare module 'virtual:downloads' {
-  const downloads: Record<'checklist', { href: string; file: string }>
+  const downloads: Record<'checklist' | 'partnerInfo', { href: string; file: string }>
   export default downloads
 }

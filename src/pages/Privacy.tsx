@@ -85,14 +85,24 @@ export default function Privacy() {
               spätestens sechs Monate nach Abschluss des Verfahrens. <Check>Frist bestätigen</Check>
             </p>
 
-            <h2>6. Terminbuchung über Cal.com</h2>
+            <h2>6. Partnerprogramm: Partneranfragen und Infomappe</h2>
+            <p>
+              Wenn Sie sich für unser Partnerprogramm interessieren, verarbeiten wir die Angaben aus der Partneranfrage (z. B. Name, Kontaktdaten, gewünschte Region, Angaben zu
+              Ihrer Firma oder Ihrer beruflichen Situation, gewünschter Starttermin und eine freiwillige Einschätzung zum Investitionsrahmen) sowie bei Anforderung der Infomappe
+              Name, E-Mail und Region. Zweck ist die Prüfung einer möglichen Zusammenarbeit und die Kontaktaufnahme. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche
+              Maßnahmen) sowie Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Der Versand erfolgt über den in Abschnitt 5 genannten Formular-Dienst. Kommt keine Zusammenarbeit
+              zustande, löschen wir die Daten spätestens zwölf Monate nach dem letzten Kontakt, sofern Sie nicht in eine längere Speicherung eingewilligt haben.{' '}
+              <Check>Zweck, Rechtsgrundlage und Speicherdauer für Partneranfragen</Check>
+            </p>
+
+            <h2>7. Terminbuchung über Cal.com</h2>
             <p>
               Für die Buchung einer Objektbesichtigung können Sie einen Kalender des Anbieters Cal.com, Inc. (USA) nutzen. Der Kalender wird erst geladen, wenn Sie auf „Kalender
               laden“ klicken. Erst dann werden Daten (z. B. IP-Adresse, Browserdaten und Ihre Eingaben bei der Buchung) an Cal.com übertragen. Rechtsgrundlage ist Ihre Einwilligung
               (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). <Check>Datenschutzinformationen und Drittlandübermittlung zu Cal.com ergänzen</Check>
             </p>
 
-            <h2>7. Kontakt per E-Mail, Telefon oder WhatsApp</h2>
+            <h2>8. Kontakt per E-Mail, Telefon oder WhatsApp</h2>
             <p>
               Wenn Sie uns per E-Mail oder Telefon kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung Ihres Anliegens (Art. 6 Abs. 1 lit. b bzw. f DSGVO).
               {company.whatsapp.enabled && (
@@ -103,10 +113,10 @@ export default function Privacy() {
               )}
             </p>
 
-            <h2>8. Karte</h2>
+            <h2>9. Karte</h2>
             <p>Die Karte unseres Einzugsgebiets ist eine eigene Grafik. Es werden keine externen Kartendienste geladen.</p>
 
-            <h2>9. Ihre Rechte</h2>
+            <h2>10. Ihre Rechte</h2>
             <p>
               Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20)
               und Widerspruch (Art. 21 DSGVO). Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen. Wenden Sie sich dazu einfach an{' '}
@@ -117,7 +127,7 @@ export default function Privacy() {
               Baden-Württemberg.
             </p>
 
-            <h2>10. SSL-/TLS-Verschlüsselung</h2>
+            <h2>11. SSL-/TLS-Verschlüsselung</h2>
             <p>Diese Website nutzt aus Sicherheitsgründen eine TLS-Verschlüsselung. Sie erkennen sie an „https://“ in der Adresszeile.</p>
 
             <p className="text-sm text-muted">

@@ -14,7 +14,7 @@ const root = fileURLToPath(new URL('.', import.meta.url))
  */
 function downloadsPlugin(inline: boolean): Plugin {
   const id = 'virtual:downloads'
-  const files = { checklist: 'checkliste-gute-bueroreinigung.pdf' }
+  const files = { checklist: 'checkliste-gute-bueroreinigung.pdf', partnerInfo: 'cleanstar-partner-infomappe.pdf' }
   return {
     name: 'cleanstar-downloads',
     resolveId: (source) => (source === id ? '\0' + id : null),

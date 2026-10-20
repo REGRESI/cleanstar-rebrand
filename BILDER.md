@@ -1,6 +1,6 @@
 # Bildliste CleanStar-Website
 
-Alle 19 Bilder, die die Website braucht. Bis ein Foto vorliegt, zeigt die Website einen beschrifteten Platzhalter im richtigen Seitenverhältnis.
+Alle 23 Bilder, die die Website braucht. Bis ein Foto vorliegt, zeigt die Website einen beschrifteten Platzhalter im richtigen Seitenverhältnis.
 
 ## So bauen Sie ein Bild ein
 
@@ -39,6 +39,10 @@ Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) zeigt immer
 | 17 | `karriere.jpg` | 16:9 | 2400 × 1350 px | Karriere |
 | 18 | `region-ortenau.jpg` | 21:9 | 2560 × 1097 px | Einzugsgebiet |
 | 19 | `kontakt.jpg` | 4:3 | 1600 × 1200 px | Kontakt |
+| 20 | `partner-hero.jpg` | 16:9 | 2400 × 1350 px | Partnerprogramm (Hero) |
+| 21 | `partner-gruender.jpg` | 4:3 | 1600 × 1200 px | Partnerprogramm (Weg Gründung) |
+| 22 | `partner-bestand.jpg` | 4:3 | 1600 × 1200 px | Partnerprogramm (Weg bestehende Firma) |
+| 23 | `partner-einarbeitung.jpg` | 16:9 | 2400 × 1350 px | Partnerprogramm (Modul Einarbeitung und Support) |
 
 ## Bilder im Detail
 
@@ -363,6 +367,74 @@ Modern low-rise office building in a small southern German town business park, v
 
 ```
 Top-down view of a tidy light desk with a smartphone, a notebook with a pen and a cup of coffee, lots of negative space, soft daylight, minimal. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 4:3.
+```
+
+### 20. partner-hero
+
+- **ID im Code:** `partner-hero`
+- **Pfad:** `bilder/partner-hero.jpg` → `public/images/partner-hero-<breite>.avif|webp`
+- **Seitenverhältnis:** 16:9
+- **Mindestauflösung:** 2400 × 1350 px
+- **Verwendet auf:** Partnerprogramm (Hero)
+- **Inhalt:** Partner: zwei Unternehmer per Handschlag im hellen Besprechungsraum, Tablet und Unterlagen auf dem Tisch, 16:9
+- **Alt-Text:** Zwei Unternehmer geben sich in einem hellen Besprechungsraum die Hand
+- **Status:** fehlt (Platzhalter aktiv)
+
+**Prompt:**
+
+```
+Two business owners in their late thirties shaking hands in a bright modern office meeting room, one in a navy quarter-zip, the other in a light shirt, warm and confident atmosphere, tablet and documents on a white table, large windows, seen at a slight angle, faces natural and friendly. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
+```
+
+### 21. partner-gruender
+
+- **ID im Code:** `partner-founder`
+- **Pfad:** `bilder/partner-gruender.jpg` → `public/images/partner-gruender-<breite>.avif|webp`
+- **Seitenverhältnis:** 4:3
+- **Mindestauflösung:** 1600 × 1200 px
+- **Verwendet auf:** Partnerprogramm (Weg Gründung)
+- **Inhalt:** Partner Gründung: junger Unternehmer mit weißem Transporter und Reinigungswagen vor Bürogebäude, morgens, 4:3
+- **Alt-Text:** Gründer steht neben einem weißen Transporter und einem Reinigungswagen vor einem Bürogebäude
+- **Status:** fehlt (Platzhalter aktiv)
+
+**Prompt:**
+
+```
+Young entrepreneur standing next to a clean white compact van and a neatly packed cleaning trolley in front of a modern office building in the morning, proud and calm, navy work jacket, documentary style, van without any branding. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 4:3.
+```
+
+### 22. partner-bestand
+
+- **ID im Code:** `partner-existing`
+- **Pfad:** `bilder/partner-bestand.jpg` → `public/images/partner-bestand-<breite>.avif|webp`
+- **Seitenverhältnis:** 4:3
+- **Mindestauflösung:** 1600 × 1200 px
+- **Verwendet auf:** Partnerprogramm (Weg bestehende Firma)
+- **Inhalt:** Partner bestehende Firma: Inhaber im aufgeräumten Materiallager mit Tablet-Checkliste, 4:3
+- **Alt-Text:** Inhaberin einer Reinigungsfirma prüft im Materiallager eine Checkliste auf dem Tablet
+- **Status:** fehlt (Platzhalter aktiv)
+
+**Prompt:**
+
+```
+Owner of a small cleaning company in a tidy storage room with shelves of labeled cleaning supplies and microfiber cloths, reviewing a checklist on a tablet, organized and professional, soft daylight. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 4:3.
+```
+
+### 23. partner-einarbeitung
+
+- **ID im Code:** `partner-onboarding`
+- **Pfad:** `bilder/partner-einarbeitung.jpg` → `public/images/partner-einarbeitung-<breite>.avif|webp`
+- **Seitenverhältnis:** 16:9
+- **Mindestauflösung:** 2400 × 1350 px
+- **Verwendet auf:** Partnerprogramm (Modul Einarbeitung und Support)
+- **Inhalt:** Partner Einarbeitung: Trainer erklärt Ablauf am großen Bildschirm, drei Teilnehmende mit Notizbüchern, 16:9
+- **Alt-Text:** Einarbeitung: Trainer erklärt drei neuen Partnern einen Ablauf am Bildschirm
+- **Status:** fehlt (Platzhalter aktiv)
+
+**Prompt:**
+
+```
+Onboarding session in a modern office: a trainer explains a cleaning process on a large screen showing simple abstract diagrams to three new partners sitting at a table with notebooks, engaged and focused, natural light. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
 ```
 
 ## Bereits vorhanden (automatisch erzeugt)

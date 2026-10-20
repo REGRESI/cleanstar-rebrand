@@ -153,4 +153,66 @@ doc.fillColor(muted).fontSize(8).text('CleanStar Dienstleistungen GbR · Prinz-E
   lineBreak: false,
 })
 doc.end()
+
+// Partner-Infomappe (Platzhalter-Entwurf, ohne Zahlen und Versprechen)
+{
+  const p = new PDFDocument({ size: 'A4', margin: 56, info: { Title: 'CleanStar Partner-Infomappe (Entwurf)', Author: 'CleanStar Dienstleistungen GbR' } })
+  p.pipe(createWriteStream('public/downloads/cleanstar-partner-infomappe.pdf'))
+  const head = (t) => {
+    p.moveDown(1).fillColor(blue).fontSize(9).text(t.toUpperCase(), 56, p.y, { characterSpacing: 1.5 })
+    p.moveDown(0.4)
+  }
+  const para = (t) => p.fillColor(ink).fontSize(10.5).text(t, 56, p.y, { width: 483, lineGap: 2 }).moveDown(0.5)
+  const bullet = (t) =>
+    p
+      .fillColor(ink)
+      .fontSize(10.5)
+      .text('•  ' + t, 66, p.y, { width: 470, lineGap: 1.5 })
+  p.image(pdfLogo, 56, 48, { width: 150 })
+  p.fillColor(ink).fontSize(24).text('Partner-Infomappe', 56, 120)
+  p.moveDown(0.3).fillColor(muted).fontSize(11).text('Das CleanStar-Partnerprogramm auf einen Blick. Entwurf, Inhalte werden derzeit abgestimmt.', { width: 483 })
+  head('Worum es geht')
+  para(
+    'CleanStar Dienstleistungen aus Offenburg reinigt Büros und Gewerbeflächen im Ortenaukreis nach festen Abläufen: Objektbesichtigung, Angebot auf Stundenbasis, festes Team, regelmäßige Qualitätskontrolle und eine Qualitätsgarantie. Mit dem Partnerprogramm öffnen wir dieses System für Partner in weiteren Regionen.',
+  )
+  head('Zwei Wege')
+  bullet('Bestehende Reinigungsfirmen, die professioneller auftreten und mehr Geschäftskunden gewinnen wollen.')
+  bullet('Gründer, die eine eigene Reinigungsfirma eröffnen und nicht bei null anfangen möchten.')
+  head('Geplante Module (in Abstimmung)')
+  ;['Marke und Auftritt', 'Vertrieb', 'Qualitätssystem', 'Organisation', 'Personal', 'Einarbeitung und Support'].forEach(bullet)
+  head('Ablauf')
+  ;[
+    'Unverbindliche Anfrage',
+    'Erstgespräch, telefonisch oder per Video',
+    'Kennenlernen vor Ort in Offenburg',
+    'Prüfung von Region und Voraussetzungen',
+    'Schriftlicher Partnervertrag',
+    'Einarbeitung',
+    'Start in Ihrer Region',
+  ].forEach((t, i) => bullet(`${i + 1}. ${t}`))
+  head('Was wir erwarten')
+  para(
+    'Qualitätsanspruch, Einhaltung der gemeinsamen Standards und der Qualitätsgarantie, Fokus auf Geschäftskunden, unternehmerische Eigenverantwortung sowie Gewerbeanmeldung und Betriebshaftpflicht.',
+  )
+  head('Konditionen')
+  para('Die Konditionen besprechen wir transparent im persönlichen Gespräch. Vor Vertragsschluss erhalten Sie alle Informationen schriftlich.')
+  head('Wichtiger Hinweis')
+  p.fillColor(muted)
+    .fontSize(9)
+    .text(
+      'Diese Infomappe beschreibt das geplante Partnerprogramm und ist unverbindlich. Sie enthält keine Zusagen zu Umsatz, Gewinn oder Einkommen. Verbindliche Rechte und Pflichten ergeben sich ausschließlich aus einem schriftlichen Partnervertrag.',
+      56,
+      p.y,
+      { width: 483 },
+    )
+  p.page.margins.bottom = 0
+  p.fillColor(muted)
+    .fontSize(8)
+    .text('CleanStar Dienstleistungen GbR · Prinz-Eugen-Str. 80 · 77654 Offenburg · 0173 8512107 · info@cleanstar-dienstleistungen.de', 56, 790, {
+      width: 483,
+      align: 'center',
+      lineBreak: false,
+    })
+  p.end()
+}
 console.log('✓ Assets erzeugt')

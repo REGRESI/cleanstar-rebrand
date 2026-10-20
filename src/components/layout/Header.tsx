@@ -78,6 +78,9 @@ export function Header() {
             </nav>
 
             <div className="flex items-center gap-2">
+              <Link to="/partner" className="hidden rounded-full px-3 py-2 text-[0.8125rem] font-medium whitespace-nowrap text-muted transition hover:text-ink xl:inline-flex">
+                Partner werden
+              </Link>
               <a
                 href={company.phone.href}
                 className="hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold whitespace-nowrap text-ink transition hover:bg-ink/5 2xl:inline-flex"
@@ -146,6 +149,9 @@ export function Header() {
                 </span>
                 {company.phone.display}
               </a>
+              <Link to="/partner" className="mt-10 inline-block text-sm text-muted underline underline-offset-4">
+                Partner werden: Partnerprogramm für Reinigungsfirmen
+              </Link>
             </nav>
           </motion.div>
         )}

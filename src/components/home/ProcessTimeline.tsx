@@ -9,7 +9,17 @@ import { cn } from '@/lib/cn'
  * Ablauf als horizontale Scroll-Timeline (Desktop, Sektion bleibt stehen).
  * Auf dem Handy und bei reduzierter Bewegung: vertikale Timeline.
  */
-export function ProcessTimeline({ title = 'Vom ersten Anruf bis zur sauberen Routine.', eyebrow = 'So arbeiten wir zusammen' }: { title?: string; eyebrow?: string }) {
+export function ProcessTimeline({
+  title = 'Vom ersten Anruf bis zur sauberen Routine.',
+  eyebrow = 'So arbeiten wir zusammen',
+  steps = processSteps,
+  id = 'process-title',
+}: {
+  title?: string
+  eyebrow?: string
+  steps?: { title: string; duration: string; text: string }[]
+  id?: string
+}) {
   const desktop = useIsDesktop()
   const reduced = useReducedMotion()
   const horizontal = desktop && !reduced
@@ -36,20 +46,20 @@ export function ProcessTimeline({ title = 'Vom ersten Anruf bis zur sauberen Rou
       onUpdate: (s) => {
         if (track.current) track.current.style.transform = `translate3d(${-s.progress * dist}px,0,0)`
         if (bar.current) bar.current.style.transform = `scaleX(${s.progress})`
-        setActiveStep(Math.min(processSteps.length - 1, Math.floor(s.progress * processSteps.length * 0.999)))
+        setActiveStep(Math.min(steps.length - 1, Math.floor(s.progress * steps.length * 0.999)))
       },
     })
     ScrollTrigger.refresh()
     return () => st.kill()
-  }, [horizontal, dist])
+  }, [horizontal, dist, steps.length])
 
   if (!horizontal) {
     return (
-      <section className="py-24 sm:py-32" aria-labelledby="process-title">
+      <section className="py-24 sm:py-32" aria-labelledby={id}>
         <div className="container-site">
-          <SectionHeading eyebrow={eyebrow} title={title} id="process-title" />
+          <SectionHeading eyebrow={eyebrow} title={title} id={id} />
           <ol className="relative mt-14 space-y-10 border-l border-line pl-8 sm:pl-10">
-            {processSteps.map((s, i) => (
+            {steps.map((s, i) => (
               <li key={s.title} className="relative" data-reveal>
                 <span
                   aria-hidden
@@ -69,16 +79,16 @@ export function ProcessTimeline({ title = 'Vom ersten Anruf bis zur sauberen Rou
   }
 
   return (
-    <section ref={section} className="relative" style={{ height: `calc(100vh + ${dist}px)` }} aria-labelledby="process-title">
+    <section ref={section} className="relative" style={{ height: `calc(100vh + ${dist}px)` }} aria-labelledby={id}>
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
         <div className="container-site">
-          <SectionHeading eyebrow={eyebrow} title={title} id="process-title" />
+          <SectionHeading eyebrow={eyebrow} title={title} id={id} />
         </div>
         <div className="relative mt-16">
           <div aria-hidden className="absolute top-[1.375rem] right-0 left-0 h-px bg-line" />
           <div ref={bar} aria-hidden className="absolute top-[1.375rem] right-0 left-0 h-px origin-left scale-x-0 bg-gradient-to-r from-blue to-fresh" />
           <ol ref={track} className="flex gap-6 pr-12 pl-[max(3rem,calc((100vw-84rem)/2+3rem))] will-change-transform">
-            {processSteps.map((s, i) => (
+            {steps.map((s, i) => (
               <li key={s.title} className="w-[24rem] shrink-0">
                 <span
                   aria-hidden

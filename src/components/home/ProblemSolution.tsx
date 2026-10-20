@@ -9,7 +9,21 @@ import { prefersReducedMotion } from '@/lib/env'
  * Probleme werden beim Scrollen „weggewischt“: Eine Abzieher-Kante fährt über die Karte
  * und legt die Lösung frei.
  */
-export function ProblemSolution() {
+interface Props {
+  eyebrow?: string
+  headline?: string
+  lead?: string
+  items?: { problem: string; solution: string }[]
+  id?: string
+}
+
+export function ProblemSolution({
+  eyebrow = home.problems.eyebrow,
+  headline = home.problems.headline,
+  lead = 'Wir haben unsere Abläufe so gebaut, dass diese Probleme gar nicht erst entstehen.',
+  items = home.problems.items,
+  id = 'problems-title',
+}: Props) {
   const root = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -33,18 +47,18 @@ export function ProblemSolution() {
   }, [])
 
   return (
-    <section className="relative py-24 sm:py-32" aria-labelledby="problems-title">
+    <section className="relative py-24 sm:py-32" aria-labelledby={id}>
       <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-32">
-            <SectionHeading eyebrow={home.problems.eyebrow} title={home.problems.headline} id="problems-title" />
+            <SectionHeading eyebrow={eyebrow} title={headline} id={id} />
             <p className="lead mt-6" data-reveal>
-              Wir haben unsere Abläufe so gebaut, dass diese Probleme gar nicht erst entstehen.
+              {lead}
             </p>
           </div>
         </div>
         <div ref={root} className="space-y-5 lg:col-span-7">
-          {home.problems.items.map((it, i) => (
+          {items.map((it, i) => (
             <article key={i} data-wipe className="relative isolate overflow-hidden rounded-card bg-white shadow-soft ring-1 ring-line">
               {/* Lösung (darunter) */}
               <div data-solution className="grid gap-3 p-6 sm:p-8">

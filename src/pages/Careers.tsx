@@ -7,6 +7,7 @@ import { Todo } from '@/components/ui/Todo'
 import { Accordion } from '@/components/ui/Accordion'
 import { Button } from '@/components/ui/Button'
 import { ApplicationForm } from '@/features/forms/ApplicationForm'
+import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
 import { careers, jobs } from '@/content/site'
 import { company } from '@/content/company'
 import { breadcrumbSchema } from '@/lib/schema'
@@ -144,6 +145,7 @@ export default function Careers() {
           </div>
         </div>
       </section>
+      <PartnerTeaser />
     </>
   )
 }

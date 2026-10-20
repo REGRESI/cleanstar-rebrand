@@ -222,6 +222,46 @@ export const images = {
     prompt: 'Top-down view of a tidy light desk with a smartphone, a notebook with a pen and a cup of coffee, lots of negative space, soft daylight, minimal',
     usedOn: 'Kontakt',
   }),
+  'partner-hero': img({
+    file: 'partner-hero',
+    ratio: '16:9',
+    minWidth: 2400,
+    alt: 'Zwei Unternehmer geben sich in einem hellen Besprechungsraum die Hand',
+    label: 'Partner: zwei Unternehmer per Handschlag im hellen Besprechungsraum, Tablet und Unterlagen auf dem Tisch, 16:9',
+    prompt:
+      'Two business owners in their late thirties shaking hands in a bright modern office meeting room, one in a navy quarter-zip, the other in a light shirt, warm and confident atmosphere, tablet and documents on a white table, large windows, seen at a slight angle, faces natural and friendly',
+    usedOn: 'Partnerprogramm (Hero)',
+  }),
+  'partner-founder': img({
+    file: 'partner-gruender',
+    ratio: '4:3',
+    minWidth: 1600,
+    alt: 'Gründer steht neben einem weißen Transporter und einem Reinigungswagen vor einem Bürogebäude',
+    label: 'Partner Gründung: junger Unternehmer mit weißem Transporter und Reinigungswagen vor Bürogebäude, morgens, 4:3',
+    prompt:
+      'Young entrepreneur standing next to a clean white compact van and a neatly packed cleaning trolley in front of a modern office building in the morning, proud and calm, navy work jacket, documentary style, van without any branding',
+    usedOn: 'Partnerprogramm (Weg Gründung)',
+  }),
+  'partner-existing': img({
+    file: 'partner-bestand',
+    ratio: '4:3',
+    minWidth: 1600,
+    alt: 'Inhaberin einer Reinigungsfirma prüft im Materiallager eine Checkliste auf dem Tablet',
+    label: 'Partner bestehende Firma: Inhaber im aufgeräumten Materiallager mit Tablet-Checkliste, 4:3',
+    prompt:
+      'Owner of a small cleaning company in a tidy storage room with shelves of labeled cleaning supplies and microfiber cloths, reviewing a checklist on a tablet, organized and professional, soft daylight',
+    usedOn: 'Partnerprogramm (Weg bestehende Firma)',
+  }),
+  'partner-onboarding': img({
+    file: 'partner-einarbeitung',
+    ratio: '16:9',
+    minWidth: 2400,
+    alt: 'Einarbeitung: Trainer erklärt drei neuen Partnern einen Ablauf am Bildschirm',
+    label: 'Partner Einarbeitung: Trainer erklärt Ablauf am großen Bildschirm, drei Teilnehmende mit Notizbüchern, 16:9',
+    prompt:
+      'Onboarding session in a modern office: a trainer explains a cleaning process on a large screen showing simple abstract diagrams to three new partners sitting at a table with notebooks, engaged and focused, natural light',
+    usedOn: 'Partnerprogramm (Modul Einarbeitung und Support)',
+  }),
 } satisfies Record<string, ImageSpec>
 
 export type ImageId = keyof typeof images

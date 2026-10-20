@@ -1,11 +1,13 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Phone, Sparkles } from 'lucide-react'
 import { company } from '@/content/company'
 import { useQuote } from '@/features/configurator/QuoteContext'
+import { scrollToId } from '@/lib/smooth-scroll'
 
-/** Dezente Leiste am unteren Rand auf dem Handy: Anrufen und Angebot. */
+/** Dezente Leiste am unteren Rand auf dem Handy: Anrufen und Angebot (auf /partner: Partneranfrage). */
 export function MobileBar() {
   const { open, isOpen } = useQuote()
+  const partner = useLocation().pathname.startsWith('/partner')
   if (isOpen) return null
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden">
@@ -15,15 +17,16 @@ export function MobileBar() {
           Anrufen
         </a>
         <Link
-          to="/angebot"
+          to={partner ? '/partner' : '/angebot'}
           onClick={(e) => {
             e.preventDefault()
-            open()
+            if (partner) scrollToId('bewerbung')
+            else open()
           }}
           className="flex h-12 flex-[1.3] items-center justify-center gap-2 rounded-full bg-blue text-[0.9375rem] font-semibold text-white active:bg-blue-hover"
         >
           <Sparkles aria-hidden className="size-4" />
-          Angebot
+          {partner ? 'Partneranfrage' : 'Angebot'}
         </Link>
       </div>
     </div>

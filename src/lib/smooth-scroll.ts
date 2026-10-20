@@ -39,3 +39,11 @@ export function lockScroll(lock: boolean) {
   }
   document.documentElement.style.overflow = lock ? 'hidden' : ''
 }
+
+/** Weich zu einem Element mit id scrollen (mit Lenis, sonst nativ). */
+export function scrollToId(id: string) {
+  const el = document.getElementById(id)
+  if (!el) return
+  if (lenis) lenis.scrollTo(el, { offset: -96 })
+  else el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
+}

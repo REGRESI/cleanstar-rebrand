@@ -72,7 +72,20 @@ Die Anfrage kommt übersichtlich formatiert als E-Mail (alle Angaben inkl. gewä
 
 ### Bilder
 
-Siehe **BILDER.md**: Liste aller 19 Bilder mit Dateiname, Seitenverhältnis, Mindestauflösung und fertigem Bild-Prompt. Ablauf: Foto nach `bilder/` → `npm run images` → in `images.ts` `available: true` → `npm run build`.
+Siehe **BILDER.md**: Liste aller 23 Bilder mit Dateiname, Seitenverhältnis, Mindestauflösung und fertigem Bild-Prompt. Ablauf: Foto nach `bilder/` → `npm run images` → in `images.ts` `available: true` → `npm run build`.
+
+### Partnerprogramm pflegen (`/partner`)
+
+Alle Inhalte stehen in `src/content/partner.ts`. Die Seite ist bewusst nicht in der Hauptnavigation (nur Footer, dezenter Link im Desktop-Header, unten im Mobilmenü, Hinweis auf „Über uns“ und „Karriere“).
+
+- **Module an/aus:** in `partnerModules` bei einem Modul `enabled: false` setzen. Bestätigte Module: `todo` entfernen (Kommentare `// TODO: mit Nico abstimmen` markieren alles noch Offene).
+- **Regionen vergeben:** in `bwRegions` beim Kreis `status: 'vergeben'` setzen (`'gesucht'` = frei, `'stammgebiet'` = CleanStar selbst). Die Karte und die Auswahllisten passen sich an. Die Deutschland-Ansicht schalten Sie mit `partnerFlags.showGermany` ein oder aus.
+- **Konditionen einblenden:** Werte in `partnerConditions` eintragen, anwaltlich prüfen lassen, dann `partnerFlags.showConditions: true`. Bis dahin steht dort der Hinweis auf das persönliche Gespräch.
+- **Partnerstimmen:** nur echte Zitate mit Einverständnis in `partnerTestimonials`, dann `partnerFlags.showTestimonials: true`.
+- **Infomappe:** Platzhalter-PDF `public/downloads/cleanstar-partner-infomappe.pdf` (erzeugt von `scripts/generate-assets.mjs`). Durch die finale Mappe ersetzen, Dateiname beibehalten.
+- Partneranfragen und Infomappen-Anforderungen laufen über denselben Formular-Dienst wie alle anderen Formulare (Betreff „Partneranfrage …“ bzw. „Partner-Infomappe angefordert …“).
+
+Wichtig: keine Umsatz-, Gewinn- oder Einkommensangaben und keine erfundenen Partnerzahlen auf die Seite schreiben (vorvertragliche Aufklärungspflichten bei Franchise-Systemen).
 
 ### Testimonials und Kundenlogos
 
@@ -142,4 +155,6 @@ preview/          ← fertige Einzeldatei-Vorschau
 
 **Rechtlich prüfen lassen:** Impressum (Verbraucherstreitbeilegung), Datenschutzerklärung (gelb markierte Stellen: Hoster und AV-Vertrag, Formular-Dienst und Drittlandübermittlung, Cal.com, Speicherdauer Bewerbungen, Datenschutzbeauftragter, § 25 TDDDG).
 
-**Bilder:** alle 19 Bilder laut BILDER.md.
+**Bilder:** alle 23 Bilder laut BILDER.md (inkl. 4 für das Partnerprogramm).
+
+**Partnerprogramm:** alle `TODO`-Punkte in `src/content/partner.ts` (Module, FAQ, Konditionen) bestätigen und die Seite vor dem Livegang anwaltlich prüfen lassen.

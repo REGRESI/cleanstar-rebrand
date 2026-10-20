@@ -14,6 +14,7 @@ const companyLinks = [
   { label: 'FAQ', to: '/faq' },
   { label: 'Angebot anfragen', to: '/angebot' },
   { label: 'Kontakt', to: '/kontakt' },
+  { label: 'Partner werden', to: '/partner' },
 ]
 
 export function Footer() {

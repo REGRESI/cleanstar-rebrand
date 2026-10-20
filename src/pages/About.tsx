@@ -4,6 +4,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
 import { Fact, Todo } from '@/components/ui/Todo'
 import { FinalCta } from '@/components/home/FinalCta'
+import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
 import { company } from '@/content/company'
 import { values } from '@/content/site'
 import type { ImageId } from '@/content/images'
@@ -130,6 +131,7 @@ export default function About() {
           </div>
         </div>
       </section>
+      <PartnerTeaser />
       <FinalCta />
     </>
   )
