@@ -180,15 +180,14 @@ html.lenis body {
     background-image: linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
     background-size: 72px 72px;
   }
+  /* Glas-Effekt für feste Leisten: deckender Grund, schwacher Blur (wird bei jedem Scroll-Frame neu berechnet) */
   .glass {
-    background: rgb(255 255 255 / 0.72);
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    background: rgb(255 255 255 / 0.86);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
   .glass-dark {
-    background: rgb(19 34 59 / 0.6);
-    backdrop-filter: blur(16px) saturate(1.3);
-    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    background: rgb(19 34 59 / 0.82);
   }
 }
 
@@ -378,4 +377,13 @@ h3,
 .heading-1 .inline-block,
 .heading-2 .inline-block {
   max-width: 100%;
+}
+
+/* Bedienelemente: lange Wörter umbrechen statt überstehen (Höhe passt sich an) */
+button,
+label,
+[role='tab'],
+[role='radio'] {
+  overflow-wrap: break-word;
+  hyphens: auto;
 }

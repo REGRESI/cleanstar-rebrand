@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useHref, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Clock, MapPin } from 'lucide-react'
@@ -88,11 +88,24 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
   const root = useHref('/')
   const href = (path: string) => (root.startsWith('#') ? `#${path}` : path)
   const others = locations.filter((l) => l.slug !== 'offenburg')
+  const svg = useRef<SVGSVGElement>(null)
+
+  // Puls um Offenburg nur abspielen, solange die Karte sichtbar ist (bei reduzierter Bewegung gar nicht)
+  useEffect(() => {
+    const el = svg.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    el.pauseAnimations()
+    if (reduce) return
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? el.unpauseAnimations() : el.pauseAnimations()))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   return (
     <div className={cn('grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center', className)}>
       <div className="relative lg:col-span-7">
-        <svg viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} className="h-auto w-full" role="group" aria-label="Karte des Einzugsgebiets im Ortenaukreis">
+        <svg ref={svg} viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} className="h-auto w-full" role="group" aria-label="Karte des Einzugsgebiets im Ortenaukreis">
           <defs>
             <linearGradient id="map-fill" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stopColor="#ffffff" />
@@ -235,11 +248,11 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
                 onFocus={() => setActive(l)}
                 onBlur={() => setActive(null)}
                 className={cn(
-                  'flex items-center justify-between gap-2 rounded-xl px-3.5 py-3 text-sm ring-1 transition-colors',
+                  'flex flex-wrap items-center justify-between gap-x-2 gap-y-0.5 rounded-xl px-3.5 py-3 text-sm ring-1 transition-colors',
                   active?.slug === l.slug ? 'bg-blue text-white ring-blue' : 'bg-white text-ink ring-line hover:ring-blue/40',
                 )}
               >
-                <span className="truncate font-medium">{l.name.replace(' im Kinzigtal', '')}</span>
+                <span className="font-medium">{l.name.replace(' im Kinzigtal', '')}</span>
                 <span className={cn('shrink-0 tabular-nums', active?.slug === l.slug ? 'text-white/80' : 'text-muted')}>{l.minutes === 0 ? 'Sitz' : `${l.minutes}′`}</span>
               </Link>
             </li>

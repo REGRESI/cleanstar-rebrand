@@ -113,13 +113,14 @@ export function CostCalculator() {
               {(
                 [
                   ['minijob', 'Minijob'],
-                  ['regular', 'Sozialversicherungspflichtig'],
+                  // weiche Trennstellen: bricht auf schmalen Bildschirmen sauber um statt überzustehen
+                  ['regular', 'Sozial\u00ADversicherungs\u00ADpflichtig'],
                 ] as const
               ).map(([id, l]) => (
                 <label
                   key={id}
                   className={cn(
-                    'relative cursor-pointer rounded-lg px-3 py-2.5 text-center text-sm font-medium transition',
+                    'relative flex min-h-11 cursor-pointer items-center justify-center rounded-lg px-2 py-2.5 text-center text-sm leading-tight font-medium [overflow-wrap:anywhere] hyphens-auto transition sm:px-3',
                     employment === id ? 'bg-white text-ink shadow-soft' : 'text-muted',
                   )}
                 >

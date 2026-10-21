@@ -24,6 +24,27 @@ const FRAME_H = 1080
 
 type Mode = 'video' | 'static-first' | 'static-morning'
 
+/** Hochauflösendes Handy-Bild: lädt nach der kleinen Vorschau und blendet weich darüber (nur unter 768 px). */
+function MobileFullImage({ src }: { src: string }) {
+  const [ready, setReady] = useState(false)
+  const ref = useRef<HTMLImageElement>(null)
+  useEffect(() => {
+    if (ref.current?.complete && ref.current.naturalWidth) setReady(true)
+  }, [])
+  return (
+    <img
+      ref={ref}
+      src={src}
+      alt=""
+      aria-hidden
+      decoding="async"
+      fetchPriority="low"
+      onLoad={() => setReady(true)}
+      className={cn('absolute inset-0 size-full object-cover object-[40%_50%] transition-opacity duration-500 md:hidden', ready ? 'opacity-100' : 'opacity-0')}
+    />
+  )
+}
+
 function slowConnection() {
   const c = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
   return !!c && (c.saveData === true || /(^|-)2g$/.test(c.effectiveType ?? ''))
@@ -101,7 +122,7 @@ export function Hero() {
       <div ref={pin} className="relative h-[100svh] min-h-[560px] overflow-hidden bg-ink">
         {/* Bildfläche: Desktop höchstens in nativer Framegröße (keine Streckung über 100 %) */}
         <div className="hero-stage absolute overflow-hidden" style={{ ['--fw' as string]: `${FRAME_W}px`, ['--fh' as string]: `${FRAME_H}px` }}>
-          {/* Erstes Frame bzw. Standbild als normales Bild (LCP). Handy: hochkant zugeschnittenes Außenbild, Gebäude im Fokus. */}
+          {/* Erstes Frame bzw. Standbild als normales Bild (LCP). Handy: eigenes Hochformat-Foto des Gebäudes. */}
           <picture>
             {mode === 'static-first' ? null : (
               <>
@@ -109,15 +130,18 @@ export function Hero() {
                 <source media="(prefers-reduced-motion: reduce)" srcSet={hero.still['morgen-d']} />
               </>
             )}
-            <source media={MOBILE} srcSet={hero.still['aussen-m']} />
+            <source media={MOBILE} srcSet={hero.still['aussen-m-lq'] ?? hero.still['aussen-m']} />
             <img
               src={hero.desktop[0] ?? hero.still['aussen-d']}
               alt={morning ? home.hero.imageAltMorning : home.hero.imageAlt}
               fetchPriority="high"
               decoding="async"
-              className="absolute inset-0 size-full object-cover"
+              // Handy: Hochformat-Foto, leicht nach links verschoben, damit das ganze Gebäude sichtbar bleibt
+              className="absolute inset-0 size-full object-cover max-md:object-[40%_50%]"
             />
           </picture>
+          {/* Handy: volles Foto (WebP 85, native Breite) blendet über die kleine Vorschau, sobald es geladen ist */}
+          {hero.still['aussen-m-lq'] && isMobile && !morning && <MobileFullImage src={hero.still['aussen-m']} />}
 
           {desktopVideo && (
             <>

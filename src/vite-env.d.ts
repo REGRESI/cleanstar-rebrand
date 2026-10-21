@@ -18,7 +18,7 @@ declare module 'virtual:hero-frames' {
   const hero: {
     desktop: string[]
     mobile: string[]
-    still: Record<'aussen-d' | 'aussen-m' | 'morgen-d' | 'morgen-m', string>
+    still: Record<'aussen-d' | 'aussen-m' | 'morgen-d' | 'morgen-m', string> & { 'aussen-m-lq'?: string }
     /** Schlüsselmomente: Position in der Sequenz (0 … 1) und Standbild für Desktop (d) und Handy (m, null = d verwenden) */
     keys: { name: string; progress: number; d: string; m: string | null }[]
     /** true in der Vorschau-Datei (alles eingebettet) */

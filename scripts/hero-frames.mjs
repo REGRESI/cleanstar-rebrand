@@ -161,16 +161,23 @@ console.log(`✓ Standbilder, Zeitleiste ${timeline.length} von ${total} Frames`
 rmSync(tmp, { recursive: true, force: true })
 
 /**
- * Handy-Einstieg: Liegt bilder/hero/hero-aussen-mobil.jpg vor (eigenes Foto, schärfer als ein Videoframe),
- * wird daraus das Hochformat-Standbild geschnitten. Nur Ausschnitt, nie hochskaliert.
+ * Handy-Einstieg: bilder/hero/hero-aussen-mobil.jpg (eigenes Foto im Hochformat, schärfer als ein Videoframe).
+ * In voller Breite als WebP Qualität 85, nie hochskaliert (für devicePixelRatio 3 wären bis zu 1170 px ideal).
+ * Ein Querformat-Foto wird hochkant zugeschnitten (Mitte bei MOBILE_INTRO_CENTER).
  */
 async function mobileIntroStill() {
   const src = `${SRC}/hero-aussen-mobil.jpg`
   if (!existsSync(src)) return
   const { width: w, height: h } = await sharp(src).metadata()
-  const pw = Math.min(w, Math.round(h / 2))
-  const left = Math.min(w - pw, Math.max(0, Math.round(MOBILE_INTRO_CENTER * w - pw / 2)))
-  const out = await sharp(src).extract({ left, top: 0, width: pw, height: h }).webp({ quality: 88 }).toBuffer()
+  let img = sharp(src)
+  if (w / h > 0.6) {
+    const pw = Math.round(h / 2)
+    const left = Math.min(w - pw, Math.max(0, Math.round(MOBILE_INTRO_CENTER * w - pw / 2)))
+    img = img.extract({ left, top: 0, width: pw, height: h })
+  }
+  const out = await img.clone().resize({ width: 1170, withoutEnlargement: true }).webp({ quality: 85 }).toBuffer()
   writeFileSync(join(OUT, 'still-aussen-m.webp'), out)
-  console.log(`✓ Handy-Einstieg aus ${src}: ${pw}×${h}`)
+  // kleine Vorschau (erscheint sofort), darüber blendet die volle Qualität ein
+  writeFileSync(join(OUT, 'still-aussen-m-lq.webp'), await img.clone().resize({ width: 480, withoutEnlargement: true }).webp({ quality: 70 }).toBuffer())
+  console.log(`✓ Handy-Einstieg aus ${src}`)
 }

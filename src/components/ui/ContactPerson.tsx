@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { Mail, Phone } from 'lucide-react'
 import { Picture } from '@/components/ui/Picture'
 import { company } from '@/content/company'
@@ -9,10 +10,20 @@ export const newClientContact = () => company.founders[company.newClientContact]
 
 /** Grüner Punkt mit „Jetzt erreichbar · 24/7“ */
 export function AvailableNow({ dark, className }: { dark?: boolean; className?: string }) {
+  // Pulsieren nur, solange der Punkt sichtbar ist (keine Dauer-Animation im Hintergrund)
+  const ref = useRef<HTMLSpanElement>(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
   return (
-    <span className={cn('inline-flex items-center gap-2 text-xs font-medium', dark ? 'text-white/75' : 'text-muted', className)}>
+    <span ref={ref} className={cn('inline-flex items-center gap-2 text-xs font-medium', dark ? 'text-white/75' : 'text-muted', className)}>
       <span aria-hidden className="relative flex size-2.5">
-        <span className="absolute inline-flex size-full animate-ping rounded-full bg-fresh opacity-60 motion-reduce:hidden" />
+        {inView && <span className="absolute inline-flex size-full animate-ping rounded-full bg-fresh opacity-60 motion-reduce:hidden" />}
         <span className="relative inline-flex size-2.5 rounded-full bg-fresh" />
       </span>
       Jetzt erreichbar · 24/7

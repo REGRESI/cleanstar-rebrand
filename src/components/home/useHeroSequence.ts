@@ -25,7 +25,8 @@ interface Options {
 }
 
 /**
- * Scroll-Video als Bildsequenz: gepinnte Sektion (GSAP ScrollTrigger), Zeichnen auf <canvas> 1:1 ohne Skalierung
+ * Scroll-Video als Bildsequenz: gepinnte Sektion (GSAP ScrollTrigger), Zeichnen auf <canvas> 1:1 ohne Skalierung,
+ * nur bei Änderung (requestAnimationFrame auf Anforderung)
  * (Darstellung per object-fit im Browser) und scharfe Standbilder an Schlüsselmomenten, wenn man stehen bleibt.
  */
 export function useHeroSequence({ enabled, urls, section, pin, canvas, lengthVh, play, onProgress }: Options) {
@@ -35,7 +36,9 @@ export function useHeroSequence({ enabled, urls, section, pin, canvas, lengthVh,
   const [load, setLoad] = useState(false)
   const [drawn, setDrawn] = useState(false)
   const [activeKey, setActiveKey] = useState<string | null>(null)
-  const { nearest, progress, failed } = useFrameSequence(urls, enabled && load)
+  // Zeichnen nur auf Anforderung (Scroll-Update oder neu dekodiertes Frame), nicht dauerhaft
+  const kick = useRef<() => void>(() => {})
+  const { frame, progress, failed } = useFrameSequence(urls, enabled && load, () => kick.current())
 
   // Frames erst laden, wenn die Seite steht (LCP und Interaktivität zuerst)
   useEffect(() => {
@@ -63,6 +66,7 @@ export function useHeroSequence({ enabled, urls, section, pin, canvas, lengthVh,
         const key = hero.keys.find((k) => Math.abs(k.progress - t) <= KEY_RANGE)
         if (!key) return
         target.current = key.progress // Canvas läuft exakt auf das passende Frame
+        kick.current()
         setActiveKey(key.name)
       }, IDLE_MS)
     }
@@ -77,6 +81,7 @@ export function useHeroSequence({ enabled, urls, section, pin, canvas, lengthVh,
         target.current = Math.min(1, self.progress / play)
         progressCb.current?.(self.progress, target.current)
         activity()
+        kick.current()
       },
     })
     activity()
@@ -86,7 +91,8 @@ export function useHeroSequence({ enabled, urls, section, pin, canvas, lengthVh,
     }
   }, [enabled, section, pin, lengthVh, play])
 
-  // Zeichnen: weich zum Ziel-Frame interpolieren, 1:1 ohne Skalierung, nur bei Änderung
+  // Zeichnen: weich zum Ziel-Frame interpolieren, 1:1 ohne Skalierung. Die Schleife läuft nur, solange sich
+  // das Bild noch ändert, und hält danach an; außerhalb des Bildschirms wird gar nicht gezeichnet.
   useEffect(() => {
     if (!enabled || !load) return
     const cv = canvas.current
@@ -94,39 +100,52 @@ export function useHeroSequence({ enabled, urls, section, pin, canvas, lengthVh,
     if (!cv || !ctx) return
     let raf = 0
     let current = target.current
-    let lastImg: HTMLImageElement | null = null
+    let lastImg: unknown = null
     let first = true
+    let visible = true
     const loop = () => {
-      raf = requestAnimationFrame(loop)
+      raf = 0
       current += (target.current - current) * 0.22
       if (Math.abs(target.current - current) < 0.0005) current = target.current
-      const img = nearest(Math.round(current * (urls.length - 1)))
-      if (!img || img === lastImg) return
-      if (cv.width !== img.naturalWidth || cv.height !== img.naturalHeight) {
-        cv.width = img.naturalWidth
-        cv.height = img.naturalHeight
-        ctx.imageSmoothingEnabled = true
-        ctx.imageSmoothingQuality = 'high'
+      const { img } = frame(Math.round(current * (urls.length - 1)))
+      if (img && img !== lastImg) {
+        const w = 'naturalWidth' in img ? img.naturalWidth : img.width
+        const h = 'naturalHeight' in img ? img.naturalHeight : img.height
+        if (cv.width !== w || cv.height !== h) {
+          cv.width = w
+          cv.height = h
+          ctx.imageSmoothingEnabled = true
+          ctx.imageSmoothingQuality = 'high'
+        }
+        ctx.drawImage(img, 0, 0)
+        lastImg = img
+        if (first) {
+          first = false
+          setDrawn(true)
+        }
       }
-      ctx.drawImage(img, 0, 0)
-      lastImg = img
-      if (first) {
-        first = false
-        setDrawn(true)
-      }
+      // weiter, solange wir noch nicht am Ziel sind. Fehlt das exakte Frame noch, stößt es die Schleife an, sobald es dekodiert ist.
+      if (current !== target.current) raf = requestAnimationFrame(loop)
     }
-    raf = requestAnimationFrame(loop)
-    // außer Sicht: Schleife anhalten
+    const start = () => {
+      if (!raf && visible) raf = requestAnimationFrame(loop)
+    }
+    kick.current = start
+    start()
     const io = new IntersectionObserver(([e]) => {
-      cancelAnimationFrame(raf)
-      if (e.isIntersecting) raf = requestAnimationFrame(loop)
+      visible = e.isIntersecting
+      if (!visible && raf) {
+        cancelAnimationFrame(raf)
+        raf = 0
+      } else start()
     })
     io.observe(cv)
     return () => {
-      cancelAnimationFrame(raf)
+      kick.current = () => {}
+      if (raf) cancelAnimationFrame(raf)
       io.disconnect()
     }
-  }, [enabled, load, urls, nearest, canvas])
+  }, [enabled, load, urls, frame, canvas])
 
   return { load, drawn, activeKey, progress, failed }
 }

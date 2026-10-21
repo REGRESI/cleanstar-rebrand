@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
 import { Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
@@ -10,7 +8,6 @@ import { CompanyDocs } from '@/features/forms/CompanyDocs'
 import { ContactPerson } from '@/components/ui/ContactPerson'
 import { company, fullAddress } from '@/content/company'
 import { breadcrumbSchema, localBusinessSchema } from '@/lib/schema'
-import { getLenis } from '@/lib/smooth-scroll'
 
 const trail = [
   { name: 'Start', path: '/' },
@@ -18,19 +15,6 @@ const trail = [
 ]
 
 export default function Contact() {
-  const { hash } = useLocation()
-  useEffect(() => {
-    if (!hash) return
-    const t = window.setTimeout(() => {
-      const el = document.getElementById(hash.slice(1))
-      if (!el) return
-      const lenis = getLenis()
-      if (lenis) lenis.scrollTo(el, { offset: -96 })
-      else el.scrollIntoView({ behavior: 'smooth' })
-    }, 350)
-    return () => window.clearTimeout(t)
-  }, [hash])
-
   const cards = [
     { icon: Phone, label: 'Telefon', value: company.phone.display, href: company.phone.href, note: `Direkt anrufen, ${company.availability}` },
     { icon: Mail, label: 'E-Mail', value: company.email, href: `mailto:${company.email}`, note: `Antwort innerhalb von ${company.promises.responseHours} Stunden` },

@@ -71,6 +71,7 @@ export const home = {
     eyebrow: 'So arbeiten wir zusammen',
     headline: 'Sechs Schritte. Ihr Aufwand: ein Termin.',
   },
+  /** Vorher/Nachher-Slider (Seite Büroreinigung) */
   beforeAfter: {
     eyebrow: 'Vorher / Nachher',
     headline: 'Der Unterschied zeigt sich am Morgen danach.',

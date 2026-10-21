@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Phone, Mail, MapPin, Clock } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
+import { HomeLink } from '@/components/ui/HomeLink'
 import { company, fullAddress } from '@/content/company'
 import { services } from '@/content/services'
 import { locations } from '@/content/locations'
@@ -25,7 +26,9 @@ export function Footer() {
       <div className="container-site relative pt-16 sm:pt-20">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <Logo className="w-[170px]" />
+            <HomeLink label={`${company.name}, zur Startseite`} className="inline-block">
+              <Logo className="w-[170px]" />
+            </HomeLink>
             <p className="mt-6 max-w-sm text-muted">
               Büroreinigung für Unternehmen im Ortenaukreis. Mit festem Ansprechpartner, eingespieltem Team und einer Garantie, die im Alltag gilt.
             </p>

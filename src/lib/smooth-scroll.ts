@@ -26,10 +26,26 @@ export function stopSmoothScroll() {
 
 export const getLenis = () => lenis
 
-/** Scrollt nach oben bzw. zu einem Element, mit oder ohne Lenis. */
+/** Scrollt nach oben: sofort (Seitenwechsel) oder weich (Klick auf das Logo auf der Startseite). */
 export function scrollToTop(immediate = true) {
-  if (lenis) lenis.scrollTo(0, { immediate, force: true })
-  else window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (lenis) lenis.scrollTo(0, { immediate: immediate || reduce, force: true })
+  else window.scrollTo({ top: 0, behavior: (immediate || reduce ? 'instant' : 'smooth') as ScrollBehavior })
+}
+
+/**
+ * Zu einem Element springen (Anker), Abstand für die feste Kopfzeile. Die neue Seite baut sich gerade erst auf
+ * (Bilder, nachgeladene Abschnitte), deshalb wird die Position ein paar Mal nachkorrigiert, bis sie stimmt.
+ */
+export function scrollToElement(el: HTMLElement, offset = 96) {
+  let tries = 0
+  const jump = () => {
+    const top = el.getBoundingClientRect().top + window.scrollY - offset
+    if (lenis) lenis.scrollTo(top, { immediate: true, force: true })
+    else window.scrollTo({ top, behavior: 'instant' as ScrollBehavior })
+    if (++tries < 6) window.setTimeout(() => Math.abs(el.getBoundingClientRect().top - offset) > 4 && jump(), 200)
+  }
+  jump()
 }
 
 export function lockScroll(lock: boolean) {

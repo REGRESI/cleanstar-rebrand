@@ -9,7 +9,7 @@ import { Modal } from '@/components/ui/Modal'
 import { QuoteProvider, useQuote } from '@/features/configurator/QuoteContext'
 import { useScrollReveals } from '@/lib/useScrollReveals'
 import { prefersReducedMotion } from '@/lib/env'
-import { scrollToTop, startSmoothScroll, stopSmoothScroll } from '@/lib/smooth-scroll'
+import { scrollToElement, scrollToTop, startSmoothScroll, stopSmoothScroll } from '@/lib/smooth-scroll'
 import { ScrollTrigger } from '@/lib/gsap'
 import { onIdle } from '@/lib/idle'
 
@@ -27,8 +27,9 @@ function QuoteModal() {
 }
 
 function Shell() {
-  const { pathname } = useLocation()
+  const { pathname, hash, key } = useLocation()
   const first = useRef(true)
+  const initialNav = useRef(true)
 
   useEffect(() => {
     first.current = false
@@ -40,13 +41,44 @@ function Shell() {
     }
   }, [])
 
+  // Browser soll die Scrollposition nicht selbst wiederherstellen, das übernimmt der Seitenwechsel unten
   useEffect(() => {
-    if (first.current) return
-    scrollToTop()
-    // Fokus für Screenreader auf den Hauptinhalt setzen
-    document.getElementById('main')?.focus({ preventScroll: true })
-    requestAnimationFrame(() => ScrollTrigger.refresh())
-  }, [pathname])
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+  }, [])
+
+  // Seitenwechsel: immer sofort ganz nach oben (auch beim erneuten Klick auf dieselbe Seite).
+  // Ausnahme: Links mit Anker (#) springen zum Anker, sobald er gerendert ist.
+  useEffect(() => {
+    const initial = initialNav.current
+    initialNav.current = false
+    if (initial) {
+      if (!hash) return
+    } else if (!hash) {
+      scrollToTop(true)
+      // Fokus für Screenreader auf den Hauptinhalt setzen
+      document.getElementById('main')?.focus({ preventScroll: true })
+    }
+    let raf = 0
+    let tries = 0
+    const refresh = () => (raf = requestAnimationFrame(() => (raf = requestAnimationFrame(() => ScrollTrigger.refresh()))))
+    if (!hash) {
+      refresh()
+      return () => cancelAnimationFrame(raf)
+    }
+    const id = decodeURIComponent(hash.slice(1))
+    const timer = window.setInterval(() => {
+      const el = document.getElementById(id)
+      if (!el && ++tries < 30) return
+      window.clearInterval(timer)
+      if (!el) return
+      ScrollTrigger.refresh()
+      scrollToElement(el)
+    }, 50)
+    return () => {
+      window.clearInterval(timer)
+      cancelAnimationFrame(raf)
+    }
+  }, [key, pathname, hash])
 
   useScrollReveals(pathname)
 

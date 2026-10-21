@@ -77,6 +77,8 @@ function heroFramesPlugin(inline: boolean, base = '/'): Plugin {
       const manifest = existsSync(`${dir}/keys.json`) ? JSON.parse(readFileSync(`${dir}/keys.json`, 'utf8')) : { keys: [] }
       const stillNames = ['aussen-d', 'aussen-m', 'morgen-d', 'morgen-m']
       const still = Object.fromEntries(stillNames.map((k) => [k, inline ? data(`still-${k}.webp`) : `${base}hero/still-${k}.webp`]))
+      // Handy-Einstieg: kleine Vorschau, die sofort erscheint (nur Live-Build; die Vorschau-Datei bettet nur eine Variante ein)
+      if (!inline && existsSync(`${dir}/still-aussen-m-lq.webp`)) Object.assign(still, { 'aussen-m-lq': `${base}hero/still-aussen-m-lq.webp` })
       const keys = manifest.keys.map((k: { name: string; progress: number }) => ({
         ...k,
         d: inline ? data(`key-${k.name}-p.jpg`) : `${base}hero/key-${k.name}-d.jpg`,
@@ -88,7 +90,10 @@ function heroFramesPlugin(inline: boolean, base = '/'): Plugin {
         return `const d = ${JSON.stringify(desktop)}\nexport default { desktop: d, mobile: d, still: ${JSON.stringify(still)}, keys: ${JSON.stringify(keys)}, inline: true }`
       }
       const desktop = list('d').map((f) => `${base}hero/d/${f}`)
-      const mobile = list('m').map((f) => `${base}hero/m/${f}`)
+      // Handy: höchstens 60 Frames, gleichmäßig verteilt (weniger Speicher und Datenvolumen)
+      const allMobile = list('m')
+      const nMobile = Math.min(60, allMobile.length)
+      const mobile = Array.from({ length: nMobile }, (_, i) => allMobile[Math.round((i * (allMobile.length - 1)) / Math.max(1, nMobile - 1))]).map((f) => `${base}hero/m/${f}`)
       return `export default ${JSON.stringify({ desktop, mobile, still, keys, inline })}`
     },
   }

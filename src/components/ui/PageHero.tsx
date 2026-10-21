@@ -27,7 +27,13 @@ export function PageHero({
 }) {
   return (
     <section className={cn('relative overflow-hidden pt-32 pb-16 sm:pt-40 sm:pb-24', dark ? 'on-dark bg-ink text-white' : 'bg-glacier')}>
-      <div aria-hidden className={cn('absolute -top-40 -right-40 size-[40rem] rounded-full blur-[120px]', dark ? 'bg-blue/30' : 'bg-blue/[0.05]')} />
+      <div
+        aria-hidden
+        className={cn(
+          'absolute -top-40 -right-40 size-[40rem]',
+          dark ? '[background:radial-gradient(closest-side,rgb(31_94_255/0.48),transparent)]' : '[background:radial-gradient(closest-side,rgb(31_94_255/0.08),transparent)]',
+        )}
+      />
       <div className="container-site relative">
         <Breadcrumbs trail={trail} dark={dark} />
         <div className={cn('grid gap-12', image && 'lg:grid-cols-12 lg:items-center')}>

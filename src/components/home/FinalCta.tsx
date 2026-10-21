@@ -18,8 +18,8 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
   const { open } = useQuote()
   return (
     <section className="on-dark relative overflow-hidden bg-ink py-24 text-white sm:py-32" aria-labelledby="cta-title">
-      <div aria-hidden className="absolute -bottom-40 -left-20 size-[36rem] rounded-full bg-blue/30 blur-[120px]" />
-      <div aria-hidden className="absolute -top-40 right-0 size-[28rem] rounded-full bg-fresh/10 blur-[100px]" />
+      <div aria-hidden className="absolute -bottom-40 -left-20 size-[36rem] [background:radial-gradient(closest-side,rgb(31_94_255/0.48),transparent)]" />
+      <div aria-hidden className="absolute -top-40 right-0 size-[28rem] [background:radial-gradient(closest-side,rgb(45_212_191/0.16),transparent)]" />
       <div className="container-site relative grid grid-cols-1 gap-14 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-7">
           <p className="eyebrow mb-5" data-reveal>
@@ -37,7 +37,7 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
         <div className="lg:col-span-5" data-reveal>
           <div className="glass-dark rounded-panel p-6 ring-1 ring-white/10 sm:p-8">
             <p className="text-sm font-semibold text-white">Welches Objekt sollen wir reinigen?</p>
-            <ul className="mt-5 grid grid-cols-2 gap-3">
+            <ul className="mt-5 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
               {types.map((t) => (
                 <li key={t.id}>
                   <button
@@ -46,7 +46,7 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
                     className="group flex h-full w-full flex-col items-start gap-3 rounded-2xl bg-white/5 p-4 text-left ring-1 ring-white/10 transition hover:bg-white/10 hover:ring-fresh/50"
                   >
                     <t.icon aria-hidden className="size-6 text-fresh" strokeWidth={1.6} />
-                    <span className="font-medium">{t.label}</span>
+                    <span className="font-medium [overflow-wrap:anywhere] hyphens-auto">{t.label}</span>
                   </button>
                 </li>
               ))}

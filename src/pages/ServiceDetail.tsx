@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { ArrowUpRight, Check, CalendarClock, Users2 } from 'lucide-react'
 import { getService, services } from '@/content/services'
+import { home } from '@/content/site'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -185,7 +186,7 @@ export default function ServiceDetail() {
           <section className="py-24 sm:py-32" aria-labelledby="ba2-title">
             <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-4">
-                <SectionHeading eyebrow="Vorher / Nachher" title="Sehen Sie den Unterschied." id="ba2-title" />
+                <SectionHeading eyebrow={home.beforeAfter.eyebrow} title={home.beforeAfter.headline} id="ba2-title" text={home.beforeAfter.lead} />
               </div>
               <div className="lg:col-span-8" data-reveal>
                 <BeforeAfter before="before-office" after="after-office" />

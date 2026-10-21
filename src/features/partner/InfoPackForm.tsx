@@ -53,7 +53,7 @@ export function InfoPackForm({ region }: { region: string }) {
     <div className="relative overflow-hidden rounded-panel bg-white shadow-soft ring-1 ring-line">
       <div className="grid grid-cols-1 lg:grid-cols-12">
         <div className="relative bg-glacier p-6 sm:p-10 lg:col-span-5">
-          <div aria-hidden className="absolute -top-16 -right-16 size-56 rounded-full bg-blue/15 blur-3xl" />
+          <div aria-hidden className="absolute -top-16 -right-16 size-56 [background:radial-gradient(closest-side,rgb(31_94_255/0.24),transparent)]" />
           <div aria-hidden className="relative h-44 w-36 rotate-[-4deg] rounded-lg bg-white p-4 shadow-lift ring-1 ring-line">
             <FileText className="size-6 text-blue" />
             <p className="mt-2 text-[0.625rem] font-semibold tracking-wide text-ink uppercase">Partner-Infomappe</p>

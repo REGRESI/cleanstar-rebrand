@@ -12,7 +12,6 @@ import { FinalCta } from '@/components/home/FinalCta'
 import { FloorPlan } from '@/features/floorplan/FloorPlan'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Seo } from '@/components/ui/Seo'
-import { BeforeAfter } from '@/features/slider/BeforeAfter'
 import { AreaMap } from '@/features/map/AreaMap'
 import { home } from '@/content/site'
 import { faqs } from '@/content/faq'
@@ -61,21 +60,6 @@ export default function Home() {
       <Chunk>
         <GuaranteeTeaser />
         <ProcessTimeline />
-      </Chunk>
-      <Chunk>
-        <section className="bg-glacier py-24 sm:py-32" aria-labelledby="ba-title">
-          <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-4">
-              <SectionHeading eyebrow={home.beforeAfter.eyebrow} title={home.beforeAfter.headline} id="ba-title" />
-              <p className="lead mt-5" data-reveal>
-                {home.beforeAfter.lead}
-              </p>
-            </div>
-            <div className="lg:col-span-8" data-reveal>
-              <BeforeAfter before="before-office" after="after-office" />
-            </div>
-          </div>
-        </section>
       </Chunk>
       <Chunk>
         <section className="py-24 sm:py-32" aria-labelledby="area-title">

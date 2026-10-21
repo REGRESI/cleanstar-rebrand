@@ -6,7 +6,7 @@ export function LeadMagnet() {
   const d = downloads.checklist
   return (
     <div className="relative overflow-hidden rounded-panel bg-white p-6 shadow-soft ring-1 ring-line sm:p-10">
-      <div aria-hidden className="absolute -top-20 -right-20 size-64 rounded-full bg-fresh/15 blur-3xl" />
+      <div aria-hidden className="absolute -top-20 -right-20 size-64 [background:radial-gradient(closest-side,rgb(45_212_191/0.24),transparent)]" />
       <div className="relative grid grid-cols-1 gap-8 sm:grid-cols-[auto_1fr] sm:items-center">
         <div aria-hidden className="relative mx-auto h-40 w-32 rotate-[-4deg] rounded-lg bg-glacier p-4 shadow-lift ring-1 ring-line sm:mx-0">
           <FileText className="size-6 text-blue" />

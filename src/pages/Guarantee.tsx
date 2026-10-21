@@ -152,7 +152,7 @@ export default function Guarantee() {
       </section>
 
       <section className="on-dark relative overflow-hidden bg-ink py-24 text-white sm:py-32" aria-labelledby="complaint-title">
-        <div aria-hidden className="absolute -top-40 -left-40 size-[34rem] rounded-full bg-blue/25 blur-[120px]" />
+        <div aria-hidden className="absolute -top-40 -left-40 size-[34rem] [background:radial-gradient(closest-side,rgb(31_94_255/0.4),transparent)]" />
         <div className="container-site relative">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
@@ -197,10 +197,10 @@ export default function Guarantee() {
             </a>
             <a
               href={`mailto:${company.email}`}
-              className="inline-flex min-h-12 min-w-0 items-center gap-3 rounded-full px-5 font-semibold ring-1 ring-white/20 transition hover:bg-white/10"
+              className="inline-flex min-h-12 max-w-full min-w-0 items-center gap-3 rounded-3xl px-5 py-2 font-semibold ring-1 ring-white/20 transition hover:bg-white/10 sm:rounded-full"
             >
               <Mail aria-hidden className="size-4 shrink-0" />
-              <span className="truncate">{company.email}</span>
+              <span className="min-w-0 [overflow-wrap:anywhere]">{company.email}</span>
             </a>
             {company.whatsapp.enabled && (
               <a

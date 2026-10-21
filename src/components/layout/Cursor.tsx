@@ -27,19 +27,24 @@ export function Cursor() {
         el.dataset.hover = h ? '1' : ''
       }
       el.style.opacity = '1'
+      if (!raf) raf = requestAnimationFrame(loop)
     }
     const leave = () => (el.style.opacity = '0')
+    // Nur bewegen, solange der Ring der Maus noch nachläuft; danach hält die Schleife an
     const loop = () => {
       cx += (x - cx) * 0.2
       cy += (y - cy) * 0.2
+      if (Math.abs(x - cx) < 0.1 && Math.abs(y - cy) < 0.1) {
+        cx = x
+        cy = y
+      }
       el.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`
-      raf = requestAnimationFrame(loop)
+      raf = cx === x && cy === y ? 0 : requestAnimationFrame(loop)
     }
-    raf = requestAnimationFrame(loop)
     window.addEventListener('pointermove', move, { passive: true })
     document.addEventListener('pointerleave', leave)
     return () => {
-      cancelAnimationFrame(raf)
+      if (raf) cancelAnimationFrame(raf)
       window.removeEventListener('pointermove', move)
       document.removeEventListener('pointerleave', leave)
     }

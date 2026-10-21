@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, Phone, X, ArrowUpRight } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
+import { HomeLink } from '@/components/ui/HomeLink'
 import { navigation } from '@/content/site'
 import { services } from '@/content/services'
 import { company } from '@/content/company'
@@ -13,7 +14,7 @@ import { lockScroll } from '@/lib/smooth-scroll'
 export function Header() {
   const [compact, setCompact] = useState(false)
   const [menu, setMenu] = useState(false)
-  const { pathname } = useLocation()
+  const { pathname, key } = useLocation()
 
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 24)
@@ -22,7 +23,7 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => setMenu(false), [pathname])
+  useEffect(() => setMenu(false), [pathname, key])
 
   useEffect(() => {
     lockScroll(menu)
@@ -42,9 +43,9 @@ export function Header() {
               compact ? 'glass h-14 shadow-soft ring-1 ring-line sm:h-16' : 'h-16 bg-white/60 ring-1 ring-white/40 backdrop-blur-md sm:h-[4.5rem]',
             )}
           >
-            <Link to="/" aria-label={`${company.name}, zur Startseite`} className="shrink-0">
+            <HomeLink label={`${company.name}, zur Startseite`} className="shrink-0" onNavigate={() => setMenu(false)}>
               <Logo className={cn('transition-all duration-500', compact ? 'w-[118px] sm:w-[132px]' : 'w-[128px] sm:w-[150px]')} />
-            </Link>
+            </HomeLink>
 
             <nav aria-label="Hauptnavigation" className="hidden lg:block">
               <ul className="flex items-center gap-1">
