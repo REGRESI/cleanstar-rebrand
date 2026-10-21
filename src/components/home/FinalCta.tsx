@@ -1,5 +1,7 @@
-import { Building, Briefcase, Store, Shapes, Phone, ArrowRight } from 'lucide-react'
+import { Building, Briefcase, Store, Shapes, ArrowRight } from 'lucide-react'
 import { RevealText } from '@/components/ui/RevealText'
+import { ContactPerson } from '@/components/ui/ContactPerson'
+import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
 import { home } from '@/content/site'
 import { company } from '@/content/company'
 import { useQuote, type ObjectType } from '@/features/configurator/QuoteContext'
@@ -27,15 +29,10 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
           <p className="lead mt-6 max-w-xl" data-reveal>
             {home.finalCta.text}
           </p>
-          <a href={company.phone.href} className="mt-10 inline-flex items-center gap-4 text-white" data-reveal>
-            <span className="grid size-14 place-items-center rounded-full bg-white/10 ring-1 ring-white/15">
-              <Phone aria-hidden className="size-6 text-fresh" />
-            </span>
-            <span>
-              <span className="block text-sm text-muted-dark">Lieber direkt sprechen?</span>
-              <span className="text-2xl font-semibold tracking-tight sm:text-3xl">{company.phone.display}</span>
-            </span>
-          </a>
+          <div className="mt-10 flex flex-col gap-4 sm:max-w-md" data-reveal>
+            <ContactPerson dark title="Ihr Ansprechpartner für das Erstgespräch" />
+            <RiskFreeSeal dark className="self-start" />
+          </div>
         </div>
         <div className="lg:col-span-5" data-reveal>
           <div className="glass-dark rounded-panel p-6 ring-1 ring-white/10 sm:p-8">

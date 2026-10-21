@@ -101,3 +101,11 @@ export function Picture({ id, className, ratio, sizes = '100vw', priority, compa
     </div>
   )
 }
+
+/** URL eines Bildes als WebP (z. B. für die PDF-Zusammenfassung). null, solange kein Foto vorliegt. */
+export function imageUrl(id: ImageId, width: (typeof IMAGE_WIDTHS)[number] = 640): string | null {
+  const spec = images[id]
+  if (!spec.available) return null
+  if (__PREVIEW__) return previewImages[spec.file] ?? null
+  return `/images/${spec.file}-${width}.webp`
+}

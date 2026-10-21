@@ -32,7 +32,7 @@ export default function Faq() {
       <PageHero
         trail={trail}
         eyebrow="FAQ"
-        title="Häufige Fragen. Klare Antworten."
+        title="Was Geschäftsführer uns vorher fragen."
         lead="Alles, was Sie vor der Zusammenarbeit wissen möchten. Ihre Frage ist nicht dabei? Rufen Sie uns an oder schreiben Sie uns."
       />
       <section className="py-20 sm:py-28">

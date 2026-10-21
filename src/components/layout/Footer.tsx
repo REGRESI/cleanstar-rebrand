@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Phone, Mail, MapPin, Clock } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
-import { Fact } from '@/components/ui/Todo'
 import { company, fullAddress } from '@/content/company'
 import { services } from '@/content/services'
 import { locations } from '@/content/locations'
@@ -12,6 +11,8 @@ const companyLinks = [
   { label: 'Über uns', to: '/ueber-uns' },
   { label: 'Karriere', to: '/karriere' },
   { label: 'FAQ', to: '/faq' },
+  { label: 'Reinigungs-Check', to: '/reinigungs-check' },
+  { label: 'Unterlagen für Einkauf', to: '/kontakt#unterlagen' },
   { label: 'Angebot anfragen', to: '/angebot' },
   { label: 'Kontakt', to: '/kontakt' },
   { label: 'Partner werden', to: '/partner' },
@@ -47,13 +48,7 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-3 text-ink">
                 <Clock aria-hidden className="mt-1 size-4 shrink-0 text-blue" />
-                <span>
-                  <Fact
-                    value={company.openingHours?.map((h) => `${h.days}: ${h.hours}`).join(' · ')}
-                    fallback="Telefonisch erreichbar, gern auch per E-Mail"
-                    todo="Öffnungszeiten in company.ts eintragen"
-                  />
-                </span>
+                <span>{company.availability}, telefonisch und per E-Mail</span>
               </li>
             </ul>
           </div>

@@ -31,9 +31,8 @@ export const faqs: Faq[] = [
   {
     category: 'Kosten und Vertrag',
     featured: true,
-    q: 'Wie lange läuft der Vertrag und wie kann ich kündigen?',
-    a: 'Laufzeit und Kündigungsfrist legen wir im Angebot transparent fest. Unser Ziel ist, dass Sie bleiben, weil die Arbeit stimmt, nicht weil ein Vertrag Sie bindet.',
-    todo: 'Standard-Laufzeit und Kündigungsfrist eintragen (z. B. „monatlich kündbar“ oder „3 Monate zum Monatsende“).',
+    q: 'Wie lange bin ich gebunden?',
+    a: 'Im ersten Monat gar nicht: Sie können jederzeit kündigen, ohne Frist. So testen Sie uns ohne Risiko. Danach gilt eine Kündigungsfrist von einem Monat zum Ende des Folgemonats. Wir möchten, dass Sie bleiben, weil die Arbeit stimmt, nicht weil ein Vertrag Sie bindet.',
   },
   {
     category: 'Kosten und Vertrag',
@@ -48,8 +47,8 @@ export const faqs: Faq[] = [
   },
   {
     category: 'Ablauf',
-    q: 'Gibt es eine Probereinigung?',
-    a: 'Ja. Vor dem regulären Start können wir eine Probereinigung vereinbaren. So sehen Sie, wie wir arbeiten, und wir lernen Ihr Objekt kennen.',
+    q: 'Kann ich Sie vorher testen?',
+    a: 'Ja, und zwar ohne Risiko: Im ersten Monat können Sie jederzeit kündigen, ohne Frist. Eine einzelne Probereinigung vor dem Start ist auf Wunsch nach Absprache möglich.',
   },
   {
     category: 'Ablauf',
@@ -70,26 +69,22 @@ export const faqs: Faq[] = [
   {
     category: 'Qualität und Sicherheit',
     q: 'Wie gehen Sie mit unseren Schlüsseln um?',
-    a: 'Die Schlüsselübergabe wird schriftlich dokumentiert. Nur das feste Team und die Objektleitung haben Zugriff. Schlüssel werden nicht beschriftet aufbewahrt, sodass sie keinem Objekt zugeordnet werden können.',
-    todo: 'Schlüsselprozess (Protokoll, unbeschriftete Aufbewahrung) bestätigen.',
+    a: 'Die Schlüsselübergabe wird schriftlich dokumentiert. Zugang hat nur Ihr festes Team. Alarmanlagen und Schließzeiten halten wir schriftlich fest, damit jeder im Team weiß, was zu tun ist.',
   },
   {
     category: 'Qualität und Sicherheit',
     q: 'Sind Sie versichert?',
-    a: 'Für Schäden, die bei unserer Arbeit entstehen, besteht eine Betriebshaftpflichtversicherung. Einen Nachweis senden wir Ihnen auf Anfrage gern zu.',
-    todo: 'Betriebshaftpflicht bestätigen. Ohne Bestätigung diese Antwort nicht veröffentlichen.',
+    a: 'Ja. Wir sind betriebshaftpflichtversichert. Geht trotz aller Sorgfalt einmal etwas zu Bruch, sind Sie abgesichert. Einen Nachweis senden wir Ihnen auf Anfrage gern zu.',
   },
   {
     category: 'Qualität und Sicherheit',
     q: 'Welche Reinigungsmittel verwenden Sie?',
-    a: 'Wir setzen Mittel gezielt und sparsam ein, passend zur Oberfläche. Wo möglich, verwenden wir umweltschonende Produkte und dosieren genau. Wenn Sie bestimmte Mittel wünschen oder ausschließen möchten, berücksichtigen wir das.',
-    todo: 'Eingesetzte Produkte bzw. Zertifikate (z. B. EU Ecolabel) nur nennen, wenn bestätigt.',
+    a: 'Mittel, die zur jeweiligen Oberfläche passen. Wenn Sie bestimmte Mittel wünschen oder ausschließen möchten, sagen Sie es uns bei der Besichtigung. Wir halten es im Leistungsverzeichnis fest.',
   },
   {
     category: 'Qualität und Sicherheit',
     q: 'Wie stellen Sie Diskretion sicher?',
-    a: 'Unterlagen auf Schreibtischen bleiben unberührt, Bildschirme und Akten fassen wir nicht an. Unser Team ist zur Verschwiegenheit verpflichtet. Auf Wunsch unterzeichnen wir zusätzlich Ihre eigene Vertraulichkeitsvereinbarung.',
-    todo: 'Bestätigen, dass Mitarbeitende eine Verschwiegenheitserklärung unterschreiben.',
+    a: 'Unterlagen auf Schreibtischen bleiben, wo sie liegen. Bildschirme und Akten fassen wir nicht an. Was wir in Ihren Räumen sehen, bleibt dort.',
   },
   {
     category: 'Organisation',
@@ -105,8 +100,7 @@ export const faqs: Faq[] = [
   {
     category: 'Organisation',
     q: 'Wer stellt Verbrauchsmaterial wie Seife und Papierhandtücher?',
-    a: 'Das legen wir im Angebot fest. Sie können das Material selbst stellen, dann füllen wir nur auf, oder es über uns beziehen.',
-    todo: 'Bestätigen, ob CleanStar Verbrauchsmaterial liefert.',
+    a: 'Das legen wir im Angebot fest. Stellen Sie das Material selbst, füllen wir es bei jeder Reinigung auf.',
   },
   {
     category: 'Organisation',

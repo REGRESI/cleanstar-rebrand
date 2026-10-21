@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
-import { Fact, Todo } from '@/components/ui/Todo'
+import { Todo } from '@/components/ui/Todo'
 import { company, fullAddress } from '@/content/company'
 
 const trail = [
@@ -38,7 +38,7 @@ export default function Privacy() {
               <br />
               {fullAddress()}
               <br />
-              Vertreten durch: <Fact value={company.partners?.join(', ')} fallback="[Gesellschafter]" todo="Gesellschafter eintragen" />
+              Vertreten durch die Gesellschafter: {company.partners?.join(', ')}
               <br />
               Telefon: {company.phone.display}
               <br />
@@ -50,10 +50,10 @@ export default function Privacy() {
 
             <h2>2. Hosting und Server-Logfiles</h2>
             <p>
-              Diese Website wird bei <Fact value={null} fallback="[Hosting-Anbieter, Anschrift]" todo="Hosting-Anbieter eintragen" /> gehostet. Beim Aufruf der Website verarbeitet
-              der Hoster automatisch Daten, die Ihr Browser übermittelt (IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Referrer, Browser und Betriebssystem). Das ist technisch
-              notwendig, um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Logfiles werden nach{' '}
-              <Fact value={null} fallback="[Zeitraum]" todo="Speicherdauer laut Hoster" /> gelöscht. Mit dem Hoster besteht ein Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO.{' '}
+              Diese Website wird bei einem externen Hosting-Anbieter betrieben. <Check>Hosting-Anbieter mit Anschrift nennen</Check> Beim Aufruf der Website verarbeitet der Hoster
+              automatisch Daten, die Ihr Browser übermittelt (IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Referrer, Browser und Betriebssystem). Das ist technisch notwendig,
+              um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Logfiles werden nach kurzer Zeit automatisch
+              gelöscht. <Check>Speicherdauer laut Hoster</Check> Mit dem Hoster besteht ein Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO.{' '}
               <Check>AV-Vertrag mit Hoster abschließen</Check>
             </p>
 
@@ -75,8 +75,9 @@ export default function Privacy() {
               DSGVO, die Sie jederzeit widerrufen können.
             </p>
             <p>
-              Für den Versand der Formulare nutzen wir den Dienst {provider}. Ihre Eingaben werden dabei an den Dienst übertragen und von dort per E-Mail an uns weitergeleitet.
-              Dabei kann eine Übermittlung in die USA stattfinden.{' '}
+              Für den Versand der Formulare nutzen wir den Dienst {provider} (web3forms.com). Wenn Sie ein Formular absenden, werden Ihre Eingaben verschlüsselt an diesen Dienst
+              übertragen und von dort ausschließlich per E-Mail an uns weitergeleitet. Eine Übermittlung in Drittländer außerhalb der EU, insbesondere in die USA, kann dabei nicht
+              ausgeschlossen werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.{' '}
               <Check>Anbieter, Sitz, AV-Vertrag und Drittlandübermittlung (Angemessenheitsbeschluss / Standardvertragsklauseln) für den gewählten Formular-Dienst ergänzen</Check>
             </p>
             <p>Anfragen löschen wir, sobald sie erledigt sind und keine gesetzlichen Aufbewahrungspflichten (z. B. aus Handels- und Steuerrecht) entgegenstehen.</p>
@@ -98,8 +99,11 @@ export default function Privacy() {
             <h2>7. Terminbuchung über Cal.com</h2>
             <p>
               Für die Buchung einer Objektbesichtigung können Sie einen Kalender des Anbieters Cal.com, Inc. (USA) nutzen. Der Kalender wird erst geladen, wenn Sie auf „Kalender
-              laden“ klicken. Erst dann werden Daten (z. B. IP-Adresse, Browserdaten und Ihre Eingaben bei der Buchung) an Cal.com übertragen. Rechtsgrundlage ist Ihre Einwilligung
-              (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). <Check>Datenschutzinformationen und Drittlandübermittlung zu Cal.com ergänzen</Check>
+              laden“ klicken. Erst dann werden Daten (z. B. IP-Adresse, Browserdaten und Ihre Eingaben bei der Buchung wie Name, E-Mail und Wunschtermin) an Cal.com übertragen und
+              dort zur Terminverwaltung gespeichert. Dabei kann eine Übermittlung in die USA stattfinden. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25
+              Abs. 1 TDDDG), die Sie jederzeit widerrufen können. Ohne Ihre Zustimmung wird keine Verbindung zu Cal.com aufgebaut; Sie können einen Termin dann auch telefonisch
+              oder per E-Mail vereinbaren. Weitere Informationen finden Sie in der Datenschutzerklärung von Cal.com (cal.com/privacy).{' '}
+              <Check>Datenschutzinformationen und Drittlandübermittlung zu Cal.com ergänzen</Check>
             </p>
 
             <h2>8. Kontakt per E-Mail, Telefon oder WhatsApp</h2>
@@ -130,9 +134,7 @@ export default function Privacy() {
             <h2>11. SSL-/TLS-Verschlüsselung</h2>
             <p>Diese Website nutzt aus Sicherheitsgründen eine TLS-Verschlüsselung. Sie erkennen sie an „https://“ in der Adresszeile.</p>
 
-            <p className="text-sm text-muted">
-              Stand: <Fact value={null} fallback="[Monat Jahr]" todo="Datum beim Livegang eintragen" />
-            </p>
+            <p className="text-sm text-muted">Stand: Oktober 2026</p>
           </div>
         </div>
       </section>

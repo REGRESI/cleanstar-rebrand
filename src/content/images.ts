@@ -197,7 +197,7 @@ export const images = {
     alt: 'CleanStar-Mitarbeiterin reinigt mit Handschuhen einen Schreibtisch in einem hellen Büro',
     label: 'Probereinigung: Mitarbeiterin wischt Schreibtisch im Tageslicht, 16:9',
     prompt: 'Cleaner in navy CleanStar uniform wiping a desk with gloves in a bright open-plan office at daytime, focused and calm, natural light',
-    usedOn: 'Ablauf (Probereinigung)',
+    usedOn: 'Ablauf (Erster Monat)',
   }),
   'quality-check': img({
     file: 'qualitaetskontrolle',
@@ -302,4 +302,4 @@ export const images = {
 export type ImageId = keyof typeof images
 
 /** Breiten, in denen `npm run images` Varianten erzeugt */
-export const IMAGE_WIDTHS = [640, 1024, 1600, 2400]
+export const IMAGE_WIDTHS = [640, 1024, 1600, 2400] as const

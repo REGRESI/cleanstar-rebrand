@@ -7,6 +7,7 @@ import { ProcessTimeline } from '@/components/home/ProcessTimeline'
 import { FinalCta } from '@/components/home/FinalCta'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { Button } from '@/components/ui/Button'
+import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
 import { breadcrumbSchema } from '@/lib/schema'
 
 const trail = [
@@ -28,7 +29,12 @@ const details = [
   {
     icon: FileText,
     title: 'Im Angebot',
-    items: ['Leistungsverzeichnis Raum für Raum', 'Intervalle und Einsatzzeiten', 'Stundenansatz und Preis, netto und brutto', 'Laufzeit, Kündigung und Ansprechpartner'],
+    items: [
+      'Leistungsverzeichnis Raum für Raum',
+      'Intervalle und Einsatzzeiten',
+      'Stundenansatz und Preis, netto und brutto',
+      'Kündigung: erster Monat jederzeit, danach ein Monat zum Ende des Folgemonats',
+    ],
   },
   {
     icon: KeyRound,
@@ -47,7 +53,7 @@ export default function Process() {
     <>
       <Seo
         title="So arbeiten wir zusammen: vom Anruf bis zur Routine"
-        description="Anfrage, kostenlose Objektbesichtigung, Angebot in 48 Stunden, Probereinigung, fester Start und regelmäßige Qualitätskontrolle. So läuft die Zusammenarbeit mit CleanStar."
+        description="Anfrage, kostenlose Objektbesichtigung, Angebot in 48 Stunden, fester Start, erster Monat jederzeit kündbar und regelmäßige Qualitätskontrolle. So läuft die Zusammenarbeit mit CleanStar."
         path="/ablauf"
         schema={[breadcrumbSchema(trail)]}
       />
@@ -55,7 +61,7 @@ export default function Process() {
         trail={trail}
         eyebrow="Ablauf"
         title="So arbeiten wir zusammen."
-        lead="Sechs klare Schritte, ohne Überraschungen. Sie wissen jederzeit, was als Nächstes passiert und wer Ihr Ansprechpartner ist."
+        lead="Sechs klare Schritte, ohne Überraschungen. Ihr Aufwand: ein Termin für die Besichtigung. Den Rest organisieren wir, und im ersten Monat können Sie jederzeit kündigen."
         image="inspection"
         actions={
           <>
@@ -68,7 +74,7 @@ export default function Process() {
           </>
         }
       />
-      <ProcessTimeline title="Sechs Schritte zur sauberen Routine." eyebrow="Schritt für Schritt" />
+      <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Montagmorgen." eyebrow="Schritt für Schritt" />
       <section className="bg-glacier py-24 sm:py-32" aria-labelledby="details-title">
         <div className="container-site">
           <SectionHeading eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />
@@ -94,11 +100,14 @@ export default function Process() {
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
           <div>
             <SectionHeading
-              eyebrow="Probereinigung"
-              title="Erst sehen, dann entscheiden."
+              eyebrow="Erster Monat"
+              title="Erst überzeugen, dann binden."
               id="trial-title"
-              text="Vor dem regulären Start reinigen wir einmal zur Probe. Sie sehen das Ergebnis mit eigenen Augen, wir lernen Ihr Objekt kennen. Passt etwas noch nicht, justieren wir das Leistungsverzeichnis, bevor es losgeht."
+              text="Im ersten Monat können Sie jederzeit kündigen, ohne Frist. Sie sehen jeden Morgen, wie Ihr Büro aussieht, und entscheiden dann. Eine einzelne Probereinigung vor dem Start ist auf Wunsch nach Absprache möglich."
             />
+            <div className="mt-8" data-reveal>
+              <RiskFreeSeal variant="card" />
+            </div>
           </div>
           <div data-reveal>
             <Picture id="trial-clean" sizes="(min-width:1024px) 50vw, 100vw" />

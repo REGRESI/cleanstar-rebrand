@@ -14,7 +14,7 @@ export default function NotFound() {
           </p>
           <h1 className="heading-2 mt-4">Hier ist es zu sauber. Nicht einmal eine Seite liegt herum.</h1>
           <p className="lead mx-auto mt-5 max-w-xl">Die Adresse gibt es nicht oder nicht mehr. Hier geht es weiter:</p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <div className="btn-row mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button to="/" size="lg" arrow>
               Zur Startseite
             </Button>

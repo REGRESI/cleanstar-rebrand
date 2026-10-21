@@ -3,17 +3,17 @@
  *
  * Regeln:
  * - Hier stehen nur bestätigte Fakten. Nichts erfinden.
- * - Fehlt ein Wert, steht er auf `null` und ist mit TODO markiert.
- *   Die Website zeigt dann einen neutralen Ersatztext. Solange
- *   `showTodoMarkers` auf true steht, erscheint zusätzlich ein gelber
- *   TODO-Hinweis, damit nichts vergessen wird.
+ * - Fehlt ein Wert, steht er auf `null`. Die Website zeigt dann einen
+ *   neutralen Ersatztext oder blendet die Stelle aus. Offene Punkte
+ *   stehen in OFFENE-PUNKTE.md. Mit `showTodoMarkers: true` erscheinen
+ *   zusätzlich gelbe Hinweise auf der Seite (nur zum Prüfen).
  * - Telefonnummer, E-Mail usw. hier ändern, nicht in den Seiten.
  */
 
 export type OpeningHours = { days: string; hours: string }[]
 
 export interface Person {
-  /** TODO: Name eintragen. null = Platzhalter wird angezeigt */
+  /** null = Platzhalter wird angezeigt */
   name: string | null
   role: string
   /** Kurzes persönliches Statement (1–2 Sätze, in Ich-Form). null = Platzhalter */
@@ -38,7 +38,7 @@ export interface TimelineEntry {
 
 export const company = {
   /** Gelbe TODO-Hinweise auf der Website anzeigen (vor dem Livegang auf false setzen) */
-  showTodoMarkers: true,
+  showTodoMarkers: false,
 
   name: 'CleanStar Dienstleistungen',
   legalForm: 'GbR',
@@ -49,8 +49,7 @@ export const company = {
   serviceArea: 'Ortenaukreis',
 
   address: {
-    // Quelle: strukturierte Daten der bisherigen Website (PLZ, Straße) und Branchenverzeichnisse (Hausnummer).
-    // TODO: Hausnummer einmal gegen das bisherige Impressum prüfen.
+    // Bestätigt
     street: 'Prinz-Eugen-Str. 80',
     zip: '77654',
     city: 'Offenburg',
@@ -74,18 +73,21 @@ export const company = {
     number: '491738512107',
   },
 
-  /** TODO: Öffnungs- bzw. Erreichbarkeitszeiten konnten nicht von der alten Website gelesen werden. */
+  /** Keine festen Öffnungszeiten (kein Ladengeschäft). Wir sind rund um die Uhr erreichbar. */
+  availability: '24/7 erreichbar',
+  /** Feste Öffnungszeiten, falls es einmal welche gibt. null = es wird „24/7 erreichbar“ gezeigt */
   openingHours: null as OpeningHours | null,
 
-  /** TODO: Vertretungsberechtigte Gesellschafter laut Impressum eintragen (Vor- und Nachname). */
-  partners: null as string[] | null,
+  /** Vertretungsberechtigte Gesellschafter (Impressum) */
+  partners: ['Nico Schütterle', 'Lino Resham', 'Eknoor Singh'] as string[] | null,
 
-  /** TODO: Umsatzsteuer-ID (falls vorhanden) */
-  vatId: null as string | null,
+  /** Umsatzsteuer-ID */
+  vatId: 'DE452202787' as string | null,
 
-  /** TODO: Jahre Erfahrung bzw. Gründungsjahr. null = wird nirgends angezeigt */
-  foundedYear: null as number | null,
-  yearsOfExperience: null as number | null,
+  /** Gründungsjahr: nur Impressum, Timeline und strukturierte Daten, kein Werbeargument */
+  foundedYear: 2024 as number | null,
+  /** Erfahrung des Teams in der Reinigung (länger als die Firma besteht). Angezeigt als „über 6 Jahre“ */
+  yearsOfExperience: 6 as number | null,
 
   /** Versprechen aus dem Briefing (bestätigt) */
   promises: {
@@ -96,18 +98,25 @@ export const company = {
     replacementOnAbsence: true,
   },
 
-  /** TODO: Frist für kostenlose Nachreinigung nach Reklamation, z. B. "24 Stunden" oder "zwei Werktagen" */
+  /** Frist für kostenlose Nachreinigung, z. B. "24 Stunden". Offen: null = die Website sagt neutral „kurzfristig“ */
   complaintPeriod: null as string | null,
 
-  /** TODO: Betriebshaftpflicht vorhanden? Nur true setzen, wenn bestätigt. Summen werden nicht genannt. */
-  liabilityInsurance: null as boolean | null,
+  /** Betriebshaftpflicht vorhanden (bestätigt). Summen werden nicht genannt. */
+  liabilityInsurance: true as boolean | null,
+
+  /** Vertragsbedingungen (bestätigt) */
+  contract: {
+    /** Kurzform für Siegel und Hinweise */
+    riskFree: 'Erster Monat jederzeit kündbar',
+    firstMonth: 'Im ersten Monat können Sie jederzeit kündigen, ohne Kündigungsfrist.',
+    afterwards: 'Danach gilt eine Kündigungsfrist von einem Monat zum Ende des Folgemonats.',
+    /** Probereinigung nur nach Absprache, nicht im Standardablauf */
+    trialOnRequest: true,
+  },
 
   booking: {
-    /**
-     * TODO: Cal.com-Link für die Objektbesichtigung, z. B. "https://cal.com/cleanstar/besichtigung".
-     * Wird erst nach Klick und Einwilligung geladen (DSGVO).
-     */
-    calUrl: '' as string,
+    /** Cal.com-Link für die Objektbesichtigung. Wird erst nach Klick und Einwilligung geladen (DSGVO). */
+    calUrl: 'https://cal.com/eknoor-singh-x9pw3a/30min' as string,
   },
 
   forms: {
@@ -119,7 +128,7 @@ export const company = {
      */
     provider: 'web3forms' as 'web3forms' | 'formspree',
     endpoint: 'https://api.web3forms.com/submit',
-    accessKey: '' as string,
+    accessKey: '389573f3-426d-4fb2-92ee-5731ff047ecc' as string,
     /**
      * TODO: Bestätigungsmail an Kunden. Bei Web3Forms (Pro) bzw. Formspree (Autoresponse) im Dashboard
      * einrichten und dann hier auf true setzen. Erst dann verspricht die Website eine Kopie per E-Mail.
@@ -127,46 +136,49 @@ export const company = {
     confirmationEmail: false,
   },
 
-  /** Anzahl der Gründer-Porträts auf der Über-uns-Seite (2 oder 3) */
-  /**
-   * Gründer. Namen, Fotos und Freigabe der Texte fehlen noch (TODO).
-   * Statements und Zuständigkeiten sind Entwürfe nach Absprache, bitte prüfen und dann draft: null setzen.
-   */
+  /** Gründer (Namen, Rollen und Texte freigegeben). Reihenfolge = Reihenfolge der Porträts gruender-1 bis -3 */
   founders: [
     {
-      name: null,
-      role: 'Gründer · Finanzen und Neukunden',
-      bio: 'Studiert Wirtschaftsmathematik und sorgt dafür, dass jedes Angebot nachvollziehbar kalkuliert ist und jede Rechnung stimmt.',
-      focus: ['Kalkulation und Angebote', 'Buchhaltung und Rechnungen', 'Erstgespräche mit neuen Kunden'],
-      statement: 'Ein Angebot muss man nachrechnen können. Bei uns sehen Sie, welche Stunden wir kalkulieren und warum. Dann gibt es später keine Überraschungen.',
+      name: 'Nico Schütterle',
+      role: 'Gründer · Finanzen, Kalkulation und Neukunden',
+      bio: 'Studiert Wirtschaftsmathematik an der Universität Mannheim und verantwortet alles, was mit Zahlen zu tun hat: Kalkulation, Angebote, Buchhaltung und Rechnungen. Führt die Erstgespräche mit neuen Kunden.',
+      focus: ['Kalkulation und Angebote', 'Buchhaltung und Rechnungen', 'Erstgespräche und Neukunden'],
+      statement: 'Ich rechne lieber zweimal nach, bevor ich Ihnen ein Angebot schicke. Was wir zusagen, steht schwarz auf weiß und gilt.',
       image: 'founder-1',
-      draft: 'Name, Foto und Texte bitte freigeben',
+      draft: null,
     },
     {
-      name: null,
-      role: 'Gründer · Kunden und Teams',
-      bio: 'Arbeitet hauptberuflich im Vertrieb und weiß, was Kunden von einem Dienstleister erwarten: dass er erreichbar ist und Wort hält.',
-      focus: ['Betreuung unserer Kunden', 'Einsatzplanung der Teams', 'Mitarbeiter und Einarbeitung'],
-      statement: 'Wenn ich Ihnen etwas zusage, dann gilt das. Und wenn etwas nicht passt, will ich es von Ihnen hören, bevor es ein Problem wird.',
+      name: 'Lino Resham',
+      role: 'Gründer · Kundenbetreuung und Qualität',
+      bio: 'Hauptberuflich im Vertrieb und es gewohnt, Kunden langfristig zu betreuen. Ist Ihr Ansprechpartner im laufenden Betrieb und führt die regelmäßigen Qualitätskontrollen durch.',
+      focus: ['Feste Ansprechperson für Kunden', 'Qualitätskontrollen vor Ort', 'Reklamationen'],
+      statement: 'Vertrauen entsteht nicht im ersten Gespräch, sondern an jedem Morgen, an dem Ihr Büro einfach sauber ist.',
       image: 'founder-2',
-      draft: 'Name, Foto und Texte bitte freigeben',
+      draft: null,
     },
     {
-      name: null,
-      role: 'Gründer · Kunden und Qualität',
-      bio: 'Ebenfalls hauptberuflich im Vertrieb. Hält den direkten Draht zu unseren Kunden und achtet darauf, dass die Qualität dauerhaft stimmt.',
-      focus: ['Betreuung unserer Kunden', 'Qualitätskontrollen', 'Personal und Vertretungen'],
-      statement: 'Sauber ist nicht, was am ersten Tag glänzt. Sauber ist, wenn es nach einem Jahr noch genauso aussieht.',
+      name: 'Eknoor Singh',
+      role: 'Gründer · Team und Einsatzplanung',
+      bio: 'Hauptberuflich im Vertrieb und bei CleanStar verantwortlich für das Team: Auswahl und Einarbeitung der Mitarbeiter, Einsatzplanung und Vertretung bei Ausfall.',
+      focus: ['Personal und Einarbeitung', 'Einsatz- und Vertretungsplanung', 'Schlüssel- und Zugangsmanagement'],
+      statement: 'Gute Reinigung steht und fällt mit dem Team. Unsere Leute kennen Ihr Objekt, und wenn jemand ausfällt, ist trotzdem jemand da.',
       image: 'founder-3',
-      draft: 'Name, Foto und Texte bitte freigeben',
+      draft: null,
     },
   ] as Person[],
 
+  /** Ansprechpartner für Neukunden (Index in founders): Karte „Ihr Ansprechpartner“ */
+  newClientContact: 0,
+
   /** Firmengeschichte. Nur Einträge mit confirmed: true erscheinen auf der Website. */
   timeline: [
-    { year: 'TODO', title: 'Gründung in Offenburg', text: 'CleanStar Dienstleistungen wird als GbR in Offenburg gegründet.', confirmed: false },
+    {
+      year: '2024',
+      title: 'Gründung in Offenburg',
+      text: 'Nico Schütterle, Lino Resham und Eknoor Singh gründen CleanStar Dienstleistungen als GbR. Das Team bringt über 6 Jahre Erfahrung in der Reinigung mit.',
+      confirmed: true,
+    },
     { year: 'TODO', title: 'Erste feste Büroobjekte', text: 'Die ersten Unternehmen vertrauen uns ihre Büroreinigung dauerhaft an.', confirmed: false },
-    { year: 'TODO', title: 'Neuer Webauftritt', text: 'Klarere Abläufe, Angebot in 48 Stunden, Qualitätsgarantie schriftlich.', confirmed: false },
   ] as TimelineEntry[],
 }
 

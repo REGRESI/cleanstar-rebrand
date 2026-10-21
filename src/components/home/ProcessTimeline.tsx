@@ -4,11 +4,11 @@ import { home, processSteps } from '@/content/site'
 import { ScrollTrigger } from '@/lib/gsap'
 import { useIsDesktop, useReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
-import { StepCarousel } from './StepCarousel'
+import { VerticalTimeline } from './VerticalTimeline'
 
 /**
  * Ablauf als horizontale Scroll-Timeline (Desktop, Sektion bleibt stehen).
- * Auf Handy und Tablet sowie bei reduzierter Bewegung: wischbare Kartenreihe.
+ * Auf Handy und Tablet sowie bei reduzierter Bewegung: vertikale Timeline, die sich beim Scrollen füllt.
  */
 export function ProcessTimeline({
   title = home.process.headline,
@@ -56,12 +56,12 @@ export function ProcessTimeline({
 
   if (!horizontal) {
     return (
-      <section className="overflow-hidden bg-glacier py-24 sm:py-32" aria-labelledby={id}>
+      <section className="bg-glacier py-24 sm:py-32" aria-labelledby={id}>
         <div className="container-site">
           <SectionHeading eyebrow={eyebrow} title={title} id={id} />
-        </div>
-        <div className="mt-10" data-reveal>
-          <StepCarousel steps={steps} label={title} />
+          <div className="mt-10 max-w-2xl">
+            <VerticalTimeline steps={steps} />
+          </div>
         </div>
       </section>
     )

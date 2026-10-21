@@ -12,6 +12,8 @@ import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { FinalCta } from '@/components/home/FinalCta'
 import { BeforeAfter } from '@/features/slider/BeforeAfter'
 import { CostCalculator } from '@/features/cost/CostCalculator'
+import { PerEmployeeCalculator } from '@/features/cost/PerEmployeeCalculator'
+import { FloorPlan } from '@/features/floorplan/FloorPlan'
 import { LeadMagnet } from '@/features/forms/LeadMagnet'
 import { breadcrumbSchema, faqSchema, serviceSchema } from '@/lib/schema'
 import NotFound from './NotFound'
@@ -141,6 +143,32 @@ export default function ServiceDetail() {
 
       {main && (
         <>
+          <section className="bg-glacier py-24 sm:py-32" aria-labelledby="plan-title">
+            <div className="container-site">
+              <SectionHeading
+                eyebrow="Raum für Raum"
+                title="Was wird bei Ihnen gereinigt?"
+                id="plan-title"
+                text="Tippen Sie auf einen Bereich. Sie sehen, was dort gemacht wird und wie oft. Ohne Kleingedrucktes."
+              />
+              <div className="mt-12" data-reveal>
+                <FloorPlan />
+              </div>
+            </div>
+          </section>
+          <section className="py-24 sm:py-32" aria-labelledby="pe-title">
+            <div className="container-site">
+              <SectionHeading
+                eyebrow="Kosten greifbar machen"
+                title="Was kostet das pro Mitarbeiter?"
+                id="pe-title"
+                text="Ein Monatsbetrag sagt wenig. Umgerechnet auf Ihre Mitarbeiter und Arbeitstage sehen Sie, was ein sauberes Büro pro Kopf wirklich kostet."
+              />
+              <div className="mt-12" data-reveal>
+                <PerEmployeeCalculator />
+              </div>
+            </div>
+          </section>
           <section className="bg-glacier py-24 sm:py-32" aria-labelledby="cost-title">
             <div className="container-site">
               <SectionHeading

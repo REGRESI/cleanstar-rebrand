@@ -34,7 +34,7 @@ Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) bettet alle
 | 12 | `gruender-3.jpg` | 4:5 | 1200 × 1500 px | Über uns (nur wenn drei Gründer in company.ts eingetragen sind) |
 | 13 | `team-im-einsatz.jpg` | 16:9 | 2400 × 1350 px | Über uns, Karriere |
 | 14 | `team-besprechung.jpg` | 4:3 | 1600 × 1200 px | Qualitätsgarantie |
-| 15 | `probereinigung.jpg` | 16:9 | 1600 × 900 px | Ablauf (Probereinigung) |
+| 15 | `probereinigung.jpg` | 16:9 | 1600 × 900 px | Ablauf (Erster Monat) |
 | 16 | `qualitaetskontrolle.jpg` | 16:9 | 2400 × 1350 px | Qualitätsgarantie |
 | 17 | `objektbesichtigung.jpg` | 16:9 | 2400 × 1350 px | Ablauf |
 | 18 | `karriere.jpg` | 16:9 | 2400 × 1350 px | Karriere |
@@ -291,7 +291,7 @@ Cleaning team supervisor showing a checklist on a tablet to two team members in 
 - **Pfad:** `bilder/probereinigung.jpg` → `public/images/probereinigung-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 1600 × 900 px
-- **Verwendet auf:** Ablauf (Probereinigung)
+- **Verwendet auf:** Ablauf (Erster Monat)
 - **Inhalt:** Probereinigung: Mitarbeiterin wischt Schreibtisch im Tageslicht, 16:9
 - **Alt-Text:** CleanStar-Mitarbeiterin reinigt mit Handschuhen einen Schreibtisch in einem hellen Büro
 - **Status:** vorhanden

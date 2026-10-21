@@ -9,7 +9,7 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'light' | 'outline-dark'
 type Size = 'md' | 'lg' | 'sm'
 
 const base =
-  'group relative inline-flex select-none items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition-[background-color,color,box-shadow,border-color] duration-300 ease-out disabled:pointer-events-none disabled:opacity-50'
+  'group relative inline-flex select-none items-center justify-center gap-2 rounded-full text-center leading-tight font-semibold text-balance transition-[background-color,color,box-shadow,border-color] duration-300 ease-out disabled:pointer-events-none disabled:opacity-50'
 const variants: Record<Variant, string> = {
   primary: 'bg-blue text-white shadow-glow hover:bg-blue-hover',
   secondary: 'bg-white text-ink ring-1 ring-line ring-inset hover:ring-ink/25 shadow-soft',
@@ -18,9 +18,9 @@ const variants: Record<Variant, string> = {
   'outline-dark': 'text-white ring-1 ring-white/25 ring-inset hover:bg-white/10',
 }
 const sizes: Record<Size, string> = {
-  sm: 'h-10 px-4 text-sm',
-  md: 'h-12 px-6 text-[0.9375rem]',
-  lg: 'h-14 px-7 text-base',
+  sm: 'min-h-10 px-4 py-2 text-sm',
+  md: 'min-h-12 px-6 py-2.5 text-[0.9375rem]',
+  lg: 'min-h-14 px-7 py-3 text-base',
 }
 
 interface CommonProps {
@@ -68,7 +68,7 @@ export function Button(props: ButtonProps) {
   const content = (
     <>
       {icon}
-      <span>{children}</span>
+      <span className="min-w-0">{children}</span>
       {arrow && <ArrowRight aria-hidden className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />}
     </>
   )
@@ -98,7 +98,13 @@ export function Button(props: ButtonProps) {
   }
 
   return (
-    <motion.span ref={wrap} className={full ? 'flex w-full' : (wrapClassName ?? 'inline-flex')} style={active ? { x, y } : undefined} onMouseMove={onMove} onMouseLeave={onLeave}>
+    <motion.span
+      ref={wrap}
+      className={full ? 'flex w-full' : cn('max-w-full', wrapClassName ?? 'inline-flex')}
+      style={active ? { x, y } : undefined}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
       {el}
     </motion.span>
   )

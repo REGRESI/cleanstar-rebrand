@@ -36,24 +36,24 @@ export const home = {
   },
   problems: {
     eyebrow: 'Was Sie nicht mehr erleben werden',
-    headline: 'Sie haben Wichtigeres zu tun, als Ihrer Reinigungsfirma hinterherzutelefonieren.',
+    headline: 'Sie haben Wichtigeres zu tun, als Ihrer Reinigungs\u00ADfirma hinterher\u00ADzu\u00ADtelefonieren.',
     lead: 'Vier Ärgernisse, die fast jeder Geschäftsführer kennt. Bei uns sind sie von Anfang an geregelt, schriftlich und überprüfbar.',
     items: [
       {
-        problem: 'Die Reinigung kommt, wann sie will.',
-        solution: 'Feste Tage und Zeitfenster, schriftlich vereinbart. Sie wissen jederzeit, wann wir bei Ihnen sind.',
+        problem: 'Die Reinigungskraft kommt, wann sie will.',
+        solution: 'Feste Zeiten, die wir mit Ihnen vereinbaren. Und an die wir uns halten.',
       },
       {
-        problem: 'Jede Woche ein anderes Gesicht.',
-        solution: 'Ihr Objekt hat ein festes Team. Wer einspringt, ist vorher eingewiesen und kennt Ihre Räume.',
+        problem: 'Jede Woche ein anderes Gesicht in unseren Räumen.',
+        solution: 'Ein festes Team, das Ihr Büro kennt. Fällt jemand aus, kommt eine eingewiesene Vertretung.',
       },
       {
-        problem: 'Niemand geht ans Telefon.',
-        solution: 'Sie haben einen Namen und eine direkte Nummer. Rückmeldung innerhalb von 24 Stunden.',
+        problem: 'Bei Problemen erreicht man niemanden.',
+        solution: 'Ein fester Ansprechpartner mit direkter Nummer, rund um die Uhr erreichbar. Antwort innerhalb von 24 Stunden.',
       },
       {
         problem: 'Nach drei Monaten lässt die Qualität nach.',
-        solution: 'Wir kontrollieren selbst nach Checkliste. Fehlt doch etwas, reinigen wir kostenlos nach.',
+        solution: 'Wir kontrollieren selbst nach Checkliste. Fehlt doch etwas, reinigen wir kurzfristig und kostenlos nach.',
       },
     ],
   },
@@ -78,13 +78,13 @@ export const home = {
   },
   about: {
     eyebrow: 'Über uns',
-    headline: 'Drei Gründer aus Offenburg. Alle drei erreichbar.',
-    text: 'Bei CleanStar sprechen Sie mit den Menschen, die entscheiden. Kein Callcenter, keine Zentrale in einer anderen Stadt. Wer bei uns anruft, erreicht jemanden, der sein Wort hält.',
+    headline: 'Drei Gründer. Drei Gesichter, die Sie kennen.',
+    text: 'Bei CleanStar sprechen Sie mit den Menschen, die entscheiden. Kein Callcenter, keine Zentrale in einer anderen Stadt. Jeder von uns hat seinen Bereich, und wer bei uns anruft, erreicht jemanden, der sein Wort hält.',
   },
   finalCta: {
     eyebrow: 'In 60 Sekunden zur Anfrage',
     headline: 'Ein Gespräch. Eine Besichtigung. Ein klares Angebot.',
-    text: 'Sagen Sie uns kurz, was gereinigt werden soll. Wir melden uns innerhalb von 24 Stunden, sehen uns Ihre Räume kostenlos an und schicken Ihnen in 48 Stunden ein schriftliches Angebot.',
+    text: 'Sagen Sie uns kurz, was gereinigt werden soll. Wir melden uns innerhalb von 24 Stunden, sehen uns Ihre Räume kostenlos an und schicken Ihnen in 48 Stunden ein schriftliches Angebot. Und im ersten Monat können Sie jederzeit kündigen.',
   },
 }
 
@@ -92,10 +92,10 @@ export const home = {
 export const trustFacts = [
   { value: company.promises.responseHours, suffix: ' h', label: 'Antwortzeit auf Ihre Anfrage', countUp: true },
   { value: company.promises.offerHours, suffix: ' h', label: 'bis zum schriftlichen Angebot', countUp: true },
+  ...(company.yearsOfExperience ? [{ prefix: 'über ', value: company.yearsOfExperience, suffix: '', label: 'Jahre Erfahrung in der Reinigung', countUp: true }] : []),
   { value: 1, suffix: '', label: 'fester Ansprechpartner für Ihr Objekt', countUp: true },
   { text: 'Ortenau', label: 'Sitz in Offenburg, im ganzen Kreis vor Ort' },
-  ...(company.yearsOfExperience ? [{ value: company.yearsOfExperience, suffix: '', label: 'Jahre Erfahrung', countUp: true }] : []),
-] as { value?: number; suffix?: string; text?: string; label: string; countUp?: boolean }[]
+] as { prefix?: string; value?: number; suffix?: string; text?: string; label: string; countUp?: boolean }[]
 
 export const processSteps = [
   {
@@ -114,14 +114,14 @@ export const processSteps = [
     text: 'Sie erhalten ein schriftliches Angebot mit Leistungsverzeichnis, Intervallen und klaren Preisen.',
   },
   {
-    title: 'Probereinigung',
-    duration: 'nach Absprache',
-    text: 'Bevor es regulär losgeht, reinigen wir einmal zur Probe. Sie sehen das Ergebnis und geben uns Feedback.',
-  },
-  {
     title: 'Fester Start',
     duration: 'zum Wunschtermin',
     text: 'Ihr festes Team beginnt. Schlüsselübergabe und Ansprechpartner sind dokumentiert.',
+  },
+  {
+    title: 'Erster Monat',
+    duration: 'ohne Risiko',
+    text: 'Sie testen uns ohne Risiko. Im ersten Monat können Sie jederzeit kündigen, ganz ohne Frist.',
   },
   {
     title: 'Qualitätskontrolle',
@@ -133,24 +133,28 @@ export const processSteps = [
 /** Prüfpunkte der Qualitätsgarantie */
 export const guaranteePoints = [
   {
+    title: 'Erster Monat jederzeit kündbar',
+    text: 'Sie gehen kein Risiko ein. Überzeugt Sie unsere Arbeit im ersten Monat nicht, kündigen Sie ohne Frist. Danach gilt eine Kündigungsfrist von einem Monat zum Ende des Folgemonats.',
+  },
+  {
     title: 'Kostenlose Nachreinigung',
-    text: 'Passt etwas nicht, melden Sie es Ihrem Ansprechpartner. Wir reinigen kostenlos nach, innerhalb der vereinbarten Frist.',
+    text: 'Passt etwas nicht, melden Sie es Ihrem Ansprechpartner. Wir kommen kurzfristig und reinigen kostenlos nach.',
     usesComplaintPeriod: true,
   },
   {
     title: 'Regelmäßige Qualitätskontrollen',
-    text: 'Unsere Objektleitung prüft die Arbeit vor Ort anhand einer Checkliste, die auf Ihr Leistungsverzeichnis abgestimmt ist. Nicht erst, wenn Sie sich beschweren.',
+    text: 'Wir prüfen die Arbeit selbst vor Ort, anhand einer Checkliste, die auf Ihr Leistungsverzeichnis abgestimmt ist. Nicht erst, wenn Sie sich beschweren.',
   },
   {
     title: 'Fester Ansprechpartner',
-    text: 'Eine Person, die Ihr Objekt kennt und direkt erreichbar ist. Antwort innerhalb von 24 Stunden.',
+    text: 'Eine Person, die Ihr Objekt kennt und direkt erreichbar ist. Rund um die Uhr, Antwort innerhalb von 24 Stunden.',
   },
   {
     title: 'Vertretung bei Ausfall',
     text: 'Fällt jemand aus, übernimmt eine eingewiesene Ersatzkraft. Ihre Reinigung findet statt, ohne dass Sie sich kümmern müssen.',
   },
   {
-    title: 'Schlüssel- und Zugangsmanagement',
+    title: 'Schlüssel- und Zugangs\u00ADmanagement',
     text: 'Schlüsselübergaben werden protokolliert. Zugang hat nur das feste Team. Alarmanlagen und Schließzeiten sind dokumentiert.',
   },
   {
@@ -158,17 +162,22 @@ export const guaranteePoints = [
     text: 'Unterlagen bleiben, wo sie liegen. Was wir in Ihren Räumen sehen, bleibt dort.',
   },
   {
-    title: 'Mittel und Nachhaltigkeit',
-    text: 'Wir dosieren genau, setzen Mittel passend zur Oberfläche ein und vermeiden unnötige Chemie. Mikrofasertücher waschen wir und verwenden sie wieder.',
-    todo: 'Nachhaltigkeitsaussagen (Mikrofaser, Dosierung, Produkte) bitte bestätigen.',
+    title: 'Betriebshaftpflicht\u00ADversichert',
+    text: 'Geht trotz aller Sorgfalt einmal etwas zu Bruch, sind Sie abgesichert. Den Nachweis senden wir Ihnen auf Anfrage.',
   },
-]
+] as { title: string; text: string; usesComplaintPeriod?: boolean; todo?: string }[]
 
+/** Reklamation in drei Schritten. Ohne eingetragene Frist heißt es neutral „kurzfristig“. */
 export const complaintSteps = [
-  { title: 'Sie sagen Bescheid', text: 'Per Telefon oder E-Mail an Ihren festen Ansprechpartner. Ein Foto hilft, ist aber kein Muss.' },
-  { title: 'Wir melden uns', text: 'Sie erfahren, wann nachgereinigt wird. Sie müssen nicht nachhaken.' },
-  { title: 'Wir reinigen nach', text: 'Kostenlos und innerhalb der vereinbarten Frist.' },
-  { title: 'Wir stellen ab, was dahintersteckt', text: 'Wir klären die Ursache mit dem Team und passen, falls nötig, den Ablauf an. Damit es kein zweites Mal vorkommt.' },
+  { title: 'Sie melden es', text: 'Ein Anruf oder eine E-Mail an Ihren festen Ansprechpartner genügt. Ein Foto hilft, ist aber kein Muss.' },
+  {
+    title: company.complaintPeriod ? `Wir kommen innerhalb von ${company.complaintPeriod}` : 'Wir kommen kurzfristig',
+    text: 'Sie erfahren sofort, wann nachgereinigt wird. Nachhaken müssen Sie nicht.',
+  },
+  {
+    title: 'Nachreinigung kostenlos',
+    text: 'Wir reinigen nach und Sie bekommen eine Bestätigung. Danach klären wir mit dem Team die Ursache, damit es nicht wieder vorkommt.',
+  },
 ]
 
 export const values = [

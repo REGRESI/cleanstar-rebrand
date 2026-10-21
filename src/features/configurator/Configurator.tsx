@@ -3,10 +3,13 @@ import { useForm, Controller, type Path } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Building, Briefcase, Store, Shapes, ClipboardCheck, Calculator, Eye, Minus, Plus, CheckCircle2, Info, Loader2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Building, Briefcase, Store, Shapes, ClipboardCheck, Calculator, Eye, Minus, Plus, CheckCircle2, FileDown, Info, Loader2 } from 'lucide-react'
 import { quoteSchema, defaultQuote, stepFields, stepTitles, objectTypes, specialAreas, intervals, timeSlots, extras, type QuoteData } from './schema'
 import { useQuote } from './QuoteContext'
-import { monthlyRange, pricing, hourlyRateNetMin, hourlyRateNetMax } from '@/content/pricing'
+import { monthlyRange, perEmployeeDay, pricing, hourlyRateNetMin, hourlyRateNetMax } from '@/content/pricing'
+import { PerEmployee } from '@/features/cost/PerEmployee'
+import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
+import { ContactPerson } from '@/components/ui/ContactPerson'
 import { company } from '@/content/company'
 import { formatEuro, formatEuro2, formatNumber } from '@/lib/format'
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber'
@@ -105,9 +108,9 @@ export function PriceRange({ staff, hours, visits, dark }: { staff: number; hour
         {formatEuro(r.grossMin)} – {formatEuro(r.grossMax)} brutto inkl. {Math.round(pricing.vatRate * 100)} % MwSt.
       </p>
       <p className={cn('mt-4 border-t pt-4 text-xs leading-relaxed', dark ? 'border-white/10 text-muted-dark' : 'border-line text-muted')}>
-        Grundlage: {staff} {staff === 1 ? 'Mitarbeiter' : 'Mitarbeiter'} × {formatNumber(hours)} Std. × {visits} Einsätze pro Woche × {formatNumber(pricing.weeksPerMonth)} Wochen =
-        rund {formatNumber(r.hours)} Stunden im Monat, zu {formatEuro2(hourlyRateNetMin())} bis {formatEuro2(hourlyRateNetMax())} netto pro Stunde. Unverbindliche Orientierung. Das
-        finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.
+        Grundlage: {staff} {staff === 1 ? 'Reinigungskraft' : 'Reinigungskräfte'} × {formatNumber(hours)} Std. × {visits} Einsätze pro Woche × {formatNumber(pricing.weeksPerMonth)}{' '}
+        Wochen = rund {formatNumber(r.hours)} Stunden im Monat, zu {formatEuro2(hourlyRateNetMin())} bis {formatEuro2(hourlyRateNetMax())} netto pro Stunde. Unverbindliche
+        Orientierung. Das finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.
       </p>
     </div>
   )
@@ -148,6 +151,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
   }, [watch])
 
   const v = watch()
+  const range = monthlyRange(v.staff, v.hours, v.visits)
 
   // Intervall aus Weg A vorschlagen
   useEffect(() => {
@@ -183,11 +187,16 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
     if (data.path === 'A') {
       const r = monthlyRange(data.staff, data.hours, data.visits)
       lines.push(
-        ['Mitarbeiter gleichzeitig', String(data.staff)],
+        ['Reinigungskräfte gleichzeitig', String(data.staff)],
+        ['Mitarbeiter in den Räumen', String(data.employees)],
         ['Stunden pro Einsatz', formatNumber(data.hours)],
         ['Einsätze pro Woche', String(data.visits)],
         ['Richtpreis netto/Monat', `${formatEuro(r.netMin)} bis ${formatEuro(r.netMax)}`],
         ['Richtpreis brutto/Monat', `${formatEuro(r.grossMin)} bis ${formatEuro(r.grossMax)}`],
+        [
+          'Pro Mitarbeiter und Arbeitstag netto',
+          `${formatEuro2(perEmployeeDay(r.netMin, r.netMax, data.employees).min)} bis ${formatEuro2(perEmployeeDay(r.netMin, r.netMax, data.employees).max)}`,
+        ],
       )
     } else {
       lines.push(['Fläche ca.', `${data.area} m²`], ['Etagen', String(data.floors)])
@@ -353,7 +362,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                       <Controller
                         control={control}
                         name="staff"
-                        render={({ field }) => <Stepper id="cfg-staff" label="Mitarbeiter gleichzeitig" value={field.value} onChange={field.onChange} min={1} max={20} />}
+                        render={({ field }) => <Stepper id="cfg-staff" label="Reinigungskräfte gleichzeitig" value={field.value} onChange={field.onChange} min={1} max={20} />}
                       />
                       <Controller
                         control={control}
@@ -369,6 +378,16 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                       />
                     </div>
                     <PriceRange staff={v.staff} hours={v.hours} visits={v.visits} />
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,14rem)_1fr] sm:items-end">
+                      <Controller
+                        control={control}
+                        name="employees"
+                        render={({ field }) => (
+                          <Stepper id="cfg-employees" label="Wie viele Mitarbeiter arbeiten in den Räumen?" value={field.value} onChange={field.onChange} min={1} max={2000} />
+                        )}
+                      />
+                      <PerEmployee netMin={range.netMin} netMax={range.netMax} employees={v.employees} />
+                    </div>
                   </motion.div>
                 )}
 
@@ -535,6 +554,11 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
             </button>
           )}
         </div>
+        {step === stepTitles.length - 1 && (
+          <div className="mt-5 flex justify-center sm:justify-end">
+            <RiskFreeSeal />
+          </div>
+        )}
         {isModal && step === 0 && (
           <p className="mt-4 text-center text-xs text-muted">
             Lieber in Ruhe?{' '}
@@ -552,15 +576,19 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
 function Success({ result, isModal, onDone, onRestart }: { result: { preview: boolean; data: QuoteData }; isModal: boolean; onDone?: () => void; onRestart: () => void }) {
   const d = result.data
   const r = d.path === 'A' ? monthlyRange(d.staff, d.hours, d.visits) : null
+  const pe = r ? perEmployeeDay(r.netMin, r.netMax, d.employees) : null
+  const [pdfBusy, setPdfBusy] = useState(false)
   const rows: [string, string][] = [
     ['Objekt', objectTypes.find((o) => o.id === d.objectType)?.label ?? ''],
     ['Besondere Bereiche', d.areas.join(', ') || 'keine'],
     ['Weg', d.path === 'A' ? 'Aktuelle Zeiten bekannt' : 'Besichtigung vor Ort'],
     ...(d.path === 'A'
       ? ([
-          ['Einsatz', `${d.staff} × ${formatNumber(d.hours)} Std., ${d.visits}× pro Woche`],
+          ['Einsatz', `${d.staff} ${d.staff === 1 ? 'Reinigungskraft' : 'Reinigungskräfte'} × ${formatNumber(d.hours)} Std., ${d.visits}× pro Woche`],
+          ['Mitarbeiter in den Räumen', String(d.employees)],
           ['Richtpreis netto/Monat', `${formatEuro(r!.netMin)} – ${formatEuro(r!.netMax)}`],
           ['Richtpreis brutto/Monat', `${formatEuro(r!.grossMin)} – ${formatEuro(r!.grossMax)}`],
+          ['Pro Mitarbeiter und Arbeitstag', `ca. ${formatEuro2(pe!.min)} – ${formatEuro2(pe!.max)} netto`],
         ] as [string, string][])
       : ([
           ['Fläche ca.', `${formatNumber(d.area)} m²`],
@@ -594,7 +622,7 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
       )}
       <dl className="mt-8 divide-y divide-line rounded-2xl bg-glacier px-5 text-sm">
         {rows.map(([k, val]) => (
-          <div key={k} className="grid grid-cols-[9rem_1fr] gap-3 py-3 sm:grid-cols-[12rem_1fr]">
+          <div key={k} className="grid grid-cols-1 gap-0.5 py-3 min-[400px]:grid-cols-[9rem_1fr] min-[400px]:gap-3 sm:grid-cols-[12rem_1fr]">
             <dt className="text-muted">{k}</dt>
             <dd className="font-medium text-ink">{val}</dd>
           </div>
@@ -603,17 +631,48 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
       {r && (
         <p className="mt-3 text-xs text-muted">Unverbindliche Orientierung. Das finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.</p>
       )}
-      <div className="mt-8 flex flex-wrap gap-3">
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <RiskFreeSeal variant="card" className="sm:col-span-2" />
+        <ContactPerson compact title="Ihr Ansprechpartner" className="sm:col-span-2" />
+      </div>
+      <div className="btn-row mt-8 flex flex-wrap gap-3">
+        <button
+          type="button"
+          disabled={pdfBusy}
+          onClick={async () => {
+            setPdfBusy(true)
+            try {
+              const { downloadSummaryPdf } = await import('./summaryPdf')
+              await downloadSummaryPdf({
+                rows: rows.filter(([k]) => !k.startsWith('Richtpreis') && k !== 'Pro Mitarbeiter und Arbeitstag'),
+                company: d.company,
+                price: r
+                  ? {
+                      net: `${formatEuro(r.netMin)} – ${formatEuro(r.netMax)}`,
+                      gross: `${formatEuro(r.grossMin)} – ${formatEuro(r.grossMax)}`,
+                      perEmployee: pe ? `${formatEuro2(pe.min)} – ${formatEuro2(pe.max)}` : undefined,
+                    }
+                  : undefined,
+              })
+            } finally {
+              setPdfBusy(false)
+            }
+          }}
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-ink px-6 font-semibold text-white transition hover:bg-ink-2 disabled:opacity-70"
+        >
+          {pdfBusy ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <FileDown aria-hidden className="size-4" />}
+          Zusammenfassung als PDF herunterladen
+        </button>
         {isModal ? (
-          <button type="button" onClick={onDone} className="inline-flex h-12 items-center rounded-full bg-blue px-6 font-semibold text-white">
+          <button type="button" onClick={onDone} className="inline-flex min-h-12 items-center justify-center rounded-full bg-blue px-6 font-semibold text-white">
             Schließen
           </button>
         ) : (
-          <Link to="/" className="inline-flex h-12 items-center rounded-full bg-blue px-6 font-semibold text-white">
+          <Link to="/" className="inline-flex min-h-12 items-center justify-center rounded-full bg-blue px-6 font-semibold text-white">
             Zur Startseite
           </Link>
         )}
-        <button type="button" onClick={onRestart} className="inline-flex h-12 items-center rounded-full px-5 font-semibold text-ink ring-1 ring-line">
+        <button type="button" onClick={onRestart} className="inline-flex min-h-12 items-center justify-center rounded-full px-5 font-semibold text-ink ring-1 ring-line">
           Neue Anfrage
         </button>
       </div>

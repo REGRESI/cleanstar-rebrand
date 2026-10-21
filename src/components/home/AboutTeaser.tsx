@@ -2,7 +2,7 @@ import { Quote } from 'lucide-react'
 import { Picture } from '@/components/ui/Picture'
 import { Button } from '@/components/ui/Button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { Fact, Todo } from '@/components/ui/Todo'
+import { Todo } from '@/components/ui/Todo'
 import { company } from '@/content/company'
 import { home } from '@/content/site'
 import type { ImageId } from '@/content/images'
@@ -19,9 +19,7 @@ export function AboutTeaser() {
             <figure key={i} className={i === 1 ? 'mt-8 sm:mt-12' : ''} data-reveal>
               <Picture id={f.image as ImageId} compact sizes="(min-width:1024px) 16vw, 33vw" />
               <figcaption className="mt-3 text-xs sm:text-sm">
-                <span className="block font-semibold text-ink">
-                  <Fact value={f.name} fallback={`Gründer ${i + 1}`} todo="Name" />
-                </span>
+                <span className="block font-semibold text-ink">{f.name ?? `Gründer ${i + 1}`}</span>
                 <span className="block leading-snug text-muted">{f.role.replace('Gründer · ', '')}</span>
               </figcaption>
             </figure>
@@ -37,7 +35,7 @@ export function AboutTeaser() {
               <Quote aria-hidden className="absolute -top-4 left-6 size-8 rounded-full bg-blue p-1.5 text-white" />
               <p className="text-lg leading-relaxed text-ink">„{voice.statement}“</p>
               <footer className="mt-4 text-sm text-muted">
-                <Fact value={voice.name} fallback="Gründer" todo="Name" />, {voice.role.replace('Gründer · ', '')}
+                {voice.name}, {voice.role.replace('Gründer · ', '')}
                 {voice.draft && <Todo title={voice.draft}>Entwurf</Todo>}
               </footer>
             </blockquote>

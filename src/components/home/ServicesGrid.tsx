@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, ArrowUpRight, Check, ChevronRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Check } from 'lucide-react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
 import { services } from '@/content/services'
@@ -48,7 +48,7 @@ export function ServicesGrid({ heading = true }: { heading?: boolean }) {
               <Title className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">{featured.name}</Title>
               <p className="mt-3 max-w-lg text-white/80 sm:text-lg">{featured.short}</p>
               <ul className="mt-5 flex flex-wrap gap-2 text-sm">
-                {['Festes Team', 'Fester Ansprechpartner', 'Ersatz bei Ausfall'].map((t) => (
+                {['Arbeitsplätze und Besprechung', 'Teeküche und Sanitär', 'Böden und Papierkörbe'].map((t) => (
                   <li key={t} className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 ring-1 ring-white/15">
                     <Check aria-hidden className="size-3.5 text-fresh" strokeWidth={3} />
                     {t}
@@ -62,23 +62,31 @@ export function ServicesGrid({ heading = true }: { heading?: boolean }) {
             </div>
           </Link>
 
-          {/* Handy: kompakte Liste */}
-          <ul className="divide-y divide-line overflow-hidden rounded-card bg-white shadow-soft ring-1 ring-line sm:hidden" data-reveal>
-            {rest.map((s) => (
-              <li key={s.slug}>
-                <Link to={`/leistungen/${s.slug}`} className="flex items-center gap-4 p-3.5 pr-4 active:bg-glacier">
-                  <span className="size-16 shrink-0 overflow-hidden rounded-xl">
-                    <Picture id={s.image as ImageId} compact rounded="rounded-none" className="h-full w-full aspect-auto!" sizes="64px" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-semibold text-ink">{s.name}</span>
-                    <span className="mt-0.5 line-clamp-2 block text-sm leading-snug text-muted">{s.short}</span>
-                  </span>
-                  <ChevronRight aria-hidden className="size-5 shrink-0 text-muted" />
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {/* Handy: übrige Leistungen als Wisch-Slider, die nächste Karte ist angeschnitten */}
+          <div className="-mx-5 sm:hidden" data-reveal>
+            <ul
+              className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              aria-label="Weitere Leistungen"
+            >
+              {rest.map((s) => (
+                <li key={s.slug} className="w-[76%] shrink-0 snap-start">
+                  <Link to={`/leistungen/${s.slug}`} className="flex h-full flex-col overflow-hidden rounded-card bg-white ring-1 ring-line active:ring-blue/40">
+                    <span className="block aspect-[4/3] overflow-hidden">
+                      <Picture id={s.image as ImageId} compact rounded="rounded-none" className="h-full w-full aspect-auto!" sizes="76vw" />
+                    </span>
+                    <span className="flex flex-1 flex-col p-4">
+                      <span className="font-semibold text-ink">{s.name}</span>
+                      <span className="mt-1 line-clamp-3 flex-1 text-sm leading-snug text-muted">{s.short}</span>
+                      <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-blue">
+                        Mehr erfahren <ArrowRight aria-hidden className="size-4" />
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 px-5 text-xs text-muted">Wischen für weitere Leistungen</p>
+          </div>
 
           {/* Ab Tablet: Karten mit Bild */}
           {rest.map((s) => (

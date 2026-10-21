@@ -32,6 +32,8 @@ export const quoteSchema = z.object({
   areas: z.array(z.string()),
   path: z.enum(['A', 'B'], { message: 'Bitte wählen Sie eine Option.' }),
   staff: z.number().min(1).max(20),
+  /** Mitarbeiter, die in den Räumen arbeiten (für Kosten pro Mitarbeiter und Arbeitstag) */
+  employees: z.number().min(1).max(2000),
   hours: z.number().min(0.5).max(12),
   visits: z.number().min(1).max(7),
   area: z.number().min(20).max(10000),
@@ -63,6 +65,7 @@ export const defaultQuote: QuoteData = {
   areas: [],
   path: undefined as unknown as QuoteData['path'],
   staff: 1,
+  employees: 10,
   hours: 2,
   visits: 3,
   area: 300,
@@ -86,7 +89,7 @@ export const defaultQuote: QuoteData = {
 /** Felder je Schritt (für die Validierung beim Weiterklicken) */
 export const stepFields: (keyof QuoteData)[][] = [
   ['objectType', 'areas'],
-  ['path', 'staff', 'hours', 'visits', 'area', 'floors'],
+  ['path', 'staff', 'employees', 'hours', 'visits', 'area', 'floors'],
   ['interval', 'times'],
   ['extras'],
   ['company', 'name', 'email', 'phone', 'location', 'visitDate', 'privacy'],

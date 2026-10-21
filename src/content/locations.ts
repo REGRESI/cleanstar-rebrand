@@ -160,7 +160,8 @@ export const locations: Location[] = [
     lat: 48.405,
     lng: 7.905,
     intro: 'Hohberg mit den Ortsteilen Hofweier, Niederschopfheim und Diersburg liegt südlich von Offenburg an der B3 und A5. Unternehmen hier erreichen wir schnell und planbar.',
-    detail: 'Wir übernehmen die Reinigung von Büros, Praxen und Sozialräumen in Hohberg im festen Rhythmus. Eine Probereinigung vor dem Start zeigt Ihnen, wie wir arbeiten.',
+    detail:
+      'Wir übernehmen die Reinigung von Büros, Praxen und Sozialräumen in Hohberg im festen Rhythmus. Im ersten Monat können Sie jederzeit kündigen, so testen Sie uns ohne Risiko.',
     nearby: ['ortenberg', 'friesenheim', 'schutterwald'],
   },
   {

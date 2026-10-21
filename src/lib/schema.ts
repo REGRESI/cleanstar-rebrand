@@ -30,7 +30,17 @@ export function localBusinessSchema() {
     },
     geo: { '@type': 'GeoCoordinates', latitude: company.address.geo.lat, longitude: company.address.geo.lng },
     areaServed: [{ '@type': 'AdministrativeArea', name: 'Ortenaukreis' }, ...locations.map((l) => ({ '@type': 'City', name: l.name }))],
-    ...(hours ? { openingHours: hours.map((h) => `${h.days} ${h.hours}`) } : {}),
+    // Keine festen Öffnungszeiten: rund um die Uhr erreichbar
+    openingHoursSpecification: hours
+      ? hours.map((h) => ({ '@type': 'OpeningHoursSpecification', description: `${h.days} ${h.hours}` }))
+      : [
+          {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            opens: '00:00',
+            closes: '23:59',
+          },
+        ],
     ...(company.foundedYear ? { foundingDate: String(company.foundedYear) } : {}),
   }
 }

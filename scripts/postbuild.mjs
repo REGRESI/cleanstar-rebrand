@@ -15,6 +15,16 @@ const walk = (dir) => {
   }
 }
 walk(dist)
+
+// PDF-Erzeugung (jsPDF) erst beim Klick laden: vite-react-ssg setzt für alle dynamischen Imports
+// einer Seite modulepreload-Links. Die schweren PDF-Bausteine nehmen wir wieder heraus.
+const lazyOnly = /<link rel="modulepreload"[^>]*href="\/assets\/(summaryPdf|jspdf\.es\.min|html2canvas\.esm|purify\.es|index\.es)-[^"]+\.js">/g
+for (const page of pages) {
+  const file = join(dist, page, 'index.html')
+  const html = readFileSync(file, 'utf8')
+  const out = html.replace(lazyOnly, '')
+  if (out !== html) writeFileSync(file, out)
+}
 const urls = pages.filter((p) => !p.startsWith('/404')).sort()
 const today = new Date().toISOString().slice(0, 10)
 const prio = (u) =>

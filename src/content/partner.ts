@@ -141,14 +141,8 @@ export const partnerModules: PartnerModule[] = [
     enabled: true,
     icon: 'brand',
     title: 'Marke und Auftritt',
-    summary: 'Ein Auftritt, der bei Geschäftskunden Vertrauen schafft.',
-    items: [
-      'Nutzung von Name und Logo nach den CleanStar-Vorgaben',
-      'Eigene Unterseite für Ihre Region auf der CleanStar-Website',
-      'Vorlagen für Angebote, Rechnungen und Visitenkarten',
-    ],
-    // TODO: mit Nico abstimmen (Markennutzung, Regionalseite, welche Vorlagen es bereits gibt)
-    todo: 'Umfang Markennutzung und vorhandene Vorlagen mit Nico abstimmen',
+    summary: 'Ein Auftritt, der bei Geschäftskunden vom ersten Tag an Vertrauen schafft.',
+    items: ['Name und Logo von CleanStar', 'Einheitliche Arbeitskleidung', 'Vorlagen für Angebote und Rechnungen', 'Eigene Regionalseite auf unserer Website'],
   },
   {
     id: 'vertrieb',
@@ -156,55 +150,29 @@ export const partnerModules: PartnerModule[] = [
     icon: 'sales',
     title: 'Vertrieb',
     summary: 'Vom ersten Kontakt bis zum unterschriebenen Auftrag.',
-    items: [
-      'Ablauf der Objektbesichtigung mit Checkliste',
-      'Angebotsvorlagen mit Leistungsverzeichnis',
-      'Kalkulationshilfe auf Stundenbasis',
-      'Gesprächsleitfaden für Geschäftskunden',
-    ],
-    // TODO: mit Nico abstimmen (Kalkulationshilfe und Gesprächsleitfaden existieren schon?)
-    todo: 'Kalkulationshilfe und Gesprächsleitfaden mit Nico abstimmen',
+    items: ['Ablauf der Objektbesichtigung', 'Kalkulation auf Stundenbasis', 'Angebotsvorlagen mit Leistungsverzeichnis', 'Gesprächsleitfaden für Geschäftskunden'],
   },
   {
     id: 'qualitaet',
     enabled: true,
     icon: 'quality',
-    title: 'Qualitätssystem',
-    summary: 'Qualität, die nicht vom Zufall abhängt.',
-    items: ['Checklisten je Leistung und Objekt', 'Regelmäßige Qualitätskontrollen', 'Fester Reklamationsprozess', 'Die CleanStar-Qualitätsgarantie für Ihre Kunden'],
-    // TODO: mit Nico abstimmen (gilt die Qualitätsgarantie 1:1 für Partner?)
-    todo: 'Übertragung der Qualitätsgarantie auf Partner mit Nico abstimmen',
+    title: 'Qualität',
+    summary: 'Unsere Checklisten, Qualitätskontrollen und Qualitätsgarantie gelten 1:1 auch für Partner.',
+    items: ['Checklisten je Leistung und Objekt', 'Regelmäßige Qualitätskontrollen', 'Fester Ablauf bei Reklamationen', 'Die CleanStar-Qualitätsgarantie für Ihre Kunden'],
   },
   {
     id: 'organisation',
     enabled: true,
-    icon: 'organisation',
-    title: 'Organisation',
-    summary: 'Abläufe, die den Alltag planbar machen.',
-    items: ['Einsatzplanung für feste Teams', 'Schlüsselmanagement mit Protokoll', 'Dokumentation der Einsätze', 'Vertretungsregelung bei Ausfall'],
-    // TODO: mit Nico abstimmen
-    todo: 'Unterlagen zur Organisation mit Nico abstimmen',
-  },
-  {
-    id: 'personal',
-    enabled: true,
-    icon: 'people',
-    title: 'Personal',
-    summary: 'Gute Leute finden und gut einarbeiten.',
-    items: ['Vorlagen für Stellenanzeigen', 'Einarbeitungsplan für neue Mitarbeitende', 'Schulungsunterlagen'],
-    // TODO: mit Nico abstimmen
-    todo: 'Personalunterlagen mit Nico abstimmen',
-  },
-  {
-    id: 'support',
-    enabled: true,
     icon: 'support',
-    title: 'Einarbeitung und Support',
+    title: 'Organisation, Personal, Einarbeitung',
     summary: 'Sie stehen nicht allein da.',
-    items: ['Einarbeitung vor dem Start', 'Fester Ansprechpartner bei CleanStar', 'Regelmäßiger Austausch'],
+    items: [
+      'Persönliche Einarbeitung direkt bei Ihnen vor Ort oder bei uns in Offenburg, ganz wie es Ihnen passt',
+      'Einsatzplanung, Schlüsselmanagement und Vertretungsregelung',
+      'Danach ein fester Ansprechpartner bei CleanStar',
+      'Regelmäßiger Austausch',
+    ],
     image: 'partner-onboarding',
-    // TODO: mit Nico abstimmen (Dauer und Ort der Einarbeitung, Rhythmus des Austauschs)
-    todo: 'Dauer der Einarbeitung und Rhythmus des Austauschs mit Nico abstimmen',
   },
 ]
 
@@ -217,7 +185,7 @@ export const partnerSteps = [
   { title: 'Kennenlernen in Offenburg', duration: 'vor Ort', text: 'Sie sehen, wie wir arbeiten, und lernen das Team und die Abläufe kennen.' },
   { title: 'Prüfung', duration: 'Region und Voraussetzungen', text: 'Gemeinsam prüfen wir Ihre Region, Ihre Voraussetzungen und ob die Zusammenarbeit für beide Seiten passt.' },
   { title: 'Partnervertrag', duration: 'schriftlich', text: 'Erst jetzt wird es verbindlich. Sie erhalten alle Unterlagen vorab und haben Zeit, sie prüfen zu lassen.' },
-  { title: 'Einarbeitung', duration: 'vor dem Start', text: 'Abläufe, Kalkulation, Qualitätssystem und Vertrieb, Schritt für Schritt.' },
+  { title: 'Einarbeitung', duration: 'bei Ihnen oder in Offenburg', text: 'Abläufe, Kalkulation, Qualitätssystem und Vertrieb, Schritt für Schritt. Wo, entscheiden Sie.' },
   { title: 'Start in Ihrer Region', duration: 'mit Begleitung', text: 'Sie starten mit festem Ansprechpartner an Ihrer Seite.' },
 ]
 
@@ -225,7 +193,7 @@ export const partnerSteps = [
 /* Konditionen (nur sichtbar bei showConditions: true)                 */
 /* ------------------------------------------------------------------ */
 export const partnerConditions = [
-  // TODO: Konditionen eintragen und anwaltlich prüfen lassen, dann partnerFlags.showConditions auf true
+  // Konditionen eintragen und anwaltlich prüfen lassen, dann partnerFlags.showConditions auf true (siehe OFFENE-PUNKTE.md)
   { label: 'Einstiegsgebühr', value: null as string | null },
   { label: 'Laufende Gebühr', value: null as string | null },
   { label: 'Vertragslaufzeit', value: null as string | null },
@@ -252,52 +220,42 @@ export const partnerFaqs: { q: string; a: string; todo?: string }[] = [
   {
     q: 'Was kostet der Einstieg?',
     a: 'Die Konditionen besprechen wir transparent im persönlichen Gespräch. Bevor Sie etwas unterschreiben, liegen Ihnen alle Kosten schriftlich vor.',
-    todo: 'Konditionen festlegen',
   },
   {
     q: 'Brauche ich Erfahrung in der Reinigungsbranche?',
     a: 'Erfahrung hilft, ist aber nicht in jedem Fall Voraussetzung. Wichtiger sind unternehmerisches Denken, Organisationstalent und ein hoher Qualitätsanspruch. Was Ihnen fachlich fehlt, ist Teil der Einarbeitung.',
-    todo: 'Voraussetzungen für Gründer bestätigen',
   },
   {
     q: 'Muss ich meinen bisherigen Firmennamen aufgeben?',
     a: 'Das klären wir im Gespräch. Wie der Auftritt unter der Marke CleanStar aussieht, regelt der Partnervertrag.',
-    todo: 'Regelung zum Firmennamen festlegen',
   },
   {
     q: 'Gibt es Gebietsschutz?',
     a: 'Ob und in welchem Umfang es einen Gebietsschutz gibt, legen wir im Partnervertrag fest. Auf der Karte sehen Sie, welche Regionen noch frei sind.',
-    todo: 'Gebietsschutz festlegen',
   },
   {
     q: 'Wie lange läuft ein Partnervertrag?',
     a: 'Die Laufzeit steht im Partnervertrag. Sie erhalten ihn vorab und haben ausreichend Zeit, ihn in Ruhe prüfen zu lassen.',
-    todo: 'Vertragslaufzeit festlegen',
   },
   {
     q: 'Wie viel Startkapital brauche ich?',
     a: 'Das hängt davon ab, ob Sie bereits eine Firma haben oder neu gründen, und von Ihrer Region. Wir sprechen das im Erstgespräch offen durch. Im Formular können Sie optional angeben, welchen Rahmen Sie sich vorstellen.',
-    todo: 'Bei Bedarf Orientierung zum Kapitalbedarf ergänzen (anwaltlich prüfen)',
   },
   {
     q: 'Wer gewinnt die Kunden in meiner Region?',
     a: 'Die Kundengewinnung vor Ort liegt in Ihrer Verantwortung als Unternehmer. Wir unterstützen Sie mit Auftritt, Vorlagen und Gesprächsleitfaden. Ob Anfragen über die CleanStar-Website an Partner weitergegeben werden, regelt der Partnervertrag.',
-    todo: 'Weitergabe von Anfragen an Partner klären',
   },
   {
     q: 'Was passiert mit meinen bestehenden Kunden?',
     a: 'Ihre bestehenden Kunden bleiben Ihre Kunden. Wie Sie sie in das CleanStar-System überführen, besprechen wir gemeinsam.',
-    todo: 'Regelung für Bestandskunden bestätigen',
   },
   {
     q: 'Wie läuft die Einarbeitung ab?',
-    a: 'Sie lernen die Abläufe in Offenburg kennen: Objektbesichtigung, Kalkulation, Einsatzplanung, Qualitätskontrolle und Reklamation. Danach begleiten wir Ihren Start mit einem festen Ansprechpartner.',
-    todo: 'Dauer und Inhalte der Einarbeitung festlegen',
+    a: 'Persönlich, direkt bei Ihnen vor Ort oder bei uns in Offenburg, ganz wie es Ihnen passt. Sie lernen Objektbesichtigung, Kalkulation, Einsatzplanung, Qualitätskontrolle und Reklamation kennen. Danach haben Sie einen festen Ansprechpartner und wir tauschen uns regelmäßig aus.',
   },
   {
     q: 'Kann ich nebenberuflich starten?',
     a: 'Das kommt auf Ihre Situation an. Sprechen Sie uns an. Wir sagen Ihnen ehrlich, ob ein nebenberuflicher Start in Ihrem Fall sinnvoll ist.',
-    todo: 'Haltung zu nebenberuflichem Start bestätigen',
   },
   {
     q: 'Ist meine Anfrage verbindlich?',

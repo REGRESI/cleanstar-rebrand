@@ -35,7 +35,7 @@ export const services: Service[] = [
   {
     slug: 'bueroreinigung',
     name: 'Büroreinigung',
-    short: 'Arbeitsplätze, Besprechungsräume, Küchen und Sanitär, verlässlich nach festem Plan.',
+    short: 'Sie kommen morgens in ein sauberes Büro. Jeden Tag, nach festem Plan, mit demselben Team.',
     seoTitle: 'Büroreinigung in Offenburg und im Ortenaukreis',
     seoDescription:
       'Büroreinigung für Unternehmen im Ortenaukreis: fester Ansprechpartner, eingespieltes Team, Qualitätsgarantie. Kostenlose Objektbesichtigung, Angebot in 48 Stunden.',
@@ -118,11 +118,11 @@ export const services: Service[] = [
       },
       {
         q: 'Wer stellt die Reinigungsmittel und Verbrauchsmaterialien?',
-        a: 'Reinigungsmittel und Geräte bringen wir mit. Verbrauchsmaterial wie Seife, Papierhandtücher und Toilettenpapier können Sie selbst stellen oder über uns beziehen. Das legen wir im Angebot fest.',
+        a: 'Reinigungsmittel und Geräte bringen wir mit. Wer Verbrauchsmaterial wie Seife, Papierhandtücher und Toilettenpapier stellt, legen wir im Angebot fest.',
       },
       {
-        q: 'Können wir mit einer Probereinigung starten?',
-        a: 'Ja. Nach der Besichtigung und dem Angebot vereinbaren wir gern eine Probereinigung. So sehen Sie vorab, wie wir arbeiten.',
+        q: 'Wie lange sind wir gebunden?',
+        a: 'Im ersten Monat können Sie jederzeit kündigen, ohne Frist. Danach gilt eine Kündigungsfrist von einem Monat zum Ende des Folgemonats. Eine Probereinigung vor dem Start ist auf Wunsch nach Absprache möglich.',
       },
       {
         q: 'Was passiert, wenn etwas nicht sauber ist?',
@@ -133,7 +133,7 @@ export const services: Service[] = [
   {
     slug: 'unterhaltsreinigung',
     name: 'Unterhaltsreinigung',
-    short: 'Regelmäßige Reinigung von Gewerbeflächen, Praxen und Verwaltungen in festem Rhythmus.',
+    short: 'Praxis, Kanzlei oder Verwaltung bleiben dauerhaft gepflegt, ohne dass Sie daran denken müssen.',
     seoTitle: 'Unterhaltsreinigung für Gewerbe im Ortenaukreis',
     seoDescription:
       'Regelmäßige Unterhaltsreinigung für Praxen, Kanzleien, Verwaltungen und Gewerbeflächen in Offenburg und Umgebung. Fester Plan, festes Team, kostenlose Besichtigung.',
@@ -195,7 +195,7 @@ export const services: Service[] = [
   {
     slug: 'fensterreinigung',
     name: 'Fensterreinigung',
-    short: 'Streifenfreie Fenster, Glastüren und Glasflächen, innen und außen, inklusive Rahmen.',
+    short: 'Klare Sicht und ein Eingang, der Besucher überzeugt. Innen und außen, inklusive Rahmen.',
     seoTitle: 'Fensterreinigung und Glasreinigung im Ortenaukreis',
     seoDescription: 'Fensterreinigung für Büros und Gewerbe in Offenburg, Lahr, Kehl und im ganzen Ortenaukreis. Glasflächen, Rahmen und Falze. Kostenlose Besichtigung.',
     headline: 'Klare Sicht. Streifenfrei.',
@@ -242,7 +242,7 @@ export const services: Service[] = [
   {
     slug: 'treppenhausreinigung',
     name: 'Treppenhausreinigung',
-    short: 'Gepflegte Treppenhäuser, Eingänge und Aufzüge für Geschäftshäuser und Wohnanlagen.',
+    short: 'Der erste Eindruck stimmt: gepflegter Eingang, saubere Treppen, glänzende Handläufe.',
     seoTitle: 'Treppenhausreinigung in Offenburg und Umgebung',
     seoDescription: 'Treppenhausreinigung für Geschäftshäuser, Hausverwaltungen und Wohnanlagen im Ortenaukreis. Regelmäßig, dokumentiert, mit festem Ansprechpartner.',
     headline: 'Der erste Eindruck beginnt im Treppenhaus.',
@@ -293,7 +293,7 @@ export const services: Service[] = [
   {
     slug: 'hallenreinigung',
     name: 'Hallenreinigung',
-    short: 'Reinigung von Lager-, Produktions- und Gewerbehallen mit passender Technik.',
+    short: 'Sichere, saubere Wege in Lager und Produktion. Mit Maschinen, die zu Ihrer Fläche passen.',
     seoTitle: 'Hallenreinigung im Ortenaukreis',
     seoDescription: 'Hallenreinigung für Lager, Produktion und Gewerbe in Offenburg, Lahr, Kehl und Umgebung. Planbar außerhalb Ihrer Betriebszeiten. Kostenlose Besichtigung.',
     headline: 'Saubere Hallen. Ohne Ihren Betrieb aufzuhalten.',
@@ -339,7 +339,7 @@ export const services: Service[] = [
   {
     slug: 'hygienereinigung',
     name: 'Hygienereinigung',
-    short: 'Sanitärbereiche, Küchen, Duschen und Kontaktflächen gründlich reinigen und desinfizieren.',
+    short: 'Sanitär und Küchen, auf die sich Ihr Team verlassen kann. Gründlich gereinigt und desinfiziert.',
     seoTitle: 'Hygienereinigung und Desinfektion im Ortenaukreis',
     seoDescription: 'Hygienereinigung für Sanitärräume, Küchen, Duschen und Kontaktflächen in Unternehmen im Ortenaukreis. Mit klarem Plan und dokumentierten Abläufen.',
     headline: 'Hygiene, die man nicht sieht. Und genau deshalb ernst nimmt.',

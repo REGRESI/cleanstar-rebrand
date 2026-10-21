@@ -20,6 +20,7 @@ Neue Website für CleanStar Dienstleistungen GbR, Offenburg. Büroreinigung für
 | `npm run images` | Fotos aus `bilder/` in AVIF/WebP umwandeln (siehe BILDER.md) |
 | `npm run hero` | Bildsequenzen für das Scroll-Video aus `bilder/hero/hero-1..3.mp4` erzeugen (benötigt ffmpeg) |
 | `npm run docs:bilder` | `BILDER.md` neu erzeugen |
+| `npm run docs:leistungsverzeichnis` | Muster-Leistungsverzeichnis (PDF) aus `src/content/floorplan.ts` neu erzeugen |
 | `node scripts/generate-assets.mjs` | Favicons, OG-Bild, Logo-PNG und Checklisten-PDF neu erzeugen |
 
 ## Was ändere ich wo?
@@ -28,20 +29,27 @@ Alle Inhalte liegen in **`src/content/`**. Für Textänderungen müssen Sie kein
 
 | Datei | Inhalt |
 | --- | --- |
-| `company.ts` | **Firmendaten:** Name, Adresse, Telefon, E-Mail, Öffnungszeiten, Gesellschafter, Reklamationsfrist, Cal.com-Link, Formular-Dienst, Gründer, Firmengeschichte, WhatsApp |
+| `company.ts` | **Firmendaten:** Name, Adresse, Telefon, E-Mail, Erreichbarkeit (24/7), Gesellschafter, USt-ID, Vertragsbedingungen, Reklamationsfrist, Cal.com-Link, Formular-Dienst, Gründer, Firmengeschichte, WhatsApp |
 | `pricing.ts` | **Preise:** Stundensatz brutto min/max, MwSt., Wochen pro Monat, Annahmen des Kostenrechners |
 | `services.ts` | die sechs Leistungen inkl. Leistungsverzeichnis, Intervalle, Zielgruppen, FAQ je Leistung |
 | `locations.ts` | Orte im Einzugsgebiet: Fahrzeit, Koordinaten für die Karte, eigener Text je Ort. Neuer Ort = neuer Eintrag, die Seite entsteht automatisch |
 | `faq.ts` | alle FAQ (`featured: true` = erscheint auf der Startseite) |
 | `site.ts` | Texte der Startseite, Ablauf, Garantie-Prüfpunkte, Werte, Karriere, Stellenangebote, Testimonials, Kundenlogos, Navigation |
 | `images.ts` | alle Bilder mit Alt-Text, Seitenverhältnis und Bild-Prompt |
+| `floorplan.ts` | Büro-Grundriss „Was wird bei Ihnen gereinigt?“: Bereiche und Leistungen mit Häufigkeit (auch Quelle für das Muster-Leistungsverzeichnis als PDF) |
+| `check.ts` | Fragen, Punkte und Hinweise des Reinigungs-Checks (`/reinigungs-check`) |
 
-### Fehlende Daten (TODO)
+### Fehlende Daten
 
-Werte, die noch fehlen, stehen in `company.ts` auf `null`. Die Website zeigt dann einen neutralen Ersatztext und einen **gelben TODO-Hinweis**. Vor dem Livegang:
+Werte, die noch fehlen, stehen in `company.ts` auf `null`. Die Website zeigt dann einen neutralen Text oder blendet die Stelle aus. Was noch zu klären ist, steht in **`OFFENE-PUNKTE.md`**. Zum Prüfen lassen sich mit `showTodoMarkers: true` gelbe Hinweise auf der Seite einblenden.
 
-1. Alle TODOs füllen (Liste unten).
-2. In `company.ts` `showTodoMarkers: false` setzen. Dann verschwinden alle gelben Hinweise.
+### Vertrauenselemente
+
+- **Risikofrei-Siegel** „Erster Monat jederzeit kündbar“ (`src/components/ui/RiskFreeSeal.tsx`): unter dem Hero, im Konfigurator, auf Garantie- und Ablauf-Seite und im Abschluss-CTA. Klick öffnet die Vertragsbedingungen aus `company.ts → contract`.
+- **Ihr Ansprechpartner** (`ContactPerson.tsx`): Foto, Name, Rolle, Telefon und „Jetzt erreichbar · 24/7“. Wer gezeigt wird, steuert `company.newClientContact` (Index in `founders`).
+- **Kosten pro Mitarbeiter:** im Konfigurator (Weg A) und auf der Büroreinigungs-Seite. Monatsbetrag netto ÷ Mitarbeiter ÷ 21,7 Arbeitstage (`pricing.workdaysPerMonth`).
+- **PDF-Zusammenfassung** am Ende des Konfigurators: wird im Browser erzeugt (jsPDF, erst beim Klick geladen), nichts wird gesendet.
+- **Für Ihre Unterlagen** (Kontakt, Anker `#unterlagen`): Firmendaten zum Kopieren, Muster-Leistungsverzeichnis und Checkliste als PDF.
 
 ### Preise ändern
 
@@ -63,13 +71,13 @@ Alle Formulare (Konfigurator, Kontakt, Bewerbung) senden an den Dienst in `compa
 **Web3Forms (voreingestellt):** Auf https://web3forms.com mit `info@cleanstar-dienstleistungen.de` einen kostenlosen Access Key erstellen und bei `accessKey` eintragen.
 **Alternativ Formspree:** `provider: 'formspree'`, `endpoint: 'https://formspree.io/f/XXXX'`.
 
-Solange nichts eingetragen ist, laufen die Formulare im **Vorschau-Modus**: voll durchklickbar, am Ende Erfolgsmeldung mit Hinweis „Vorschau-Modus“, es wird nichts gesendet.
+Der Web3Forms-Key ist eingetragen, die Formulare senden echt. Ohne Key laufen sie im **Vorschau-Modus**: voll durchklickbar, am Ende Erfolgsmeldung mit Hinweis „Vorschau-Modus“, es wird nichts gesendet.
 
 Die Anfrage kommt übersichtlich formatiert als E-Mail (alle Angaben inkl. gewähltem Weg A/B und Richtpreis). Eine **Bestätigungsmail an den Kunden** richten Sie im Dashboard des Dienstes ein (Web3Forms Pro „Autoresponder“ bzw. Formspree „Autoresponse“) und setzen danach `confirmationEmail: true`.
 
 ### Objektbesichtigung online buchen (Cal.com)
 
-`company.ts → booking.calUrl` z. B. `https://cal.com/cleanstar/besichtigung`. Der Kalender lädt erst nach Klick auf „Kalender laden“ (DSGVO). Ohne Link erscheint ein Hinweis mit Telefon und Anfrage-Button.
+`company.ts → booking.calUrl` (eingetragen: `https://cal.com/eknoor-singh-x9pw3a/30min`). Der Kalender lädt erst nach Klick auf „Kalender laden“ (DSGVO). Ohne Link erscheint ein Hinweis mit Telefon und Anfrage-Button.
 
 ### Bilder
 
@@ -144,25 +152,6 @@ scripts/          ← Build-Helfer (Sitemap, Vorschau, Bilder, Assets)
 preview/          ← fertige Einzeldatei-Vorschau
 ```
 
-## Offene Punkte (TODO)
+## Offene Punkte
 
-**Fehlende Firmendaten** (`src/content/company.ts`). Die bisherige Website war für die Build-Umgebung gesperrt und konnte nicht ausgelesen werden:
-
-- Gesellschafter / Vertretungsberechtigte (`partners`), verantwortliche Person nach § 18 MStV
-- Öffnungs- bzw. Erreichbarkeitszeiten (`openingHours`)
-- Hausnummer der Adresse bestätigen (Prinz-Eugen-Str. 80, aus Branchenverzeichnissen mit gleicher Telefonnummer übernommen)
-- Umsatzsteuer-ID (`vatId`), falls vorhanden
-- Gründungsjahr / Jahre Erfahrung (`foundedYear`, `yearsOfExperience`)
-- Reklamationsfrist (`complaintPeriod`)
-- Betriebshaftpflicht bestätigen (`liabilityInsurance`, FAQ „Sind Sie versichert?“)
-- Namen, Statements und Anzahl der Gründer (`founders`), Firmengeschichte (`timeline`, `confirmed: true`)
-- Cal.com-Link (`booking.calUrl`), Formular-Access-Key (`forms.accessKey`), Bestätigungsmail
-- WhatsApp gewünscht? (`whatsapp.enabled`)
-
-**Inhalte bestätigen:** Vertragslaufzeit und Kündigungsfrist (FAQ), Schlüsselprozess, Verschwiegenheitserklärung, Verbrauchsmaterial über CleanStar, Nachhaltigkeitsaussagen, Kontrollrhythmus, Formulierung „Zusagen im Vertrag“, Stellenangebote (Umfang, Vergütung), Benefits für Mitarbeitende, Fahrzeiten der Orte, Annahmen im Kostenrechner (Abgabesätze), Maschinen/Technik bei Hallen- und Fensterreinigung.
-
-**Rechtlich prüfen lassen:** Impressum (Verbraucherstreitbeilegung), Datenschutzerklärung (gelb markierte Stellen: Hoster und AV-Vertrag, Formular-Dienst und Drittlandübermittlung, Cal.com, Speicherdauer Bewerbungen, Datenschutzbeauftragter, § 25 TDDDG).
-
-**Bilder:** 20 von 23 Bildern sind eingebaut. Es fehlen die Gründerporträts (`gruender-1` bis `gruender-3`). Die gelieferten Bilder sind 1672 bzw. 1448 px breit, also kleiner als die empfohlene Mindestbreite; für gestochen scharfe Darstellung auf großen Bildschirmen später höher aufgelöste Versionen nachliefern.
-
-**Partnerprogramm:** alle `TODO`-Punkte in `src/content/partner.ts` (Module, FAQ, Konditionen) bestätigen und die Seite vor dem Livegang anwaltlich prüfen lassen.
+Siehe **`OFFENE-PUNKTE.md`**.

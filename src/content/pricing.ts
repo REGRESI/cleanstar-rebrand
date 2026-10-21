@@ -10,6 +10,8 @@ export const pricing = {
   vatRate: 0.19,
   /** Durchschnittliche Wochen pro Monat (52 / 12) */
   weeksPerMonth: 4.33,
+  /** Durchschnittliche Arbeitstage pro Monat (für „Kosten pro Mitarbeiter und Arbeitstag“) */
+  workdaysPerMonth: 21.7,
 }
 
 export const net = (gross: number) => gross / (1 + pricing.vatRate)
@@ -25,10 +27,17 @@ export function monthlyRange(staff: number, hoursPerVisit: number, visitsPerWeek
   return { hours, grossMin, grossMax, netMin: net(grossMin), netMax: net(grossMax) }
 }
 
+/** Kosten pro Mitarbeiter (im Büro) und Arbeitstag aus der Monatsspanne netto */
+export function perEmployeeDay(netMonthMin: number, netMonthMax: number, employees: number) {
+  const n = Math.max(1, employees)
+  const f = n * pricing.workdaysPerMonth
+  return { min: netMonthMin / f, max: netMonthMax / f }
+}
+
 /**
  * Annahmen für den Kostenvergleich „Eigenes Personal vs. CleanStar“.
  * Das sind Beispielwerte, die Nutzer auf der Seite selbst anpassen können.
- * TODO: Werte einmal mit Steuerberatung oder Lohnbüro abgleichen.
+ * Hinweis: Werte einmal mit Steuerberatung oder Lohnbüro abgleichen (OFFENE-PUNKTE.md).
  */
 export const costAssumptions = {
   hoursPerWeek: 10,

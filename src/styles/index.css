@@ -132,11 +132,11 @@ html.lenis body {
     letter-spacing: -0.035em;
   }
   .heading-1 {
-    @apply text-[2.25rem] leading-[1.05] font-semibold sm:text-5xl lg:text-[4rem];
+    @apply text-[clamp(1.875rem,10vw,2.25rem)] leading-[1.05] font-semibold sm:text-5xl lg:text-[4rem];
     letter-spacing: -0.032em;
   }
   .heading-2 {
-    @apply text-[1.875rem] leading-[1.1] font-semibold sm:text-4xl lg:text-5xl;
+    @apply text-[clamp(1.625rem,8.5vw,1.875rem)] leading-[1.1] font-semibold sm:text-4xl lg:text-5xl;
     letter-spacing: -0.03em;
   }
   .heading-3 {
@@ -261,25 +261,60 @@ html.lenis body {
   animation-delay: var(--d, 0.5s);
 }
 
-/* Problem-Karten: Die Problem-Ebene wird von links nach rechts weggewischt (--wipe von 0 % bis 100 %).
-   Ohne Bewegung bzw. ohne JavaScript bleibt sie ausgeblendet, man sieht direkt die Lösung. */
-.wipe-overlay {
-  display: none;
+/* Problem-Karten: Endzustand ist der Standard (ohne JavaScript, reduzierte Bewegung).
+   Mit Bewegung startet die Karte grau; .is-solved spielt nacheinander ab:
+   Durchstreichen, Lösung einblenden, Haken zeichnen, Karte wird weiß mit feinem blauen Rand. */
+.ps-card {
+  background-color: #fff;
+  box-shadow:
+    inset 0 0 0 1px rgb(31 94 255 / 0.22),
+    0 10px 30px -18px rgb(15 23 42 / 0.25);
+  transition:
+    background-color 0.6s ease 0.85s,
+    box-shadow 0.6s ease 0.85s;
 }
-.js-motion .wipe-overlay {
-  display: flex;
-  clip-path: inset(0 0 0 var(--wipe, 0%));
-}
-/* Durchstreichen pro Zeile, auch bei Umbruch */
-.strike-text {
-  background: linear-gradient(currentColor, currentColor) no-repeat 0 58% / var(--strike, 100%) 2px;
+.ps-strike {
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 58% / 100% 2px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+  color: var(--color-muted);
+  transition:
+    background-size 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+    color 0.4s ease 0.35s;
 }
-.wipe-squeegee {
-  left: calc(var(--wipe, 0%) - 2rem);
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.9) 45%, rgb(45 212 191 / 0.55) 50%, rgb(255 255 255 / 0.9) 55%, transparent);
-  filter: blur(1px);
+.ps-solution {
+  transition:
+    opacity 0.55s ease 0.5s,
+    transform 0.55s var(--ease-out-expo) 0.5s;
+}
+.ps-icon {
+  background-color: rgb(45 212 191 / 0.16);
+  transition: background-color 0.4s ease 0.7s;
+}
+.ps-check {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.5s ease-out 0.75s;
+}
+.js-motion .ps-card:not(.is-solved) {
+  background-color: #eef1f5;
+  box-shadow:
+    inset 0 0 0 1px transparent,
+    0 0 0 0 transparent;
+}
+.js-motion .ps-card:not(.is-solved) .ps-strike {
+  background-size: 0% 2px;
+  color: var(--color-ink);
+}
+.js-motion .ps-card:not(.is-solved) .ps-solution {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.js-motion .ps-card:not(.is-solved) .ps-icon {
+  background-color: rgb(15 23 42 / 0.06);
+}
+.js-motion .ps-card:not(.is-solved) .ps-check {
+  stroke-dashoffset: 26;
 }
 
 /* Hero-Bildfläche: höchstens native Framegröße (Desktop) */
@@ -315,4 +350,32 @@ html.lenis body {
 .flow-step.is-on .flow-body,
 :root:not(.js-motion) .flow-body {
   background: rgb(255 255 255 / 0.08);
+}
+
+/* Button-Gruppen: auf dem Handy untereinander und volle Breite, ab Tablet nebeneinander */
+@media (max-width: 639px) {
+  .btn-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-row > *,
+  .btn-row > * > a,
+  .btn-row > * > button {
+    width: 100%;
+  }
+}
+
+/* Lange deutsche Wörter in Überschriften auf schmalen Bildschirmen sauber trennen statt überstehen lassen */
+h1,
+h2,
+h3,
+.heading-1,
+.heading-2 {
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+.heading-1 .inline-block,
+.heading-2 .inline-block {
+  max-width: 100%;
 }

@@ -3,13 +3,23 @@ import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
-import { Fact, Todo } from '@/components/ui/Todo'
+import { Todo } from '@/components/ui/Todo'
 import { FinalCta } from '@/components/home/FinalCta'
 import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
 import { company } from '@/content/company'
 import { values } from '@/content/site'
 import type { ImageId } from '@/content/images'
 import { breadcrumbSchema } from '@/lib/schema'
+
+/** Wer ist wofür zuständig? who = Index in company.founders */
+const responsibilities = [
+  { topic: 'Angebot und Kalkulation', example: 'Sie möchten wissen, was die Reinigung kostet, oder Leistungen ergänzen.', who: 0 },
+  { topic: 'Rechnungen und Buchhaltung', example: 'Sie haben eine Frage zu einer Rechnung oder brauchen Unterlagen für Ihre Buchhaltung.', who: 0 },
+  { topic: 'Laufende Betreuung', example: 'Sie haben im Alltag einen Wunsch oder eine Frage zur Reinigung.', who: 1 },
+  { topic: 'Qualität und Reklamation', example: 'Etwas ist nicht so, wie es sein soll. Wir kümmern uns und reinigen kostenlos nach.', who: 1 },
+  { topic: 'Team und Vertretung', example: 'Sie möchten wissen, wer bei Ihnen reinigt, oder jemand fällt aus.', who: 2 },
+  { topic: 'Schlüssel und Zugang', example: 'Schlüsselübergabe, Alarmanlage oder geänderte Schließzeiten.', who: 2 },
+]
 
 const trail = [
   { name: 'Start', path: '/' },
@@ -22,8 +32,8 @@ export default function About() {
   return (
     <>
       <Seo
-        title="Über uns: Reinigung mit Gesicht aus Offenburg"
-        description="CleanStar Dienstleistungen GbR aus Offenburg: Menschen, die Verantwortung für jedes Objekt übernehmen. Gründer, Werte und Team."
+        title="Über uns: die Gründer von CleanStar aus Offenburg"
+        description="Nico Schütterle, Lino Resham und Eknoor Singh: die Gründer von CleanStar Dienstleistungen in Offenburg. Wer wofür zuständig ist, unsere Werte und unser Team."
         path="/ueber-uns"
         schema={[breadcrumbSchema(trail)]}
       />
@@ -47,9 +57,7 @@ export default function About() {
               <li key={i} className="flex flex-col overflow-hidden rounded-panel bg-white ring-1 ring-line" data-reveal>
                 <Picture id={f.image as ImageId} rounded="rounded-none" sizes="(min-width:768px) 33vw, 100vw" />
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <h3 className="text-xl font-semibold tracking-tight">
-                    <Fact value={f.name} fallback={`Gründer ${i + 1}`} todo="Name" />
-                  </h3>
+                  <h3 className="text-xl font-semibold tracking-tight">{f.name ?? `Gründer ${i + 1}`}</h3>
                   <p className="text-sm font-semibold text-blue">{f.role.replace('Gründer · ', '')}</p>
                   <p className="mt-4 leading-relaxed text-muted">{f.bio}</p>
                   <p className="mt-6 text-xs font-semibold tracking-[0.12em] text-ink/60 uppercase">Zuständig für</p>
@@ -76,7 +84,41 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-glacier py-24 sm:py-32" aria-labelledby="story-title">
+      <section className="bg-glacier py-24 sm:py-32" aria-labelledby="who-title">
+        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <SectionHeading
+              eyebrow="Zuständigkeiten"
+              title="Wer ist wofür zuständig?"
+              id="who-title"
+              text="Kein Weiterverbinden, kein „Da muss ich nachfragen“. Für jedes Anliegen gibt es einen Verantwortlichen."
+            />
+          </div>
+          <ul className="divide-y divide-line overflow-hidden rounded-panel bg-white ring-1 ring-line lg:col-span-8" data-reveal>
+            {responsibilities.map((r) => {
+              const f = founders[r.who]
+              return (
+                <li key={r.topic} className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-7">
+                  <span>
+                    <span className="block font-semibold text-ink">{r.topic}</span>
+                    <span className="block text-sm text-muted">{r.example}</span>
+                  </span>
+                  {f && (
+                    <span className="inline-flex shrink-0 items-center gap-3 self-start rounded-full bg-glacier py-1.5 pr-4 pl-1.5 sm:self-center">
+                      <span className="block size-9 overflow-hidden rounded-full">
+                        <Picture id={f.image as ImageId} compact rounded="rounded-none" className="h-full w-full aspect-auto!" sizes="40px" />
+                      </span>
+                      <span className="text-sm font-semibold whitespace-nowrap">{f.name}</span>
+                    </span>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </section>
+
+      <section className="py-24 sm:py-32" aria-labelledby="story-title">
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeading eyebrow="Unsere Geschichte" title="Warum es CleanStar gibt." id="story-title" />
@@ -91,13 +133,14 @@ export default function About() {
               Von Offenburg aus, für Unternehmen im ganzen Ortenaukreis.
             </p>
             <p>
-              <Todo title="Persönliche Gründungsgeschichte ergänzen (Jahr, Anlass, erste Kunden). Nur bestätigte Fakten.">Gründungsgeschichte ergänzen</Todo>
+              Wir sind drei Gründer mit klar verteilten Aufgaben: Zahlen und Angebote, Kundenbetreuung und Qualität, Team und Einsatzplanung. Unser Team bringt über{' '}
+              {company.yearsOfExperience} Jahre Erfahrung in der Reinigung mit. Und weil wir rund um die Uhr erreichbar sind, bleibt bei uns kein Anliegen liegen.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="py-24 sm:py-32" aria-labelledby="values-title">
+      <section className="bg-glacier py-24 sm:py-32" aria-labelledby="values-title">
         <div className="container-site">
           <SectionHeading eyebrow="Werte" title="Woran Sie uns messen können." id="values-title" />
           <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -113,13 +156,13 @@ export default function About() {
       </section>
 
       {timeline.length > 0 && (
-        <section className="bg-glacier py-24 sm:py-32" aria-labelledby="timeline-title">
+        <section className="py-24 sm:py-32" aria-labelledby="timeline-title">
           <div className="container-site">
             <SectionHeading eyebrow="Meilensteine" title="Unser Weg bisher." id="timeline-title" />
             <ol className="mt-14 space-y-8 border-l border-line pl-8">
               {timeline.map((t) => (
                 <li key={t.title} className="relative" data-reveal>
-                  <span aria-hidden className="absolute top-1.5 -left-[2.4rem] size-3 rounded-full bg-blue ring-4 ring-glacier" />
+                  <span aria-hidden className="absolute top-1.5 -left-[2.4rem] size-3 rounded-full bg-blue ring-4 ring-white" />
                   <p className="text-sm font-semibold text-blue">{t.year}</p>
                   <h3 className="text-xl font-semibold">{t.title}</h3>
                   <p className="text-muted">{t.text}</p>
@@ -138,7 +181,7 @@ export default function About() {
         </div>
       )}
 
-      <section className="py-24 sm:py-32" aria-labelledby="team-title">
+      <section className="bg-glacier py-24 sm:py-32" aria-labelledby="team-title">
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-7" data-reveal>
             <Picture id="team-work" sizes="(min-width:1024px) 60vw, 100vw" />

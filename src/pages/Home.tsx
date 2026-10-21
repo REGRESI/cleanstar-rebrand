@@ -9,6 +9,7 @@ import { AboutTeaser } from '@/components/home/AboutTeaser'
 import { Testimonials, ClientLogos } from '@/components/home/Testimonials'
 import { FaqTeaser } from '@/components/home/FaqTeaser'
 import { FinalCta } from '@/components/home/FinalCta'
+import { FloorPlan } from '@/features/floorplan/FloorPlan'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Seo } from '@/components/ui/Seo'
 import { BeforeAfter } from '@/features/slider/BeforeAfter'
@@ -37,10 +38,25 @@ export default function Home() {
         <ClientLogos />
       </Chunk>
       <Chunk>
-        <ProblemSolution />
+        <ProblemSolution checkLink />
       </Chunk>
       <Chunk>
         <ServicesGrid />
+      </Chunk>
+      <Chunk>
+        <section className="py-24 sm:py-32" aria-labelledby="plan-title">
+          <div className="container-site">
+            <SectionHeading
+              eyebrow="Raum für Raum"
+              title="Was wird bei Ihnen gereinigt?"
+              id="plan-title"
+              text="Tippen Sie auf einen Bereich. Sie sehen, was dort gemacht wird und wie oft. Genau so steht es später in Ihrem Leistungsverzeichnis."
+            />
+            <div className="mt-12" data-reveal>
+              <FloorPlan />
+            </div>
+          </div>
+        </section>
       </Chunk>
       <Chunk>
         <GuaranteeTeaser />
@@ -77,11 +93,11 @@ export default function Home() {
         </section>
       </Chunk>
       <Chunk>
-        <AboutTeaser />
-        <Testimonials />
+        <FaqTeaser />
       </Chunk>
       <Chunk>
-        <FaqTeaser />
+        <AboutTeaser />
+        <Testimonials />
         <FinalCta />
       </Chunk>
     </>

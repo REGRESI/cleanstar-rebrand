@@ -10,7 +10,7 @@ export function FaqTeaser() {
     <section className="py-24 sm:py-32" aria-labelledby="faq-title">
       <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <SectionHeading eyebrow="Häufige Fragen" title="Kurz beantwortet." id="faq-title" />
+          <SectionHeading eyebrow="Häufige Fragen" title="Was Sie vor dem ersten Gespräch wissen sollten." id="faq-title" />
           <p className="lead mt-5" data-reveal>
             Die Fragen, die uns Geschäftsführer und Office-Manager am häufigsten stellen.
           </p>

@@ -44,7 +44,7 @@ export function PageHero({
               </div>
             )}
             {actions && (
-              <div className="fade-up-now mt-8 flex flex-col gap-3 sm:flex-row" style={{ ['--d' as string]: '0.55s' }}>
+              <div className="btn-row fade-up-now mt-8 flex flex-col gap-3 sm:flex-row" style={{ ['--d' as string]: '0.55s' }}>
                 {actions}
               </div>
             )}

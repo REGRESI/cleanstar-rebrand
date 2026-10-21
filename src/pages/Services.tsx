@@ -36,8 +36,8 @@ export default function Services() {
       <PageHero
         trail={trail}
         eyebrow="Leistungen"
-        title="Alles für saubere Arbeitsräume. Aus einer Hand."
-        lead="Unser Schwerpunkt ist die Büroreinigung. Dazu bieten wir alles, was in und um Ihre Büroflächen anfällt, mit demselben Ansprechpartner und demselben Qualitätsanspruch."
+        title="Ein Ansprechpartner für alles, was sauber sein muss."
+        lead="Unser Schwerpunkt ist die Büroreinigung. Fenster, Treppenhaus, Halle und Hygiene kommen dazu, wenn Sie sie brauchen. Mit demselben Team und demselben Ansprechpartner."
         actions={
           <>
             <QuoteButton size="lg" arrow />

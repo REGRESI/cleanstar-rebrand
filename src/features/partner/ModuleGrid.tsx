@@ -20,12 +20,12 @@ export function ModuleGrid() {
   const modules = partnerModules.filter((m) => m.enabled)
   const [open, setOpen] = useState<string | null>(modules[0]?.id ?? null)
   return (
-    <ul className="grid grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
       {modules.map((m, i) => {
         const I = ICONS[m.icon]
         const isOpen = open === m.id
         return (
-          <li key={m.id} data-reveal className={cn(m.image && isOpen && 'md:col-span-2 lg:col-span-3')}>
+          <li key={m.id} data-reveal className={cn(m.image && isOpen && 'md:col-span-2')}>
             <div
               className={cn(
                 'overflow-hidden rounded-card ring-1 transition-shadow duration-500',

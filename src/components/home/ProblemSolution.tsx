@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { Check, X } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowRight, ClipboardCheck } from 'lucide-react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { home } from '@/content/site'
-import { gsap } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/env'
 
 interface Props {
@@ -11,13 +11,14 @@ interface Props {
   lead?: string
   items?: { problem: string; solution: string }[]
   id?: string
+  /** Link zum Reinigungs-Check zeigen */
+  checkLink?: boolean
 }
 
 /**
- * Probleme werden „weggewischt“: Sobald eine Karte ins Bild kommt, wird das Problem durchgestrichen,
- * ein Abzieher fährt über die Karte und legt die Lösung frei, der Haken springt auf.
- * Die Animation läuft einmal pro Karte und hängt nicht von der Scrollgeschwindigkeit ab.
- * Ohne Bewegung (reduzierte Bewegung, kein JavaScript): Endzustand sofort sichtbar.
+ * Probleme und Lösungen: Kommt eine Karte ins Bild (auf dem Handy etwa in der Bildschirmmitte), wird das Problem
+ * durchgestrichen, die Lösung blendet ein, der Haken zeichnet sich und die Karte wird weiß mit feinem blauen Rand.
+ * Mehrere Karten gleichzeitig: gestaffelt nacheinander. Ohne Bewegung: Endzustand sofort (siehe .ps-card in index.css).
  */
 export function ProblemSolution({
   eyebrow = home.problems.eyebrow,
@@ -25,38 +26,36 @@ export function ProblemSolution({
   lead = home.problems.lead,
   items = home.problems.items,
   id = 'problems-title',
+  checkLink = false,
 }: Props) {
   const root = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!root.current || prefersReducedMotion()) return
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>('[data-wipe]').forEach((card) => {
-        const q = (s: string) => card.querySelector<HTMLElement>(s)
-        const cover = q('[data-cover]')
-        const strike = q('[data-strike]')
-        const squeegee = q('[data-squeegee]')
-        const solution = q('[data-solution-text]')
-        const check = q('[data-check]')
-        const label = q('[data-label]')
-        if (!cover || !strike || !squeegee || !solution || !check || !label) return
-        gsap.set(card, { '--wipe': '0%' })
-        gsap.set(strike, { '--strike': '0%' })
-        gsap.set(solution, { clipPath: 'inset(0 100% 0 0)' })
-        gsap.set(check, { scale: 0, rotate: -30 })
-        gsap.set(label, { opacity: 0 })
-        const tl = gsap.timeline({ defaults: { ease: 'power2.inOut' }, scrollTrigger: { trigger: card, start: 'top 78%', toggleActions: 'play none none none' } })
-        tl.to(strike, { '--strike': '100%', duration: 0.5, ease: 'power2.out' })
-          .to(strike, { color: 'rgb(15 23 42 / 0.45)', duration: 0.3 }, '<0.25')
-          .set(squeegee, { opacity: 1 })
-          .to(card, { '--wipe': '100%', duration: 0.85 })
-          .to(solution, { clipPath: 'inset(0 0% 0 0)', duration: 0.85 }, '<')
-          .to(squeegee, { opacity: 0, duration: 0.2 }, '>-0.1')
-          .to(check, { scale: 1, rotate: 0, duration: 0.5, ease: 'back.out(2.4)' }, '<-0.2')
-          .to(label, { opacity: 1, duration: 0.4 }, '<')
-      })
-    }, root)
-    return () => ctx.revert()
+    const cards = Array.from(root.current?.querySelectorAll<HTMLElement>('.ps-card') ?? [])
+    if (!cards.length) return
+    if (prefersReducedMotion() || typeof IntersectionObserver === 'undefined') {
+      cards.forEach((c) => c.classList.add('is-solved'))
+      return
+    }
+    const mobile = window.matchMedia('(max-width: 767px)').matches
+    const timers: number[] = []
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries
+          .filter((e) => e.isIntersecting)
+          .forEach((e, i) => {
+            io.unobserve(e.target)
+            timers.push(window.setTimeout(() => e.target.classList.add('is-solved'), i * 280))
+          })
+      },
+      // Handy: erst wenn die Karte die Bildschirmmitte erreicht; Desktop: etwas früher
+      { rootMargin: mobile ? '0px 0px -45% 0px' : '0px 0px -18% 0px' },
+    )
+    cards.forEach((c) => io.observe(c))
+    return () => {
+      io.disconnect()
+      timers.forEach((t) => window.clearTimeout(t))
+    }
   }, [])
 
   return (
@@ -68,40 +67,42 @@ export function ProblemSolution({
             <p className="lead mt-6" data-reveal>
               {lead}
             </p>
+            {checkLink && (
+              <Link
+                to="/reinigungs-check"
+                className="group mt-8 flex items-center gap-4 rounded-card bg-glacier p-5 ring-1 ring-transparent transition hover:ring-blue/30"
+                data-reveal
+              >
+                <span className="grid size-11 shrink-0 place-items-center rounded-full bg-white text-blue shadow-soft">
+                  <ClipboardCheck aria-hidden className="size-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-semibold text-ink">Wie gut ist Ihre aktuelle Reinigung?</span>
+                  <span className="block text-sm text-muted">8 Fragen, 2 Minuten. Mit ehrlicher Auswertung.</span>
+                </span>
+                <ArrowRight aria-hidden className="size-5 shrink-0 text-blue transition-transform group-hover:translate-x-1" />
+              </Link>
+            )}
           </div>
         </div>
         <div ref={root} className="space-y-4 lg:col-span-7">
           {items.map((it, i) => (
-            <article key={i} data-wipe className="wipe-card relative isolate overflow-hidden rounded-card bg-white shadow-soft ring-1 ring-line">
-              {/* Lösung (Endzustand) */}
-              <div className="flex items-start gap-4 p-6 sm:p-7">
-                <span data-check aria-hidden className="mt-0.5 grid size-10 shrink-0 place-items-center rounded-full bg-fresh/15 text-fresh-ink">
-                  <Check className="size-5" strokeWidth={2.75} />
-                </span>
-                <div className="min-w-0">
-                  <p data-label className="text-sm text-muted line-through decoration-ink/25">
-                    {it.problem}
-                  </p>
-                  <p data-solution-text className="mt-1.5 text-lg leading-snug font-medium text-ink sm:text-xl">
-                    {it.solution}
-                  </p>
-                </div>
-              </div>
-
-              {/* Problem: liegt darüber und wird nach rechts weggewischt */}
-              <div data-cover aria-hidden className="wipe-overlay absolute inset-0 items-center gap-4 bg-[#eef0f3] p-6 sm:p-7">
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-ink/8 text-ink/50">
-                  <X className="size-5" strokeWidth={2.5} />
-                </span>
-                <p className="text-lg font-medium text-ink/75 sm:text-xl">
-                  <span data-strike className="strike-text">
-                    „{it.problem}“
-                  </span>
+            <article key={i} className="ps-card flex items-start gap-4 rounded-card p-6 sm:gap-5 sm:p-7">
+              <span aria-hidden className="ps-icon mt-0.5 grid size-10 shrink-0 place-items-center rounded-full text-fresh-ink">
+                <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round">
+                  <path className="ps-check" d="M5 12.5l4.5 4.5L19 7.5" />
+                </svg>
+              </span>
+              <div className="min-w-0">
+                <p className="text-base sm:text-lg">
+                  <span className="sr-only">Problem: </span>
+                  <span className="ps-strike">„{it.problem}“</span>
+                </p>
+                <p className="ps-solution mt-2 text-lg leading-snug font-medium text-ink sm:text-xl">
+                  <span className="sr-only">Bei uns: </span>
+                  {it.solution}
                 </p>
               </div>
-
-              {/* Abzieher: helle Kante mit Glanz, fährt mit der Wischkante */}
-              <div data-squeegee aria-hidden className="wipe-squeegee pointer-events-none absolute inset-y-0 w-16 opacity-0" />
             </article>
           ))}
         </div>
