@@ -57,7 +57,9 @@ jobs:
       - name: Warten, bis GitHub Pages die neue Version ausliefert
         run: |
           for i in $(seq 1 40); do
-            read -r code target < <(curl -s -o /dev/null -w "%{http_code} %{redirect_url}" https://regresi.github.io/cleanstar-rebrand/)
+            out=$(curl -s -o /dev/null -w "%{http_code} %{redirect_url}" https://regresi.github.io/cleanstar-rebrand/ || true)
+            code=${out%% *}
+            target=${out#* }
             echo "Versuch $i: HTTP $code ${target:+→ $target}"
             if [ "$code" = "301" ] || [ "$code" = "302" ]; then echo "::warning::Weiterleitung nach $target (eigene Domain noch eingetragen?)"; fi
             [ "$code" = "200" ] && sleep 45 && exit 0
