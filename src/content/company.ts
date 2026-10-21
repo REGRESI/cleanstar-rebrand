@@ -44,7 +44,7 @@ export const company = {
   legalForm: 'GbR',
   legalName: 'CleanStar Dienstleistungen GbR',
   shortName: 'CleanStar',
-  siteUrl: 'https://cleanstar-dienstleistungen.de',
+  siteUrl: 'https://www.cleanstar-dienstleistungen.de',
   seat: 'Offenburg',
   serviceArea: 'Ortenaukreis',
 

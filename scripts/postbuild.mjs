@@ -1,8 +1,8 @@
 // Nach dem Live-Build: sitemap.xml, 404.html und .htaccess erzeugen
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, unlinkSync } from 'node:fs'
 import { join } from 'node:path'
 
-const SITE = 'https://cleanstar-dienstleistungen.de'
+const SITE = 'https://www.cleanstar-dienstleistungen.de' // muss zu company.ts → siteUrl passen
 const dist = 'dist'
 
 // alle vorgerenderten Seiten einsammeln
@@ -77,6 +77,8 @@ if (process.env.PAGES === '1') {
   writeFileSync(join(dist, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
   writeFileSync(join(dist, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>\n')
   writeFileSync(join(dist, '.nojekyll'), '')
+  // Vorschau nie unter der echten Domain veröffentlichen
+  if (existsSync(join(dist, 'CNAME'))) unlinkSync(join(dist, 'CNAME'))
   const missing = pages.filter((pg) => !readFileSync(join(dist, pg, 'index.html'), 'utf8').includes('name="robots" content="noindex'))
   if (missing.length) throw new Error('noindex fehlt auf: ' + missing.join(', '))
   console.log(`✓ Vorschau-Build: noindex auf ${pages.length} Seiten, robots.txt Disallow, Passwort-Sperre`)

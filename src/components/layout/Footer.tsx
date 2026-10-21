@@ -112,12 +112,7 @@ export function Footer() {
                 Datenschutz
               </Link>
             </li>
-            {__PAGES__ && (
-              <li>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-0.5 text-xs font-medium ring-1 ring-line">Vorschau-Version</span>
-              </li>
-            )}
-            {!__PREVIEW__ && !__PAGES__ && (
+            {!__PREVIEW__ && (
               <li>
                 <a href="/sitemap.xml" className="hover:text-ink">
                   Sitemap

@@ -12,8 +12,7 @@ export interface SubmitResult {
  */
 export async function submitForm(opts: { subject: string; replyTo?: string; name?: string; lines: [string, string][]; botcheck?: string }): Promise<SubmitResult> {
   if (opts.botcheck) return { ok: true, preview: false } // Spam-Schutz (Honeypot)
-  // Online-Vorschau (GitHub Pages): Anfragen gehen echt raus, sind aber im Postfach erkennbar
-  const subject = (__PAGES__ ? '[VORSCHAU] ' : '') + opts.subject
+  const subject = opts.subject
   const message = opts.lines.map(([k, v]) => `${k}: ${v || '–'}`).join('\n')
 
   if (!formsConfigured()) {

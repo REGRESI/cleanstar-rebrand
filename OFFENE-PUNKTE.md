@@ -7,7 +7,8 @@ neutralen Text oder blendet die Stelle aus.
 ## Recht und Datenschutz
 
 - **Datenschutzerklärung rechtlich prüfen lassen.** Sie ist sorgfältig erstellt, ersetzt aber keine Rechtsberatung.
-- **Hosting-Anbieter** mit Anschrift in der Datenschutzerklärung nennen (Abschnitt 2) und Speicherdauer der Logfiles laut Hoster eintragen. AV-Vertrag mit dem Hoster abschließen.
+- **Hosting GitHub Pages:** In der Datenschutzerklärung (Abschnitt 2) als Anbieter eingetragen. Bitte rechtlich prüfen lassen: Drittlandübermittlung in die USA und Vertragsgrundlage mit GitHub (Data Protection Agreement, EU-U.S. Data Privacy Framework).
+- **DNS und HTTPS:** www.cleanstar-dienstleistungen.de muss per CNAME auf regresi.github.io zeigen; in Settings → Pages „Enforce HTTPS“ aktivieren, sobald das Zertifikat ausgestellt ist (siehe README).
 - **Web3Forms:** Anbieter, Sitz und Drittlandübermittlung prüfen, AV-Vertrag abschließen, Abschnitt 5 der Datenschutzerklärung ggf. ergänzen.
 - **Cal.com:** Drittlandübermittlung (USA) und AV-Vertrag prüfen, Abschnitt 7 ggf. ergänzen.
 - **Verantwortlich nach § 18 Abs. 2 MStV:** steht jetzt Nico Schütterle (erster Gesellschafter). Bitte bestätigen oder ändern.
@@ -50,5 +51,5 @@ neutralen Text oder blendet die Stelle aus.
 
 ## Technik
 
-- **Formular-Test:** Der Web3Forms-Key ist eingetragen und die Formulare senden jetzt echt. Ein Test aus der Entwicklungsumgebung war nicht möglich, weil deren Netzwerk api.web3forms.com sperrt. Bitte nach dem Livegang einmal eine Testanfrage (Betreff „TEST Website“) über das Kontaktformular senden und prüfen, ob sie im Postfach ankommt.
+- **Formular-Test:** Der Web3Forms-Key ist eingetragen und die Formulare senden echt. Bitte nach dem Livegang einmal eine Testanfrage (Betreff „TEST Website“) über das Kontaktformular senden und prüfen, ob sie im Postfach ankommt. Bei Web3Forms ggf. die Domain www.cleanstar-dienstleistungen.de als erlaubte Absender-Domain eintragen.
 - **Sicherheitsupdate React Router:** `npm audit` meldet zwei mittlere Schwachstellen in react-router 6. Die Behebung erfordert ein Update auf Version 7 (größere Umstellung, separat einplanen).

@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /404
 
-Sitemap: https://cleanstar-dienstleistungen.de/sitemap.xml
+Sitemap: https://www.cleanstar-dienstleistungen.de/sitemap.xml

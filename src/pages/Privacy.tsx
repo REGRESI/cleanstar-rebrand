@@ -50,11 +50,11 @@ export default function Privacy() {
 
             <h2>2. Hosting und Server-Logfiles</h2>
             <p>
-              Diese Website wird bei einem externen Hosting-Anbieter betrieben. <Check>Hosting-Anbieter mit Anschrift nennen</Check> Beim Aufruf der Website verarbeitet der Hoster
-              automatisch Daten, die Ihr Browser übermittelt (IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Referrer, Browser und Betriebssystem). Das ist technisch notwendig,
-              um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Logfiles werden nach kurzer Zeit automatisch
-              gelöscht. <Check>Speicherdauer laut Hoster</Check> Mit dem Hoster besteht ein Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO.{' '}
-              <Check>AV-Vertrag mit Hoster abschließen</Check>
+              Diese Website wird über GitHub Pages bereitgestellt, einen Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Beim Aufruf der
+              Website verarbeitet GitHub automatisch Daten, die Ihr Browser übermittelt (insbesondere IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Referrer, Browser und
+              Betriebssystem). Das ist technisch notwendig, um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Dabei
+              kann eine Übermittlung in die USA stattfinden. Weitere Informationen finden Sie in der Datenschutzerklärung von GitHub (docs.github.com, „GitHub General Privacy
+              Statement“). <Check>Drittlandübermittlung und Vertragsgrundlage mit GitHub prüfen</Check>
             </p>
 
             <h2>3. Cookies und lokale Speicherung</h2>

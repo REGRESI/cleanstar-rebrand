@@ -1,0 +1,91 @@
+# Live-Website auf GitHub Pages: https://www.cleanstar-dienstleistungen.de
+# Bei jedem Push auf den Branch wird die Live-Version gebaut (npm run build: Basis /, indexierbar, ohne Sperre)
+# und in den Branch gh-pages veröffentlicht. public/CNAME hält die eigene Domain bei jedem Deploy fest.
+# GitHub-Einstellung: Settings → Pages → Source „Deploy from a branch“, Branch „gh-pages“, Ordner „/ (root)“.
+name: Website auf GitHub Pages
+
+on:
+  push:
+    branches: [claude/optimistic-hypatia-a2lf28]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Live-Version bauen
+        run: npm run build
+
+      - name: Prüfen, dass Domain-Datei dabei ist und nichts gesperrt ist
+        run: |
+          test "$(cat dist/CNAME)" = "www.cleanstar-dienstleistungen.de"
+          if grep -l 'content="noindex' dist/index.html dist/leistungen/index.html; then echo "::error::noindex gefunden"; exit 1; fi
+          if grep -q 'cs-gate' dist/index.html; then echo "::error::Passwort-Sperre gefunden"; exit 1; fi
+
+      - name: In gh-pages veröffentlichen
+        run: |
+          cd dist
+          touch .nojekyll
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Website von ${GITHUB_SHA::7}"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+          echo "Website: https://www.cleanstar-dienstleistungen.de" >> "$GITHUB_STEP_SUMMARY"
+
+  check:
+    needs: deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: DNS und Erreichbarkeit
+        id: reach
+        run: |
+          echo "DNS www:   $(dig +short www.cleanstar-dienstleistungen.de | tr '\n' ' ')"
+          echo "DNS apex:  $(dig +short cleanstar-dienstleistungen.de | tr '\n' ' ')"
+          out=$(curl -s -o /dev/null -w "%{http_code} %{redirect_url}" https://regresi.github.io/cleanstar-rebrand/ || true)
+          echo "Alte Adresse regresi.github.io/cleanstar-rebrand/: HTTP $out"
+          for i in $(seq 1 40); do
+            out=$(curl -s -o /dev/null -w "%{http_code} %{redirect_url}" https://www.cleanstar-dienstleistungen.de/ || true)
+            echo "Versuch $i: https://www.cleanstar-dienstleistungen.de/ → HTTP $out"
+            if [ "${out%% *}" = "200" ]; then sleep 45; echo "ok=1" >> "$GITHUB_OUTPUT"; exit 0; fi
+            sleep 15
+          done
+          echo "::warning::Die Domain ist per HTTPS noch nicht erreichbar. DNS-Einträge und Zertifikat prüfen (siehe README)."
+          echo "ok=0" >> "$GITHUB_OUTPUT"
+
+      - name: Website im Browser prüfen (Desktop und Handy)
+        if: steps.reach.outputs.ok == '1'
+        run: |
+          npm i --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+          node scripts/check-site.cjs
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: website-screenshots
+          path: site-check/
+          if-no-files-found: ignore

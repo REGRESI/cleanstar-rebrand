@@ -14,7 +14,7 @@ Neue Website für CleanStar Dienstleistungen GbR, Offenburg. Büroreinigung für
 | `npm install` | einmalig: Abhängigkeiten installieren (Node.js 20 oder neuer) |
 | `npm run dev` | Entwicklungsserver unter http://localhost:5173 |
 | `npm run build` | Live-Build: vorgerenderte Seiten, `sitemap.xml`, `404.html`, `.htaccess` in `dist/` |
-| `npm run build:pages` | Online-Vorschau für GitHub Pages bauen: Basis `/cleanstar-rebrand/`, Passwort-Sperre, noindex, „[VORSCHAU]“ im Betreff der Formulare |
+| `npm run build:pages` | passwortgeschützte Vorschau bauen: Basis `/cleanstar-rebrand/`, Passwort-Sperre, noindex |
 | `npm run build:preview` | eine einzige HTML-Datei `preview/cleanstar-website.html` mit allen Seiten (Hash-Routing `#/leistungen` …) |
 | `npm run serve` | den Live-Build lokal ansehen |
 | `npm run lint` / `npm run typecheck` | Code prüfen |
@@ -114,14 +114,17 @@ In `site.ts` vorbereitet, aber ausgeblendet (`enabled: false`). Nur echte Zitate
 - **Schrift:** Inter (variabel), lokal eingebunden unter `src/assets/fonts/`, keine Verbindung zu Google.
 - **Logo:** `src/assets/brand/logo.svg` ist ein Nachbau des Original-Logos als sauberes SVG (Schrift: Poppins Regular in Pfade umgewandelt, Haus und Sterne nachgezeichnet). Das Original-PNG liegt daneben (`logo-original.png`).
 
-## Online-Vorschau (GitHub Pages)
+## Veröffentlichung (GitHub Pages)
 
-Bei jedem Push auf `claude/optimistic-hypatia-a2lf28` baut `.github/workflows/pages-preview.yml` die Vorschau und legt sie in den Branch `gh-pages`. Adresse: https://regresi.github.io/cleanstar-rebrand/
+Die Website läuft unter **https://www.cleanstar-dienstleistungen.de**. Bei jedem Push auf `claude/optimistic-hypatia-a2lf28` baut `.github/workflows/pages.yml` die Live-Version (`npm run build`), legt sie in den Branch `gh-pages` und prüft sie danach im Browser (Desktop und Handy). `public/CNAME` sorgt dafür, dass die Domain bei jedem Deploy erhalten bleibt.
 
-- **Passwort:** `cleanstar2026`, gilt für die Browser-Sitzung. Ändern in `scripts/preview-gate.mjs` (Hash). Die Sperre hält zufällige Besucher fern, ist aber kein echter Zugriffsschutz: Das Repository ist öffentlich.
-- **Nicht bei Google:** jede Seite trägt `noindex`, dazu `robots.txt` mit `Disallow: /` (Suchmaschinen lesen robots.txt nur im Wurzelverzeichnis der Domain, entscheidend ist der noindex-Tag).
-- **Formulare** senden echt, der Betreff beginnt mit „[VORSCHAU]“. Im Footer steht „Vorschau-Version“.
-- Der normale Build (`npm run build`) ist davon nicht betroffen: keine Sperre, indexierbar, Basis `/`.
+**Einmalige Einstellungen**
+- GitHub: Settings → Pages → Source „Deploy from a branch“, Branch `gh-pages`, Ordner `/ (root)`. Custom domain: `www.cleanstar-dienstleistungen.de`, nach Ausstellung des Zertifikats „Enforce HTTPS“ anhaken.
+- DNS beim Domain-Anbieter:
+  - `www` als CNAME auf `regresi.github.io`
+  - die Domain ohne www (`@`) als A-Einträge auf `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`. GitHub leitet sie dann automatisch auf www weiter.
+
+**Passwortgeschützte Vorschau** (z. B. für Partner): `npm run build:pages` baut eine Variante unter `/cleanstar-rebrand/` mit Passwort-Sperre (`scripts/preview-gate.mjs`) und noindex, ohne CNAME. Sie wird aktuell nicht automatisch veröffentlicht.
 
 ## Livegang
 
@@ -130,7 +133,7 @@ Bei jedem Push auf `claude/optimistic-hypatia-a2lf28` baut `.github/workflows/pa
 3. Apache-Hosting: Die mitgelieferte `.htaccess` regelt 404-Seite, HTTPS-Weiterleitung, Caching und Kompression. Bei nginx entsprechend `error_page 404 /404.html;` setzen.
 4. `sitemap.xml` in der Google Search Console einreichen.
 
-Domain ändern: `company.ts → siteUrl`, `public/robots.txt` und `scripts/postbuild.mjs` (`SITE`).
+Domain ändern: `company.ts → siteUrl`, `public/robots.txt`, `public/CNAME` und `scripts/postbuild.mjs` (`SITE`).
 
 ## Technik
 
