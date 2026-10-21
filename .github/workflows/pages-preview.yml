@@ -44,3 +44,33 @@ jobs:
           git commit -q -m "Vorschau von ${GITHUB_SHA::7}"
           git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
           echo "Vorschau: https://regresi.github.io/cleanstar-rebrand/" >> "$GITHUB_STEP_SUMMARY"
+
+  check:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Warten, bis GitHub Pages die neue Version ausliefert
+        run: |
+          for i in $(seq 1 40); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" https://regresi.github.io/cleanstar-rebrand/)
+            echo "Versuch $i: HTTP $code"
+            [ "$code" = "200" ] && sleep 45 && exit 0
+            sleep 15
+          done
+          echo "::error::Die Vorschau ist nicht erreichbar. Ist GitHub Pages aktiviert (Settings → Pages → Branch gh-pages)?"
+          exit 1
+
+      - name: Vorschau im Browser prüfen (Desktop und Handy)
+        run: |
+          npm i --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+          node scripts/check-pages.cjs
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vorschau-screenshots
+          path: pages-check/
+          if-no-files-found: ignore

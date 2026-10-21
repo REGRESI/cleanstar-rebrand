@@ -5,3 +5,4 @@ dist-preview
 *.log
 .DS_Store
 .lighthouse
+pages-check/
