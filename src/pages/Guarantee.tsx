@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { CalendarCheck, Check, Mail, MessageSquareText, Phone, Sparkles } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
 import { Todo } from '@/components/ui/Todo'
@@ -14,6 +15,7 @@ import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { RiskFreeSeal, SealMark } from '@/components/ui/RiskFreeSeal'
 import { useReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
+import { CallbackButton } from '@/features/callback/Callback'
 
 const trail = [
   { name: 'Start', path: '/' },
@@ -57,8 +59,8 @@ export default function Guarantee() {
   return (
     <>
       <Seo
-        title="Qualitätsgarantie: kostenlose Nachreinigung, feste Ansprechpartner"
-        description="Die Qualitätsgarantie von CleanStar: kostenlose Nachreinigung bei Reklamation, regelmäßige Qualitätskontrollen, fester Ansprechpartner, Vertretung bei Ausfall, Schlüsselmanagement und Diskretion."
+        title="Qualitätsgarantie Büroreinigung"
+        description="Qualitätsgarantie von CleanStar: kostenlose Nachreinigung bei Reklamation, eigene Kontrollen, fester Ansprechpartner und Vertretung bei Ausfall."
         path="/qualitaetsgarantie"
         schema={[breadcrumbSchema(trail)]}
       />
@@ -70,6 +72,7 @@ export default function Guarantee() {
         image="quality-check"
         actions={<QuoteButton size="lg" arrow />}
       />
+      <Answer className="pt-12 sm:pt-16">Die Qualitätsgarantie von CleanStar bedeutet: Passt etwas nicht, reinigen wir kostenlos nach und klären die Ursache mit dem Team. Dazu kommen eigene Qualitätskontrollen, ein fester Ansprechpartner und eine Ersatzkraft bei Ausfall.</Answer>
 
       <section className="py-24 sm:py-32" aria-labelledby="points-title">
         <div className="container-site grid grid-cols-1 gap-14 lg:grid-cols-12">
@@ -195,6 +198,7 @@ export default function Guarantee() {
               <Phone aria-hidden className="size-4 text-blue" />
               {company.phone.display}
             </a>
+            <CallbackButton dark className="px-3" />
             <a
               href={`mailto:${company.email}`}
               className="inline-flex min-h-12 max-w-full min-w-0 items-center gap-3 rounded-3xl px-5 py-2 font-semibold ring-1 ring-white/20 transition hover:bg-white/10 sm:rounded-full"

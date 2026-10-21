@@ -32,7 +32,7 @@ export const partnerFlags = {
 export const partnerPage = {
   seoTitle: 'Partnerprogramm Reinigungsfirma',
   seoDescription:
-    'Werden Sie CleanStar-Partner in Ihrer Region: für bestehende Reinigungsfirmen und für Gründer. Erprobte Abläufe für Büroreinigung, Qualitätssystem und Einarbeitung. Unverbindliches Erstgespräch.',
+    'Werden Sie CleanStar-Partner: für Reinigungsfirmen und Gründer in ganz Deutschland. Erprobte Abläufe für Büroreinigung, Qualitätssystem und Einarbeitung.',
   hero: {
     eyebrow: 'Partnerprogramm',
     headline: 'Werden Sie CleanStar-Partner in Ihrer Region.',

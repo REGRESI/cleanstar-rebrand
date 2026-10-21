@@ -2,7 +2,7 @@ import type { RouteRecord } from 'vite-react-ssg'
 import { Layout } from '@/components/layout/Layout'
 import Home from '@/pages/Home'
 import { services } from '@/content/services'
-import { locations } from '@/content/locations'
+import { places } from '@/content/places'
 
 const page = (loader: () => Promise<{ default: React.ComponentType }>) => async () => ({ Component: (await loader()).default })
 
@@ -30,8 +30,24 @@ export const routes: RouteRecord[] = [
       {
         path: 'einzugsgebiet/:ort',
         lazy: page(() => import('@/pages/Location')),
-        getStaticPaths: () => locations.map((l) => `einzugsgebiet/${l.slug}`),
+        getStaticPaths: () => places.map((l) => `einzugsgebiet/${l.slug}`),
       },
+      {
+        path: 'bueroreinigung/:ort',
+        lazy: page(() => import('@/pages/OfficeCity')),
+        // Daten erst beim Build laden, damit sie nicht im Haupt-Bundle landen
+        getStaticPaths: async () => (await import('@/content/officeCities')).officeCities.map((c) => `bueroreinigung/${c.slug}`),
+      },
+      { path: 'ratgeber', lazy: page(() => import('@/pages/Guides')) },
+      {
+        path: 'ratgeber/:slug',
+        lazy: page(() => import('@/pages/GuideArticle')),
+        getStaticPaths: async () => (await import('@/content/ratgeber')).guides.map((g) => `ratgeber/${g.slug}`),
+      },
+      { path: 'angebote-vergleichen', lazy: page(() => import('@/pages/OfferComparePage')) },
+      { path: 'wechsel-rechner', lazy: page(() => import('@/pages/SwitchPage')) },
+      { path: 'reinigungsfirma-kalkulieren', lazy: page(() => import('@/pages/FounderCalcPage')) },
+      { path: 'fakten', lazy: page(() => import('@/pages/Facts')) },
       { path: 'angebot', lazy: page(() => import('@/pages/Quote')) },
       { path: 'karriere', lazy: page(() => import('@/pages/Careers')) },
       { path: 'partner', lazy: page(() => import('@/pages/Partner')) },

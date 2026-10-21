@@ -4,6 +4,7 @@ import { getService, services } from '@/content/services'
 import { home } from '@/content/site'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
 import { Picture } from '@/components/ui/Picture'
@@ -12,6 +13,10 @@ import { ServiceIcon } from '@/components/ui/ServiceIcon'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { FinalCta } from '@/components/home/FinalCta'
 import { BeforeAfter } from '@/features/slider/BeforeAfter'
+import { YearPlan } from '@/features/tools/YearPlan'
+import { locations, shortName } from '@/content/locations'
+import { officeCities } from '@/content/officeCities'
+import { guides } from '@/content/ratgeber'
 import { CostCalculator } from '@/features/cost/CostCalculator'
 import { PerEmployeeCalculator } from '@/features/cost/PerEmployeeCalculator'
 import { FloorPlan } from '@/features/floorplan/FloorPlan'
@@ -33,7 +38,7 @@ export default function ServiceDetail() {
 
   return (
     <>
-      <Seo title={s.seoTitle} description={s.seoDescription} path={path} schema={[serviceSchema(s, path), breadcrumbSchema(trail), faqSchema(s.faqs)]} />
+      <Seo title={s.seoTitle} description={s.seoDescription} path={path} ogType="leistung" schema={[serviceSchema(s, path), breadcrumbSchema(trail), faqSchema(s.faqs)]} />
       <PageHero
         trail={trail}
         eyebrow={s.name}
@@ -49,6 +54,7 @@ export default function ServiceDetail() {
           </>
         }
       />
+      <Answer className="pt-12 sm:pt-16">{`CleanStar übernimmt die ${s.name} für Unternehmen in Offenburg und im ganzen Ortenaukreis. ${s.short}`}</Answer>
 
       {/* Highlights */}
       <section className="py-20 sm:py-28" aria-label="Das zeichnet uns aus">
@@ -193,6 +199,19 @@ export default function ServiceDetail() {
               </div>
             </div>
           </section>
+          <section id="jahresplan" className="scroll-mt-24 bg-glacier py-24 sm:py-32" aria-labelledby="plan-title">
+            <div className="container-site">
+              <SectionHeading
+                eyebrow="Jahres-Reinigungsplan"
+                title="Wir denken das ganze Jahr mit."
+                id="plan-title"
+                text="Laufende Reinigung, Fenster, Grundreinigung, Teppichpflege: Wählen Sie die Intervalle, und Sie sehen, wann was ansteht. Als PDF zum Weitergeben."
+              />
+              <div className="mt-12" data-reveal>
+                <YearPlan />
+              </div>
+            </div>
+          </section>
         </>
       )}
 
@@ -211,6 +230,57 @@ export default function ServiceDetail() {
       <section className="py-24 sm:py-32">
         <div className="container-site">
           <LeadMagnet />
+        </div>
+      </section>
+
+      {/* Interne Verlinkung: Orte und Ratgeber */}
+      <section className="pb-16 sm:pb-20" aria-labelledby="near-title">
+        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-2">
+          <div>
+            <h2 id="near-title" className="text-2xl font-semibold tracking-tight">
+              {s.name} in Ihrer Nähe
+            </h2>
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {(main ? officeCities.map((c) => ({ to: `/bueroreinigung/${c.slug}`, label: `Büroreinigung ${c.name}` })) : [])
+                .concat(
+                  locations
+                    .filter((l) => l.focus.some((f) => f.service === s.slug) && !(main && officeCities.some((c) => c.slug === l.slug)))
+                    .slice(0, main ? 8 : 12)
+                    .map((l) => ({ to: `/einzugsgebiet/${l.slug}`, label: `${s.name} ${shortName(l)}` })),
+                )
+                .map((x) => (
+                  <li key={x.to}>
+                    <Link
+                      to={x.to}
+                      className="inline-flex min-h-10 items-center rounded-full bg-white px-4 text-sm font-medium ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft"
+                    >
+                      {x.label}
+                    </Link>
+                  </li>
+                ))}
+              <li>
+                <Link to="/einzugsgebiet" className="inline-flex min-h-10 items-center rounded-full px-4 text-sm font-semibold text-blue-hover">
+                  Alle Orte im Ortenaukreis
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight">Aus dem Ratgeber</h2>
+            <ul className="mt-6 space-y-2">
+              {guides
+                .filter((g) => g.category === 'unternehmen')
+                .slice(0, 4)
+                .map((g) => (
+                  <li key={g.slug}>
+                    <Link to={`/ratgeber/${g.slug}`} className="group flex items-start gap-2 font-medium text-ink hover:text-blue-hover">
+                      <ArrowUpRight aria-hidden className="mt-1 size-4 shrink-0 text-blue" />
+                      <span className="underline-offset-4 group-hover:underline">{g.title}</span>
+                    </Link>
+                  </li>
+                ))}
+            </ul>
+          </div>
         </div>
       </section>
 

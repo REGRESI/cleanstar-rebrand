@@ -1,6 +1,7 @@
 import { Check } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
 import { Todo } from '@/components/ui/Todo'
@@ -32,8 +33,8 @@ export default function About() {
   return (
     <>
       <Seo
-        title="Über uns: die Gründer von CleanStar aus Offenburg"
-        description="Nico Schütterle, Lino Resham und Eknoor Singh: die Gründer von CleanStar Dienstleistungen in Offenburg. Wer wofür zuständig ist, unsere Werte und unser Team."
+        title="Über uns: Gründer von CleanStar"
+        description="Die Gründer von CleanStar aus Offenburg: Nico Schütterle, Lino Resham und Eknoor Singh. Wer wofür zuständig ist, was uns wichtig ist und wie wir arbeiten."
         path="/ueber-uns"
         schema={[breadcrumbSchema(trail)]}
       />
@@ -43,6 +44,7 @@ export default function About() {
         title="Ein Reinigungsdienst, den Sie persönlich kennen."
         lead="Keine Hotline, keine Zentrale, kein wechselndes Personal. Sie sprechen mit den Gründern selbst, und das Team in Ihrem Büro bleibt dasselbe."
       />
+      <Answer className="pt-12 sm:pt-16">{`CleanStar wurde ${company.foundedYear} in Offenburg von Nico Schütterle, Lino Resham und Eknoor Singh gegründet. Die drei Gesellschafter führen den Betrieb selbst und sind direkt für Kunden erreichbar.`}</Answer>
 
       <section className="py-24 sm:py-32" aria-labelledby="founders-title">
         <div className="container-site">

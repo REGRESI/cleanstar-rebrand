@@ -49,6 +49,17 @@ neutralen Text oder blendet die Stelle aus.
 - **Echte Kundenstimmen** mit Einverständnis (`testimonials.enabled`) und **Kundenlogos** mit Freigabe (`clientLogos.enabled`).
 - **Gründungsgeschichte** in eigenen Worten (Anlass, erste Kunden) für die Seite Über uns.
 
+## SEO, Standorte und Ratgeber (neu)
+
+- **Externe SEO-Aufgaben:** Search Console, Bing, Google-Unternehmensprofil, Bewertungen, Verzeichnisse. Ausführliche Anleitung in **SEO-TODO-EXTERN.md**.
+- **Google-Profil-Link:** nach Einrichtung in `src/content/company.ts` bei `profiles.google` eintragen (erscheint dann in den strukturierten Daten).
+- **Neue Orte im Einzugsgebiet:** 19 Orte ergänzt (Renchen, Rheinau, Kappelrodeck, Sasbach, Lautenbach, Oppenau, Zell am Harmersbach, Biberach, Hausach, Wolfach, Seelbach, Kippenheim, Mahlberg, Ettenheim, Rust, Schwanau, Meißenheim, Berghaupten, Ohlsbach). Bitte bestätigen, dass CleanStar dort wirklich reinigt, und die ungefähren Fahrzeiten (`src/content/places.ts`) prüfen. Nicht gewünschte Orte einfach aus `places.ts` und `locations.ts` löschen.
+- **Ortstexte** (`src/content/locations.ts`) und **Kombiseiten** (`src/content/officeCities.ts`): enthalten nur allgemeine, wahre Aussagen über die Orte. Bitte einmal querlesen, ob alles zu Ihrer Erfahrung passt. Die Beispielrechnungen auf den Kombiseiten sind Richtwerte aus den Stundensätzen.
+- **Ratgeber** (`src/content/ratgeber/`): Rechtliche und steuerliche Angaben sind mit Quellen belegt (Stand Oktober 2026), ersetzen aber keine Beratung. Einmal im Jahr prüfen, besonders zum 1. Januar (Mindestlohn, Sozialversicherung, Minijob). Der Branchenmindestlohn Gebäudereinigung für 2027 wird gerade verhandelt.
+- **Artikel-Autoren:** Jeder Artikel ist einem Gründer zugeordnet (Foto, Rolle). Bitte bestätigen oder in der Artikeldatei bei `author` ändern (0 = Nico, 1 = Lino, 2 = Eknoor).
+- **Rückruf-Formular:** sendet über Web3Forms mit Betreff „Rückruf: …“. Einmal testen und prüfen, dass die Anfrage ankommt.
+- **Partnerprogramm:** Ratgeber und Kalkulationsrechner verweisen auf das Partnerprogramm. Konditionen bleiben „klären wir im Gespräch“, bis sie festgelegt sind.
+
 ## Technik
 
 - **Formular-Test:** Der Web3Forms-Key ist eingetragen und die Formulare senden echt. Bitte nach dem Livegang einmal eine Testanfrage (Betreff „TEST Website“) über das Kontaktformular senden und prüfen, ob sie im Postfach ankommt. Bei Web3Forms ggf. die Domain www.cleanstar-dienstleistungen.de als erlaubte Absender-Domain eintragen.

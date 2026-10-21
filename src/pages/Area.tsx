@@ -1,5 +1,7 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { places } from '@/content/places'
+import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
 import { AreaMap } from '@/features/map/AreaMap'
@@ -16,9 +18,10 @@ export default function Area() {
   return (
     <>
       <Seo
-        title="Einzugsgebiet: Büroreinigung im ganzen Ortenaukreis"
-        description="CleanStar reinigt Büros in Offenburg, Lahr, Kehl, Achern, Oberkirch, Gengenbach, Haslach und weiteren Orten im Ortenaukreis. Kurze Wege, fester Ansprechpartner."
+        title="Büroreinigung Ortenaukreis: alle Orte"
+        description="Büroreinigung im ganzen Ortenaukreis: CleanStar aus Offenburg reinigt in Lahr, Kehl, Achern, Oberkirch und vielen weiteren Orten. Karte mit Fahrzeiten."
         path="/einzugsgebiet"
+        ogType="standort"
         schema={[breadcrumbSchema(trail)]}
       />
       <PageHero
@@ -28,6 +31,7 @@ export default function Area() {
         lead="Unser Sitz ist in Offenburg, mitten im Kreis. Von hier aus sind wir schnell bei Ihnen, ob in Kehl am Rhein, in Achern im Norden oder in Haslach im Kinzigtal."
         actions={<QuoteButton size="lg" arrow />}
       />
+      <Answer className="pt-12 sm:pt-16">{`CleanStar reinigt Büros und Gewerbeflächen in ${places.length} Orten im Ortenaukreis, von Rheinau im Norden bis Ettenheim und Rust im Süden und Wolfach im Kinzigtal. Unser Sitz ist in Offenburg.`}</Answer>
       <section className="py-20 sm:py-28" aria-labelledby="map-title">
         <div className="container-site">
           <h2 id="map-title" className="sr-only">

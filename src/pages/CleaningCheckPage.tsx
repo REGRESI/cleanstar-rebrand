@@ -13,8 +13,8 @@ export default function CleaningCheckPage() {
   return (
     <>
       <Seo
-        title="Reinigungs-Check: Wie gut ist Ihre aktuelle Büroreinigung?"
-        description={`${checkQuestions.length} kurze Fragen, zwei Minuten: Prüfen Sie, wie verlässlich Ihre Büroreinigung heute ist. Mit Auswertung und konkreten Hinweisen. Keine Anmeldung, nichts wird gespeichert.`}
+        title="Reinigungs-Check: Büroreinigung testen"
+        description={`Wie gut ist Ihre aktuelle Büroreinigung? ${checkQuestions.length} kurze Fragen, zwei Minuten, mit Auswertung und konkreten Hinweisen. Ohne Anmeldung, nichts wird gespeichert.`}
         path="/reinigungs-check"
         schema={[breadcrumbSchema(trail)]}
       />

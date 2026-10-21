@@ -1,5 +1,6 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { Answer } from '@/components/ui/Answer'
 import { ServicesGrid } from '@/components/home/ServicesGrid'
 import { FinalCta } from '@/components/home/FinalCta'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -28,9 +29,10 @@ export default function Services() {
   return (
     <>
       <Seo
-        title="Leistungen: Büroreinigung, Unterhalts-, Fenster- und Hygienereinigung"
-        description="Alle Leistungen von CleanStar Dienstleistungen im Überblick: Büroreinigung, Unterhaltsreinigung, Fensterreinigung, Treppenhausreinigung, Hallenreinigung und Hygienereinigung im Ortenaukreis."
+        title="Gebäudereinigung Offenburg: Leistungen"
+        description="Alle Leistungen von CleanStar für Unternehmen im Ortenaukreis: Büro-, Unterhalts-, Fenster-, Treppenhaus-, Hallen- und Hygienereinigung aus einer Hand."
         path="/leistungen"
+        ogType="leistung"
         schema={[breadcrumbSchema(trail)]}
       />
       <PageHero
@@ -47,6 +49,7 @@ export default function Services() {
           </>
         }
       />
+      <Answer className="pt-12 sm:pt-16">CleanStar bietet Unternehmen im Ortenaukreis Büroreinigung, Unterhaltsreinigung, Fensterreinigung, Treppenhausreinigung, Hallenreinigung und Hygienereinigung aus einer Hand, mit einem festen Ansprechpartner für alle Leistungen.</Answer>
       <ServicesGrid heading={false} />
       <section className="py-24 sm:py-32" aria-labelledby="incl-title">
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">

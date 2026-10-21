@@ -4,6 +4,7 @@ import { Picture } from '@/components/ui/Picture'
 import { company } from '@/content/company'
 import type { ImageId } from '@/content/images'
 import { cn } from '@/lib/cn'
+import { CallbackButton } from '@/features/callback/Callback'
 
 /** Ansprechpartner für Neukunden (company.newClientContact) */
 export const newClientContact = () => company.founders[company.newClientContact] ?? company.founders[0]
@@ -77,7 +78,10 @@ export function ContactPerson({ dark, compact, className, title = 'Ihr Ansprechp
           </a>
         )}
       </div>
-      <AvailableNow dark={dark} className="mt-4" />
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+        <AvailableNow dark={dark} />
+        <CallbackButton dark={dark} />
+      </div>
     </div>
   )
 }

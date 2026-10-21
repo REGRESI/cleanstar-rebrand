@@ -14,9 +14,12 @@ export const navigation = [
 ]
 
 export const home = {
-  seoTitle: 'Büroreinigung in Offenburg und im Ortenaukreis',
+  /** Kurze, direkte Antwort unter dem Hero (für Besucher, Suchmaschinen und KI-Systeme) */
+  answer:
+    'CleanStar ist eine Reinigungsfirma aus Offenburg, die sich auf Büroreinigung für Unternehmen im Ortenaukreis spezialisiert hat. Wir arbeiten mit festen Teams, einem festen Ansprechpartner und einer Ersatzkraft bei Ausfall, zu 35 bis 45 € brutto pro Mitarbeiterstunde.',
+  seoTitle: 'Büroreinigung Offenburg & Ortenaukreis',
   seoDescription:
-    'CleanStar Dienstleistungen aus Offenburg: Büroreinigung für Unternehmen im Ortenaukreis. Fester Ansprechpartner, Ersatzkraft bei Ausfall, Qualitätsgarantie. Kostenlose Besichtigung, Angebot in 48 Stunden.',
+    'Reinigungsfirma aus Offenburg für Büroreinigung im Ortenaukreis: festes Team, fester Ansprechpartner, Ersatz bei Ausfall und Angebot in 48 Stunden.',
   hero: {
     eyebrow: 'Büroreinigung in Offenburg und der Ortenau',
     headline: 'Büroreinigung, auf die Verlass ist.',
@@ -189,8 +192,8 @@ export const values = [
 ]
 
 export const careers = {
-  seoTitle: 'Karriere: Jobs in der Reinigung in Offenburg',
-  seoDescription: 'Jobs bei CleanStar Dienstleistungen in Offenburg und im Ortenaukreis. Feste Objekte, planbare Zeiten, ein Team, das zusammenhält. Bewerbung in 2 Minuten.',
+  seoTitle: 'Jobs Reinigung Offenburg: Karriere',
+  seoDescription: 'Jobs bei CleanStar in Offenburg und im Ortenaukreis: feste Objekte, planbare Zeiten und ein Team, das zusammenhält. Bewerbung in 2 Minuten, auch per Telefon.',
   headline: 'Arbeiten bei CleanStar. Planbar, fair, im Team.',
   intro:
     'Gute Reinigung braucht gute Leute. Wir suchen Menschen, die sorgfältig arbeiten und sich auf ein verlässliches Team freuen. Die Bewerbung dauert zwei Minuten, Lebenslauf brauchen Sie keinen.',

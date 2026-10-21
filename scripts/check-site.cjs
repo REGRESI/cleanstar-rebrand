@@ -85,7 +85,28 @@ fs.mkdirSync('site-check', { recursive: true })
     'robots.txt erlaubt Indexierung, Sitemap auf www',
   )
   const sitemap = await (await fetch(B + '/sitemap.xml')).text()
-  ok((sitemap.match(/<loc>https:\/\/www\.cleanstar-dienstleistungen\.de\//g) || []).length > 30, 'Sitemap mit www-Adressen')
+  ok((sitemap.match(/<loc>https:\/\/www\.cleanstar-dienstleistungen\.de\//g) || []).length > 70, 'Sitemap mit www-Adressen (inkl. Ratgeber und Orte)')
+  ok(/GPTBot[\s\S]*ClaudeBot[\s\S]*PerplexityBot[\s\S]*Google-Extended/.test(robots), 'robots.txt erlaubt KI-Crawler')
+  const llms = await fetch(B + '/llms.txt')
+  ok(llms.ok && (await llms.text()).startsWith('# CleanStar'), 'llms.txt erreichbar')
+  ok((await fetch(B + '/llms-full.txt')).ok, 'llms-full.txt erreichbar')
+  for (const path of ['/ratgeber/', '/ratgeber/bueroreinigung-kosten/', '/bueroreinigung/offenburg/', '/einzugsgebiet/wolfach/', '/fakten/', '/angebote-vergleichen/', '/wechsel-rechner/', '/reinigungsfirma-kalkulieren/']) {
+    const html = await (await fetch(B + path)).text()
+    ok(/<h1[\s>]/.test(html) && /application\/ld\+json/.test(html) && /<meta[^>]*name="description"/.test(html), `Vorgerendert mit H1, Description und JSON-LD: ${path}`)
+  }
+
+  // Weiterleitung ohne www → www (nur Hinweis: hängt von den DNS-Einträgen der Hauptdomain ab)
+  if (B.includes('www.cleanstar-dienstleistungen.de')) {
+    for (const apex of ['https://cleanstar-dienstleistungen.de/', 'http://cleanstar-dienstleistungen.de/']) {
+      try {
+        const r = await fetch(apex, { redirect: 'manual' })
+        const loc = r.headers.get('location') || ''
+        console.log(`${r.status >= 300 && r.status < 400 && loc.startsWith('https://www.cleanstar-dienstleistungen.de') ? 'PASS' : 'HINWEIS'} Weiterleitung ${apex} → ${r.status} ${loc}`)
+      } catch (e) {
+        console.log(`HINWEIS Weiterleitung ${apex} nicht erreichbar: ${e.cause?.code || e.message}`)
+      }
+    }
+  }
   await b.close()
   if (failed) process.exit(1)
 })()

@@ -10,6 +10,8 @@ export function startSmoothScroll() {
   lenis.on('scroll', ScrollTrigger.update)
   gsap.ticker.add(tick)
   gsap.ticker.lagSmoothing(0)
+  // Für automatische Tests (scripts/test-navigation.mjs)
+  ;(window as Window & { __lenis?: Lenis }).__lenis = lenis
   return lenis
 }
 
@@ -22,6 +24,7 @@ export function stopSmoothScroll() {
   gsap.ticker.remove(tick)
   lenis.destroy()
   lenis = null
+  delete (window as Window & { __lenis?: Lenis }).__lenis
 }
 
 export const getLenis = () => lenis
@@ -31,6 +34,22 @@ export function scrollToTop(immediate = true) {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (lenis) lenis.scrollTo(0, { immediate: immediate || reduce, force: true })
   else window.scrollTo({ top: 0, behavior: (immediate || reduce ? 'instant' : 'smooth') as ScrollBehavior })
+}
+
+/**
+ * Seitenwechsel: hart auf eine Position setzen (Lenis und nativ). Eine laufende Wisch-Bewegung (Schwung auf
+ * iOS/Android) wird abgebrochen, indem das Scrollen für einen Frame gesperrt wird, sonst trägt der Schwung
+ * die neue Seite nach unten.
+ */
+export function jumpTo(y: number) {
+  const root = document.documentElement
+  const prev = root.style.overflow
+  root.style.overflow = 'hidden'
+  if (lenis) lenis.scrollTo(y, { immediate: true, force: true })
+  window.scrollTo({ top: y, left: 0, behavior: 'instant' as ScrollBehavior })
+  root.style.overflow = prev
+  if (lenis) lenis.scrollTo(y, { immediate: true, force: true })
+  window.scrollTo({ top: y, left: 0, behavior: 'instant' as ScrollBehavior })
 }
 
 /**

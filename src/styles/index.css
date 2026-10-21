@@ -99,6 +99,11 @@
   .on-dark :focus-visible {
     outline-color: var(--color-fresh);
   }
+  /* Sichtbare Rückmeldung beim Tippen auf Links und Buttons (Mobile) */
+  a,
+  button {
+    -webkit-tap-highlight-color: rgb(31 94 255 / 0.14);
+  }
   [hidden] {
     display: none !important;
   }

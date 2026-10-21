@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useHref, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Clock, MapPin } from 'lucide-react'
-import { hq, locations, type Location } from '@/content/locations'
+import { hq, places as locations, shortName, type Place as Location } from '@/content/places'
 import { cn } from '@/lib/cn'
 
 /**
@@ -173,7 +173,7 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
                   className="ring"
                   cx={x}
                   cy={y}
-                  r={on ? 10 : 7}
+                  r={on ? 10 : l.major ? 7 : 5}
                   fill="#fff"
                   stroke={on ? '#1f5eff' : '#0a1628'}
                   strokeOpacity={on ? 1 : 0.35}
@@ -181,9 +181,10 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
                   style={{ transition: 'r .25s' }}
                 />
                 <circle cx={x} cy={y} r={on ? 4.5 : 3} fill={on ? '#1f5eff' : '#0a1628'} style={{ transition: 'r .25s' }} />
-                {!compact && (
+                {/* Beschriftung nur für größere Orte (sonst zu eng), kleinere beim Darüberfahren */}
+                {!compact && (l.major || on) && (
                   <text {...labelAttrs(l.slug, x, y)} fontSize="13" fontWeight={on ? 600 : 500} fill={on ? '#1f5eff' : '#0a1628'}>
-                    {l.name.replace(' im Kinzigtal', '')}
+                    {shortName(l)}
                   </text>
                 )}
               </a>
@@ -252,7 +253,7 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
                   active?.slug === l.slug ? 'bg-blue text-white ring-blue' : 'bg-white text-ink ring-line hover:ring-blue/40',
                 )}
               >
-                <span className="font-medium">{l.name.replace(' im Kinzigtal', '')}</span>
+                <span className="font-medium">{shortName(l)}</span>
                 <span className={cn('shrink-0 tabular-nums', active?.slug === l.slug ? 'text-white/80' : 'text-muted')}>{l.minutes === 0 ? 'Sitz' : `${l.minutes}′`}</span>
               </Link>
             </li>

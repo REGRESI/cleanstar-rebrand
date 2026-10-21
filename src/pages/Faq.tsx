@@ -24,8 +24,8 @@ export default function Faq() {
   return (
     <>
       <Seo
-        title="FAQ: Häufige Fragen zur Büroreinigung"
-        description="Antworten auf häufige Fragen: Kosten, Vertragslaufzeit, Kündigung, Schlüssel, Versicherung, Reinigungsmittel, Ausfälle, Zeiten und Probereinigung."
+        title="FAQ Büroreinigung: Häufige Fragen"
+        description="Antworten auf häufige Fragen zur Büroreinigung: Kosten, Vertragslaufzeit, Kündigung, Schlüssel, Versicherung, Reinigungsmittel, Ausfälle und Reinigungszeiten."
         path="/faq"
         schema={[faqSchema(faqs.filter((f) => !f.todo)), breadcrumbSchema(trail)]}
       />

@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { Check, MessagesSquare, Phone, FileDown } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
 import { Button } from '@/components/ui/Button'
@@ -42,6 +43,7 @@ export default function Partner() {
       <Seo
         title={page.seoTitle}
         description={page.seoDescription}
+        ogType="partner"
         path="/partner"
         schema={[breadcrumbSchema(trail), faqSchema(partnerFaqs.filter((f) => !f.todo).map(({ q, a }) => ({ q, a })))]}
       />
@@ -67,6 +69,7 @@ export default function Partner() {
           {page.hero.note}
         </p>
       </PageHero>
+      <Answer className="pt-12 sm:pt-16">Das CleanStar-Partnerprogramm richtet sich an Reinigungsfirmen und Gründer in ganz Deutschland, die mit erprobten Abläufen, Vorlagen und Werkzeugen aus unserem Betrieb in Offenburg arbeiten möchten. Konditionen klären wir im persönlichen Gespräch.</Answer>
 
       <Chunk>
         <ProblemSolution id="partner-problems" eyebrow={page.problems.eyebrow} headline={page.problems.headline} lead={page.problems.lead} items={page.problems.items} />

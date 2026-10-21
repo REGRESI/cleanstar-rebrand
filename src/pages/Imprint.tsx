@@ -1,6 +1,6 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
-import { company } from '@/content/company'
+import { company, fullAddress } from '@/content/company'
 
 const trail = [
   { name: 'Start', path: '/' },
@@ -10,7 +10,7 @@ const trail = [
 export default function Imprint() {
   return (
     <>
-      <Seo title="Impressum" description={`Impressum der ${company.legalName}, ${company.address.city}.`} path="/impressum" />
+      <Seo title="Impressum" description={`Impressum der ${company.legalName}, ${fullAddress()}: vertretungsberechtigte Gesellschafter, Kontakt und Umsatzsteuer-ID.`} path="/impressum" />
       <PageHero trail={trail} title="Impressum" />
       <section className="py-16 sm:py-24">
         <div className="container-site">

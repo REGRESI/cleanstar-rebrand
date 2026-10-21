@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:preview": "vite --mode preview",
-    "build": "tsc -b && vite-react-ssg build && node scripts/postbuild.mjs",
+    "build": "tsc -b && vite-react-ssg build && node scripts/postbuild.mjs && node scripts/llms.mjs",
     "build:pages": "PAGES=1 npm run build",
     "build:preview": "tsc -b && vite build --mode preview && node scripts/postpreview.mjs",
     "serve": "vite preview",
@@ -15,7 +15,9 @@
     "images": "node scripts/images.mjs",
     "hero": "node scripts/hero-frames.mjs",
     "docs:bilder": "node scripts/gen-bilder-md.mjs",
-    "docs:leistungsverzeichnis": "node scripts/leistungsverzeichnis.mjs"
+    "docs:leistungsverzeichnis": "node scripts/leistungsverzeichnis.mjs",
+    "og": "node scripts/generate-og.mjs",
+    "test:navigation": "node scripts/test-navigation.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^6.0.0",

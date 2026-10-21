@@ -1,6 +1,7 @@
 import { Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { ContactForm } from '@/features/forms/ContactForm'
 import { BookingEmbed } from '@/features/booking/BookingEmbed'
@@ -26,8 +27,8 @@ export default function Contact() {
   return (
     <>
       <Seo
-        title="Kontakt: Reinigungsfirma in Offenburg"
-        description={`Kontakt zu CleanStar Dienstleistungen in Offenburg: Telefon ${company.phone.display}, E-Mail ${company.email}. Kostenlose Objektbesichtigung buchen.`}
+        title="Kontakt: Reinigungsfirma Offenburg"
+        description={`Kontakt zu CleanStar in Offenburg: Telefon ${company.phone.display}, E-Mail ${company.email}, 24/7 erreichbar. Kostenlose Besichtigung direkt buchen.`}
         path="/kontakt"
         schema={[localBusinessSchema(), breadcrumbSchema(trail)]}
       />
@@ -38,6 +39,7 @@ export default function Contact() {
         title="Sprechen wir über Ihr Objekt."
         lead="Rufen Sie an, schreiben Sie uns oder buchen Sie direkt einen Termin für die kostenlose Besichtigung. Wir melden uns innerhalb von 24 Stunden."
       />
+      <Answer className="pt-12 sm:pt-16">{`CleanStar erreichen Sie rund um die Uhr telefonisch unter ${company.phone.display} oder per E-Mail an ${company.email}. Unsere Adresse: ${fullAddress()}. Auf Anfragen antworten wir innerhalb von ${company.promises.responseHours} Stunden.`}</Answer>
 
       <section className="py-20 sm:py-28" aria-label="Kontaktwege">
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">

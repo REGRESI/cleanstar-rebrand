@@ -16,7 +16,7 @@ export default function Privacy() {
   const provider = company.forms.provider === 'web3forms' ? 'Web3Forms' : 'Formspree (Formspree, Inc., USA)'
   return (
     <>
-      <Seo title="Datenschutzerklärung" description={`Datenschutzerklärung der ${company.legalName}.`} path="/datenschutz" />
+      <Seo title="Datenschutzerklärung" description={`Datenschutzerklärung der ${company.legalName} aus Offenburg: welche Daten wir verarbeiten, wofür, wie lange und welche Rechte Sie als Besucher haben.`} path="/datenschutz" />
       <PageHero
         trail={trail}
         title="Datenschutzerklärung"

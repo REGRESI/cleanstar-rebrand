@@ -4,6 +4,7 @@ import { company } from '@/content/company'
 import { Picture } from '@/components/ui/Picture'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import type { ImageId } from '@/content/images'
+import { CallbackButton } from '@/features/callback/Callback'
 
 const points = [
   'Kostenlos und unverbindlich',
@@ -84,6 +85,7 @@ export function BookingEmbed() {
           <Phone aria-hidden className="size-4 text-blue" />
           Lieber telefonisch: {company.phone.display}
         </a>
+        <CallbackButton className="mt-1 flex" />
       </div>
     </div>
   )

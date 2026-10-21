@@ -52,8 +52,8 @@ export default function Process() {
   return (
     <>
       <Seo
-        title="So arbeiten wir zusammen: vom Anruf bis zur Routine"
-        description="Anfrage, kostenlose Objektbesichtigung, Angebot in 48 Stunden, fester Start, erster Monat jederzeit kündbar und regelmäßige Qualitätskontrolle. So läuft die Zusammenarbeit mit CleanStar."
+        title="Ablauf: So arbeiten wir zusammen"
+        description="Anfrage, kostenlose Besichtigung, Angebot in 48 Stunden, fester Start und regelmäßige Kontrolle: So läuft die Zusammenarbeit mit CleanStar aus Offenburg ab."
         path="/ablauf"
         schema={[breadcrumbSchema(trail)]}
       />

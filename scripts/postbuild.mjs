@@ -18,7 +18,7 @@ walk(dist)
 
 // PDF-Erzeugung (jsPDF) erst beim Klick laden: vite-react-ssg setzt für alle dynamischen Imports
 // einer Seite modulepreload-Links. Die schweren PDF-Bausteine nehmen wir wieder heraus.
-const lazyOnly = /<link rel="modulepreload"[^>]*href="\/assets\/(summaryPdf|jspdf\.es\.min|html2canvas\.esm|purify\.es|index\.es)-[^"]+\.js">/g
+const lazyOnly = /<link rel="modulepreload"[^>]*href="\/assets\/(summaryPdf|yearPlanPdf|jspdf\.es\.min|html2canvas\.esm|purify\.es|index\.es)-[^"]+\.js">/g
 for (const page of pages) {
   const file = join(dist, page, 'index.html')
   const html = readFileSync(file, 'utf8')
@@ -28,7 +28,15 @@ for (const page of pages) {
 const urls = pages.filter((p) => !p.startsWith('/404')).sort()
 const today = new Date().toISOString().slice(0, 10)
 const prio = (u) =>
-  u === '/' ? '1.0' : u.startsWith('/leistungen') || u === '/angebot' ? '0.9' : u.startsWith('/einzugsgebiet/') ? '0.7' : u.match(/impressum|datenschutz/) ? '0.2' : '0.6'
+  u === '/'
+    ? '1.0'
+    : u.startsWith('/leistungen') || u === '/angebot/' || u.startsWith('/bueroreinigung/')
+      ? '0.9'
+      : u.startsWith('/einzugsgebiet') || u.startsWith('/ratgeber')
+        ? '0.7'
+        : u.match(/impressum|datenschutz/)
+          ? '0.2'
+          : '0.6'
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${today}</lastmod><priority>${prio(u)}</priority></url>`).join('\n')}

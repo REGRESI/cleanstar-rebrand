@@ -36,9 +36,9 @@ export const services: Service[] = [
     slug: 'bueroreinigung',
     name: 'Büroreinigung',
     short: 'Sie kommen morgens in ein sauberes Büro. Jeden Tag, nach festem Plan, mit demselben Team.',
-    seoTitle: 'Büroreinigung in Offenburg und im Ortenaukreis',
+    seoTitle: 'Büroreinigung Offenburg & Ortenau',
     seoDescription:
-      'Büroreinigung für Unternehmen im Ortenaukreis: fester Ansprechpartner, eingespieltes Team, Qualitätsgarantie. Kostenlose Objektbesichtigung, Angebot in 48 Stunden.',
+      'Büroreinigung in Offenburg und im Ortenaukreis: festes Team, Ersatzkraft bei Ausfall, Qualitätsgarantie. 35 bis 45 € brutto pro Stunde, Angebot in 48 Stunden.',
     headline: 'Büroreinigung, auf die Sie sich verlassen können.',
     intro:
       'Ihr Büro ist morgens sauber. Jeden Tag, ohne dass Sie nachfragen müssen. Wir reinigen nach einem schriftlich vereinbarten Leistungsverzeichnis, mit festem Team und einem Ansprechpartner, der Ihr Objekt kennt.',
@@ -134,9 +134,9 @@ export const services: Service[] = [
     slug: 'unterhaltsreinigung',
     name: 'Unterhaltsreinigung',
     short: 'Praxis, Kanzlei oder Verwaltung bleiben dauerhaft gepflegt, ohne dass Sie daran denken müssen.',
-    seoTitle: 'Unterhaltsreinigung für Gewerbe im Ortenaukreis',
+    seoTitle: 'Unterhaltsreinigung Offenburg',
     seoDescription:
-      'Regelmäßige Unterhaltsreinigung für Praxen, Kanzleien, Verwaltungen und Gewerbeflächen in Offenburg und Umgebung. Fester Plan, festes Team, kostenlose Besichtigung.',
+      'Unterhaltsreinigung für Praxen, Kanzleien, Verwaltungen und Gewerbeflächen in Offenburg und Umgebung. Fester Plan, festes Team, kostenlose Besichtigung.',
     headline: 'Unterhaltsreinigung im festen Rhythmus.',
     intro:
       'Die laufende Reinigung, die Ihre Räume dauerhaft in gutem Zustand hält. Wir legen gemeinsam fest, was wie oft gereinigt wird, und halten uns daran. Das Ergebnis prüfen wir regelmäßig selbst.',
@@ -196,7 +196,7 @@ export const services: Service[] = [
     slug: 'fensterreinigung',
     name: 'Fensterreinigung',
     short: 'Klare Sicht und ein Eingang, der Besucher überzeugt. Innen und außen, inklusive Rahmen.',
-    seoTitle: 'Fensterreinigung und Glasreinigung im Ortenaukreis',
+    seoTitle: 'Fensterreinigung Offenburg & Ortenau',
     seoDescription: 'Fensterreinigung für Büros und Gewerbe in Offenburg, Lahr, Kehl und im ganzen Ortenaukreis. Glasflächen, Rahmen und Falze. Kostenlose Besichtigung.',
     headline: 'Klare Sicht. Streifenfrei.',
     intro:
@@ -243,7 +243,7 @@ export const services: Service[] = [
     slug: 'treppenhausreinigung',
     name: 'Treppenhausreinigung',
     short: 'Der erste Eindruck stimmt: gepflegter Eingang, saubere Treppen, glänzende Handläufe.',
-    seoTitle: 'Treppenhausreinigung in Offenburg und Umgebung',
+    seoTitle: 'Treppenhausreinigung Offenburg',
     seoDescription: 'Treppenhausreinigung für Geschäftshäuser, Hausverwaltungen und Wohnanlagen im Ortenaukreis. Regelmäßig, dokumentiert, mit festem Ansprechpartner.',
     headline: 'Der erste Eindruck beginnt im Treppenhaus.',
     intro:
@@ -294,7 +294,7 @@ export const services: Service[] = [
     slug: 'hallenreinigung',
     name: 'Hallenreinigung',
     short: 'Sichere, saubere Wege in Lager und Produktion. Mit Maschinen, die zu Ihrer Fläche passen.',
-    seoTitle: 'Hallenreinigung im Ortenaukreis',
+    seoTitle: 'Hallenreinigung Ortenau & Offenburg',
     seoDescription: 'Hallenreinigung für Lager, Produktion und Gewerbe in Offenburg, Lahr, Kehl und Umgebung. Planbar außerhalb Ihrer Betriebszeiten. Kostenlose Besichtigung.',
     headline: 'Saubere Hallen. Ohne Ihren Betrieb aufzuhalten.',
     intro:
@@ -340,7 +340,7 @@ export const services: Service[] = [
     slug: 'hygienereinigung',
     name: 'Hygienereinigung',
     short: 'Sanitär und Küchen, auf die sich Ihr Team verlassen kann. Gründlich gereinigt und desinfiziert.',
-    seoTitle: 'Hygienereinigung und Desinfektion im Ortenaukreis',
+    seoTitle: 'Hygienereinigung Offenburg & Ortenau',
     seoDescription: 'Hygienereinigung für Sanitärräume, Küchen, Duschen und Kontaktflächen in Unternehmen im Ortenaukreis. Mit klarem Plan und dokumentierten Abläufen.',
     headline: 'Hygiene, die man nicht sieht. Und genau deshalb ernst nimmt.',
     intro:

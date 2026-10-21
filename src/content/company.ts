@@ -66,6 +66,15 @@ export const company = {
   },
   email: 'info@cleanstar-dienstleistungen.de',
 
+  /**
+   * Profile auf anderen Plattformen (für strukturierte Daten „sameAs“). Leer = wird weggelassen.
+   * TODO: Link zum Google-Unternehmensprofil eintragen, sobald es eingerichtet ist (SEO-TODO-EXTERN.md).
+   */
+  profiles: {
+    google: '' as string,
+    others: [] as string[],
+  },
+
   whatsapp: {
     /** WhatsApp-Link auf der Kontaktseite anzeigen */
     enabled: false,
@@ -143,7 +152,7 @@ export const company = {
       role: 'Gründer · Finanzen, Kalkulation und Neukunden',
       bio: 'Studiert Wirtschaftsmathematik an der Universität Mannheim und verantwortet alles, was mit Zahlen zu tun hat: Kalkulation, Angebote, Buchhaltung und Rechnungen. Führt die Erstgespräche mit neuen Kunden.',
       focus: ['Kalkulation und Angebote', 'Buchhaltung und Rechnungen', 'Erstgespräche und Neukunden'],
-      statement: 'Ich rechne lieber zweimal nach, bevor ich Ihnen ein Angebot schicke. Was wir zusagen, steht schwarz auf weiß und gilt.',
+      statement: 'Keine Überraschungen auf der Rechnung. Was im Angebot steht, zahlen Sie. Nicht mehr.',
       image: 'founder-1',
       draft: null,
     },

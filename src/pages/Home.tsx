@@ -15,8 +15,8 @@ import { Seo } from '@/components/ui/Seo'
 import { AreaMap } from '@/features/map/AreaMap'
 import { home } from '@/content/site'
 import { faqs } from '@/content/faq'
-import { faqSchema, localBusinessSchema } from '@/lib/schema'
-import { company } from '@/content/company'
+import { faqSchema, localBusinessSchema, websiteSchema } from '@/lib/schema'
+import { Answer } from '@/components/ui/Answer'
 
 /** Eigene Suspense-Grenzen: React hydriert die Abschnitte in kleinen Häppchen (weniger Blocking Time). */
 const Chunk = ({ children }: { children: ReactNode }) => <Suspense fallback={null}>{children}</Suspense>
@@ -25,13 +25,14 @@ export default function Home() {
   return (
     <>
       <Seo
-        title={`${company.name} | ${home.seoTitle}`}
-        bare
+        title={home.seoTitle}
         description={home.seoDescription}
         path="/"
-        schema={[localBusinessSchema(), faqSchema(faqs.filter((f) => f.featured && !f.todo))]}
+        ogType="start"
+        schema={[localBusinessSchema(), websiteSchema(), faqSchema(faqs.filter((f) => f.featured && !f.todo))]}
       />
       <Hero />
+      <Answer className="pt-14 sm:pt-20">{home.answer}</Answer>
       <Chunk>
         <TrustBar />
         <ClientLogos />

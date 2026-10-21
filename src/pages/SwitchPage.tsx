@@ -1,0 +1,39 @@
+import { ToolPage } from './ToolPage'
+import { SwitchCalculator } from '@/features/tools/SwitchCalculator'
+
+export default function SwitchPage() {
+  return (
+    <ToolPage
+      path="/wechsel-rechner"
+      name="Wechsel-Rechner Reinigungsfirma"
+      seoTitle="Reinigungsfirma kündigen: Rechner"
+      description="Ab wann können Sie die Reinigungsfirma wechseln? Kündigungsdatum, frühesten Wechseltermin und Zeitstrahl berechnen, mit Kündigungsvorlage zum Kopieren."
+      eyebrow="Wechsel-Rechner"
+      title="Ab wann können Sie wechseln?"
+      lead="Geben Sie Kündigungsfrist und Vertragsart ein. Der Rechner zeigt, bis wann Sie kündigen müssen, wann der letzte Reinigungstag ist und ab wann ein neuer Anbieter starten kann, ohne Lücke."
+      answer="Den frühesten Wechseltermin Ihrer Reinigungsfirma bestimmen Kündigungsfrist und Kündigungstermin im Vertrag. Bei einem Monat Frist zum Monatsende muss die Kündigung spätestens am letzten Tag eines Monats eingehen, damit der Vertrag am Ende des Folgemonats endet. Der neue Anbieter startet am Tag danach."
+      faqs={[
+        {
+          q: 'Wie berechne ich die Kündigungsfrist meiner Reinigungsfirma?',
+          a: 'Die Kündigungsfrist Ihrer Reinigungsfirma berechnen Sie vom gewünschten Vertragsende rückwärts: Vom Kündigungstermin, etwa dem Monatsende, ziehen Sie die Frist ab. Bis zu diesem Tag muss die Kündigung beim Anbieter eingegangen sein.',
+        },
+        {
+          q: 'Was passiert, wenn ich die Frist verpasse?',
+          a: 'Wenn Sie die Kündigungsfrist verpassen, endet der Vertrag erst zum nächsten möglichen Termin. Bei Verträgen mit automatischer Verlängerung kann das ein ganzes Verlängerungsjahr bedeuten.',
+        },
+        {
+          q: 'Ist die Kündigungsvorlage rechtlich geprüft?',
+          a: 'Die Kündigungsvorlage ist eine neutrale, übliche Formulierung, aber keine Rechtsberatung. Prüfen Sie Frist und Form in Ihrem Vertrag und lassen Sie sich im Zweifel beraten.',
+        },
+      ]}
+      links={[
+        { to: '/ratgeber/reinigungsfirma-wechseln', label: 'Ratgeber: Reinigungsfirma wechseln' },
+        { to: '/angebote-vergleichen', label: 'Angebote vergleichen' },
+        { to: '/reinigungs-check', label: 'Reinigungs-Check' },
+        { to: '/ablauf', label: 'So starten wir bei Ihnen' },
+      ]}
+    >
+      <SwitchCalculator />
+    </ToolPage>
+  )
+}

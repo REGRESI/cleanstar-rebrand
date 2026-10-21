@@ -5,6 +5,7 @@ import { RevealText } from '@/components/ui/RevealText'
 import Configurator from '@/features/configurator/Configurator'
 import { company } from '@/content/company'
 import { breadcrumbSchema } from '@/lib/schema'
+import { CallbackButton } from '@/features/callback/Callback'
 
 const trail = [
   { name: 'Start', path: '/' },
@@ -15,8 +16,8 @@ export default function Quote() {
   return (
     <>
       <Seo
-        title="Angebot anfragen: Büroreinigung in 60 Sekunden"
-        description="Angebots-Konfigurator für Büroreinigung im Ortenaukreis: unverbindliche Richtpreis-Spanne oder kostenlose Besichtigung. Antwort innerhalb von 24 Stunden."
+        title="Angebot Büroreinigung anfragen"
+        description="Angebot für Büroreinigung im Ortenaukreis anfragen: Richtpreis-Spanne in 60 Sekunden oder kostenlose Besichtigung. Antwort in 24 Stunden, unverbindlich."
         path="/angebot"
         schema={[breadcrumbSchema(trail)]}
       />
@@ -50,6 +51,7 @@ export default function Quote() {
               <Phone aria-hidden className="size-4 text-blue" />
               Lieber telefonisch? <span className="font-semibold text-ink">{company.phone.display}</span>
             </a>
+            <CallbackButton className="mt-2 flex" />
           </div>
           <div className="lg:col-span-8">
             <div className="overflow-hidden rounded-panel bg-white shadow-lift ring-1 ring-line">
