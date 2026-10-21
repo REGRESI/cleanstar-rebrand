@@ -70,4 +70,15 @@ DirectorySlash On
 </IfModule>
 `,
 )
+
+// GitHub-Pages-Vorschau (PAGES=1): nicht indexieren. Jede Seite trägt zusätzlich <meta name="robots" content="noindex">.
+// Hinweis: Suchmaschinen lesen robots.txt nur im Wurzelverzeichnis der Domain, entscheidend ist daher der noindex-Tag.
+if (process.env.PAGES === '1') {
+  writeFileSync(join(dist, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
+  writeFileSync(join(dist, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>\n')
+  writeFileSync(join(dist, '.nojekyll'), '')
+  const missing = pages.filter((pg) => !readFileSync(join(dist, pg, 'index.html'), 'utf8').includes('name="robots" content="noindex'))
+  if (missing.length) throw new Error('noindex fehlt auf: ' + missing.join(', '))
+  console.log(`✓ Vorschau-Build: noindex auf ${pages.length} Seiten, robots.txt Disallow, Passwort-Sperre`)
+}
 console.log(`✓ sitemap.xml (${urls.length} Seiten), 404.html, .htaccess`)

@@ -7,6 +7,7 @@
     "dev": "vite",
     "dev:preview": "vite --mode preview",
     "build": "tsc -b && vite-react-ssg build && node scripts/postbuild.mjs",
+    "build:pages": "PAGES=1 npm run build",
     "build:preview": "tsc -b && vite build --mode preview && node scripts/postpreview.mjs",
     "serve": "vite preview",
     "lint": "eslint .",

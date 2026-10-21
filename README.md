@@ -14,6 +14,7 @@ Neue Website für CleanStar Dienstleistungen GbR, Offenburg. Büroreinigung für
 | `npm install` | einmalig: Abhängigkeiten installieren (Node.js 20 oder neuer) |
 | `npm run dev` | Entwicklungsserver unter http://localhost:5173 |
 | `npm run build` | Live-Build: vorgerenderte Seiten, `sitemap.xml`, `404.html`, `.htaccess` in `dist/` |
+| `npm run build:pages` | Online-Vorschau für GitHub Pages bauen: Basis `/cleanstar-rebrand/`, Passwort-Sperre, noindex, „[VORSCHAU]“ im Betreff der Formulare |
 | `npm run build:preview` | eine einzige HTML-Datei `preview/cleanstar-website.html` mit allen Seiten (Hash-Routing `#/leistungen` …) |
 | `npm run serve` | den Live-Build lokal ansehen |
 | `npm run lint` / `npm run typecheck` | Code prüfen |
@@ -112,6 +113,15 @@ In `site.ts` vorbereitet, aber ausgeblendet (`enabled: false`). Nur echte Zitate
 - **Farben:** `src/styles/index.css`, Block `@theme` (Ink, CleanStar Blue, Glacier, Fresh …). Ein Wert geändert = überall geändert.
 - **Schrift:** Inter (variabel), lokal eingebunden unter `src/assets/fonts/`, keine Verbindung zu Google.
 - **Logo:** `src/assets/brand/logo.svg` ist ein Nachbau des Original-Logos als sauberes SVG (Schrift: Poppins Regular in Pfade umgewandelt, Haus und Sterne nachgezeichnet). Das Original-PNG liegt daneben (`logo-original.png`).
+
+## Online-Vorschau (GitHub Pages)
+
+Bei jedem Push auf `claude/optimistic-hypatia-a2lf28` baut `.github/workflows/pages-preview.yml` die Vorschau und legt sie in den Branch `gh-pages`. Adresse: https://regresi.github.io/cleanstar-rebrand/
+
+- **Passwort:** `cleanstar2026`, gilt für die Browser-Sitzung. Ändern in `scripts/preview-gate.mjs` (Hash). Die Sperre hält zufällige Besucher fern, ist aber kein echter Zugriffsschutz: Das Repository ist öffentlich.
+- **Nicht bei Google:** jede Seite trägt `noindex`, dazu `robots.txt` mit `Disallow: /` (Suchmaschinen lesen robots.txt nur im Wurzelverzeichnis der Domain, entscheidend ist der noindex-Tag).
+- **Formulare** senden echt, der Betreff beginnt mit „[VORSCHAU]“. Im Footer steht „Vorschau-Version“.
+- Der normale Build (`npm run build`) ist davon nicht betroffen: keine Sperre, indexierbar, Basis `/`.
 
 ## Livegang
 

@@ -47,13 +47,13 @@ export function Picture({ id, className, ratio, sizes = '100vw', priority, compa
   }
 
   if (spec.available && !__PREVIEW__) {
-    const set = (ext: string) => IMAGE_WIDTHS.map((w) => `/images/${spec.file}-${w}.${ext} ${w}w`).join(', ')
+    const set = (ext: string) => IMAGE_WIDTHS.map((w) => `${import.meta.env.BASE_URL}images/${spec.file}-${w}.${ext} ${w}w`).join(', ')
     return (
       <picture className={cn('block overflow-hidden', aspect, rounded, className)}>
         <source type="image/avif" srcSet={set('avif')} sizes={sizes} />
         <source type="image/webp" srcSet={set('webp')} sizes={sizes} />
         <img
-          src={`/images/${spec.file}-1024.webp`}
+          src={`${import.meta.env.BASE_URL}images/${spec.file}-1024.webp`}
           alt={spec.alt}
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
@@ -107,5 +107,5 @@ export function imageUrl(id: ImageId, width: (typeof IMAGE_WIDTHS)[number] = 640
   const spec = images[id]
   if (!spec.available) return null
   if (__PREVIEW__) return previewImages[spec.file] ?? null
-  return `/images/${spec.file}-${width}.webp`
+  return `${import.meta.env.BASE_URL}images/${spec.file}-${width}.webp`
 }

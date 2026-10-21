@@ -12,11 +12,13 @@ export interface SubmitResult {
  */
 export async function submitForm(opts: { subject: string; replyTo?: string; name?: string; lines: [string, string][]; botcheck?: string }): Promise<SubmitResult> {
   if (opts.botcheck) return { ok: true, preview: false } // Spam-Schutz (Honeypot)
+  // Online-Vorschau (GitHub Pages): Anfragen gehen echt raus, sind aber im Postfach erkennbar
+  const subject = (__PAGES__ ? '[VORSCHAU] ' : '') + opts.subject
   const message = opts.lines.map(([k, v]) => `${k}: ${v || '–'}`).join('\n')
 
   if (!formsConfigured()) {
     await new Promise((r) => setTimeout(r, 900))
-    if (import.meta.env.DEV) console.info('[Vorschau-Modus] Formular nicht gesendet:\n' + opts.subject + '\n\n' + message)
+    if (import.meta.env.DEV) console.info('[Vorschau-Modus] Formular nicht gesendet:\n' + subject + '\n\n' + message)
     return { ok: true, preview: true }
   }
 
@@ -26,7 +28,7 @@ export async function submitForm(opts: { subject: string; replyTo?: string; name
       company.forms.provider === 'web3forms'
         ? {
             access_key: company.forms.accessKey,
-            subject: opts.subject,
+            subject,
             from_name: `${company.shortName} Website`,
             name: opts.name,
             email: opts.replyTo,
@@ -34,7 +36,7 @@ export async function submitForm(opts: { subject: string; replyTo?: string; name
             message,
             ...fields,
           }
-        : { _subject: opts.subject, _replyto: opts.replyTo, email: opts.replyTo, name: opts.name, message, ...fields }
+        : { _subject: subject, _replyto: opts.replyTo, email: opts.replyTo, name: opts.name, message, ...fields }
     const res = await fetch(company.forms.endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },

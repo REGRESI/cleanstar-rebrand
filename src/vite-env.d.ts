@@ -1,6 +1,8 @@
 /// <reference types="vite/client" />
 
 declare const __PREVIEW__: boolean
+/** true im GitHub-Pages-Vorschau-Build (PAGES=1): Basis /cleanstar-rebrand/, Passwort-Sperre, noindex */
+declare const __PAGES__: boolean
 
 declare module 'virtual:downloads' {
   const downloads: Record<'checklist' | 'partnerInfo' | 'serviceList', { href: string; file: string }>
