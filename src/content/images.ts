@@ -65,11 +65,13 @@ export const images = {
     available: true,
     ratio: '16:9',
     minWidth: 2400,
-    alt: 'CleanStar-Mitarbeiterin wischt am Abend einen Schreibtisch in einem modernen Großraumbüro',
-    label: 'Reinigungskraft wischt Schreibtisch in modernem Großraumbüro, abends, warmes Licht, 16:9',
+    alt: 'CleanStar-Mitarbeiterin wischt mit Handschuhen und Mikrofasertuch einen Schreibtisch in einem hellen Großraumbüro',
+    label: 'Reinigungskraft wischt Schreibtisch in hellem Großraumbüro, Tageslicht, 16:9',
     prompt:
-      'Professional cleaner in a navy uniform wiping a white desk in a modern open-plan office in the evening, city lights through floor-to-ceiling windows, warm desk lamps, person seen from the side, focused and calm, face not the focus',
-    usedOn: 'Büroreinigung (Hero), Leistungskarte',
+      'Cleaner in navy CleanStar uniform wiping a white desk with blue gloves and a microfiber cloth in a bright open-plan office at daytime, natural light through large windows, focused and calm',
+    // Person steht links: Ausschnitt nach links oben, damit Gesicht und Hände mit dem Tuch bei jedem Format sichtbar bleiben
+    position: '20% 20%',
+    usedOn: 'Büroreinigung (Hero), Leistungskarte Startseite und Leistungsübersicht',
   }),
   'svc-buero-detail': img({
     file: 'bueroreinigung-detail',
@@ -190,13 +192,13 @@ export const images = {
     usedOn: 'Qualitätsgarantie',
   }),
   'trial-clean': img({
-    file: 'probereinigung',
+    file: 'buero-am-morgen',
     available: true,
     ratio: '16:9',
     minWidth: 1600,
-    alt: 'CleanStar-Mitarbeiterin reinigt mit Handschuhen einen Schreibtisch in einem hellen Büro',
-    label: 'Probereinigung: Mitarbeiterin wischt Schreibtisch im Tageslicht, 16:9',
-    prompt: 'Cleaner in navy CleanStar uniform wiping a desk with gloves in a bright open-plan office at daytime, focused and calm, natural light',
+    alt: 'Aufgeräumtes, sauberes Großraumbüro im Morgenlicht, Schreibtische frei, Stühle ordentlich',
+    label: 'Sauberes Büro am Morgen: leere, aufgeräumte Arbeitsplätze im Tageslicht, 16:9',
+    prompt: 'Clean, tidy open-plan office in the morning, empty desks with monitors, chairs pushed in, bright daylight through large windows, calm and orderly',
     usedOn: 'Ablauf (Erster Monat)',
   }),
   'quality-check': img({

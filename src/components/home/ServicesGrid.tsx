@@ -33,19 +33,20 @@ export function ServicesGrid({ heading = true }: { heading?: boolean }) {
         )}
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[auto_auto_auto]">
-          {/* Kernleistung: großes Bild, Text unten auf dunklem Verlauf */}
+          {/* Kernleistung: Foto oben frei (Person und Hände nie verdeckt), Text darunter auf dunklem Grund */}
           <Link
             to={`/leistungen/${featured.slug}`}
-            className="group relative isolate flex min-h-[30rem] flex-col justify-end overflow-hidden rounded-panel bg-ink text-white shadow-lift sm:col-span-2 sm:min-h-[34rem] lg:row-span-2 lg:min-h-0"
+            className="group relative isolate flex flex-col overflow-hidden rounded-panel bg-ink text-white shadow-lift sm:col-span-2 lg:row-span-2"
             data-reveal
           >
-            <div className="absolute inset-0 -z-10">
-              <Picture id={featured.image as ImageId} tone="dark" rounded="rounded-none" className={FILL} sizes="(min-width:1024px) 66vw, 100vw" />
+            <div className="relative aspect-[4/3] overflow-hidden sm:aspect-auto sm:min-h-[19rem] lg:min-h-0 lg:flex-1">
+              <Picture id={featured.image as ImageId} tone="dark" rounded="rounded-none" className={cn(FILL, 'sm:absolute sm:inset-0')} sizes="(min-width:1024px) 66vw, 100vw" />
+              <span className="absolute top-4 right-4 inline-flex rounded-full bg-ink/70 px-3 py-1 text-xs font-semibold tracking-wide text-white backdrop-blur sm:top-6 sm:right-6">
+                Unsere Kernleistung
+              </span>
             </div>
-            <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/75 to-ink/0" />
             <div className="p-6 sm:p-9">
-              <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide text-white backdrop-blur">Unsere Kernleistung</span>
-              <Title className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">{featured.name}</Title>
+              <Title className="text-3xl font-semibold tracking-tight sm:text-4xl">{featured.name}</Title>
               <p className="mt-3 max-w-lg text-white/80 sm:text-lg">{featured.short}</p>
               <ul className="mt-5 flex flex-wrap gap-2 text-sm">
                 {['Arbeitsplätze und Besprechung', 'Teeküche und Sanitär', 'Böden und Papierkörbe'].map((t) => (

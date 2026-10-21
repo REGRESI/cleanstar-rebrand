@@ -22,7 +22,7 @@ Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) bettet alle
 |---|---|---|---|---|
 | 1 | `vorher-buero.jpg` | 16:9 | 1920 × 1080 px | Startseite (Vorher/Nachher), Büroreinigung |
 | 2 | `nachher-buero.jpg` | 16:9 | 1920 × 1080 px | Startseite (Vorher/Nachher), Büroreinigung |
-| 3 | `leistung-bueroreinigung.jpg` | 16:9 | 2400 × 1350 px | Büroreinigung (Hero), Leistungskarte |
+| 3 | `leistung-bueroreinigung.jpg` | 16:9 | 2400 × 1350 px | Büroreinigung (Hero), Leistungskarte Startseite und Leistungsübersicht |
 | 4 | `bueroreinigung-detail.jpg` | 4:3 | 1600 × 1200 px | Büroreinigung |
 | 5 | `leistung-unterhaltsreinigung.jpg` | 16:9 | 2400 × 1350 px | Unterhaltsreinigung (Hero), Leistungskarte |
 | 6 | `leistung-fensterreinigung.jpg` | 16:9 | 2400 × 1350 px | Fensterreinigung (Hero), Leistungskarte |
@@ -34,7 +34,7 @@ Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) bettet alle
 | 12 | `gruender-3.jpg` | 4:5 | 1200 × 1500 px | Über uns (nur wenn drei Gründer in company.ts eingetragen sind) |
 | 13 | `team-im-einsatz.jpg` | 16:9 | 2400 × 1350 px | Über uns, Karriere |
 | 14 | `team-besprechung.jpg` | 4:3 | 1600 × 1200 px | Qualitätsgarantie |
-| 15 | `probereinigung.jpg` | 16:9 | 1600 × 900 px | Ablauf (Erster Monat) |
+| 15 | `buero-am-morgen.jpg` | 16:9 | 1600 × 900 px | Ablauf (Erster Monat) |
 | 16 | `qualitaetskontrolle.jpg` | 16:9 | 2400 × 1350 px | Qualitätsgarantie |
 | 17 | `objektbesichtigung.jpg` | 16:9 | 2400 × 1350 px | Ablauf |
 | 18 | `karriere.jpg` | 16:9 | 2400 × 1350 px | Karriere |
@@ -87,15 +87,15 @@ The exact same modern open-plan office desk from the identical camera position, 
 - **Pfad:** `bilder/leistung-bueroreinigung.jpg` → `public/images/leistung-bueroreinigung-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 2400 × 1350 px
-- **Verwendet auf:** Büroreinigung (Hero), Leistungskarte
-- **Inhalt:** Reinigungskraft wischt Schreibtisch in modernem Großraumbüro, abends, warmes Licht, 16:9
-- **Alt-Text:** CleanStar-Mitarbeiterin wischt am Abend einen Schreibtisch in einem modernen Großraumbüro
+- **Verwendet auf:** Büroreinigung (Hero), Leistungskarte Startseite und Leistungsübersicht
+- **Inhalt:** Reinigungskraft wischt Schreibtisch in hellem Großraumbüro, Tageslicht, 16:9
+- **Alt-Text:** CleanStar-Mitarbeiterin wischt mit Handschuhen und Mikrofasertuch einen Schreibtisch in einem hellen Großraumbüro
 - **Status:** vorhanden
 
 **Prompt:**
 
 ```
-Professional cleaner in a navy uniform wiping a white desk in a modern open-plan office in the evening, city lights through floor-to-ceiling windows, warm desk lamps, person seen from the side, focused and calm, face not the focus. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
+Cleaner in navy CleanStar uniform wiping a white desk with blue gloves and a microfiber cloth in a bright open-plan office at daytime, natural light through large windows, focused and calm. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
 ```
 
 ### 4. bueroreinigung-detail
@@ -285,21 +285,21 @@ Two professional cleaners in matching navy uniforms working calmly in a bright o
 Cleaning team supervisor showing a checklist on a tablet to two team members in a modern office lobby, friendly and focused, natural light, hands and tablet in focus. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 4:3.
 ```
 
-### 15. probereinigung
+### 15. buero-am-morgen
 
 - **ID im Code:** `trial-clean`
-- **Pfad:** `bilder/probereinigung.jpg` → `public/images/probereinigung-<breite>.avif|webp`
+- **Pfad:** `bilder/buero-am-morgen.jpg` → `public/images/buero-am-morgen-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 1600 × 900 px
 - **Verwendet auf:** Ablauf (Erster Monat)
-- **Inhalt:** Probereinigung: Mitarbeiterin wischt Schreibtisch im Tageslicht, 16:9
-- **Alt-Text:** CleanStar-Mitarbeiterin reinigt mit Handschuhen einen Schreibtisch in einem hellen Büro
+- **Inhalt:** Sauberes Büro am Morgen: leere, aufgeräumte Arbeitsplätze im Tageslicht, 16:9
+- **Alt-Text:** Aufgeräumtes, sauberes Großraumbüro im Morgenlicht, Schreibtische frei, Stühle ordentlich
 - **Status:** vorhanden
 
 **Prompt:**
 
 ```
-Cleaner in navy CleanStar uniform wiping a desk with gloves in a bright open-plan office at daytime, focused and calm, natural light. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
+Clean, tidy open-plan office in the morning, empty desks with monitors, chairs pushed in, bright daylight through large windows, calm and orderly. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
 ```
 
 ### 16. qualitaetskontrolle
