@@ -27,7 +27,7 @@ export default function Quote() {
             <Breadcrumbs trail={trail} />
             <p className="eyebrow mb-4">Angebot anfragen</p>
             <RevealText as="h1" text="In 60 Sekunden zum Angebot." immediate className="heading-1" />
-            <p className="lead fade-up-now mt-6" style={{ ['--d' as string]: '0.4s' }}>
+            <p className="lead fade-up-now fade-lcp mt-6" style={{ ['--d' as string]: '0.4s' }}>
               Ein paar Angaben zu Ihrem Objekt. Kennen Sie Ihre aktuellen Reinigungszeiten, zeigen wir Ihnen sofort eine Richtpreis-Spanne.
             </p>
             <ul className="fade-up-now mt-8 space-y-3" style={{ ['--d' as string]: '0.55s' }}>

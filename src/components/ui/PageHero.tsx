@@ -45,7 +45,7 @@ export function PageHero({
             )}
             <RevealText as="h1" text={title} immediate className="heading-1" />
             {lead && (
-              <div className="lead fade-up-now mt-6 max-w-2xl" style={{ ['--d' as string]: '0.4s' }}>
+              <div className="lead fade-up-now fade-lcp mt-6 max-w-2xl" style={{ ['--d' as string]: '0.4s' }}>
                 {lead}
               </div>
             )}

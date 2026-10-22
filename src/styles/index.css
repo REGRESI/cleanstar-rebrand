@@ -269,6 +269,23 @@ html.lenis body {
   animation: fade-up 0.9s var(--ease-out-expo) forwards;
   animation-delay: var(--d, 0.5s);
 }
+/* Einleitung im Seitenkopf ist oft das größte Element (LCP): Text mit Deckkraft 0 zählt erst ab dem Einblenden,
+   daher startet sie fast unsichtbar statt unsichtbar. Optisch kaum ein Unterschied. */
+@keyframes fade-up-lcp {
+  from {
+    opacity: 0.1;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.js-motion .fade-up-now.fade-lcp {
+  opacity: 0.1;
+  transform: translateY(16px);
+  animation-name: fade-up-lcp;
+}
 /* Flag: einmal gelaufen = Endzustand, auch wenn das Element später neu eingehängt oder hydriert wird
    (sonst würde eine CSS-Animation erneut starten). Gesetzt in Layout.tsx bzw. useScrollReveals.ts. */
 .js-motion [data-revealed] [data-reveal-word],
