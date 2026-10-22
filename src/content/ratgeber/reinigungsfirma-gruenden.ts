@@ -53,11 +53,11 @@ Auch als zulassungsfreies Handwerk müssen Sie den Betrieb bei der zuständigen 
 
 Nach der Gewerbeanmeldung reichen Sie den Fragebogen zur steuerlichen Erfassung ein. Das muss innerhalb eines Monats nach Aufnahme der Tätigkeit geschehen und seit 2021 grundsätzlich elektronisch über ELSTER. Erst mit der Steuernummer dürfen Sie ordnungsgemäße Rechnungen stellen.
 
-Im Fragebogen entscheiden Sie auch über die **Kleinunternehmerregelung**. Seit 2025 gilt: Wer im Vorjahr höchstens 25.000 € und im laufenden Jahr voraussichtlich höchstens 100.000 € Umsatz macht, kann ohne Umsatzsteuer abrechnen, verzichtet dafür aber auf den Vorsteuerabzug. Gewerbliche Kunden können die Umsatzsteuer meist ohnehin abziehen. Ob die Regelung sinnvoll ist, klären Sie am besten mit Ihrer Steuerberatung.
+Im Fragebogen entscheiden Sie auch über die **Kleinunternehmerregelung**. Seit 2025 gilt: Wer im Vorjahr höchstens 25.000 € und im laufenden Jahr voraussichtlich höchstens 100.000 € Umsatz macht, kann ohne Umsatzsteuer abrechnen, verzichtet dafür aber auf den Vorsteuerabzug. Gewerbliche Kunden können die Umsatzsteuer meist ohnehin abziehen. Ob die Regelung sinnvoll ist, klären Sie am besten mit Ihrer Steuerberatung.
 
 ## Schritt 6: Berufsgenossenschaft
 
-Jedes Unternehmen muss sich binnen einer Woche bei der zuständigen Berufsgenossenschaft melden (§ 192 SGB VII). Die Pflicht gilt als erfüllt, wenn die Gewerbeanmeldung innerhalb dieser Woche erfolgt ist. Für Reinigungsbetriebe ist in der Regel die BG BAU zuständig. Sie ist die gesetzliche Unfallversicherung für Ihre Mitarbeitenden. Ob und wie Sie sich als Unternehmer selbst dort versichern, klären Sie direkt mit der Berufsgenossenschaft.
+Jedes Unternehmen muss sich binnen einer Woche bei der zuständigen Berufsgenossenschaft melden (§ 192 SGB VII). Die Pflicht gilt als erfüllt, wenn die Gewerbeanmeldung innerhalb dieser Woche erfolgt ist. Für Reinigungsbetriebe ist in der Regel die BG BAU zuständig. Sie ist die gesetzliche Unfallversicherung für Ihre Mitarbeitenden. Ob und wie Sie sich als Unternehmer selbst dort versichern, klären Sie direkt mit der Berufsgenossenschaft.
 
 ## Schritt 7: Versicherungen
 
@@ -71,10 +71,10 @@ Für Löhne gilt in der Gebäudereinigung ein eigener Branchenmindestlohn, der �
 
 | Lohnuntergrenze | ab 1. Januar 2026 |
 | --- | --- |
-| Gebäudereinigung, Lohngruppe 1 (Innen- und Unterhaltsreinigung) | 15,00 € pro Stunde |
-| Gebäudereinigung, Lohngruppe 6 (Glas- und Fassadenreinigung) | 18,40 € pro Stunde |
-| Allgemeiner gesetzlicher Mindestlohn | 13,90 € pro Stunde |
-| Verdienstgrenze Minijob | 603 € pro Monat |
+| Gebäudereinigung, Lohngruppe 1 (Innen- und Unterhaltsreinigung) | 15,00 € pro Stunde |
+| Gebäudereinigung, Lohngruppe 6 (Glas- und Fassadenreinigung) | 18,40 € pro Stunde |
+| Allgemeiner gesetzlicher Mindestlohn | 13,90 € pro Stunde |
+| Verdienstgrenze Minijob | 603 € pro Monat |
 
 Die Verordnung zum Branchenmindestlohn gilt bis Ende 2026, die Werte für 2027 werden derzeit verhandelt. Prüfen Sie vor der Kalkulation den aktuellen Stand.
 
@@ -82,9 +82,9 @@ Die Verordnung zum Branchenmindestlohn gilt bis Ende 2026, die Werte für 2027 w
 
 Die Gebäudereinigung gehört zu den Branchen, für die der Gesetzgeber zusätzliche Pflichten gegen Schwarzarbeit vorsieht:
 
-- **Sofortmeldung:** Der Beginn jeder Beschäftigung muss spätestens bei Arbeitsaufnahme an die Datenstelle der Rentenversicherung gemeldet werden (§ 28a Absatz 4 SGB IV), auch bei Minijobs.
-- **Ausweis mitführen:** Beschäftigte müssen bei der Arbeit einen Personalausweis oder Pass dabeihaben und bei Kontrollen vorlegen (§ 2a Schwarzarbeitsbekämpfungsgesetz). Der Arbeitgeber muss jede Person nachweislich und schriftlich darauf hinweisen.
-- **Arbeitszeit aufzeichnen:** Beginn, Ende und Dauer der täglichen Arbeitszeit sind aufzuzeichnen und aufzubewahren (§ 17 Mindestlohngesetz).
+- **Sofortmeldung:** Der Beginn jeder Beschäftigung muss spätestens bei Arbeitsaufnahme an die Datenstelle der Rentenversicherung gemeldet werden (§ 28a Absatz 4 SGB IV), auch bei Minijobs.
+- **Ausweis mitführen:** Beschäftigte müssen bei der Arbeit einen Personalausweis oder Pass dabeihaben und bei Kontrollen vorlegen (§ 2a Schwarzarbeitsbekämpfungsgesetz). Der Arbeitgeber muss jede Person nachweislich und schriftlich darauf hinweisen.
+- **Arbeitszeit aufzeichnen:** Beginn, Ende und Dauer der täglichen Arbeitszeit sind aufzuzeichnen und aufzubewahren (§ 17 Mindestlohngesetz).
 
 Der Zoll prüft diese Pflichten in der Branche regelmäßig. Richten Sie die Abläufe von Anfang an sauber ein, zum Beispiel mit einer einfachen Zeiterfassung per App.
 
@@ -129,7 +129,7 @@ Sie müssen nicht alles allein aufbauen. Franchise- und Partnersysteme bieten fe
     },
     {
       q: 'Wie hoch ist der Mindestlohn für Reinigungskräfte 2026?',
-      a: 'Der Mindestlohn für Reinigungskräfte in der Innen- und Unterhaltsreinigung beträgt seit dem 1. Januar 2026 15,00 € pro Stunde. In der Glas- und Fassadenreinigung sind es 18,40 €.',
+      a: 'Der Mindestlohn für Reinigungskräfte in der Innen- und Unterhaltsreinigung beträgt seit dem 1. Januar 2026 15,00 € pro Stunde. In der Glas- und Fassadenreinigung sind es 18,40 €.',
     },
   ],
   sources: [
@@ -140,7 +140,7 @@ Sie müssen nicht alles allein aufbauen. Franchise- und Partnersysteme bieten fe
       stand: 'abgerufen Oktober 2026',
     },
     {
-      title: '§§ 18, 19 Handwerksordnung: Anzeigepflicht und Verzeichnis zulassungsfreier Handwerke',
+      title: '§§ 18, 19 Handwerksordnung: Anzeigepflicht und Verzeichnis zulassungsfreier Handwerke',
       publisher: 'Bundesministerium der Justiz, gesetze-im-internet.de',
       url: 'https://www.gesetze-im-internet.de/hwo/__18.html',
       stand: 'abgerufen Oktober 2026',
@@ -152,7 +152,7 @@ Sie müssen nicht alles allein aufbauen. Franchise- und Partnersysteme bieten fe
       stand: 'abgerufen Oktober 2026',
     },
     {
-      title: '§ 192 SGB VII: Mitteilungs- und Auskunftspflichten von Unternehmern',
+      title: '§ 192 SGB VII: Mitteilungs- und Auskunftspflichten von Unternehmern',
       publisher: 'Bundesministerium der Justiz, gesetze-im-internet.de',
       url: 'https://www.gesetze-im-internet.de/sgb_7/__192.html',
       stand: 'abgerufen Oktober 2026',
@@ -164,10 +164,10 @@ Sie müssen nicht alles allein aufbauen. Franchise- und Partnersysteme bieten fe
       stand: 'abgerufen Oktober 2026',
     },
     {
-      title: 'Kleinunternehmerregelung (§ 19 UStG) ab 2025',
+      title: 'Kleinunternehmerregelung (§ 19 UStG) ab 2025',
       publisher: 'IHK Erfurt',
       url: 'https://www.ihk.de/erfurt/service/existenzgruendung/kleinunternehmerregelung-6400174',
-      stand: 'Grenzen 25.000 € / 100.000 € seit 01.01.2025',
+      stand: 'Grenzen 25.000 € / 100.000 € seit 01.01.2025',
     },
     {
       title: 'Verordnung über zwingende Arbeitsbedingungen in der Gebäudereinigung',
@@ -179,7 +179,7 @@ Sie müssen nicht alles allein aufbauen. Franchise- und Partnersysteme bieten fe
       title: 'Änderungen beim Mindestlohn 2026',
       publisher: 'IHK Magdeburg',
       url: 'https://www.ihk.de/magdeburg/recht/allgemeine-rechtsauskuenfte-1/arbeitsrecht-ordner/gesetze/anhebung-des-gesetzlichen-mindestlohns-4303334',
-      stand: '13,90 € ab 01.01.2026, Minijob-Grenze 603 €',
+      stand: '13,90 € ab 01.01.2026, Minijob-Grenze 603 €',
     },
     {
       title: 'Betriebsnummer beantragen',

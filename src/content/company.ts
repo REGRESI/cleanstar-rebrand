@@ -184,7 +184,7 @@ export const company = {
     {
       year: '2024',
       title: 'Gründung in Offenburg',
-      text: 'Nico Schütterle, Lino Resham und Eknoor Singh gründen CleanStar Dienstleistungen als GbR. Das Team bringt über 6 Jahre Erfahrung in der Reinigung mit.',
+      text: 'Nico Schütterle, Lino Resham und Eknoor Singh gründen CleanStar Dienstleistungen als GbR. Das Team bringt über 6 Jahre Erfahrung in der Reinigung mit.',
       confirmed: true,
     },
     { year: 'TODO', title: 'Erste feste Büroobjekte', text: 'Die ersten Unternehmen vertrauen uns ihre Büroreinigung dauerhaft an.', confirmed: false },

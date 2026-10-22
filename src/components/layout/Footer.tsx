@@ -145,7 +145,7 @@ export function Footer() {
                 ))}
               <li>
                 <FooterLink to="/einzugsgebiet" strong>
-                  Alle {places.length} Orte
+                  Alle {places.length} Orte
                 </FooterLink>
               </li>
             </ul>

@@ -38,7 +38,7 @@ export const services: Service[] = [
     short: 'Sie kommen morgens in ein sauberes Büro. Jeden Tag, nach festem Plan, mit demselben Team.',
     seoTitle: 'Büroreinigung Offenburg & Ortenau',
     seoDescription:
-      'Büroreinigung in Offenburg und im Ortenaukreis: festes Team, Ersatzkraft bei Ausfall, Qualitätsgarantie. 35 bis 45 € brutto pro Stunde, Angebot in 48 Stunden.',
+      'Büroreinigung in Offenburg und im Ortenaukreis: festes Team, Ersatzkraft bei Ausfall, Qualitätsgarantie. 35 bis 45 € brutto pro Stunde, Angebot in 48 Stunden.',
     headline: 'Büroreinigung, auf die Sie sich verlassen können.',
     intro:
       'Ihr Büro ist morgens sauber. Jeden Tag, ohne dass Sie nachfragen müssen. Wir reinigen nach einem schriftlich vereinbarten Leistungsverzeichnis, mit festem Team und einem Ansprechpartner, der Ihr Objekt kennt.',
@@ -94,7 +94,7 @@ export const services: Service[] = [
     ],
     intervals: [
       { label: 'Täglich', text: 'Für Büros mit vielen Mitarbeitenden oder Kundenverkehr. Sanitär und Küche immer frisch.' },
-      { label: '2 bis 3 Mal pro Woche', text: 'Der häufigste Rhythmus für kleine und mittlere Büros.' },
+      { label: '2 bis 3 Mal pro Woche', text: 'Der häufigste Rhythmus für kleine und mittlere Büros.' },
       { label: 'Wöchentlich', text: 'Für kleine Büros oder Flächen mit wenig Publikumsverkehr.' },
       { label: 'Individuell', text: 'Bereiche mit unterschiedlichen Intervallen kombinieren, zum Beispiel Sanitär täglich, Büros zweimal pro Woche.' },
     ],
@@ -177,7 +177,7 @@ export const services: Service[] = [
     ],
     suitableFor: ['Arztpraxen und Therapiepraxen', 'Kanzleien und Steuerbüros', 'Verkaufsräume und Showrooms', 'Verwaltungen und Vereinsheime', 'Schulungs- und Seminarräume'],
     highlights: [
-      { title: 'Schriftliches Leistungsverzeichnis', text: 'Was gereinigt wird, steht schwarz auf weiß. Kein Interpretationsspielraum.' },
+      { title: 'Alles schriftlich', text: 'Was gereinigt wird, steht schwarz auf weiß im Angebot. Kein Raum für Auslegung.' },
       { title: 'Anpassbar', text: 'Ändern sich Ihre Abläufe, passen wir Plan und Intervalle an.' },
       { title: 'Regelmäßige Kontrolle', text: 'Wir prüfen die Qualität selbst mit Checklisten, nicht erst wenn Sie sich melden.' },
     ],

@@ -38,18 +38,18 @@ export default function Careers() {
               document.getElementById('bewerbung')?.scrollIntoView({ behavior: 'smooth' })
             }}
           >
-            In 2 Minuten bewerben
+            In 2 Minuten bewerben
           </Button>
         }
       />
       <section className="py-24 sm:py-32" aria-labelledby="why-title">
         <div className="container-site">
           <SectionHeading eyebrow="Warum CleanStar" title="Was Sie bei uns erwartet." id="why-title" />
-          <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="feature-grid mt-14">
             {careers.benefits.map((b) => (
-              <li key={b.title} className="rounded-card bg-glacier p-6 sm:p-8" data-reveal>
-                <h3 className="text-xl font-semibold tracking-tight">{b.title}</h3>
-                <p className="mt-3 leading-relaxed text-muted">{b.text}</p>
+              <li key={b.title} className="feature-card bg-glacier" data-reveal>
+                <h3 className="feature-title">{b.title}</h3>
+                <p className="feature-text">{b.text}</p>
               </li>
             ))}
           </ul>
@@ -129,7 +129,7 @@ export default function Careers() {
           <div className="lg:col-span-5">
             <SectionHeading
               eyebrow="Kurzbewerbung"
-              title="In 2 Minuten beworben."
+              title="In 2 Minuten beworben."
               id="apply-title"
               text="Name, Telefonnummer, wann Sie können. Mehr brauchen wir nicht für den ersten Schritt. Wir rufen Sie zurück."
             />

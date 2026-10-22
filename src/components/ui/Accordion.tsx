@@ -46,7 +46,7 @@ export function Accordion({
                   dark ? 'text-white hover:text-fresh' : 'text-ink hover:text-blue',
                 )}
               >
-                <span className="min-w-0 break-words">{it.title}</span>
+                <span className="min-w-0">{it.title}</span>
                 <span
                   aria-hidden
                   className={cn(

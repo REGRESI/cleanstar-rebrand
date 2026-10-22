@@ -31,7 +31,7 @@ export default function Area() {
         lead="Unser Sitz ist in Offenburg, mitten im Kreis. Von hier aus sind wir schnell bei Ihnen, ob in Kehl am Rhein, in Achern im Norden oder in Haslach im Kinzigtal."
         actions={<QuoteButton size="lg" arrow />}
       />
-      <Answer className="pt-12 sm:pt-16">{`CleanStar reinigt Büros und Gewerbeflächen in ${places.length} Orten im Ortenaukreis, von Rheinau im Norden bis Ettenheim und Rust im Süden und Wolfach im Kinzigtal. Unser Sitz ist in Offenburg.`}</Answer>
+      <Answer className="pt-12 sm:pt-16">{`CleanStar reinigt Büros und Gewerbeflächen in ${places.length} Orten im Ortenaukreis, von Rheinau im Norden bis Ettenheim und Rust im Süden und Wolfach im Kinzigtal. Unser Sitz ist in Offenburg.`}</Answer>
       <section className="py-20 sm:py-28" aria-labelledby="map-title">
         <div className="container-site">
           <h2 id="map-title" className="sr-only">

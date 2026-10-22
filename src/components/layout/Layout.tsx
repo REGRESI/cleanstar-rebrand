@@ -37,11 +37,23 @@ function Shell() {
     first.current = false
     ;(window as Window & { __csReady?: boolean }).__csReady = true
     const cancel = prefersReducedMotion() ? () => {} : onIdle(() => startSmoothScroll(), 2500)
+    // Reveal-Flag: Sobald eine CSS-Einblendung (Titel Wort für Wort, fade-up) fertig ist, wird das Element markiert
+    // und bleibt im Endzustand. So läuft sie genau einmal, auch wenn das Element später verschoben wird.
+    const onAnimEnd = (e: AnimationEvent) => {
+      const t = e.target as HTMLElement
+      if (e.animationName === 'word-up') {
+        const host = t.closest('.reveal-now')
+        const words = host?.querySelectorAll('[data-reveal-word]')
+        if (host && words && t === words[words.length - 1]) host.setAttribute('data-revealed', '')
+      } else if (e.animationName === 'fade-up' && t.classList.contains('fade-up-now')) t.setAttribute('data-revealed', '')
+    }
+    document.addEventListener('animationend', onAnimEnd)
     // iOS zeigt :active-Stile (Rückmeldung beim Tippen) nur, wenn ein touchstart-Listener existiert
     const noop = () => {}
     document.addEventListener('touchstart', noop, { passive: true })
     return () => {
       document.removeEventListener('touchstart', noop)
+      document.removeEventListener('animationend', onAnimEnd)
       cancel()
       stopSmoothScroll()
     }

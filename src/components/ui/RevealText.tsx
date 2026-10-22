@@ -1,5 +1,6 @@
 import { createElement, Fragment, type ElementType } from 'react'
 import { cn } from '@/lib/cn'
+import { noOrphan } from '@/lib/format'
 
 /**
  * Überschrift mit Wort-für-Wort-Reveal.
@@ -7,7 +8,7 @@ import { cn } from '@/lib/cn'
  * Bei reduzierter Bewegung wird der Text statisch angezeigt.
  */
 export function RevealText({ as = 'h2', text, className, immediate, id }: { as?: ElementType; text: string; className?: string; immediate?: boolean; id?: string }) {
-  const words = text.split(' ')
+  const words = noOrphan(text).split(' ')
   return createElement(
     as,
     { className: cn(immediate && 'reveal-now', className), 'data-reveal-text': immediate ? undefined : '', id },

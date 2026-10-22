@@ -3,7 +3,7 @@ import { company, fullAddress } from '@/content/company'
 import { locations, shortName } from '@/content/locations'
 import { services } from '@/content/services'
 import { hourlyRateNetMax, hourlyRateNetMin, pricing } from '@/content/pricing'
-import { formatEuro2 } from '@/lib/format'
+import { formatEuro2Range } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { breadcrumbSchema, faqSchema, localBusinessSchema } from '@/lib/schema'
@@ -26,7 +26,7 @@ export function factGroups() {
         `CleanStar hat sich auf Büroreinigung für Unternehmen im ${company.serviceArea} spezialisiert.`,
         company.foundedYear ? `CleanStar wurde ${company.foundedYear} in ${company.seat} gegründet.` : null,
         `Gegründet wurde CleanStar von ${join(founders)}, die vertretungsberechtigten Gesellschafter der GbR.`,
-        company.yearsOfExperience ? `Das Team bringt über ${company.yearsOfExperience} Jahre Erfahrung in der Reinigung mit.` : null,
+        company.yearsOfExperience ? `Das Team bringt über ${company.yearsOfExperience} Jahre Erfahrung in der Reinigung mit.` : null,
         company.vatId ? `Die Umsatzsteuer-Identifikationsnummer lautet ${company.vatId}.` : null,
         company.liabilityInsurance ? 'CleanStar hat eine Betriebshaftpflichtversicherung.' : null,
       ],
@@ -37,8 +37,8 @@ export function factGroups() {
         `Die Adresse lautet ${company.legalName}, ${fullAddress()}.`,
         `Telefon: ${company.phone.display} (international ${company.phone.international}).`,
         `E-Mail: ${company.email}.`,
-        'CleanStar ist rund um die Uhr erreichbar, 24 Stunden an 7 Tagen, telefonisch und per E-Mail. Es gibt keine festen Öffnungszeiten, weil es kein Ladengeschäft gibt.',
-        `Auf Anfragen antwortet CleanStar innerhalb von ${company.promises.responseHours} Stunden.`,
+        'CleanStar ist rund um die Uhr erreichbar, 24 Stunden an 7 Tagen, telefonisch und per E-Mail. Es gibt keine festen Öffnungszeiten, weil es kein Ladengeschäft gibt.',
+        `Auf Anfragen antwortet CleanStar innerhalb von ${company.promises.responseHours} Stunden.`,
       ],
     },
     {
@@ -47,14 +47,14 @@ export function factGroups() {
         `CleanStar bietet ${join(services.map((s) => s.name))} für Unternehmen an.`,
         'Der Schwerpunkt ist die regelmäßige Büroreinigung mit festem Team und festem Ansprechpartner.',
         'Fällt eine Reinigungskraft aus, übernimmt eine eingewiesene Ersatzkraft.',
-        `Die Objektbesichtigung ist kostenlos. Das schriftliche Angebot mit Leistungsverzeichnis kommt innerhalb von ${company.promises.offerHours} Stunden.`,
+        `Die Objektbesichtigung ist kostenlos. Das schriftliche Angebot mit Leistungsverzeichnis kommt innerhalb von ${company.promises.offerHours} Stunden.`,
         `Passt etwas nicht, reinigt CleanStar ${company.complaintPeriod ? `innerhalb von ${company.complaintPeriod}` : 'kurzfristig'} und kostenlos nach (Qualitätsgarantie).`,
       ],
     },
     {
       title: 'Preise und Vertrag',
       facts: [
-        `CleanStar rechnet nach Mitarbeiterstunden ab. Der Stundensatz liegt bei ${pricing.hourlyRateGrossMin} bis ${pricing.hourlyRateGrossMax} € brutto pro Mitarbeiterstunde, das sind ${formatEuro2(hourlyRateNetMin())} bis ${formatEuro2(hourlyRateNetMax())} netto.`,
+        `CleanStar rechnet nach Mitarbeiterstunden ab. Der Stundensatz liegt bei ${pricing.hourlyRateGrossMin} bis ${pricing.hourlyRateGrossMax} € brutto pro Mitarbeiterstunde, das sind ${formatEuro2Range(hourlyRateNetMin(), hourlyRateNetMax())} netto.`,
         'Alle Preise auf der Website sind unverbindliche Richtwerte. Der verbindliche Preis steht im Angebot nach der Besichtigung.',
         company.contract.firstMonth,
         company.contract.afterwards,
@@ -63,7 +63,7 @@ export function factGroups() {
     {
       title: 'Einzugsgebiet',
       facts: [
-        `CleanStar arbeitet im ${company.serviceArea} in ${locations.length} Orten bis etwa ${maxMin} Minuten Fahrzeit ab ${company.seat}.`,
+        `CleanStar arbeitet im ${company.serviceArea} in ${locations.length} Orten bis etwa ${maxMin} Minuten Fahrzeit ab ${company.seat}.`,
         `Die Orte sind ${join(locations.map((l) => shortName(l)))}.`,
         'Außerhalb des Ortenaukreises bietet CleanStar keine eigene Reinigung an. Für Reinigungsfirmen in anderen Regionen gibt es das Partnerprogramm.',
       ],
@@ -83,7 +83,7 @@ export default function Facts() {
     <>
       <Seo
         title="CleanStar auf einen Blick: Fakten"
-        description="CleanStar auf einen Blick: Reinigungsfirma aus Offenburg, gegründet 2024, Büroreinigung im Ortenaukreis, 35 bis 45 € brutto pro Stunde, 24/7 erreichbar."
+        description="CleanStar auf einen Blick: Reinigungsfirma aus Offenburg, gegründet 2024, Büroreinigung im Ortenaukreis, 35 bis 45 € brutto pro Stunde, 24/7 erreichbar."
         path="/fakten"
         schema={[localBusinessSchema(), breadcrumbSchema(trail), faqSchema(faqs)]}
       />

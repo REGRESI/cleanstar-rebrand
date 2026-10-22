@@ -65,7 +65,7 @@ export function FounderCalculator() {
     ['= Variable Kosten je Stunde', formatEuro2(r.variable), true],
     ['+ Fixkosten je verkaufter Stunde', r.fixedPerHour === null ? '–' : formatEuro2(r.fixedPerHour)],
     ['= Selbstkosten je Stunde', r.cost === null ? '–' : formatEuro2(r.cost), true],
-    [`+ Aufschlag ${formatNumber(v.markup ?? 0)} %`, r.cost === null || r.rateNet === null ? '–' : formatEuro2(r.rateNet - r.cost)],
+    [`+ Aufschlag ${formatNumber(v.markup ?? 0)} %`, r.cost === null || r.rateNet === null ? '–' : formatEuro2(r.rateNet - r.cost)],
   ]
 
   return (

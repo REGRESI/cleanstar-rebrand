@@ -36,7 +36,7 @@ const texts: Record<string, LocationText> = {
     intro:
       'Offenburg ist unser Sitz. Von hier aus betreuen wir Büros in der Innenstadt, in der Nordoststadt und in den Gewerbegebieten rund um die Stadt. Kurze Wege bedeuten für Sie: Wenn etwas ist, sind wir schnell da.',
     detail:
-      'Ob Kanzlei in der Altstadt, Agentur im Gewerbegebiet oder Verwaltung mit mehreren Etagen: Wir sehen uns Ihre Räume kostenlos an und schicken Ihnen innerhalb von 48 Stunden ein Angebot. Gereinigt wird vor oder nach Ihren Bürozeiten.',
+      'Ob Kanzlei in der Altstadt, Agentur im Gewerbegebiet oder Verwaltung mit mehreren Etagen: Wir sehen uns Ihre Räume kostenlos an und schicken Ihnen innerhalb von 48 Stunden ein Angebot. Gereinigt wird vor oder nach Ihren Bürozeiten.',
     route: 'Unser Büro liegt in der Prinz-Eugen-Straße, von dort sind die meisten Adressen in der Stadt in wenigen Minuten erreichbar.',
     economy:
       'Als Kreisstadt ist Offenburg Standort vieler Verwaltungen, Kanzleien, Praxen, Banken und Dienstleister. Dazu kommen Medienunternehmen, die Hochschule, die Messe und Gewerbegebiete mit Handel, Handwerk und Industrie.',
@@ -56,7 +56,7 @@ const texts: Record<string, LocationText> = {
       'Lahr ist nach Offenburg die zweitgrößte Stadt der Ortenau, mit vielen Betrieben in Industrie, Handel und Dienstleistung. Für Unternehmen in Lahr übernehmen wir die Büroreinigung mit festem Team und einem Ansprechpartner, der direkt erreichbar ist.',
     detail:
       'Die Anfahrt über die B3 oder die A5 ist planbar. Größere Objekte mit Büro und Halle betreuen wir aus einer Hand, zum Beispiel Büroreinigung mehrmals pro Woche und Hallenreinigung im Monatsrhythmus.',
-    route: 'Lahr liegt südlich von Offenburg und ist über die B3 oder die A5 in rund 25 Minuten erreichbar.',
+    route: 'Lahr liegt südlich von Offenburg und ist über die B3 oder die A5 in rund 25 Minuten erreichbar.',
     economy:
       'Lahr hat eine breite Wirtschaft aus Industrie, Handel und Dienstleistung. Auf dem Gelände des früheren Militärflugplatzes sind Gewerbe- und Logistikflächen entstanden, in der Innenstadt sitzen Verwaltungen, Praxen und Büros.',
     focus: [
@@ -75,7 +75,7 @@ const texts: Record<string, LocationText> = {
       'Kehl liegt direkt am Rhein gegenüber von Straßburg. Viele Unternehmen hier arbeiten grenzüberschreitend und haben Kunden, die einen gepflegten ersten Eindruck erwarten. Wir sorgen dafür, dass Empfang, Besprechungsräume und Büros jeden Morgen bereit sind.',
     detail:
       'Für Büros im Hafengebiet und in der Innenstadt reinigen wir in festen Zeitfenstern, abgestimmt auf Ihre Öffnungszeiten. Fensterreinigung und Treppenhausreinigung lassen sich mit demselben Ansprechpartner dazu buchen.',
-    route: 'Kehl erreichen wir aus Offenburg über die B28 oder die Landstraße durch das Hanauerland in gut 20 Minuten.',
+    route: 'Kehl erreichen wir aus Offenburg über die B28 oder die Landstraße durch das Hanauerland in gut 20 Minuten.',
     economy:
       'Kehl ist geprägt von seinem Rheinhafen, von Logistik und Industrie und von der Nähe zu Straßburg. In der Stadt gibt es eine Hochschule, Verwaltungen und viele Dienstleister mit Kunden auf beiden Seiten des Rheins.',
     focus: [
@@ -94,7 +94,7 @@ const texts: Record<string, LocationText> = {
       'Achern im Norden der Ortenau ist über die A5 schnell erreichbar. Für Unternehmen in Achern und den umliegenden Gemeinden übernehmen wir die regelmäßige Büro- und Unterhaltsreinigung, verlässlich und mit festen Zeiten.',
     detail:
       'Gerade bei Objekten etwas weiter von Offenburg entfernt zählt die Vertretungsregel: Fällt jemand aus, übernimmt eine eingewiesene Ersatzkraft. Ihre Reinigung findet trotzdem statt.',
-    route: 'Achern liegt im Norden des Kreises; über die A5 sind wir in rund 25 Minuten dort.',
+    route: 'Achern liegt im Norden des Kreises; über die A5 sind wir in rund 25 Minuten dort.',
     economy:
       'Achern ist ein Industrie- und Einkaufsstandort mit mittelständischen Betrieben aus Produktion, Handwerk und Handel. Dazu kommen Praxen, Kanzleien und Verwaltungen, die auch die Gemeinden im Achertal versorgen.',
     focus: [
@@ -112,7 +112,7 @@ const texts: Record<string, LocationText> = {
     intro: 'Oberkirch ist das Tor zum Renchtal. Hier betreuen wir Büros, Praxen und Gewerbeflächen, die eine Reinigung mit festem Rhythmus suchen statt wechselnder Gesichter.',
     detail:
       'Wir legen mit Ihnen fest, welche Bereiche wie oft gereinigt werden, und halten das schriftlich fest. Die Qualität kontrollieren wir regelmäßig selbst, damit Sie nicht nachkontrollieren müssen.',
-    route: 'Oberkirch liegt am Eingang des Renchtals und ist über die B28 in rund 20 Minuten erreichbar.',
+    route: 'Oberkirch liegt am Eingang des Renchtals und ist über die B28 in rund 20 Minuten erreichbar.',
     economy:
       'Neben Obst- und Weinbau gibt es in Oberkirch Industrie, Handwerk und Handel. Viele Betriebe haben ihren Sitz im Tal, dazu kommen Praxen und Dienstleister, die das ganze Renchtal versorgen.',
     focus: [
@@ -255,7 +255,7 @@ const texts: Record<string, LocationText> = {
   schutterwald: {
     intro: 'Schutterwald liegt westlich von Offenburg, mit Anschluss an die A5 und eigenem Gewerbegebiet. Für Unternehmen in Schutterwald sind wir quasi Nachbarn.',
     detail:
-      'Ob Büro, Werkstatt mit Sozialräumen oder Lagerhalle: Wir sehen uns das Objekt an und erstellen ein Angebot, das zu Ihrer tatsächlichen Nutzung passt. Innerhalb von 48 Stunden.',
+      'Ob Büro, Werkstatt mit Sozialräumen oder Lagerhalle: Wir sehen uns das Objekt an und erstellen ein Angebot, das zu Ihrer tatsächlichen Nutzung passt. Innerhalb von 48 Stunden.',
     route: 'Schutterwald grenzt westlich an Offenburg und liegt an der A5, rund zehn Minuten von uns.',
     economy: 'Durch die Lage an der A5 hat Schutterwald Gewerbe mit Handel, Logistik und Handwerk, dazu Büros und Dienstleister.',
     focus: [
@@ -291,7 +291,7 @@ const texts: Record<string, LocationText> = {
     intro: 'Friesenheim liegt zwischen Offenburg und Lahr direkt an der A5 und B3. Die gute Anbindung hat viele Betriebe angezogen, vom Handwerk bis zur Logistik.',
     detail:
       'Für Unternehmen in Friesenheim kombinieren wir Büroreinigung, Hallenreinigung und Hygienereinigung nach Bedarf. Ein Ansprechpartner, ein Angebot, ein Team, das Ihr Objekt kennt.',
-    route: 'Friesenheim liegt an der B3 zwischen Offenburg und Lahr, knapp 20 Minuten entfernt.',
+    route: 'Friesenheim liegt an der B3 zwischen Offenburg und Lahr, knapp 20 Minuten entfernt.',
     economy: 'In Friesenheim gibt es Gewerbe mit Logistik, Handwerk und Handel entlang der Verkehrsachsen, dazu Weinbau in den Ortsteilen am Schwarzwaldrand.',
     focus: [
       { service: 'hallenreinigung', why: 'Logistik- und Gewerbeflächen an A5 und B3.' },
@@ -306,10 +306,10 @@ const texts: Record<string, LocationText> = {
   },
   renchen: {
     intro:
-      'Renchen liegt zwischen Appenweier und Achern am Ausgang des Renchtals in die Rheinebene. Für Betriebe in Renchen und den Ortsteilen Ulm und Erlach sind wir in weniger als 20 Minuten vor Ort.',
+      'Renchen liegt zwischen Appenweier und Achern am Ausgang des Renchtals in die Rheinebene. Für Betriebe in Renchen und den Ortsteilen Ulm und Erlach sind wir in weniger als 20 Minuten vor Ort.',
     detail:
       'Wir reinigen Büros, Praxen und Gewerbeflächen in Renchen zu festen Zeiten, die zu Ihrem Betrieb passen. Was gemacht wird und wie oft, steht im Leistungsverzeichnis, das Sie vor dem Start bekommen.',
-    route: 'Renchen liegt zwischen Appenweier und Achern nahe der A5, knapp 20 Minuten von Offenburg.',
+    route: 'Renchen liegt zwischen Appenweier und Achern nahe der A5, knapp 20 Minuten von Offenburg.',
     economy: 'Renchen ist eine kleine Stadt mit Handwerk, Handel und mittelständischen Betrieben, dazu Praxen und Büros. Bekannt ist sie als Wirkungsort des Dichters Grimmelshausen.',
     focus: [
       { service: 'bueroreinigung', why: 'Büros von mittelständischen Betrieben.' },
@@ -318,7 +318,7 @@ const texts: Record<string, LocationText> = {
     ],
     faq: {
       q: 'Betreuen Sie in Renchen auch die Ortsteile Ulm und Erlach?',
-      a: 'Ja, in Renchen betreuen wir auch die Ortsteile Ulm und Erlach. Die Anfahrt aus Offenburg dauert knapp 20 Minuten.',
+      a: 'Ja, in Renchen betreuen wir auch die Ortsteile Ulm und Erlach. Die Anfahrt aus Offenburg dauert knapp 20 Minuten.',
     },
     nearby: ['appenweier', 'achern', 'oberkirch'],
   },
@@ -376,10 +376,10 @@ const texts: Record<string, LocationText> = {
     nearby: ['achern', 'kappelrodeck'],
   },
   lautenbach: {
-    intro: 'Lautenbach liegt im Renchtal zwischen Oberkirch und Oppenau. Für Betriebe im Tal sind wir über die B28 in gut 20 Minuten erreichbar.',
+    intro: 'Lautenbach liegt im Renchtal zwischen Oberkirch und Oppenau. Für Betriebe im Tal sind wir über die B28 in gut 20 Minuten erreichbar.',
     detail:
       'Wir reinigen Büros, Praxen und Betriebsräume in Lautenbach im festen Rhythmus. Dasselbe Team kommt jedes Mal, damit nichts erklärt werden muss.',
-    route: 'Lautenbach liegt im Renchtal an der B28 oberhalb von Oberkirch, gut 20 Minuten von Offenburg.',
+    route: 'Lautenbach liegt im Renchtal an der B28 oberhalb von Oberkirch, gut 20 Minuten von Offenburg.',
     economy: 'Lautenbach ist von Obstbau, Tourismus und Handwerk geprägt, dazu kommen Gewerbebetriebe im Tal.',
     focus: [
       { service: 'bueroreinigung', why: 'Büros von Handwerks- und Gewerbebetrieben.' },
@@ -410,10 +410,10 @@ const texts: Record<string, LocationText> = {
     nearby: ['lautenbach', 'oberkirch'],
   },
   'zell-am-harmersbach': {
-    intro: 'Zell am Harmersbach liegt am Eingang des Harmersbachtals und ist bekannt für seine Keramiktradition. Für Betriebe in Zell sind wir in rund 25 Minuten vor Ort.',
+    intro: 'Zell am Harmersbach liegt am Eingang des Harmersbachtals und ist bekannt für seine Keramiktradition. Für Betriebe in Zell sind wir in rund 25 Minuten vor Ort.',
     detail:
       'Wir reinigen Büros, Praxen und Gewerbeflächen in Zell im festen Rhythmus und halten den Umfang schriftlich fest. Ihr Ansprechpartner ist direkt erreichbar.',
-    route: 'Zell am Harmersbach erreichen wir über die B33 und Biberach in rund 25 Minuten.',
+    route: 'Zell am Harmersbach erreichen wir über die B33 und Biberach in rund 25 Minuten.',
     economy: 'Zell hat eine lange Tradition in der Keramikherstellung, dazu Industrie- und Handwerksbetriebe, Einzelhandel, Praxen und Büros.',
     focus: [
       { service: 'bueroreinigung', why: 'Büros und Verwaltungen von Gewerbebetrieben.' },
@@ -427,10 +427,10 @@ const texts: Record<string, LocationText> = {
     nearby: ['biberach', 'haslach', 'gengenbach'],
   },
   biberach: {
-    intro: 'Biberach liegt im Kinzigtal an der Mündung des Harmersbachtals. Unternehmen hier erreichen wir über die B33 in rund 20 Minuten.',
+    intro: 'Biberach liegt im Kinzigtal an der Mündung des Harmersbachtals. Unternehmen hier erreichen wir über die B33 in rund 20 Minuten.',
     detail:
       'Wir reinigen in Biberach zu festen Zeiten und mit demselben Team. So kennt jeder, der kommt, Ihr Objekt und Ihre Wünsche.',
-    route: 'Biberach im Kinzigtal liegt an der B33, rund 20 Minuten von Offenburg.',
+    route: 'Biberach im Kinzigtal liegt an der B33, rund 20 Minuten von Offenburg.',
     economy: 'Biberach ist eine kleinere Gemeinde mit Handwerk, Gewerbe und Tourismus, verbunden mit den Nachbarorten im Kinzig- und Harmersbachtal.',
     focus: [
       { service: 'bueroreinigung', why: 'Kleine und mittlere Büros.' },
@@ -439,7 +439,7 @@ const texts: Record<string, LocationText> = {
     ],
     faq: {
       q: 'Gelten in Biberach dieselben Preise wie in Offenburg?',
-      a: 'Ja, in Biberach gelten dieselben Stundensätze wie im ganzen Ortenaukreis: 35 bis 45 € brutto pro Mitarbeiterstunde.',
+      a: 'Ja, in Biberach gelten dieselben Stundensätze wie im ganzen Ortenaukreis: 35 bis 45 € brutto pro Mitarbeiterstunde.',
     },
     nearby: ['zell-am-harmersbach', 'gengenbach', 'haslach'],
   },
@@ -464,7 +464,7 @@ const texts: Record<string, LocationText> = {
     intro: 'Wolfach liegt im oberen Kinzigtal, wo die Wolf in die Kinzig mündet. Es ist einer der weiter entfernten Orte, die wir regelmäßig anfahren.',
     detail:
       'Für Wolfach planen wir feste Reinigungstage und ein festes Team. So lohnt sich die Anfahrt, und Sie bekommen dieselbe Qualität wie Betriebe direkt in Offenburg.',
-    route: 'Wolfach erreichen wir über die B33 durch das Kinzigtal in rund 35 Minuten.',
+    route: 'Wolfach erreichen wir über die B33 durch das Kinzigtal in rund 35 Minuten.',
     economy: 'Wolfach verbindet Industrie und Handwerk mit Tourismus im Schwarzwald. Dazu kommen Verwaltungen, Praxen und Dienstleister.',
     focus: [
       { service: 'bueroreinigung', why: 'Verwaltungen und Büros.' },
@@ -473,7 +473,7 @@ const texts: Record<string, LocationText> = {
     ],
     faq: {
       q: 'Ist Wolfach für Sie nicht zu weit weg?',
-      a: 'Nein, Wolfach liegt mit rund 35 Minuten Fahrzeit innerhalb unseres Einzugsgebiets. Wir planen feste Tage ein, damit Anfahrt und Team verlässlich sind.',
+      a: 'Nein, Wolfach liegt mit rund 35 Minuten Fahrzeit innerhalb unseres Einzugsgebiets. Wir planen feste Tage ein, damit Anfahrt und Team verlässlich sind.',
     },
     nearby: ['hausach', 'haslach'],
   },
@@ -495,10 +495,10 @@ const texts: Record<string, LocationText> = {
     nearby: ['lahr', 'kippenheim'],
   },
   kippenheim: {
-    intro: 'Kippenheim liegt südlich von Lahr an der B3, zwischen Rheinebene und Schwarzwald. Für Betriebe in Kippenheim und Schmieheim sind wir in rund 25 Minuten vor Ort.',
+    intro: 'Kippenheim liegt südlich von Lahr an der B3, zwischen Rheinebene und Schwarzwald. Für Betriebe in Kippenheim und Schmieheim sind wir in rund 25 Minuten vor Ort.',
     detail:
       'Wir reinigen Büros, Praxen und Gewerbeflächen in Kippenheim zu Zeiten, die Ihren Betrieb nicht stören. Was gemacht wird, steht im Leistungsverzeichnis.',
-    route: 'Kippenheim liegt an der B3 südlich von Lahr, rund 25 Minuten von Offenburg.',
+    route: 'Kippenheim liegt an der B3 südlich von Lahr, rund 25 Minuten von Offenburg.',
     economy: 'Kippenheim hat Gewerbe entlang der Verkehrsachsen, Handwerk und Landwirtschaft sowie Praxen und Büros.',
     focus: [
       { service: 'bueroreinigung', why: 'Büros von Gewerbe- und Handwerksbetrieben.' },
@@ -515,7 +515,7 @@ const texts: Record<string, LocationText> = {
     intro: 'Mahlberg mit seinem Schloss liegt zwischen Lahr und Ettenheim nahe der A5. Unternehmen in Mahlberg und Orschweier erreichen wir planbar.',
     detail:
       'Für Betriebe mit Büro und Lager bieten wir beides aus einer Hand. Büro und Sanitär im festen Rhythmus, Hallenflächen nach Bedarf.',
-    route: 'Mahlberg liegt nahe der A5 zwischen Lahr und Ettenheim, rund 25 Minuten von Offenburg.',
+    route: 'Mahlberg liegt nahe der A5 zwischen Lahr und Ettenheim, rund 25 Minuten von Offenburg.',
     economy: 'Mahlberg hat durch die Lage an der A5 Gewerbe mit Handel und Logistik, dazu Handwerk und kleinere Büros.',
     focus: [
       { service: 'hallenreinigung', why: 'Gewerbe- und Lagerflächen nahe der Autobahn.' },
@@ -566,7 +566,7 @@ const texts: Record<string, LocationText> = {
     intro: 'Schwanau liegt in der Rheinebene westlich von Lahr, mit den Ortsteilen Ottenheim, Allmannsweier, Nonnenweier und Wittenweier. Betriebe hier betreuen wir mit festen Zeiten.',
     detail:
       'Wir reinigen Büros, Praxen und Betriebsräume in Schwanau im vereinbarten Rhythmus. Ihr Ansprechpartner ist direkt erreichbar, ohne Hotline.',
-    route: 'Schwanau liegt westlich von Lahr in der Rheinebene, rund 25 Minuten von Offenburg.',
+    route: 'Schwanau liegt westlich von Lahr in der Rheinebene, rund 25 Minuten von Offenburg.',
     economy: 'Schwanau ist ländlich geprägt, mit Handwerk, Landwirtschaft und kleineren Gewerbebetrieben in den Ortsteilen.',
     focus: [
       { service: 'bueroreinigung', why: 'Kleinere Büros und Praxen.' },
@@ -580,10 +580,10 @@ const texts: Record<string, LocationText> = {
     nearby: ['meissenheim', 'friesenheim', 'rust'],
   },
   meissenheim: {
-    intro: 'Meißenheim liegt in der Rheinebene zwischen Neuried und Schwanau. Für Betriebe in Meißenheim und Kürzell sind wir in gut 20 Minuten vor Ort.',
+    intro: 'Meißenheim liegt in der Rheinebene zwischen Neuried und Schwanau. Für Betriebe in Meißenheim und Kürzell sind wir in gut 20 Minuten vor Ort.',
     detail:
       'Kleine Objekte sind bei uns genauso gut aufgehoben wie große. Wir reinigen in Meißenheim im festen Rhythmus und halten alles schriftlich fest.',
-    route: 'Meißenheim liegt südwestlich von Offenburg in der Rheinebene, gut 20 Minuten entfernt.',
+    route: 'Meißenheim liegt südwestlich von Offenburg in der Rheinebene, gut 20 Minuten entfernt.',
     economy: 'Meißenheim ist eine ländliche Gemeinde mit Handwerk, Landwirtschaft und kleineren Betrieben.',
     focus: [
       { service: 'bueroreinigung', why: 'Kleine Büros von Handwerks- und Gewerbebetrieben.' },

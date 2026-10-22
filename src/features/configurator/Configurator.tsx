@@ -11,7 +11,7 @@ import { PerEmployee } from '@/features/cost/PerEmployee'
 import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
 import { ContactPerson } from '@/components/ui/ContactPerson'
 import { company } from '@/content/company'
-import { formatEuro, formatEuro2, formatNumber } from '@/lib/format'
+import { formatEuro, formatNumber, formatEuroRange, formatEuro2Range } from '@/lib/format'
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber'
 import { ChoiceCard, TextField, TextArea, PrivacyCheckbox, Honeypot } from '@/features/forms/fields'
 import { submitForm } from '@/features/forms/submit'
@@ -105,11 +105,11 @@ export function PriceRange({ staff, hours, visits, dark }: { staff: number; hour
         <span className={cn('ml-2 text-base font-medium', dark ? 'text-muted-dark' : 'text-muted')}>netto</span>
       </p>
       <p className={cn('mt-1 text-sm', dark ? 'text-muted-dark' : 'text-muted')}>
-        {formatEuro(r.grossMin)} – {formatEuro(r.grossMax)} brutto inkl. {Math.round(pricing.vatRate * 100)} % MwSt.
+        {formatEuroRange(r.grossMin, r.grossMax)} brutto inkl. {Math.round(pricing.vatRate * 100)} % MwSt.
       </p>
       <p className={cn('mt-4 border-t pt-4 text-xs leading-relaxed', dark ? 'border-white/10 text-muted-dark' : 'border-line text-muted')}>
-        Grundlage: {staff} {staff === 1 ? 'Reinigungskraft' : 'Reinigungskräfte'} × {formatNumber(hours)} Std. × {visits} Einsätze pro Woche × {formatNumber(pricing.weeksPerMonth)}{' '}
-        Wochen = rund {formatNumber(r.hours)} Stunden im Monat, zu {formatEuro2(hourlyRateNetMin())} bis {formatEuro2(hourlyRateNetMax())} netto pro Stunde. Unverbindliche
+        Grundlage: {staff} {staff === 1 ? 'Reinigungskraft' : 'Reinigungskräfte'} × {formatNumber(hours)} Std. × {visits} Einsätze pro Woche × {formatNumber(pricing.weeksPerMonth)}{' '}
+        Wochen = rund {formatNumber(r.hours)} Stunden im Monat, zu {formatEuro2Range(hourlyRateNetMin(), hourlyRateNetMax())} netto pro Stunde. Unverbindliche
         Orientierung. Das finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.
       </p>
     </div>
@@ -191,15 +191,15 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
         ['Mitarbeiter in den Räumen', String(data.employees)],
         ['Stunden pro Einsatz', formatNumber(data.hours)],
         ['Einsätze pro Woche', String(data.visits)],
-        ['Richtpreis netto/Monat', `${formatEuro(r.netMin)} bis ${formatEuro(r.netMax)}`],
-        ['Richtpreis brutto/Monat', `${formatEuro(r.grossMin)} bis ${formatEuro(r.grossMax)}`],
+        ['Richtpreis netto/Monat', `${formatEuroRange(r.netMin, r.netMax)}`],
+        ['Richtpreis brutto/Monat', `${formatEuroRange(r.grossMin, r.grossMax)}`],
         [
           'Pro Mitarbeiter und Arbeitstag netto',
-          `${formatEuro2(perEmployeeDay(r.netMin, r.netMax, data.employees).min)} bis ${formatEuro2(perEmployeeDay(r.netMin, r.netMax, data.employees).max)}`,
+          `${formatEuro2Range(perEmployeeDay(r.netMin, r.netMax, data.employees).min, perEmployeeDay(r.netMin, r.netMax, data.employees).max)}`,
         ],
       )
     } else {
-      lines.push(['Fläche ca.', `${data.area} m²`], ['Etagen', String(data.floors)])
+      lines.push(['Fläche ca.', `${data.area} m²`], ['Etagen', String(data.floors)])
     }
     lines.push(
       ['Intervall', interval + (data.intervalNote ? ` (${data.intervalNote})` : '')],
@@ -242,7 +242,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
     <div ref={top} className={cn('relative', pad)}>
       {/* Kopf + Fortschritt */}
       <div className="pr-12">
-        <p className="eyebrow">Angebot in 48 Stunden</p>
+        <p className="eyebrow">Angebot in 48 Stunden</p>
         <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
           {['Was sollen wir reinigen?', 'Wie ist Ihre Reinigung heute aufgestellt?', 'Wie oft und wann?', 'Darf es noch etwas sein?', 'Wohin dürfen wir uns melden?'][step]}
         </h2>
@@ -399,7 +399,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                       render={({ field }) => (
                         <div>
                           <label htmlFor="cfg-area" className="mb-2 flex items-baseline justify-between text-sm font-medium text-ink">
-                            Fläche ungefähr <span className="text-lg font-semibold tabular-nums">{field.value >= 5000 ? 'über 5.000' : formatNumber(field.value)} m²</span>
+                            Fläche ungefähr <span className="text-lg font-semibold tabular-nums">{field.value >= 5000 ? 'über 5.000' : formatNumber(field.value)} m²</span>
                           </label>
                           <input
                             id="cfg-area"
@@ -413,8 +413,8 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                             className="w-full accent-blue"
                           />
                           <div className="mt-1 flex justify-between text-xs text-muted">
-                            <span>50 m²</span>
-                            <span>5.000 m²+</span>
+                            <span>50 m²</span>
+                            <span>5.000 m²+</span>
                           </div>
                         </div>
                       )}
@@ -430,7 +430,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                         <p className="font-semibold text-ink">Ein ehrliches Angebot statt einer geschätzten Zahl.</p>
                         <p className="mt-1 text-sm leading-relaxed text-muted">
                           Jedes Objekt ist anders. Damit Sie ein ehrliches Angebot bekommen statt einer geschätzten Zahl, die später nicht stimmt, schauen wir uns Ihre Räume
-                          kostenlos an. Danach haben Sie das Angebot innerhalb von 48 Stunden.
+                          kostenlos an. Danach haben Sie das Angebot innerhalb von 48 Stunden.
                         </p>
                       </div>
                     </div>
@@ -454,7 +454,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                     </p>
                   )}
                   {v.interval === 'individuell' && (
-                    <TextField className="mt-4" label="Ihr Wunsch-Rhythmus" optional placeholder="z. B. Sanitär täglich, Büros 2× pro Woche" {...register('intervalNote')} />
+                    <TextField className="mt-4" label="Ihr Wunsch-Rhythmus" optional placeholder="z. B. Sanitär täglich, Büros 2× pro Woche" {...register('intervalNote')} />
                   )}
                 </fieldset>
                 <fieldset>
@@ -489,7 +489,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                 </div>
                 <TextField
                   label="Ort des Objekts"
-                  placeholder="z. B. Offenburg, Hauptstraße"
+                  placeholder="z. B. Offenburg, Hauptstraße"
                   autoComplete="address-level2"
                   error={errors.location?.message}
                   {...register('location')}
@@ -584,14 +584,14 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
     ['Weg', d.path === 'A' ? 'Aktuelle Zeiten bekannt' : 'Besichtigung vor Ort'],
     ...(d.path === 'A'
       ? ([
-          ['Einsatz', `${d.staff} ${d.staff === 1 ? 'Reinigungskraft' : 'Reinigungskräfte'} × ${formatNumber(d.hours)} Std., ${d.visits}× pro Woche`],
+          ['Einsatz', `${d.staff} ${d.staff === 1 ? 'Reinigungskraft' : 'Reinigungskräfte'} × ${formatNumber(d.hours)} Std., ${d.visits}× pro Woche`],
           ['Mitarbeiter in den Räumen', String(d.employees)],
-          ['Richtpreis netto/Monat', `${formatEuro(r!.netMin)} – ${formatEuro(r!.netMax)}`],
-          ['Richtpreis brutto/Monat', `${formatEuro(r!.grossMin)} – ${formatEuro(r!.grossMax)}`],
-          ['Pro Mitarbeiter und Arbeitstag', `ca. ${formatEuro2(pe!.min)} – ${formatEuro2(pe!.max)} netto`],
+          ['Richtpreis netto/Monat', `${formatEuroRange(r!.netMin, r!.netMax)}`],
+          ['Richtpreis brutto/Monat', `${formatEuroRange(r!.grossMin, r!.grossMax)}`],
+          ['Pro Mitarbeiter und Arbeitstag', `ca. ${formatEuro2Range(pe!.min, pe!.max)} netto`],
         ] as [string, string][])
       : ([
-          ['Fläche ca.', `${formatNumber(d.area)} m²`],
+          ['Fläche ca.', `${formatNumber(d.area)} m²`],
           ['Etagen', String(d.floors)],
         ] as [string, string][])),
     ['Intervall', (intervals.find((i) => i.id === d.interval)?.label ?? d.interval) + (d.intervalNote ? ` (${d.intervalNote})` : '')],
@@ -610,7 +610,7 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
       >
         <CheckCircle2 aria-hidden className="size-9" />
       </motion.div>
-      <h2 className="mt-6 text-3xl font-semibold tracking-tight">Vielen Dank. Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</h2>
+      <h2 className="mt-6 text-3xl font-semibold tracking-tight">Vielen Dank. Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</h2>
       <p className="mt-3 text-muted">Hier ist die Zusammenfassung Ihrer Angaben.{company.forms.confirmationEmail && <> Eine Kopie erhalten Sie per E-Mail an {d.email}.</>}</p>
       {result.preview && (
         <p className="mt-5 flex gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200">
@@ -648,9 +648,9 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
                 company: d.company,
                 price: r
                   ? {
-                      net: `${formatEuro(r.netMin)} – ${formatEuro(r.netMax)}`,
-                      gross: `${formatEuro(r.grossMin)} – ${formatEuro(r.grossMax)}`,
-                      perEmployee: pe ? `${formatEuro2(pe.min)} – ${formatEuro2(pe.max)}` : undefined,
+                      net: `${formatEuroRange(r.netMin, r.netMax)}`,
+                      gross: `${formatEuroRange(r.grossMin, r.grossMax)}`,
+                      perEmployee: pe ? `${formatEuro2Range(pe.min, pe.max)}` : undefined,
                     }
                   : undefined,
               })

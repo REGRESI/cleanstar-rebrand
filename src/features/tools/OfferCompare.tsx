@@ -99,7 +99,7 @@ function hints(rs: Result[]) {
       const diff = 1 - r.hoursMonth! / max
       if (diff >= 0.2)
         out.push(
-          `${r.label} plant rund ${Math.round(diff * 100)} % weniger Stunden als das Angebot mit den meisten Stunden. Prüfen Sie, ob derselbe Leistungsumfang enthalten ist oder ob Intervalle gekürzt wurden.`,
+          `${r.label} plant rund ${Math.round(diff * 100)} % weniger Stunden als das Angebot mit den meisten Stunden. Prüfen Sie, ob derselbe Leistungsumfang enthalten ist oder ob Intervalle gekürzt wurden.`,
         )
     }
   }
@@ -107,14 +107,14 @@ function hints(rs: Result[]) {
   for (const r of valid)
     if (r.effRate && r.effRate < floor)
       out.push(
-        `Der effektive Stundensatz von ${r.label} (${formatEuro2(r.effRate)} netto) liegt unter den reinen Lohnkosten zum Branchenmindestlohn (${formatEuro2(MIN_WAGE_CLEANING)} plus rund 21 % Arbeitgeberanteile, zusammen ${formatEuro2(floor)}). Fragen Sie nach, wie die Stunden gerechnet sind.`,
+        `Der effektive Stundensatz von ${r.label} (${formatEuro2(r.effRate)} netto) liegt unter den reinen Lohnkosten zum Branchenmindestlohn (${formatEuro2(MIN_WAGE_CLEANING)} plus rund 21 % Arbeitgeberanteile, zusammen ${formatEuro2(floor)}). Fragen Sie nach, wie die Stunden gerechnet sind.`,
       )
   const notices = valid.filter((r) => r.o.notice !== null)
   if (notices.length >= 2) {
     const longest = [...notices].sort((a, b) => b.o.notice! - a.o.notice!)[0]
     const shortest = [...notices].sort((a, b) => a.o.notice! - b.o.notice!)[0]
     if (longest.o.notice! > shortest.o.notice!)
-      out.push(`${longest.label} hat mit ${formatNumber(longest.o.notice!)} Monaten die längste Kündigungsfrist. Das bindet Sie länger, falls die Qualität nicht stimmt.`)
+      out.push(`${longest.label} hat mit ${formatNumber(longest.o.notice!)} Monaten die längste Kündigungsfrist. Das bindet Sie länger, falls die Qualität nicht stimmt.`)
   }
   return out
 }
@@ -135,7 +135,7 @@ export function OfferCompare() {
     { label: 'Stunden pro Monat', get: (r) => (r.hoursMonth ? formatNumber(Math.round(r.hoursMonth * 10) / 10) : '–') },
     { label: 'Effektiver Stundensatz netto', get: (r) => (r.effRate ? formatEuro2(r.effRate) : '–') },
     { label: 'Pro Mitarbeiter und Arbeitstag', get: (r) => (r.perEmpDay ? formatEuro2(r.perEmpDay) : '–') },
-    { label: 'Kündigungsfrist', get: (r) => (r.o.notice !== null ? `${formatNumber(r.o.notice)} Mon.` : '–') },
+    { label: 'Kündigungsfrist', get: (r) => (r.o.notice !== null ? `${formatNumber(r.o.notice)} Mon.` : '–') },
     { label: 'Fester Ansprechpartner', get: (r) => (r.o.contact ? 'Ja' : 'Nein') },
     { label: 'Vertretung bei Ausfall', get: (r) => (r.o.replacement ? 'Ja' : 'Nein') },
     { label: 'Leistungen enthalten', get: (r) => `${r.o.services.length} von ${SERVICES.length}` },
@@ -244,7 +244,7 @@ export function OfferCompare() {
           <Scale aria-hidden className="size-5 text-fresh" />
           Vergleich
         </h2>
-        <p className="mt-1 text-sm text-white/65">Alle Preise netto, umgerechnet mit {formatNumber(pricing.weeksPerMonth)} Wochen pro Monat.</p>
+        <p className="mt-1 text-sm text-white/65">Alle Preise netto, umgerechnet mit {formatNumber(pricing.weeksPerMonth)} Wochen pro Monat.</p>
         <dl className="mt-6 divide-y divide-white/10">
           <div className="grid grid-cols-3 gap-2 pb-3 text-xs font-semibold tracking-wide text-white/60 uppercase sm:grid-cols-[1.4fr_1fr_1fr_1fr]">
             <span className="hidden sm:block" />
@@ -285,7 +285,7 @@ export function OfferCompare() {
       <div className="flex flex-col gap-4 rounded-panel bg-glacier p-6 ring-1 ring-line sm:flex-row sm:items-center sm:justify-between sm:p-8">
         <div>
           <p className="text-lg font-semibold tracking-tight">Möchten Sie uns als viertes Angebot dazunehmen?</p>
-          <p className="mt-1 text-sm text-muted">Kostenlose Besichtigung, Angebot mit Leistungsverzeichnis in 48 Stunden. Im ersten Monat jederzeit kündbar.</p>
+          <p className="mt-1 text-sm text-muted">Kostenlose Besichtigung, Angebot mit Leistungsverzeichnis in 48 Stunden. Im ersten Monat jederzeit kündbar.</p>
         </div>
         <QuoteButton arrow wrapClassName="shrink-0">
           Angebot anfragen

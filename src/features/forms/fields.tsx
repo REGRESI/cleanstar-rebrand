@@ -72,7 +72,7 @@ export const ChoiceCard = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLI
         className="pointer-events-none absolute inset-0 -z-10 rounded-2xl ring-1 ring-line transition group-hover:ring-blue/40 peer-checked:bg-blue/[0.04] peer-checked:ring-2 peer-checked:ring-blue peer-focus-visible:ring-2 peer-focus-visible:ring-blue"
       />
       {icon && <span className="mt-0.5 text-blue">{icon}</span>}
-      <span className="min-w-0 flex-1 hyphens-auto break-words">
+      <span className="min-w-0 flex-1">
         <span className="block font-medium text-ink">{label}</span>
         {description && <span className="mt-0.5 block text-sm text-muted">{description}</span>}
       </span>

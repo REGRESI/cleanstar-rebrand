@@ -180,7 +180,7 @@ export const partnerModules: PartnerModule[] = [
 /* Ablauf                                                              */
 /* ------------------------------------------------------------------ */
 export const partnerSteps = [
-  { title: 'Unverbindliche Anfrage', duration: 'ca. 2 Minuten', text: 'Über das Formular auf dieser Seite oder telefonisch. Wir melden uns persönlich bei Ihnen.' },
+  { title: 'Unverbindliche Anfrage', duration: 'ca. 2 Minuten', text: 'Über das Formular auf dieser Seite oder telefonisch. Wir melden uns persönlich bei Ihnen.' },
   { title: 'Erstgespräch', duration: 'telefonisch oder per Video', text: 'Wir lernen uns kennen, beantworten Ihre Fragen und erklären das Partnerprogramm.' },
   { title: 'Kennenlernen in Offenburg', duration: 'vor Ort', text: 'Sie sehen, wie wir arbeiten, und lernen das Team und die Abläufe kennen.' },
   { title: 'Prüfung', duration: 'Region und Voraussetzungen', text: 'Gemeinsam prüfen wir Ihre Region, Ihre Voraussetzungen und ob die Zusammenarbeit für beide Seiten passt.' },
@@ -204,12 +204,12 @@ export const partnerConditions = [
 /* Bewerbungsformular: Auswahllisten                                   */
 /* ------------------------------------------------------------------ */
 export const partnerFormOptions = {
-  employees: ['nur ich', '1 bis 5', '6 bis 20', 'mehr als 20'],
-  businessShare: ['unter 25 %', '25 bis 50 %', '50 bis 75 %', 'über 75 %'],
-  start: ['sofort', 'in 3 Monaten', 'in 6 Monaten', 'später'],
+  employees: ['nur ich', '1 bis 5', '6 bis 20', 'mehr als 20'],
+  businessShare: ['unter 25 %', '25 bis 50 %', '50 bis 75 %', 'über 75 %'],
+  start: ['sofort', 'in 3 Monaten', 'in 6 Monaten', 'später'],
   mode: ['hauptberuflich', 'nebenberuflich', 'noch offen'],
   /** Nur eine grobe Selbsteinschätzung der Interessenten, keine Angabe zu Kosten des Partnerprogramms */
-  investment: ['unter 10.000 €', '10.000 bis 25.000 €', '25.000 bis 50.000 €', 'über 50.000 €', 'Möchte ich lieber im Gespräch klären'],
+  investment: ['unter 10.000 €', '10.000 bis 25.000 €', '25.000 bis 50.000 €', 'über 50.000 €', 'Möchte ich lieber im Gespräch klären'],
   callback: ['vormittags', 'mittags', 'nachmittags', 'abends', 'egal'],
 }
 

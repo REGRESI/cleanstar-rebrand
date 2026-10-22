@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
 import { hourlyRateNetMax, hourlyRateNetMin, pricing } from '@/content/pricing'
-import { formatEuro, formatNumber } from '@/lib/format'
+import { formatNumber, formatEuroRange } from '@/lib/format'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { PerEmployee } from './PerEmployee'
 
@@ -58,7 +58,7 @@ export function PerEmployeeCalculator() {
         <Range label="Mitarbeiter in Ihren Räumen" value={employees} onChange={setEmployees} min={1} max={150} step={1} unit="Personen" />
         <Range label="Reinigungsstunden pro Woche" value={hours} onChange={setHours} min={1} max={60} step={0.5} unit="Std." />
         <p className="text-sm text-muted">
-          Das entspricht rund {formatEuro(netMin)} bis {formatEuro(netMax)} netto im Monat. Wie viele Stunden Ihr Objekt braucht, sehen wir bei der kostenlosen Besichtigung.
+          Das entspricht rund {formatEuroRange(netMin, netMax)} netto im Monat. Wie viele Stunden Ihr Objekt braucht, sehen wir bei der kostenlosen Besichtigung.
         </p>
       </div>
       <div className="flex flex-col justify-between gap-5">

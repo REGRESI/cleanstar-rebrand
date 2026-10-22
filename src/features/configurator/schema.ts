@@ -23,7 +23,7 @@ export const timeSlots = ['Vor Bürobeginn (morgens)', 'Nach Büroschluss (abend
 export const extras = [
   { id: 'Fensterreinigung', description: 'Glasflächen, Rahmen, Falze' },
   { id: 'Treppenhausreinigung', description: 'Treppen, Eingang, Aufzug' },
-  { id: 'Grundreinigung', description: 'Einmalige Tiefenreinigung, z. B. zum Start' },
+  { id: 'Grundreinigung', description: 'Einmalige Tiefenreinigung, z. B. zum Start' },
   { id: 'Hygienereinigung', description: 'Sanitär, Küchen, Kontaktflächen desinfizieren' },
 ] as const
 

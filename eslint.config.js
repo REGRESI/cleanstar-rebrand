@@ -18,6 +18,8 @@ export default tseslint.config(
       'react-hooks/set-state-in-effect': 'off',
       'react-hooks/incompatible-library': 'off',
       'react-refresh/only-export-components': 'off',
+      // Geschützte Leerzeichen zwischen Zahl und Einheit sind in Texten gewollt (z. B. „390 €“), im Code nicht
+      'no-irregular-whitespace': ['error', { skipStrings: true, skipTemplates: true, skipJSXText: true, skipComments: false }],
     },
   },
   {

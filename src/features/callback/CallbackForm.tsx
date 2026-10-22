@@ -50,7 +50,7 @@ export default function CallbackForm({ onDone }: { onDone?: () => void }) {
 
   const onSubmit = handleSubmit(async (d) => {
     setError(null)
-    const wish = d.when === 'sofort' ? 'So schnell wie möglich' : `${d.when === 'heute' ? 'Heute' : 'Morgen'}, ${fmtDay(d.when === 'heute' ? 0 : 1)}, um ${d.time} Uhr`
+    const wish = d.when === 'sofort' ? 'So schnell wie möglich' : `${d.when === 'heute' ? 'Heute' : 'Morgen'}, ${fmtDay(d.when === 'heute' ? 0 : 1)}, um ${d.time} Uhr`
     const res = await submitForm({
       subject: `Rückruf: ${d.name}, ${wish}`,
       name: d.name,
@@ -140,7 +140,7 @@ export default function CallbackForm({ onDone }: { onDone?: () => void }) {
           )}
         </div>
       )}
-      <TextField label="Worum geht es?" optional placeholder="z. B. Büroreinigung, ca. 300 m²" {...register('topic')} />
+      <TextField label="Worum geht es?" optional placeholder="z. B. Büroreinigung, ca. 300 m²" {...register('topic')} />
       <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
       {error && (
         <p role="alert" className="rounded-xl bg-danger/10 p-4 text-sm text-danger">

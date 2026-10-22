@@ -31,7 +31,7 @@ export function GuideMeta({ g, author }: { g: Guide; author: Person }) {
       </span>
       <span className="inline-flex items-center gap-1.5">
         <Clock aria-hidden className="size-4" />
-        {readingMinutes(g)} Min. Lesezeit
+        {readingMinutes(g)} Min. Lesezeit
       </span>
     </div>
   )
@@ -85,7 +85,7 @@ const ctas: Record<GuideCta, { icon: typeof Sparkles; title: string; text: strin
   angebot: {
     icon: Sparkles,
     title: 'Sie suchen eine Reinigungsfirma im Ortenaukreis?',
-    text: `Wir besichtigen Ihr Büro kostenlos und schicken Ihnen innerhalb von ${company.promises.offerHours} Stunden ein Angebot mit Leistungsverzeichnis. Im ersten Monat können Sie jederzeit kündigen.`,
+    text: `Wir besichtigen Ihr Büro kostenlos und schicken Ihnen innerhalb von ${company.promises.offerHours} Stunden ein Angebot mit Leistungsverzeichnis. Im ersten Monat können Sie jederzeit kündigen.`,
     label: 'Kostenloses Angebot',
     quote: true,
   },
@@ -185,7 +185,7 @@ export function GuideCard({ g }: { g: Guide }) {
       <span className="mt-3 text-lg leading-snug font-semibold tracking-tight text-ink">{g.title}</span>
       <span className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-muted">{g.answer}</span>
       <span className="mt-5 flex items-center justify-between text-sm">
-        <span className="text-muted">{readingMinutes(g)} Min. Lesezeit</span>
+        <span className="text-muted">{readingMinutes(g)} Min. Lesezeit</span>
         <span className="inline-flex items-center gap-1 font-semibold text-blue-hover">
           Lesen <ArrowRight aria-hidden className="size-4 transition group-hover:translate-x-0.5" />
         </span>

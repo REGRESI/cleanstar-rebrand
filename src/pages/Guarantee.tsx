@@ -89,7 +89,7 @@ export default function Guarantee() {
                   {done}
                   <span className="text-2xl text-muted"> / {guaranteePoints.length}</span>
                 </p>
-                <div className="mt-4 h-2 overflow-hidden rounded-full bg-white">
+                <div className="mt-4 h-2 overflow-hidden rounded-full bg-white">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-blue to-fresh transition-[width] duration-700 ease-out"
                     style={{ width: `${(done / guaranteePoints.length) * 100}%` }}

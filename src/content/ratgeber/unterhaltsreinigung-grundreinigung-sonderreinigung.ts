@@ -104,7 +104,7 @@ Nach Umbau oder Renovierung bleibt feiner Baustaub, der sich auf allen Flächen 
 
 | | Unterhaltsreinigung | Grundreinigung | Sonderreinigung |
 | --- | --- | --- | --- |
-| Rhythmus | fest, z. B. täglich oder wöchentlich | in großen Abständen, z. B. jährlich | einmalig, aus Anlass |
+| Rhythmus | fest, z. B. täglich oder wöchentlich | in großen Abständen, z. B. jährlich | einmalig, aus Anlass |
 | Ziel | Sauberkeit im Alltag | Tiefe Verschmutzung entfernen, Beläge pflegen | Zustand nach Ereignis herstellen |
 | Abrechnung | laufend, meist monatlich | pro Einsatz | pro Einsatz |
 | Planbar | ja | ja | meist kurzfristig |

@@ -15,7 +15,7 @@ export default function Imprint() {
       <section className="py-16 sm:py-24">
         <div className="container-site">
           <div className="prose-cs">
-            <h2>Angaben gemäß § 5 DDG</h2>
+            <h2>Angaben gemäß § 5 DDG</h2>
             <p>
               {company.legalName}
               <br />
@@ -35,9 +35,9 @@ export default function Imprint() {
             </p>
 
             <h2>Umsatzsteuer-ID</h2>
-            <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: {company.vatId}</p>
+            <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: {company.vatId}</p>
 
-            <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+            <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
             <p>{company.partners?.[0]}, Anschrift wie oben.</p>
 
             <h2>Verbraucherstreitbeilegung</h2>

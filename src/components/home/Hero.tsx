@@ -61,6 +61,8 @@ export function Hero() {
   const isMobile = useIsMobile()
   const section = useRef<HTMLElement>(null)
   const pin = useRef<HTMLDivElement>(null)
+  // Eigener Pin-Spacer: GSAP verschiebt den Hero dann nie im DOM (sonst starten die CSS-Animationen des Titels neu)
+  const spacer = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const copy = useRef<HTMLDivElement>(null)
   const outro = useRef<HTMLDivElement>(null)
@@ -82,6 +84,7 @@ export function Hero() {
     urls: hero.desktop,
     section,
     pin,
+    spacer,
     canvas,
     lengthVh: 3.2,
     play: PLAY,
@@ -119,89 +122,95 @@ export function Hero() {
 
   return (
     <section ref={section} aria-labelledby="hero-title" className="relative">
-      <div ref={pin} className="relative h-[100svh] min-h-[560px] overflow-hidden bg-ink">
-        {/* Bildfläche: Desktop höchstens in nativer Framegröße (keine Streckung über 100 %) */}
-        <div className="hero-stage absolute overflow-hidden" style={{ ['--fw' as string]: `${FRAME_W}px`, ['--fh' as string]: `${FRAME_H}px` }}>
-          {/* Erstes Frame bzw. Standbild als normales Bild (LCP). Handy: eigenes Hochformat-Foto des Gebäudes. */}
-          <picture>
-            {mode === 'static-first' ? null : (
+      <div ref={spacer}>
+        <div ref={pin} className="relative h-[100svh] min-h-[560px] overflow-hidden bg-ink">
+          {/* Bildfläche: Desktop höchstens in nativer Framegröße (keine Streckung über 100 %) */}
+          <div className="hero-stage absolute overflow-hidden" style={{ ['--fw' as string]: `${FRAME_W}px`, ['--fh' as string]: `${FRAME_H}px` }}>
+            {/* Erstes Frame bzw. Standbild als normales Bild (LCP). Handy: eigenes Hochformat-Foto des Gebäudes. */}
+            <picture>
+              {mode === 'static-first' ? null : (
+                <>
+                  <source media={`(prefers-reduced-motion: reduce) and ${MOBILE}`} srcSet={hero.still['morgen-m']} />
+                  <source media="(prefers-reduced-motion: reduce)" srcSet={hero.still['morgen-d']} />
+                </>
+              )}
+              <source media={MOBILE} srcSet={hero.still['aussen-m-lq'] ?? hero.still['aussen-m']} />
+              <img
+                src={hero.desktop[0] ?? hero.still['aussen-d']}
+                alt={morning ? home.hero.imageAltMorning : home.hero.imageAlt}
+                fetchPriority="high"
+                decoding="async"
+                // Handy: Hochformat-Foto, leicht nach links verschoben, damit das ganze Gebäude sichtbar bleibt
+                className="absolute inset-0 size-full object-cover max-md:object-[40%_50%]"
+              />
+            </picture>
+            {/* Handy: volles Foto (WebP 85, native Breite) blendet über die kleine Vorschau, sobald es geladen ist */}
+            {hero.still['aussen-m-lq'] && isMobile && !morning && <MobileFullImage src={hero.still['aussen-m']} />}
+
+            {desktopVideo && (
               <>
-                <source media={`(prefers-reduced-motion: reduce) and ${MOBILE}`} srcSet={hero.still['morgen-m']} />
-                <source media="(prefers-reduced-motion: reduce)" srcSet={hero.still['morgen-d']} />
+                <canvas
+                  ref={canvas}
+                  aria-hidden
+                  className={cn('absolute inset-0 size-full object-cover transition-opacity duration-300', seq.drawn ? 'opacity-100' : 'opacity-0')}
+                />
+                {seq.load && <KeyOverlays activeKey={seq.activeKey} variant="d" />}
               </>
             )}
-            <source media={MOBILE} srcSet={hero.still['aussen-m-lq'] ?? hero.still['aussen-m']} />
-            <img
-              src={hero.desktop[0] ?? hero.still['aussen-d']}
-              alt={morning ? home.hero.imageAltMorning : home.hero.imageAlt}
-              fetchPriority="high"
-              decoding="async"
-              // Handy: Hochformat-Foto, leicht nach links verschoben, damit das ganze Gebäude sichtbar bleibt
-              className="absolute inset-0 size-full object-cover max-md:object-[40%_50%]"
-            />
-          </picture>
-          {/* Handy: volles Foto (WebP 85, native Breite) blendet über die kleine Vorschau, sobald es geladen ist */}
-          {hero.still['aussen-m-lq'] && isMobile && !morning && <MobileFullImage src={hero.still['aussen-m']} />}
+          </div>
 
+          {/* Lesbarkeit. Desktop: Verlauf hinter dem Text. Handy: weicher Verlauf von unten, das Gebäude bleibt frei. */}
+          <div
+            ref={shade}
+            aria-hidden
+            className="hero-shade pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/45 to-ink/10 lg:bg-gradient-to-r lg:from-ink/85 lg:via-ink/45 lg:to-transparent"
+          />
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink/50 to-transparent" />
+
+          {/* Text */}
+          <div className="on-dark container-site relative flex h-full flex-col pt-28 pb-10 text-white max-md:justify-end max-md:pt-0 max-md:pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:pt-36 lg:justify-center lg:pt-32">
+            <div ref={copy} className="max-w-[40rem] will-change-transform">
+              <p className="eyebrow fade-up-now mb-5 max-md:mb-3" style={{ ['--d' as string]: '0.05s' }}>
+                {home.hero.eyebrow}
+              </p>
+              <RevealText as="h1" id="hero-title" text={home.hero.headline} immediate className="heading-display text-white [text-shadow:0_2px_24px_rgb(10_22_40/0.35)]" />
+              <p className="fade-up-now mt-6 max-w-xl text-lg leading-relaxed text-white/85 max-md:mt-4 sm:text-xl" style={{ ['--d' as string]: '0.55s' }}>
+                {home.hero.sub}
+              </p>
+              <div className="fade-up-now mt-8 max-md:mt-7" style={{ ['--d' as string]: '0.7s' }}>
+                <QuoteButton size="lg" arrow full={isMobile}>
+                  {home.hero.cta}
+                </QuoteButton>
+              </div>
+              <p className="fade-up-now mt-5 text-sm text-white/75 max-md:text-center" style={{ ['--d' as string]: '0.85s' }}>
+                <a href={company.phone.href} className="underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white">
+                  oder anrufen: <span className="font-semibold text-white">{company.phone.display}</span>
+                </a>
+              </p>
+            </div>
+          </div>
+
+          {/* Szenen-Untertitel und dezenter Ladefortschritt (Desktop) */}
           {desktopVideo && (
-            <>
-              <canvas ref={canvas} aria-hidden className={cn('absolute inset-0 size-full object-cover transition-opacity duration-300', seq.drawn ? 'opacity-100' : 'opacity-0')} />
-              {seq.load && <KeyOverlays activeKey={seq.activeKey} variant="d" />}
-            </>
+            <div aria-hidden className={cn('pointer-events-none absolute inset-x-0 bottom-24 justify-center lg:bottom-6', step === 0 ? 'hidden sm:flex' : 'flex')}>
+              <div className="glass relative flex items-center gap-3 overflow-hidden rounded-full px-4 py-2.5 text-sm font-medium text-ink shadow-soft ring-1 ring-line">
+                <span className="flex gap-1">
+                  {home.hero.sceneSteps.map((_, i) => (
+                    <span key={i} className={cn('h-1.5 rounded-full transition-all duration-500', i === step ? 'w-6 bg-blue' : 'w-1.5 bg-ink/20')} />
+                  ))}
+                </span>
+                <span className="min-w-[12.5rem]">{home.hero.sceneSteps[step]}</span>
+                {step === 0 && <ArrowDown className="size-4 animate-bounce text-blue" />}
+                {loadingVisible && (
+                  <span className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-blue/60 transition-transform duration-300" style={{ transform: `scaleX(${seq.progress})` }} />
+                )}
+              </div>
+            </div>
           )}
+
+          {/* Weicher Übergang zur Vertrauensleiste (Desktop) */}
+          <div ref={outro} aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-white/40 to-white opacity-0" />
         </div>
-
-        {/* Lesbarkeit. Desktop: Verlauf hinter dem Text. Handy: weicher Verlauf von unten, das Gebäude bleibt frei. */}
-        <div
-          ref={shade}
-          aria-hidden
-          className="hero-shade pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/45 to-ink/10 lg:bg-gradient-to-r lg:from-ink/85 lg:via-ink/45 lg:to-transparent"
-        />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink/50 to-transparent" />
-
-        {/* Text */}
-        <div className="on-dark container-site relative flex h-full flex-col pt-28 pb-10 text-white max-md:justify-end max-md:pt-0 max-md:pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:pt-36 lg:justify-center lg:pt-32">
-          <div ref={copy} className="max-w-[40rem] will-change-transform">
-            <p className="eyebrow fade-up-now mb-5 max-md:mb-3" style={{ ['--d' as string]: '0.05s' }}>
-              {home.hero.eyebrow}
-            </p>
-            <RevealText as="h1" id="hero-title" text={home.hero.headline} immediate className="heading-display text-white [text-shadow:0_2px_24px_rgb(10_22_40/0.35)]" />
-            <p className="fade-up-now mt-6 max-w-xl text-lg leading-relaxed text-white/85 max-md:mt-4 sm:text-xl" style={{ ['--d' as string]: '0.55s' }}>
-              {home.hero.sub}
-            </p>
-            <div className="fade-up-now mt-8 max-md:mt-7" style={{ ['--d' as string]: '0.7s' }}>
-              <QuoteButton size="lg" arrow full={isMobile}>
-                {home.hero.cta}
-              </QuoteButton>
-            </div>
-            <p className="fade-up-now mt-5 text-sm text-white/75 max-md:text-center" style={{ ['--d' as string]: '0.85s' }}>
-              <a href={company.phone.href} className="underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white">
-                oder anrufen: <span className="font-semibold text-white">{company.phone.display}</span>
-              </a>
-            </p>
-          </div>
-        </div>
-
-        {/* Szenen-Untertitel und dezenter Ladefortschritt (Desktop) */}
-        {desktopVideo && (
-          <div aria-hidden className={cn('pointer-events-none absolute inset-x-0 bottom-24 justify-center lg:bottom-6', step === 0 ? 'hidden sm:flex' : 'flex')}>
-            <div className="glass relative flex items-center gap-3 overflow-hidden rounded-full px-4 py-2.5 text-sm font-medium text-ink shadow-soft ring-1 ring-line">
-              <span className="flex gap-1">
-                {home.hero.sceneSteps.map((_, i) => (
-                  <span key={i} className={cn('h-1.5 rounded-full transition-all duration-500', i === step ? 'w-6 bg-blue' : 'w-1.5 bg-ink/20')} />
-                ))}
-              </span>
-              <span className="min-w-[12.5rem]">{home.hero.sceneSteps[step]}</span>
-              {step === 0 && <ArrowDown className="size-4 animate-bounce text-blue" />}
-              {loadingVisible && (
-                <span className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-blue/60 transition-transform duration-300" style={{ transform: `scaleX(${seq.progress})` }} />
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Weicher Übergang zur Vertrauensleiste (Desktop) */}
-        <div ref={outro} aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-white/40 to-white opacity-0" />
       </div>
 
       {/* Handy: Sequenz als Karte mit Überschrift und drei Schritten */}

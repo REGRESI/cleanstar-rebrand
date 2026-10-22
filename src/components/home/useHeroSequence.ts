@@ -15,6 +15,8 @@ interface Options {
   urls: string[]
   section: RefObject<HTMLElement | null>
   pin: RefObject<HTMLElement | null>
+  /** Eigenes Element als Pin-Spacer (direkter Elternknoten von pin), damit GSAP nichts im DOM verschiebt */
+  spacer?: RefObject<HTMLElement | null>
   canvas: RefObject<HTMLCanvasElement | null>
   /** Länge der Scrollstrecke in Bildschirmhöhen */
   lengthVh: number
@@ -29,7 +31,7 @@ interface Options {
  * nur bei Änderung (requestAnimationFrame auf Anforderung)
  * (Darstellung per object-fit im Browser) und scharfe Standbilder an Schlüsselmomenten, wenn man stehen bleibt.
  */
-export function useHeroSequence({ enabled, urls, section, pin, canvas, lengthVh, play, onProgress }: Options) {
+export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, lengthVh, play, onProgress }: Options) {
   const target = useRef(0)
   const progressCb = useRef(onProgress)
   progressCb.current = onProgress
@@ -73,6 +75,7 @@ export function useHeroSequence({ enabled, urls, section, pin, canvas, lengthVh,
     const st = ScrollTrigger.create({
       trigger: section.current,
       pin: pin.current,
+      ...(spacer?.current ? { pinSpacer: spacer.current } : {}),
       start: 'top top',
       end: () => `+=${window.innerHeight * lengthVh}`,
       anticipatePin: 1,
@@ -89,7 +92,7 @@ export function useHeroSequence({ enabled, urls, section, pin, canvas, lengthVh,
       window.clearTimeout(timer)
       st.kill()
     }
-  }, [enabled, section, pin, lengthVh, play])
+  }, [enabled, section, pin, spacer, lengthVh, play])
 
   // Zeichnen: weich zum Ziel-Frame interpolieren, 1:1 ohne Skalierung. Die Schleife läuft nur, solange sich
   // das Bild noch ändert, und hält danach an; außerhalb des Bildschirms wird gar nicht gezeichnet.

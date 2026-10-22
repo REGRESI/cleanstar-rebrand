@@ -74,8 +74,8 @@ export function ProcessTimeline({
           <SectionHeading eyebrow={eyebrow} title={title} id={id} />
         </div>
         <div className="relative mt-16">
-          <div aria-hidden className="absolute top-[1.375rem] right-0 left-0 h-px bg-line" />
-          <div ref={bar} aria-hidden className="absolute top-[1.375rem] right-0 left-0 h-px origin-left scale-x-0 bg-gradient-to-r from-blue to-fresh" />
+          <div aria-hidden className="absolute top-[1.375rem] right-0 left-0 h-px bg-line" />
+          <div ref={bar} aria-hidden className="absolute top-[1.375rem] right-0 left-0 h-px origin-left scale-x-0 bg-gradient-to-r from-blue to-fresh" />
           <ol ref={track} className="flex gap-6 pr-12 pl-[max(3rem,calc((100vw-84rem)/2+3rem))] will-change-transform">
             {steps.map((s, i) => (
               <li key={s.title} className="w-[24rem] shrink-0">

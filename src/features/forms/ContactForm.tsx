@@ -49,7 +49,7 @@ export function ContactForm() {
       <div role="status" className="rounded-panel bg-white p-8 ring-1 ring-line">
         <CheckCircle2 aria-hidden className="size-10 text-fresh-ink" />
         <h3 className="mt-4 text-2xl font-semibold tracking-tight">Danke für Ihre Nachricht.</h3>
-        <p className="mt-2 text-muted">Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</p>
+        <p className="mt-2 text-muted">Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</p>
         {state.preview && (
           <p className="mt-5 flex gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200">
             <Info aria-hidden className="size-5 shrink-0" />

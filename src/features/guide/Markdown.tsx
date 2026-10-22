@@ -1,6 +1,11 @@
 import { Fragment, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Lightbulb } from 'lucide-react'
+import { cn } from '@/lib/cn'
+import { noOrphan } from '@/lib/format'
+
+/** Zelle ist ein Zahlenwert (Preis, Stunden, Prozent): nie umbrechen */
+const numeric = (c: string) => /^[\d.,\s\u00A0%€+=–-]*(bis|Std\.|h|€|%)?[\d.,\s\u00A0€%]*$/.test(c.replace(/\*\*/g, '')) && /\d/.test(c)
 
 /**
  * Sehr kleiner Markdown-Renderer für Ratgeber-Artikel (ohne externe Bibliothek, läuft beim Vorrendern).
@@ -67,14 +72,14 @@ export function Markdown({ source }: { source: string }) {
           const t = b.slice(3).trim()
           return (
             <h2 key={bi} id={slugify(t)} className="mt-14 scroll-mt-28 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-              {t}
+              {noOrphan(t)}
             </h2>
           )
         }
         if (b.startsWith('### ')) {
           return (
             <h3 key={bi} className="mt-10 text-xl font-semibold tracking-tight text-ink">
-              {b.slice(4).trim()}
+              {noOrphan(b.slice(4).trim())}
             </h3>
           )
         }
@@ -113,30 +118,51 @@ export function Markdown({ source }: { source: string }) {
           )
           const [head, ...body] = rows.filter((r) => !r.every((c) => /^:?-+:?$/.test(c)))
           return (
-            <div key={bi} className="mt-6 overflow-x-auto rounded-2xl ring-1 ring-line" tabIndex={0} role="region" aria-label={head.join(', ')}>
-              <table className="w-full min-w-[32rem] text-left text-[0.9375rem]">
-                <thead className="bg-glacier">
-                  <tr>
-                    {head.map((c, i) => (
-                      <th key={i} scope="col" className="px-4 py-3 font-semibold text-ink">
-                        {inline(c)}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-line bg-white">
-                  {body.map((r, ri) => (
-                    <tr key={ri}>
-                      {r.map((c, ci) => (
-                        <td key={ci} className="px-4 py-3 align-top">
+            <Fragment key={bi}>
+              {/* Ab 640 px: Tabelle */}
+              <div className="mt-6 hidden overflow-x-auto rounded-2xl ring-1 ring-line sm:block" tabIndex={0} role="region" aria-label={head.filter(Boolean).join(', ')}>
+                <table className="w-full text-left text-[0.9375rem]">
+                  <thead className="bg-glacier">
+                    <tr>
+                      {head.map((c, i) => (
+                        <th key={i} scope="col" className="px-4 py-3 font-semibold text-ink">
                           {inline(c)}
-                        </td>
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-line bg-white">
+                    {body.map((r, ri) => (
+                      <tr key={ri}>
+                        {r.map((c, ci) => (
+                          <td key={ci} className={cn('px-4 py-3 align-top', ci > 0 && numeric(c) && 'whitespace-nowrap')}>
+                            {inline(c)}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {/* Unter 640 px: jede Zeile als Karte, Beschriftung links, Wert rechts */}
+              <ul className="mt-6 space-y-3 sm:hidden">
+                {body.map((r, ri) => (
+                  <li key={ri} className="rounded-2xl bg-white p-4 ring-1 ring-line">
+                    <p className="font-semibold text-ink">{inline(r[0])}</p>
+                    <dl className="mt-2 divide-y divide-line text-[0.9375rem]">
+                      {r.slice(1).map((c, ci) =>
+                        c ? (
+                          <div key={ci} className="flex items-baseline justify-between gap-4 py-2">
+                            <dt className="text-muted">{inline(head[ci + 1] || '')}</dt>
+                            <dd className={cn('text-right font-medium text-ink', numeric(c) && 'whitespace-nowrap')}>{inline(c)}</dd>
+                          </div>
+                        ) : null,
+                      )}
+                    </dl>
+                  </li>
+                ))}
+              </ul>
+            </Fragment>
           )
         }
         if (lines.every((l) => l.startsWith('>'))) {

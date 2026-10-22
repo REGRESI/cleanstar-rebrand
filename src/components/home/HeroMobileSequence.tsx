@@ -52,7 +52,7 @@ export function HeroMobileSequence({ onFailed }: { onFailed: () => void }) {
           {seq.load && seq.progress < 1 && (
             <span
               aria-hidden
-              className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-blue/70 transition-transform duration-300"
+              className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-blue/70 transition-transform duration-300"
               style={{ transform: `scaleX(${seq.progress})` }}
             />
           )}

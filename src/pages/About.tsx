@@ -136,7 +136,7 @@ export default function About() {
             </p>
             <p>
               Wir sind drei Gründer mit klar verteilten Aufgaben: Zahlen und Angebote, Kundenbetreuung und Qualität, Team und Einsatzplanung. Unser Team bringt über{' '}
-              {company.yearsOfExperience} Jahre Erfahrung in der Reinigung mit. Und weil wir rund um die Uhr erreichbar sind, bleibt bei uns kein Anliegen liegen.
+              {company.yearsOfExperience} Jahre Erfahrung in der Reinigung mit. Und weil wir rund um die Uhr erreichbar sind, bleibt bei uns kein Anliegen liegen.
             </p>
           </div>
         </div>
@@ -145,12 +145,12 @@ export default function About() {
       <section className="bg-glacier py-24 sm:py-32" aria-labelledby="values-title">
         <div className="container-site">
           <SectionHeading eyebrow="Werte" title="Woran Sie uns messen können." id="values-title" />
-          <ul className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="feature-grid mt-14">
             {values.map((v, i) => (
-              <li key={v.title} className="rounded-card bg-white p-6 ring-1 ring-line sm:p-8" data-reveal>
+              <li key={v.title} className="feature-card bg-white ring-1 ring-line" data-reveal>
                 <span className="text-sm font-semibold text-blue">0{i + 1}</span>
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight">{v.title}</h3>
-                <p className="mt-3 leading-relaxed text-muted">{v.text}</p>
+                <h3 className="feature-title mt-3">{v.title}</h3>
+                <p className="feature-text">{v.text}</p>
               </li>
             ))}
           </ul>

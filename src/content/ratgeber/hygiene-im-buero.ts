@@ -15,7 +15,7 @@ const guide: Guide = {
   body: `
 ## Was das Arbeitsschutzrecht verlangt
 
-Die Arbeitsstättenverordnung verpflichtet Arbeitgeber, Arbeitsstätten den hygienischen Erfordernissen entsprechend zu reinigen und Verunreinigungen, die zu Gefährdungen führen können, unverzüglich zu beseitigen (§ 4 Absatz 2 ArbStättV). Ein festes Intervall schreibt die Verordnung dabei nicht vor. Wie oft gereinigt werden muss, hängt von der Nutzung ab und gehört in die Planung jedes Betriebs.
+Die Arbeitsstättenverordnung verpflichtet Arbeitgeber, Arbeitsstätten den hygienischen Erfordernissen entsprechend zu reinigen und Verunreinigungen, die zu Gefährdungen führen können, unverzüglich zu beseitigen (§ 4 Absatz 2 ArbStättV). Ein festes Intervall schreibt die Verordnung dabei nicht vor. Wie oft gereinigt werden muss, hängt von der Nutzung ab und gehört in die Planung jedes Betriebs.
 
 Für Toiletten, Wasch- und Umkleideräume konkretisiert die Technische Regel für Arbeitsstätten ASR A4.1 "Sanitärräume" die Anforderungen an Einrichtung und Betrieb. Sanitärräume sind damit der Bereich, für den es die klarsten Vorgaben gibt.
 
@@ -64,7 +64,7 @@ Für den normalen Büroalltag reicht in den meisten Bereichen eine gründliche R
 
 ## Was Mitarbeitende selbst tun können
 
-Die beste Reinigung hilft wenig, wenn Keime ständig neu verteilt werden. Das wirksamste Mittel ist nach den Empfehlungen der Bundeszentrale für gesundheitliche Aufklärung gründliches Händewaschen mit Seife, 20 bis 30 Sekunden lang, unter anderem nach der Ankunft im Büro, nach dem Toilettenbesuch und nach dem Naseputzen, Husten oder Niesen.
+Die beste Reinigung hilft wenig, wenn Keime ständig neu verteilt werden. Das wirksamste Mittel ist nach den Empfehlungen der Bundeszentrale für gesundheitliche Aufklärung gründliches Händewaschen mit Seife, 20 bis 30 Sekunden lang, unter anderem nach der Ankunft im Büro, nach dem Toilettenbesuch und nach dem Naseputzen, Husten oder Niesen.
 
 Hilfreich sind außerdem:
 
@@ -147,7 +147,7 @@ Damit Hygiene nicht vom Zufall abhängt, gehört sie ins [Leistungsverzeichnis](
   ],
   sources: [
     {
-      title: '§ 4 Arbeitsstättenverordnung (ArbStättV): Besondere Anforderungen an das Betreiben von Arbeitsstätten',
+      title: '§ 4 Arbeitsstättenverordnung (ArbStättV): Besondere Anforderungen an das Betreiben von Arbeitsstätten',
       publisher: 'Bundesministerium der Justiz, gesetze-im-internet.de',
       url: 'https://www.gesetze-im-internet.de/arbst_ttv_2004/__4.html',
       stand: 'abgerufen Oktober 2026',

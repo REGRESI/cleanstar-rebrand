@@ -69,7 +69,7 @@ Die meisten Probleme beim Wechsel entstehen nicht in der Reinigung, sondern bei 
 | Zeitpunkt | Was passiert |
 | --- | --- |
 | Woche 1 | Vertrag prüfen, Frist ausrechnen, Anbieter anfragen |
-| Woche 2 bis 3 | Besichtigungen, Angebote vergleichen |
+| Woche 2 bis 3 | Besichtigungen, Angebote vergleichen |
 | Woche 4 | Neuen Anbieter beauftragen, dann alten Vertrag kündigen |
 | Bis Vertragsende | Übergabe planen, Team einweisen |
 | Erster Tag nach Vertragsende | Erste Reinigung durch den neuen Anbieter, gemeinsame Abnahme |
@@ -136,13 +136,13 @@ Bei CleanStar können Sie im ersten Monat jederzeit kündigen, ohne Kündigungsf
   ],
   sources: [
     {
-      title: '§ 126 BGB Schriftform',
+      title: '§ 126 BGB Schriftform',
       publisher: 'Bundesministerium der Justiz, gesetze-im-internet.de',
       url: 'https://www.gesetze-im-internet.de/bgb/__126.html',
       stand: 'abgerufen Oktober 2026',
     },
     {
-      title: '§ 126b BGB Textform',
+      title: '§ 126b BGB Textform',
       publisher: 'Bundesministerium der Justiz, gesetze-im-internet.de',
       url: 'https://www.gesetze-im-internet.de/bgb/__126b.html',
       stand: 'abgerufen Oktober 2026',

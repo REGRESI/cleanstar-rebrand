@@ -59,14 +59,15 @@ export default function ServiceDetail() {
       {/* Highlights */}
       <section className="py-20 sm:py-28" aria-label="Das zeichnet uns aus">
         <div className="container-site">
-          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Einheitliches 4er-Raster: ab 360 px zwei Spalten, ab Desktop vier (wie Vertrauensleiste, Werte, Karriere) */}
+          <ul className="feature-grid">
             {s.highlights.map((h) => (
-              <li key={h.title} className="rounded-card bg-white p-6 ring-1 ring-line" data-reveal>
+              <li key={h.title} className="feature-card bg-white ring-1 ring-line" data-reveal>
                 <span aria-hidden className="grid size-10 place-items-center rounded-xl bg-glacier text-blue">
                   <Check className="size-5" strokeWidth={2.5} />
                 </span>
-                <h2 className="mt-5 text-lg font-semibold tracking-tight">{h.title}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{h.text}</p>
+                <h2 className="feature-title mt-4">{h.title}</h2>
+                <p className="feature-text">{h.text}</p>
               </li>
             ))}
           </ul>

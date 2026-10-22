@@ -5,7 +5,7 @@ import { getLocation, shortName } from '@/content/locations'
 import { getService } from '@/content/services'
 import { company } from '@/content/company'
 import { monthlyRange, pricing } from '@/content/pricing'
-import { formatEuro, formatNumber } from '@/lib/format'
+import { formatNumber, formatEuroRange } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
@@ -98,11 +98,11 @@ export default function OfficeCity() {
               <p className="mt-3 text-lg font-semibold">{c.example.label}</p>
               <p className="mt-1 text-sm text-white/70">Annahme: {c.example.note}.</p>
               <p className="mt-6 text-3xl font-semibold tracking-tight tabular-nums">
-                {formatEuro(ex.grossMin)} bis {formatEuro(ex.grossMax)}
+                {formatEuroRange(ex.grossMin, ex.grossMax)}
               </p>
               <p className="mt-1 text-sm text-white/70">
-                pro Monat brutto, bei rund {formatNumber(Math.round(ex.hours))} Stunden ({pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Stunde). Netto{' '}
-                {formatEuro(ex.netMin)} bis {formatEuro(ex.netMax)}.
+                pro Monat brutto, bei rund {formatNumber(Math.round(ex.hours))} Stunden ({pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Stunde). Netto{' '}
+                {formatEuroRange(ex.netMin, ex.netMax)}.
               </p>
               <p className="mt-4 text-xs leading-relaxed text-white/60">
                 Unverbindliches Rechenbeispiel. Ihren tatsächlichen Stundenbedarf ermitteln wir bei der kostenlosen Besichtigung.

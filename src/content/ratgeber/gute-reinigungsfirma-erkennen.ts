@@ -39,7 +39,7 @@ Gute Angebote zeigen, wie viele Stunden pro Einsatz geplant sind und welcher Stu
 
 ### 5. Ein plausibler Stundensatz
 
-In der Gebäudereinigung gilt ein Branchenmindestlohn. Seit dem 1. Januar 2026 beträgt er in der Innen- und Unterhaltsreinigung **15,00 € pro Stunde**. Dazu kommen für den Arbeitgeber rund 21 % Sozialversicherungsbeiträge, außerdem Urlaub, Krankheit, Material, Fahrten und Verwaltung. Ein Stundensatz, der nur wenig über dem Mindestlohn liegt, kann diese Kosten nicht decken. Fragen Sie in diesem Fall nach, wie das funktioniert.
+In der Gebäudereinigung gilt ein Branchenmindestlohn. Seit dem 1. Januar 2026 beträgt er in der Innen- und Unterhaltsreinigung **15,00 € pro Stunde**. Dazu kommen für den Arbeitgeber rund 21 % Sozialversicherungsbeiträge, außerdem Urlaub, Krankheit, Material, Fahrten und Verwaltung. Ein Stundensatz, der nur wenig über dem Mindestlohn liegt, kann diese Kosten nicht decken. Fragen Sie in diesem Fall nach, wie das funktioniert.
 
 ### 6. Regelung für Ausfall und Urlaub
 
@@ -145,7 +145,7 @@ Wie gut Ihre aktuelle Reinigung abschneidet, prüfen Sie in zwei Minuten mit uns
     },
     {
       q: 'Wie hoch ist der Mindestlohn in der Gebäudereinigung?',
-      a: 'Der Mindestlohn in der Gebäudereinigung beträgt seit dem 1. Januar 2026 in der Innen- und Unterhaltsreinigung 15,00 € pro Stunde und in der Glas- und Fassadenreinigung 18,40 € pro Stunde. Die Werte für 2027 werden derzeit verhandelt.',
+      a: 'Der Mindestlohn in der Gebäudereinigung beträgt seit dem 1. Januar 2026 in der Innen- und Unterhaltsreinigung 15,00 € pro Stunde und in der Glas- und Fassadenreinigung 18,40 € pro Stunde. Die Werte für 2027 werden derzeit verhandelt.',
     },
   ],
   sources: [

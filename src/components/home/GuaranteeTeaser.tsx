@@ -10,7 +10,7 @@ export function GuaranteeTeaser() {
         aria-hidden
         className="absolute top-1/2 left-1/2 size-[48rem] -translate-x-1/2 -translate-y-1/2 [background:radial-gradient(closest-side,rgb(31_94_255/0.4),transparent)]"
       />
-      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-fresh/60 to-transparent" />
+      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-fresh/60 to-transparent" />
       <div className="container-site relative text-center">
         <span aria-hidden className="mx-auto mb-8 grid size-16 place-items-center rounded-2xl bg-white/5 text-fresh ring-1 ring-white/10" data-reveal>
           <ShieldCheck className="size-8" strokeWidth={1.5} />

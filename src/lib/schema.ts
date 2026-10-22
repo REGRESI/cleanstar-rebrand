@@ -29,7 +29,7 @@ export function localBusinessSchema() {
     image: `${company.siteUrl}/og/start.png`,
     telephone: company.phone.international,
     email: company.email,
-    priceRange: `${pricing.hourlyRateGrossMin}–${pricing.hourlyRateGrossMax} € pro Mitarbeiterstunde (brutto)`,
+    priceRange: `${pricing.hourlyRateGrossMin}–${pricing.hourlyRateGrossMax} € pro Mitarbeiterstunde (brutto)`,
     currenciesAccepted: 'EUR',
     ...(company.vatId ? { vatID: company.vatId } : {}),
     ...(company.foundedYear ? { foundingDate: String(company.foundedYear) } : {}),

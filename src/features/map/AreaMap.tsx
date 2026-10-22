@@ -165,7 +165,7 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
                 onMouseLeave={() => setActive(null)}
                 onFocus={() => setActive(l)}
                 onBlur={() => setActive(null)}
-                aria-label={`${l.name}: ca. ${l.minutes} Minuten von Offenburg`}
+                aria-label={`${l.name}: ca. ${l.minutes} Minuten von Offenburg`}
                 className="cursor-pointer outline-none [&:focus-visible_circle.ring]:stroke-blue"
               >
                 <circle cx={x} cy={y} r="16" fill="transparent" />
@@ -231,7 +231,7 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
               </p>
               <p className="mt-1 flex items-center gap-2 text-sm text-muted">
                 <Clock aria-hidden className="size-4 text-fresh-ink" />
-                {active.minutes === 0 ? 'Unser Sitz' : `ca. ${active.minutes} Min. von Offenburg`}
+                {active.minutes === 0 ? 'Unser Sitz' : `ca. ${active.minutes} Min. von Offenburg`}
               </p>
             </motion.div>
           )}

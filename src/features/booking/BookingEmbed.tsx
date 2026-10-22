@@ -9,7 +9,7 @@ import { CallbackButton } from '@/features/callback/Callback'
 const points = [
   'Kostenlos und unverbindlich',
   'Wir sehen uns Ihre Räume an und klären Zugang und Zeiten',
-  `Schriftliches Angebot innerhalb von ${company.promises.offerHours} Stunden`,
+  `Schriftliches Angebot innerhalb von ${company.promises.offerHours} Stunden`,
 ]
 
 /**
@@ -73,7 +73,7 @@ export function BookingEmbed() {
             </button>
             <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted">
               <ShieldCheck aria-hidden className="mt-0.5 size-4 shrink-0" />
-              Mit dem Klick wird der Buchungskalender von Cal.com geladen. Dabei werden Daten (z. B. Ihre IP-Adresse) an Cal.com übertragen. Details in der Datenschutzerklärung.
+              Mit dem Klick wird der Buchungskalender von Cal.com geladen. Dabei werden Daten (z. B. Ihre IP-Adresse) an Cal.com übertragen. Details in der Datenschutzerklärung.
             </p>
           </>
         ) : (

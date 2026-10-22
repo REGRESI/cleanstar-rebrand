@@ -15,7 +15,8 @@ export function useScrollReveals(key: string) {
     // Erst im Leerlauf starten, damit das Hydrieren nicht blockiert wird
     const cancel = onIdle(() => {
       ctx = gsap.context(() => {
-        document.querySelectorAll<HTMLElement>('[data-reveal-text]').forEach((el) => {
+        // Bereits gelaufene Reveals (Flag data-revealed) nicht noch einmal animieren
+        document.querySelectorAll<HTMLElement>('[data-reveal-text]:not([data-revealed])').forEach((el) => {
           const words = el.querySelectorAll('[data-reveal-word]')
           gsap.to(words, {
             y: 0,
@@ -24,9 +25,10 @@ export function useScrollReveals(key: string) {
             ease: 'expo.out',
             stagger: 0.035,
             scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+            onComplete: () => el.setAttribute('data-revealed', ''),
           })
         })
-        ScrollTrigger.batch('[data-reveal]', {
+        ScrollTrigger.batch('[data-reveal]:not([data-revealed])', {
           start: 'top 90%',
           once: true,
           onEnter: (els) =>
@@ -37,6 +39,7 @@ export function useScrollReveals(key: string) {
               ease: 'expo.out',
               stagger: 0.08,
               overwrite: true,
+              onComplete: () => els.forEach((e) => e.setAttribute('data-revealed', '')),
             }),
         })
       })

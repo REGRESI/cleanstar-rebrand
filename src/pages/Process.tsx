@@ -53,7 +53,7 @@ export default function Process() {
     <>
       <Seo
         title="Ablauf: So arbeiten wir zusammen"
-        description="Anfrage, kostenlose Besichtigung, Angebot in 48 Stunden, fester Start und regelmäßige Kontrolle: So läuft die Zusammenarbeit mit CleanStar aus Offenburg ab."
+        description="Anfrage, kostenlose Besichtigung, Angebot in 48 Stunden, fester Start und regelmäßige Kontrolle: So läuft die Zusammenarbeit mit CleanStar aus Offenburg ab."
         path="/ablauf"
         schema={[breadcrumbSchema(trail)]}
       />

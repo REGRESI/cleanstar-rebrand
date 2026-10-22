@@ -81,7 +81,7 @@ Nicht jede Zielgruppe passt zu jedem Gründer. Ein grober Überblick über gewer
 
 | Zielgruppe | Typischer Bedarf | Was zählt |
 | --- | --- | --- |
-| Kleine Büros und Kanzleien | 1 bis 3 Einsätze pro Woche | Verlässlichkeit, Diskretion, fester Ansprechpartner |
+| Kleine Büros und Kanzleien | 1 bis 3 Einsätze pro Woche | Verlässlichkeit, Diskretion, fester Ansprechpartner |
 | Arztpraxen | häufige Reinigung, hohe Hygieneanforderungen | Sorgfalt, Hygienewissen, Termine außerhalb der Sprechzeiten |
 | Hausverwaltungen | Treppenhäuser, mehrere Objekte | Dokumentation, feste Termine, faire Preise |
 | Gewerbebetriebe mit Büro | Büro, Sozialräume, oft Halle | Flexibilität bei Zeiten, Leistungen aus einer Hand |

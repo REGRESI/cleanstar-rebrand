@@ -95,7 +95,7 @@ export function CleaningCheck() {
               </button>
             )}
           </div>
-          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-glacier-2" aria-hidden>
+          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-glacier-2" aria-hidden>
             <motion.div className="h-full rounded-full bg-blue" animate={{ width: `${(step / checkQuestions.length) * 100}%` }} transition={{ duration: 0.4 }} />
           </div>
         </div>
@@ -159,7 +159,7 @@ export function CleaningCheck() {
             <div className="mt-10 rounded-panel bg-ink p-6 text-white sm:p-8">
               <p className="text-2xl font-semibold tracking-tight">Kostenlose Besichtigung, erster Monat ohne Risiko.</p>
               <p className="mt-2 text-white/70">
-                Wir sehen uns Ihr Büro an und schicken Ihnen in 48 Stunden ein schriftliches Angebot. Im ersten Monat können Sie jederzeit kündigen.
+                Wir sehen uns Ihr Büro an und schicken Ihnen in 48 Stunden ein schriftliches Angebot. Im ersten Monat können Sie jederzeit kündigen.
               </p>
               <div className="btn-row mt-6 flex flex-wrap items-center gap-3">
                 <QuoteButton size="lg" arrow>

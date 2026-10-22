@@ -269,7 +269,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
               <div className="space-y-6">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <TextField label="Firmenname" autoComplete="organization" error={errors.companyName?.message} {...register('companyName')} />
-                  <TextField label="Seit wann gibt es die Firma?" placeholder="z. B. 2015" inputMode="numeric" error={errors.since?.message} {...register('since')} />
+                  <TextField label="Seit wann gibt es die Firma?" placeholder="z. B. 2015" inputMode="numeric" error={errors.since?.message} {...register('since')} />
                 </div>
                 <fieldset>
                   <legend className="mb-2 text-sm font-medium text-ink">Anzahl Mitarbeitende</legend>
@@ -303,7 +303,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                   </div>
                   <Err msg={errors.experience?.message} />
                 </fieldset>
-                <TextArea label="Kurz beschreiben" optional placeholder="z. B. 3 Jahre Objektleitung, Teamleitung im Einzelhandel …" {...register('experienceText')} />
+                <TextArea label="Kurz beschreiben" optional placeholder="z. B. 3 Jahre Objektleitung, Teamleitung im Einzelhandel …" {...register('experienceText')} />
               </div>
             )}
 
@@ -406,7 +406,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
               Zurück
             </button>
           ) : (
-            <span className="text-xs text-muted">Unverbindlich, ca. 2 Minuten</span>
+            <span className="text-xs text-muted">Unverbindlich, ca. 2 Minuten</span>
           )}
           {step < STEPS.length - 1 ? (
             <button

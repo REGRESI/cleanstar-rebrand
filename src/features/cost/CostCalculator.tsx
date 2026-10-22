@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, Info, ShieldCheck, Users, FileCheck2, RefreshCcw } from 'lucide-react'
 import { costAssumptions, pricing, net, type CostAssumptions } from '@/content/pricing'
-import { formatEuro, formatEuro2, formatNumber } from '@/lib/format'
+import { formatEuro, formatEuro2, formatNumber, formatEuro2Range } from '@/lib/format'
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber'
 import { cn } from '@/lib/cn'
 
@@ -90,11 +90,11 @@ export function CostCalculator() {
   const fmt = (v: number) => formatEuro(v)
 
   const breakdown: [string, number, string][] = [
-    ['Bruttolohn', calc.wage, `${formatNumber(calc.hoursMonth)} Std. × ${formatEuro2(a.hourlyWage)}`],
-    ['Arbeitgeberanteile / Abgaben', calc.employer, `${employment === 'minijob' ? a.employerChargesMinijob : a.employerChargesRegular} % vom Lohn`],
-    ['Vertretung bei Urlaub und Krankheit', calc.coverage, `${formatNumber(calc.absenceShare * 100)} % Ausfallzeit, Aufschlag ${a.coveragePremium} %`],
+    ['Bruttolohn', calc.wage, `${formatNumber(calc.hoursMonth)} Std. × ${formatEuro2(a.hourlyWage)}`],
+    ['Arbeitgeberanteile / Abgaben', calc.employer, `${employment === 'minijob' ? a.employerChargesMinijob : a.employerChargesRegular} % vom Lohn`],
+    ['Vertretung bei Urlaub und Krankheit', calc.coverage, `${formatNumber(calc.absenceShare * 100)} % Ausfallzeit, Aufschlag ${a.coveragePremium} %`],
     ['Material und Geräte', calc.material, 'pro Monat'],
-    ['Verwaltung und Organisation', calc.admin, `${a.adminHoursPerMonth} Std. × ${formatEuro(a.adminHourlyCost)}`],
+    ['Verwaltung und Organisation', calc.admin, `${a.adminHoursPerMonth} Std. × ${formatEuro(a.adminHourlyCost)}`],
   ]
 
   return (
@@ -109,18 +109,17 @@ export function CostCalculator() {
           </div>
           <fieldset className="mt-5">
             <legend className="mb-2 text-sm font-medium text-ink">Beschäftigungsart</legend>
-            <div className="grid grid-cols-2 gap-1 rounded-xl bg-glacier p-1">
+            <div className="grid grid-cols-1 gap-1 rounded-xl bg-glacier p-1 min-[420px]:grid-cols-2">
               {(
                 [
                   ['minijob', 'Minijob'],
-                  // weiche Trennstellen: bricht auf schmalen Bildschirmen sauber um statt überzustehen
-                  ['regular', 'Sozial\u00ADversicherungs\u00ADpflichtig'],
+                  ['regular', 'Sozialversicherungspflichtig'],
                 ] as const
               ).map(([id, l]) => (
                 <label
                   key={id}
                   className={cn(
-                    'relative flex min-h-11 cursor-pointer items-center justify-center rounded-lg px-2 py-2.5 text-center text-sm leading-tight font-medium [overflow-wrap:anywhere] hyphens-auto transition sm:px-3',
+                    'relative flex min-h-11 cursor-pointer items-center justify-center rounded-lg px-2 py-2.5 text-center text-sm leading-tight font-medium transition sm:px-3',
                     employment === id ? 'bg-white text-ink shadow-soft' : 'text-muted',
                   )}
                 >
@@ -158,7 +157,7 @@ export function CostCalculator() {
                   <Num label="Krankheitstage pro Jahr" value={a.sickDays} onChange={set('sickDays')} max={100} />
                   <Num label="Arbeitstage pro Jahr" value={a.workingDaysPerYear} onChange={set('workingDaysPerYear')} min={100} max={366} />
                   <Num label="Ausfälle, die vertreten werden" value={a.coverageShare} onChange={set('coverageShare')} unit="%" max={100} />
-                  <Num label="Aufschlag Vertretung" value={a.coveragePremium} onChange={set('coveragePremium')} unit="%" max={200} hint="z. B. Überstunden, Aushilfe" />
+                  <Num label="Aufschlag Vertretung" value={a.coveragePremium} onChange={set('coveragePremium')} unit="%" max={200} hint="z. B. Überstunden, Aushilfe" />
                   <Num label="Material pro Monat" value={a.materialPerMonth} onChange={set('materialPerMonth')} unit="€" max={5000} />
                   <Num label="Verwaltung pro Monat" value={a.adminHoursPerMonth} onChange={set('adminHoursPerMonth')} unit="Std." step={0.5} max={100} />
                   <Num label="Kosten Verwaltungsstunde" value={a.adminHourlyCost} onChange={set('adminHourlyCost')} unit="€" max={300} />
@@ -191,7 +190,7 @@ export function CostCalculator() {
                   <AnimatedNumber value={calc.own} format={fmt} />
                 </span>
               </div>
-              <div className="mt-2 h-3 overflow-hidden rounded-full bg-white ring-1 ring-line">
+              <div className="mt-2 h-3 overflow-hidden rounded-full bg-white ring-1 ring-line">
                 <motion.div
                   className="h-full rounded-full bg-ink"
                   initial={false}
@@ -208,7 +207,7 @@ export function CostCalculator() {
                   <AnimatedNumber value={calc.csMin} format={fmt} /> – <AnimatedNumber value={calc.csMax} format={fmt} />
                 </span>
               </div>
-              <div className="relative mt-2 h-3 overflow-hidden rounded-full bg-white ring-1 ring-line">
+              <div className="relative mt-2 h-3 overflow-hidden rounded-full bg-white ring-1 ring-line">
                 <motion.div
                   className="absolute inset-y-0 left-0 rounded-full bg-blue"
                   initial={false}
@@ -223,8 +222,7 @@ export function CostCalculator() {
                 />
               </div>
               <p className="mt-1 text-xs text-muted">
-                {pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Mitarbeiterstunde ({formatEuro2(net(pricing.hourlyRateGrossMin))} bis{' '}
-                {formatEuro2(net(pricing.hourlyRateGrossMax))} netto), gleiche Stundenzahl angenommen
+                {pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Mitarbeiterstunde ({formatEuro2Range(net(pricing.hourlyRateGrossMin), net(pricing.hourlyRateGrossMax))} netto), gleiche Stundenzahl angenommen
               </p>
             </div>
           </div>

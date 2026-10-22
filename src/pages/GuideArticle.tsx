@@ -82,7 +82,7 @@ export default function GuideArticle() {
           </ol>
         </nav>
 
-        <article className="text-[1.0625rem] leading-relaxed break-words hyphens-auto text-ink/85">
+        <article className="text-[1.0625rem] leading-relaxed text-ink/85">
           <Markdown source={g.body} />
         </article>
 

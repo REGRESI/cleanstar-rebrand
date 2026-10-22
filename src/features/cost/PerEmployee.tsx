@@ -18,13 +18,13 @@ export function PerEmployee({ netMin, netMax, employees, className }: { netMin: 
         <Users aria-hidden className="size-5" />
       </span>
       <div className="min-w-0">
-        <p className="text-sm text-muted">Umgerechnet auf Ihre {employees} Mitarbeiter</p>
+        <p className="text-sm text-muted">Umgerechnet auf Ihre {employees} Mitarbeiter</p>
         <p className="mt-1 text-2xl font-semibold tracking-tight tabular-nums" aria-live="polite">
           ca. <AnimatedNumber value={r.min} format={fmt} /> bis <AnimatedNumber value={r.max} format={fmt} />
         </p>
         <p className="text-sm font-medium text-ink">pro Mitarbeiter und Arbeitstag, netto</p>
         <p className="mt-2 text-xs leading-relaxed text-muted">
-          Unverbindliche Orientierung: Monatsbetrag netto geteilt durch {employees} Mitarbeiter und {String(pricing.workdaysPerMonth).replace('.', ',')} Arbeitstage.
+          Unverbindliche Orientierung: Monatsbetrag netto geteilt durch {employees} Mitarbeiter und {String(pricing.workdaysPerMonth).replace('.', ',')} Arbeitstage.
         </p>
       </div>
     </div>

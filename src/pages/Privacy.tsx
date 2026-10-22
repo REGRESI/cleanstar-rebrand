@@ -45,14 +45,14 @@ export default function Privacy() {
               E-Mail: <a href={`mailto:${company.email}`}>{company.email}</a>
             </p>
             <p>
-              Ein Datenschutzbeauftragter ist nach unserer Einschätzung nicht zu benennen. <Check>Pflicht zur Benennung (Art. 37 DSGVO, § 38 BDSG)</Check>
+              Ein Datenschutzbeauftragter ist nach unserer Einschätzung nicht zu benennen. <Check>Pflicht zur Benennung (Art. 37 DSGVO, § 38 BDSG)</Check>
             </p>
 
             <h2>2. Hosting und Server-Logfiles</h2>
             <p>
               Diese Website wird über GitHub Pages bereitgestellt, einen Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Beim Aufruf der
               Website verarbeitet GitHub automatisch Daten, die Ihr Browser übermittelt (insbesondere IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Referrer, Browser und
-              Betriebssystem). Das ist technisch notwendig, um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Dabei
+              Betriebssystem). Das ist technisch notwendig, um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Dabei
               kann eine Übermittlung in die USA stattfinden. Weitere Informationen finden Sie in der Datenschutzerklärung von GitHub (docs.github.com, „GitHub General Privacy
               Statement“). <Check>Drittlandübermittlung und Vertragsgrundlage mit GitHub prüfen</Check>
             </p>
@@ -61,7 +61,7 @@ export default function Privacy() {
             <p>
               Wir setzen keine Cookies zu Analyse- oder Marketingzwecken. Damit Ihre Eingaben im Angebots-Konfigurator nicht verloren gehen, speichern wir sie vorübergehend im
               Sitzungsspeicher Ihres Browsers (sessionStorage). Diese Daten verlassen Ihr Gerät nicht und werden beim Schließen des Browserfensters gelöscht. Diese Speicherung ist
-              für den von Ihnen gewünschten Dienst unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Ein Cookie-Banner ist deshalb nicht notwendig.{' '}
+              für den von Ihnen gewünschten Dienst unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Ein Cookie-Banner ist deshalb nicht notwendig.{' '}
               <Check>Einschätzung bestätigen</Check>
             </p>
 
@@ -70,28 +70,28 @@ export default function Privacy() {
 
             <h2>5. Kontaktformular, Angebots-Konfigurator und Bewerbungsformular</h2>
             <p>
-              Wenn Sie uns über ein Formular kontaktieren, verarbeiten wir Ihre Angaben (z. B. Name, Unternehmen, E-Mail, Telefon, Angaben zum Objekt, Nachricht) zur Bearbeitung
-              Ihrer Anfrage und für Anschlussfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie Ihre Einwilligung nach Art. 6 Abs. 1 lit. a
+              Wenn Sie uns über ein Formular kontaktieren, verarbeiten wir Ihre Angaben (z. B. Name, Unternehmen, E-Mail, Telefon, Angaben zum Objekt, Nachricht) zur Bearbeitung
+              Ihrer Anfrage und für Anschlussfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie Ihre Einwilligung nach Art. 6 Abs. 1 lit. a
               DSGVO, die Sie jederzeit widerrufen können.
             </p>
             <p>
               Für den Versand der Formulare nutzen wir den Dienst {provider} (web3forms.com). Wenn Sie ein Formular absenden, werden Ihre Eingaben verschlüsselt an diesen Dienst
               übertragen und von dort ausschließlich per E-Mail an uns weitergeleitet. Eine Übermittlung in Drittländer außerhalb der EU, insbesondere in die USA, kann dabei nicht
-              ausgeschlossen werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.{' '}
+              ausgeschlossen werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.{' '}
               <Check>Anbieter, Sitz, AV-Vertrag und Drittlandübermittlung (Angemessenheitsbeschluss / Standardvertragsklauseln) für den gewählten Formular-Dienst ergänzen</Check>
             </p>
-            <p>Anfragen löschen wir, sobald sie erledigt sind und keine gesetzlichen Aufbewahrungspflichten (z. B. aus Handels- und Steuerrecht) entgegenstehen.</p>
+            <p>Anfragen löschen wir, sobald sie erledigt sind und keine gesetzlichen Aufbewahrungspflichten (z. B. aus Handels- und Steuerrecht) entgegenstehen.</p>
             <p>
-              Bewerbungsdaten verarbeiten wir zur Durchführung des Bewerbungsverfahrens (Art. 6 Abs. 1 lit. b DSGVO). Kommt kein Arbeitsverhältnis zustande, löschen wir die Daten
+              Bewerbungsdaten verarbeiten wir zur Durchführung des Bewerbungsverfahrens (Art. 6 Abs. 1 lit. b DSGVO). Kommt kein Arbeitsverhältnis zustande, löschen wir die Daten
               spätestens sechs Monate nach Abschluss des Verfahrens. <Check>Frist bestätigen</Check>
             </p>
 
             <h2>6. Partnerprogramm: Partneranfragen und Infomappe</h2>
             <p>
-              Wenn Sie sich für unser Partnerprogramm interessieren, verarbeiten wir die Angaben aus der Partneranfrage (z. B. Name, Kontaktdaten, gewünschte Region, Angaben zu
+              Wenn Sie sich für unser Partnerprogramm interessieren, verarbeiten wir die Angaben aus der Partneranfrage (z. B. Name, Kontaktdaten, gewünschte Region, Angaben zu
               Ihrer Firma oder Ihrer beruflichen Situation, gewünschter Starttermin und eine freiwillige Einschätzung zum Investitionsrahmen) sowie bei Anforderung der Infomappe
-              Name, E-Mail und Region. Zweck ist die Prüfung einer möglichen Zusammenarbeit und die Kontaktaufnahme. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche
-              Maßnahmen) sowie Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Der Versand erfolgt über den in Abschnitt 5 genannten Formular-Dienst. Kommt keine Zusammenarbeit
+              Name, E-Mail und Region. Zweck ist die Prüfung einer möglichen Zusammenarbeit und die Kontaktaufnahme. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche
+              Maßnahmen) sowie Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Der Versand erfolgt über den in Abschnitt 5 genannten Formular-Dienst. Kommt keine Zusammenarbeit
               zustande, löschen wir die Daten spätestens zwölf Monate nach dem letzten Kontakt, sofern Sie nicht in eine längere Speicherung eingewilligt haben.{' '}
               <Check>Zweck, Rechtsgrundlage und Speicherdauer für Partneranfragen</Check>
             </p>
@@ -99,16 +99,16 @@ export default function Privacy() {
             <h2>7. Terminbuchung über Cal.com</h2>
             <p>
               Für die Buchung einer Objektbesichtigung können Sie einen Kalender des Anbieters Cal.com, Inc. (USA) nutzen. Der Kalender wird erst geladen, wenn Sie auf „Kalender
-              laden“ klicken. Erst dann werden Daten (z. B. IP-Adresse, Browserdaten und Ihre Eingaben bei der Buchung wie Name, E-Mail und Wunschtermin) an Cal.com übertragen und
-              dort zur Terminverwaltung gespeichert. Dabei kann eine Übermittlung in die USA stattfinden. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25
-              Abs. 1 TDDDG), die Sie jederzeit widerrufen können. Ohne Ihre Zustimmung wird keine Verbindung zu Cal.com aufgebaut; Sie können einen Termin dann auch telefonisch
+              laden“ klicken. Erst dann werden Daten (z. B. IP-Adresse, Browserdaten und Ihre Eingaben bei der Buchung wie Name, E-Mail und Wunschtermin) an Cal.com übertragen und
+              dort zur Terminverwaltung gespeichert. Dabei kann eine Übermittlung in die USA stattfinden. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25
+              Abs. 1 TDDDG), die Sie jederzeit widerrufen können. Ohne Ihre Zustimmung wird keine Verbindung zu Cal.com aufgebaut; Sie können einen Termin dann auch telefonisch
               oder per E-Mail vereinbaren. Weitere Informationen finden Sie in der Datenschutzerklärung von Cal.com (cal.com/privacy).{' '}
               <Check>Datenschutzinformationen und Drittlandübermittlung zu Cal.com ergänzen</Check>
             </p>
 
             <h2>8. Kontakt per E-Mail, Telefon oder WhatsApp</h2>
             <p>
-              Wenn Sie uns per E-Mail oder Telefon kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung Ihres Anliegens (Art. 6 Abs. 1 lit. b bzw. f DSGVO).
+              Wenn Sie uns per E-Mail oder Telefon kontaktieren, verarbeiten wir Ihre Angaben zur Bearbeitung Ihres Anliegens (Art. 6 Abs. 1 lit. b bzw. f DSGVO).
               {company.whatsapp.enabled && (
                 <>
                   {' '}

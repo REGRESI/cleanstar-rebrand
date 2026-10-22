@@ -16,12 +16,12 @@ export const faqs: Faq[] = [
     category: 'Kosten und Vertrag',
     featured: true,
     q: 'Was kostet eine Büroreinigung?',
-    a: 'Wir rechnen nach Stunden pro Mitarbeiter ab. Der Stundensatz liegt zwischen 35 und 45 € brutto (rund 29,41 bis 37,82 € netto). Wie viele Stunden Ihr Objekt braucht, hängt von Fläche, Nutzung und Ausstattung ab. Sanitärbereiche oder Duschen brauchen deutlich mehr Zeit als reine Büroflächen. Deshalb sehen wir uns Ihr Objekt kostenlos an und schicken Ihnen innerhalb von 48 Stunden ein verbindliches Angebot.',
+    a: 'Wir rechnen nach Stunden pro Mitarbeiter ab. Der Stundensatz liegt zwischen 35 und 45 € brutto (rund 29,41 bis 37,82 € netto). Wie viele Stunden Ihr Objekt braucht, hängt von Fläche, Nutzung und Ausstattung ab. Sanitärbereiche oder Duschen brauchen deutlich mehr Zeit als reine Büroflächen. Deshalb sehen wir uns Ihr Objekt kostenlos an und schicken Ihnen innerhalb von 48 Stunden ein verbindliches Angebot.',
   },
   {
     category: 'Kosten und Vertrag',
     q: 'Warum gibt es keinen Preis pro Quadratmeter?',
-    a: 'Weil er selten stimmt. 200 m² Großraumbüro sind in einer Stunde gesaugt, 200 m² mit Teeküche, Duschen und vielen Glastüren nicht. Ein Quadratmeterpreis wäre entweder zu hoch für Sie oder später nicht zu halten. Wir kalkulieren lieber ehrlich nach tatsächlichem Aufwand.',
+    a: 'Weil er selten stimmt. 200 m² Großraumbüro sind in einer Stunde gesaugt, 200 m² mit Teeküche, Duschen und vielen Glastüren nicht. Ein Quadratmeterpreis wäre entweder zu hoch für Sie oder später nicht zu halten. Wir kalkulieren lieber ehrlich nach tatsächlichem Aufwand.',
   },
   {
     category: 'Kosten und Vertrag',
@@ -43,7 +43,7 @@ export const faqs: Faq[] = [
     category: 'Ablauf',
     featured: true,
     q: 'Wie schnell können Sie starten?',
-    a: 'Nach Ihrer Anfrage melden wir uns innerhalb von 24 Stunden und vereinbaren einen Besichtigungstermin. Das Angebot erhalten Sie innerhalb von 48 Stunden nach der Besichtigung. Der Start hängt dann von Ihrem Wunschtermin und der Teamplanung ab.',
+    a: 'Nach Ihrer Anfrage melden wir uns innerhalb von 24 Stunden und vereinbaren einen Besichtigungstermin. Das Angebot erhalten Sie innerhalb von 48 Stunden nach der Besichtigung. Der Start hängt dann von Ihrem Wunschtermin und der Teamplanung ab.',
   },
   {
     category: 'Ablauf',

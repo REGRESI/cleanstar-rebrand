@@ -26,9 +26,9 @@ export const officeCities: OfficeCity[] = [
     name: 'Offenburg',
     seoTitle: 'Büroreinigung Offenburg: Festes Team',
     seoDescription:
-      'Büroreinigung in Offenburg vom Betrieb mit Sitz in der Stadt: festes Team, fester Ansprechpartner, Ersatz bei Ausfall. 35 bis 45 € brutto pro Stunde.',
+      'Büroreinigung in Offenburg vom Betrieb mit Sitz in der Stadt: festes Team, fester Ansprechpartner, Ersatz bei Ausfall. 35 bis 45 € brutto pro Stunde.',
     answer:
-      'CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg, die sich auf Büroreinigung für Unternehmen spezialisiert hat. Wir reinigen Büros, Praxen und Verwaltungen in der ganzen Stadt mit festem Team, festem Ansprechpartner und Ersatzkraft bei Ausfall, zu 35 bis 45 € brutto pro Mitarbeiterstunde.',
+      'CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg, die sich auf Büroreinigung für Unternehmen spezialisiert hat. Wir reinigen Büros, Praxen und Verwaltungen in der ganzen Stadt mit festem Team, festem Ansprechpartner und Ersatzkraft bei Ausfall, zu 35 bis 45 € brutto pro Mitarbeiterstunde.',
     intro:
       'Offenburg ist nicht nur ein Ort in unserem Einzugsgebiet, sondern unser Sitz. Das merken Sie im Alltag: Wenn morgens etwas nicht passt, ist Ihr Ansprechpartner schnell vor Ort, und eine Zusatzreinigung vor einem wichtigen Termin lässt sich meist kurzfristig einschieben.',
     sections: [
@@ -65,7 +65,7 @@ export const officeCities: OfficeCity[] = [
       },
     ],
     example: {
-      label: 'Steuerbüro in der Innenstadt, rund 10 Arbeitsplätze',
+      label: 'Steuerbüro in der Innenstadt, rund 10 Arbeitsplätze',
       staff: 1,
       hours: 2,
       visits: 3,
@@ -74,7 +74,7 @@ export const officeCities: OfficeCity[] = [
     faqs: [
       {
         q: 'Wie schnell kann die Büroreinigung in Offenburg starten?',
-        a: 'Die Büroreinigung in Offenburg kann meist kurz nach der Besichtigung starten. Das Angebot bekommen Sie innerhalb von 48 Stunden, den Starttermin legen wir gemeinsam fest.',
+        a: 'Die Büroreinigung in Offenburg kann meist kurz nach der Besichtigung starten. Das Angebot bekommen Sie innerhalb von 48 Stunden, den Starttermin legen wir gemeinsam fest.',
       },
       {
         q: 'Reinigen Sie in Offenburg auch Praxen und Kanzleien?',
@@ -95,9 +95,9 @@ export const officeCities: OfficeCity[] = [
     name: 'Lahr',
     seoTitle: 'Büroreinigung Lahr: Büro & Halle',
     seoDescription:
-      'Büroreinigung in Lahr für Verwaltungen, Praxen und Betriebe mit Büro und Halle. Festes Team, Ersatzkraft bei Ausfall, Qualitätsgarantie. Angebot in 48 Stunden.',
+      'Büroreinigung in Lahr für Verwaltungen, Praxen und Betriebe mit Büro und Halle. Festes Team, Ersatzkraft bei Ausfall, Qualitätsgarantie. Angebot in 48 Stunden.',
     answer:
-      'CleanStar reinigt Büros in Lahr, von der Praxis in der Innenstadt bis zur Verwaltung im Gewerbebetrieb. Wir kommen aus Offenburg, rund 25 Minuten entfernt, arbeiten mit festem Team und Ersatzkraft bei Ausfall und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
+      'CleanStar reinigt Büros in Lahr, von der Praxis in der Innenstadt bis zur Verwaltung im Gewerbebetrieb. Wir kommen aus Offenburg, rund 25 Minuten entfernt, arbeiten mit festem Team und Ersatzkraft bei Ausfall und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
     intro:
       'Lahr ist die zweitgrößte Stadt der Ortenau und wirtschaftlich breit aufgestellt. Viele Unternehmen hier haben nicht nur ein Büro, sondern auch Lager, Werkstatt oder Produktion. Genau dafür ist es praktisch, wenn ein Dienstleister alles aus einer Hand reinigt.',
     sections: [
@@ -119,7 +119,7 @@ export const officeCities: OfficeCity[] = [
         ],
       },
       {
-        title: 'Verlässlich trotz 25 Minuten Anfahrt',
+        title: 'Verlässlich trotz 25 Minuten Anfahrt',
         paragraphs: [
           'Die Anfahrt über die B3 oder die A5 ist planbar. Wichtiger als die Minuten ist, was passiert, wenn jemand krank wird: Für jedes Objekt in Lahr ist eine Ersatzkraft eingewiesen. Ihre Reinigung findet zur gewohnten Zeit statt, ohne dass Sie etwas organisieren müssen.',
           'Unser Ansprechpartner kommt regelmäßig selbst zur Qualitätskontrolle vorbei. Fällt dabei etwas auf, klären wir es mit dem Team, bevor Sie es bemerken.',
@@ -142,7 +142,7 @@ export const officeCities: OfficeCity[] = [
     faqs: [
       {
         q: 'Was kostet die Büroreinigung in Lahr?',
-        a: 'Die Büroreinigung in Lahr kostet wie überall im Ortenaukreis 35 bis 45 € brutto pro Mitarbeiterstunde. Den Stundenbedarf ermitteln wir bei der kostenlosen Besichtigung.',
+        a: 'Die Büroreinigung in Lahr kostet wie überall im Ortenaukreis 35 bis 45 € brutto pro Mitarbeiterstunde. Den Stundenbedarf ermitteln wir bei der kostenlosen Besichtigung.',
       },
       {
         q: 'Können Sie in Lahr Büro und Halle gemeinsam übernehmen?',
@@ -165,7 +165,7 @@ export const officeCities: OfficeCity[] = [
     seoDescription:
       'Büroreinigung in Kehl am Rhein: Empfang, Besprechungsräume und Büros jeden Morgen bereit. Festes Team, fester Ansprechpartner, Ersatz bei Ausfall.',
     answer:
-      'CleanStar übernimmt die Büroreinigung in Kehl für Unternehmen in der Innenstadt, am Hafen und in den Ortsteilen. Wir kommen aus Offenburg, gut 20 Minuten entfernt, reinigen in festen Zeitfenstern mit festem Team und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
+      'CleanStar übernimmt die Büroreinigung in Kehl für Unternehmen in der Innenstadt, am Hafen und in den Ortsteilen. Wir kommen aus Offenburg, gut 20 Minuten entfernt, reinigen in festen Zeitfenstern mit festem Team und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
     intro:
       'Kehl liegt direkt gegenüber von Straßburg, viele Betriebe hier arbeiten über die Grenze hinweg. Wer Kunden und Partner aus beiden Ländern empfängt, will, dass Empfang und Besprechungsräume jeden Morgen einwandfrei sind. Dafür sorgen wir.',
     sections: [
@@ -218,7 +218,7 @@ export const officeCities: OfficeCity[] = [
       },
       {
         q: 'Was kostet die Büroreinigung in Kehl?',
-        a: 'Die Büroreinigung in Kehl kostet 35 bis 45 € brutto pro Mitarbeiterstunde. Wie viele Stunden nötig sind, klären wir bei der kostenlosen Besichtigung.',
+        a: 'Die Büroreinigung in Kehl kostet 35 bis 45 € brutto pro Mitarbeiterstunde. Wie viele Stunden nötig sind, klären wir bei der kostenlosen Besichtigung.',
       },
       {
         q: 'Kann ich in Kehl auch die Fenster mitreinigen lassen?',
@@ -231,9 +231,9 @@ export const officeCities: OfficeCity[] = [
     name: 'Achern',
     seoTitle: 'Büroreinigung Achern: mit Vertretung',
     seoDescription:
-      'Büroreinigung in Achern für Mittelstand, Praxen und Verwaltungen. Festes Team, eingewiesene Ersatzkraft bei Ausfall, schriftliches Angebot in 48 Stunden.',
+      'Büroreinigung in Achern für Mittelstand, Praxen und Verwaltungen. Festes Team, eingewiesene Ersatzkraft bei Ausfall, schriftliches Angebot in 48 Stunden.',
     answer:
-      'CleanStar übernimmt die regelmäßige Büroreinigung in Achern für mittelständische Betriebe, Praxen und Verwaltungen. Wir sind über die A5 in rund 25 Minuten vor Ort, arbeiten mit festem Team und einer eingewiesenen Ersatzkraft und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
+      'CleanStar übernimmt die regelmäßige Büroreinigung in Achern für mittelständische Betriebe, Praxen und Verwaltungen. Wir sind über die A5 in rund 25 Minuten vor Ort, arbeiten mit festem Team und einer eingewiesenen Ersatzkraft und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
     intro:
       'Achern ist der Wirtschaftsstandort im Norden der Ortenau, mit vielen mittelständischen Betrieben aus Produktion, Handwerk und Handel. Hier zählt vor allem eines: dass die Reinigung zuverlässig stattfindet, auch wenn jemand ausfällt.',
     sections: [
@@ -276,7 +276,7 @@ export const officeCities: OfficeCity[] = [
       },
       {
         q: 'Wie weit ist Achern von Ihrem Sitz entfernt?',
-        a: 'Achern liegt rund 25 Minuten von unserem Sitz in Offenburg entfernt, über die A5 gut planbar.',
+        a: 'Achern liegt rund 25 Minuten von unserem Sitz in Offenburg entfernt, über die A5 gut planbar.',
       },
       {
         q: 'Reinigen Sie in Achern auch Sozialräume und Umkleiden?',
@@ -295,7 +295,7 @@ export const officeCities: OfficeCity[] = [
     seoDescription:
       'Büroreinigung in Oberkirch und im Renchtal: festes Team statt wechselnder Gesichter, schriftliches Leistungsverzeichnis und eigene Qualitätskontrolle.',
     answer:
-      'CleanStar reinigt Büros, Praxen und Gewerbeflächen in Oberkirch und im Renchtal. Wir kommen aus Offenburg, rund 20 Minuten entfernt, schicken immer dasselbe Team, kontrollieren die Qualität selbst und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
+      'CleanStar reinigt Büros, Praxen und Gewerbeflächen in Oberkirch und im Renchtal. Wir kommen aus Offenburg, rund 20 Minuten entfernt, schicken immer dasselbe Team, kontrollieren die Qualität selbst und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
     intro:
       'Oberkirch ist das Tor zum Renchtal. Viele Betriebe hier haben schlechte Erfahrungen mit wechselnden Reinigungskräften gemacht: Jede Woche kommt jemand Neues, der nicht weiß, was zu tun ist. Bei uns kommt immer dasselbe Team.',
     sections: [
@@ -344,7 +344,7 @@ export const officeCities: OfficeCity[] = [
       },
       {
         q: 'Was kostet die Büroreinigung in Oberkirch?',
-        a: 'Die Büroreinigung in Oberkirch kostet 35 bis 45 € brutto pro Mitarbeiterstunde, wie überall im Ortenaukreis. Den Stundenbedarf ermitteln wir bei der kostenlosen Besichtigung.',
+        a: 'Die Büroreinigung in Oberkirch kostet 35 bis 45 € brutto pro Mitarbeiterstunde, wie überall im Ortenaukreis. Den Stundenbedarf ermitteln wir bei der kostenlosen Besichtigung.',
       },
       {
         q: 'Betreuen Sie von Oberkirch aus das ganze Renchtal?',

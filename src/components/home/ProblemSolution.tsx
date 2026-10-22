@@ -78,7 +78,7 @@ export function ProblemSolution({
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block font-semibold text-ink">Wie gut ist Ihre aktuelle Reinigung?</span>
-                  <span className="block text-sm text-muted">8 Fragen, 2 Minuten. Mit ehrlicher Auswertung.</span>
+                  <span className="block text-sm text-muted">8 Fragen, 2 Minuten. Mit ehrlicher Auswertung.</span>
                 </span>
                 <ArrowRight aria-hidden className="size-5 shrink-0 text-blue transition-transform group-hover:translate-x-1" />
               </Link>

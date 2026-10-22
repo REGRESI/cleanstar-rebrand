@@ -10,12 +10,12 @@ type Term = 'tag' | 'monat' | 'quartal'
 type Kind = 'unbefristet' | 'befristet'
 
 const notices: { id: Notice; label: string }[] = [
-  { id: '2w', label: '2 Wochen' },
-  { id: '4w', label: '4 Wochen' },
-  { id: '1m', label: '1 Monat' },
-  { id: '2m', label: '2 Monate' },
-  { id: '3m', label: '3 Monate' },
-  { id: '6m', label: '6 Monate' },
+  { id: '2w', label: '2 Wochen' },
+  { id: '4w', label: '4 Wochen' },
+  { id: '1m', label: '1 Monat' },
+  { id: '2m', label: '2 Monate' },
+  { id: '3m', label: '3 Monate' },
+  { id: '6m', label: '6 Monate' },
 ]
 
 const day = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate())

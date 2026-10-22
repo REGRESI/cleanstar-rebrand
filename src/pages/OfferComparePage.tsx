@@ -28,7 +28,7 @@ export default function OfferComparePage() {
       ]}
       sources={[
         {
-          title: 'Verordnung über zwingende Arbeitsbedingungen in der Gebäudereinigung (Mindestlohn Lohngruppe 1: 15,00 €)',
+          title: 'Verordnung über zwingende Arbeitsbedingungen in der Gebäudereinigung (Mindestlohn Lohngruppe 1: 15,00 €)',
           publisher: 'gesetze-im-internet.de',
           url: 'https://www.gesetze-im-internet.de/tvmindestlohngeb_ude_2024/',
           stand: 'ab 01.01.2026',

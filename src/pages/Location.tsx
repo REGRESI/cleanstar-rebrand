@@ -35,7 +35,7 @@ export default function Location() {
       q: `Wie schnell sind Sie in ${short} vor Ort?`,
       a: hq
         ? 'Offenburg ist unser Sitz. Wir sind in der Regel innerhalb kurzer Zeit bei Ihnen. ' + l.route
-        : `In ${short} sind wir in ungefähr ${l.minutes} Minuten vor Ort. ${l.route} Für die Besichtigung vereinbaren wir einen Termin, der Ihnen passt.`,
+        : `In ${short} sind wir in ungefähr ${l.minutes} Minuten vor Ort. ${l.route} Für die Besichtigung vereinbaren wir einen Termin, der Ihnen passt.`,
     },
     {
       q: `Welche Reinigungsleistungen sind in ${short} am meisten gefragt?`,
@@ -43,7 +43,7 @@ export default function Location() {
     },
     {
       q: `Was kostet eine Büroreinigung in ${short}?`,
-      a: `Eine Büroreinigung in ${short} kostet bei uns 35 bis 45 € brutto pro Mitarbeiterstunde, dieselben Sätze wie überall im Ortenaukreis. Wie viele Stunden Ihr Objekt braucht, klären wir bei einer kostenlosen Besichtigung. Das Angebot erhalten Sie innerhalb von 48 Stunden.`,
+      a: `Eine Büroreinigung in ${short} kostet bei uns 35 bis 45 € brutto pro Mitarbeiterstunde, dieselben Sätze wie überall im Ortenaukreis. Wie viele Stunden Ihr Objekt braucht, klären wir bei einer kostenlosen Besichtigung. Das Angebot erhalten Sie innerhalb von 48 Stunden.`,
     },
     l.faq,
   ]
@@ -56,8 +56,8 @@ export default function Location() {
       <Seo
         title={fitTitle(city ? [`Reinigungsfirma ${short}: Büro & Gewerbe`, `Reinigungsfirma ${short}`] : [`Büroreinigung ${short}: Firma vor Ort`, `Büroreinigung ${short}: vor Ort`, `Büroreinigung ${short}`])}
         description={fitDescription([
-          `Reinigungsfirma für ${short}${hq ? ' mit Sitz vor Ort' : ` (ca. ${l.minutes} Min. ab Offenburg)`}: Büroreinigung, Fenster, Treppenhaus und Halle. Fester Ansprechpartner, Angebot in 48 Stunden.`,
-          `Reinigungsfirma für ${short} (ca. ${l.minutes} Min. ab Offenburg): Büroreinigung, Fenster und Halle. Fester Ansprechpartner, Angebot in 48 Stunden.`,
+          `Reinigungsfirma für ${short}${hq ? ' mit Sitz vor Ort' : ` (ca. ${l.minutes} Min. ab Offenburg)`}: Büroreinigung, Fenster, Treppenhaus und Halle. Fester Ansprechpartner, Angebot in 48 Stunden.`,
+          `Reinigungsfirma für ${short} (ca. ${l.minutes} Min. ab Offenburg): Büroreinigung, Fenster und Halle. Fester Ansprechpartner, Angebot in 48 Stunden.`,
         ])}
         ogType="standort"
         path={path}
@@ -83,7 +83,7 @@ export default function Location() {
         <ul className="fade-up-now mt-8 flex flex-wrap gap-3 text-sm" style={{ ['--d' as string]: '0.7s' }}>
           <li className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-line">
             <Clock aria-hidden className="size-4 text-blue" />
-            {hq ? 'Unser Sitz' : `ca. ${l.minutes} Min. von Offenburg`}
+            {hq ? 'Unser Sitz' : `ca. ${l.minutes} Min. von Offenburg`}
           </li>
           <li className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-line">
             <MapPin aria-hidden className="size-4 text-blue" />
@@ -91,7 +91,7 @@ export default function Location() {
           </li>
         </ul>
       </PageHero>
-      <Answer className="pt-12 sm:pt-16">{hq ? `CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg und reinigt Büros, Praxen und Gewerbeflächen in der ganzen Stadt, mit festem Team und festem Ansprechpartner.` : `CleanStar ist eine Reinigungsfirma aus Offenburg und reinigt Büros, Praxen und Gewerbeflächen in ${short}, rund ${l.minutes} Minuten von unserem Sitz entfernt, mit festem Team und festem Ansprechpartner.`}</Answer>
+      <Answer className="pt-12 sm:pt-16">{hq ? `CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg und reinigt Büros, Praxen und Gewerbeflächen in der ganzen Stadt, mit festem Team und festem Ansprechpartner.` : `CleanStar ist eine Reinigungsfirma aus Offenburg und reinigt Büros, Praxen und Gewerbeflächen in ${short}, rund ${l.minutes} Minuten von unserem Sitz entfernt, mit festem Team und festem Ansprechpartner.`}</Answer>
 
       <section className="py-24 sm:py-32" aria-labelledby="loc-detail">
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
@@ -210,7 +210,7 @@ export default function Location() {
               ))}
               <li>
                 <Link to="/einzugsgebiet" className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-blue">
-                  Alle {locations.length} Orte
+                  Alle {locations.length} Orte
                 </Link>
               </li>
             </ul>

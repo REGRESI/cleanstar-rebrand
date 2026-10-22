@@ -46,7 +46,7 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
                     className="group flex h-full w-full flex-col items-start gap-3 rounded-2xl bg-white/5 p-4 text-left ring-1 ring-white/10 transition hover:bg-white/10 hover:ring-fresh/50"
                   >
                     <t.icon aria-hidden className="size-6 text-fresh" strokeWidth={1.6} />
-                    <span className="font-medium [overflow-wrap:anywhere] hyphens-auto">{t.label}</span>
+                    <span className="font-medium">{t.label}</span>
                   </button>
                 </li>
               ))}
@@ -56,10 +56,10 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
               onClick={() => open()}
               className="mt-5 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-blue font-semibold text-white shadow-glow transition hover:bg-blue-hover"
             >
-              In 60 Sekunden zum Angebot
+              In 60 Sekunden zum Angebot
               <ArrowRight aria-hidden className="size-4" />
             </button>
-            <p className="mt-4 text-center text-xs text-muted-dark">Kostenlos und unverbindlich. Antwort innerhalb von {company.promises.responseHours} Stunden.</p>
+            <p className="mt-4 text-center text-xs text-muted-dark">Kostenlos und unverbindlich. Antwort innerhalb von {company.promises.responseHours} Stunden.</p>
           </div>
         </div>
       </div>

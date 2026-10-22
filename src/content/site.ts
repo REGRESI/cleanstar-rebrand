@@ -16,10 +16,10 @@ export const navigation = [
 export const home = {
   /** Kurze, direkte Antwort unter dem Hero (für Besucher, Suchmaschinen und KI-Systeme) */
   answer:
-    'CleanStar ist eine Reinigungsfirma aus Offenburg, die sich auf Büroreinigung für Unternehmen im Ortenaukreis spezialisiert hat. Wir arbeiten mit festen Teams, einem festen Ansprechpartner und einer Ersatzkraft bei Ausfall, zu 35 bis 45 € brutto pro Mitarbeiterstunde.',
+    'CleanStar ist eine Reinigungsfirma aus Offenburg, die sich auf Büroreinigung für Unternehmen im Ortenaukreis spezialisiert hat. Wir arbeiten mit festen Teams, einem festen Ansprechpartner und einer Ersatzkraft bei Ausfall, zu 35 bis 45 € brutto pro Mitarbeiterstunde.',
   seoTitle: 'Büroreinigung Offenburg & Ortenaukreis',
   seoDescription:
-    'Reinigungsfirma aus Offenburg für Büroreinigung im Ortenaukreis: festes Team, fester Ansprechpartner, Ersatz bei Ausfall und Angebot in 48 Stunden.',
+    'Reinigungsfirma aus Offenburg für Büroreinigung im Ortenaukreis: festes Team, fester Ansprechpartner, Ersatz bei Ausfall und Angebot in 48 Stunden.',
   hero: {
     eyebrow: 'Büroreinigung in Offenburg und der Ortenau',
     headline: 'Büroreinigung, auf die Verlass ist.',
@@ -39,7 +39,7 @@ export const home = {
   },
   problems: {
     eyebrow: 'Was Sie nicht mehr erleben werden',
-    headline: 'Sie haben Wichtigeres zu tun, als Ihrer Reinigungs\u00ADfirma hinterher\u00ADzu\u00ADtelefonieren.',
+    headline: 'Sie haben Wichtigeres zu tun, als Ihrer Reinigungsfirma hinterherzutelefonieren.',
     lead: 'Vier Ärgernisse, die fast jeder Geschäftsführer kennt. Bei uns sind sie von Anfang an geregelt, schriftlich und überprüfbar.',
     items: [
       {
@@ -52,7 +52,7 @@ export const home = {
       },
       {
         problem: 'Bei Problemen erreicht man niemanden.',
-        solution: 'Ein fester Ansprechpartner mit direkter Nummer, rund um die Uhr erreichbar. Antwort innerhalb von 24 Stunden.',
+        solution: 'Ein fester Ansprechpartner mit direkter Nummer, rund um die Uhr erreichbar. Antwort innerhalb von 24 Stunden.',
       },
       {
         problem: 'Nach drei Monaten lässt die Qualität nach.',
@@ -86,9 +86,9 @@ export const home = {
     text: 'Bei CleanStar sprechen Sie mit den Menschen, die entscheiden. Kein Callcenter, keine Zentrale in einer anderen Stadt. Jeder von uns hat seinen Bereich, und wer bei uns anruft, erreicht jemanden, der sein Wort hält.',
   },
   finalCta: {
-    eyebrow: 'In 60 Sekunden zur Anfrage',
+    eyebrow: 'In 60 Sekunden zur Anfrage',
     headline: 'Ein Gespräch. Eine Besichtigung. Ein klares Angebot.',
-    text: 'Sagen Sie uns kurz, was gereinigt werden soll. Wir melden uns innerhalb von 24 Stunden, sehen uns Ihre Räume kostenlos an und schicken Ihnen in 48 Stunden ein schriftliches Angebot. Und im ersten Monat können Sie jederzeit kündigen.',
+    text: 'Sagen Sie uns kurz, was gereinigt werden soll. Wir melden uns innerhalb von 24 Stunden, sehen uns Ihre Räume kostenlos an und schicken Ihnen in 48 Stunden ein schriftliches Angebot. Und im ersten Monat können Sie jederzeit kündigen.',
   },
 }
 
@@ -105,7 +105,7 @@ export const processSteps = [
   {
     title: 'Anfrage',
     duration: 'ca. 1 Minute',
-    text: 'Über den Konfigurator, per Telefon oder E-Mail. Wir melden uns innerhalb von 24 Stunden.',
+    text: 'Über den Konfigurator, per Telefon oder E-Mail. Wir melden uns innerhalb von 24 Stunden.',
   },
   {
     title: 'Objektbesichtigung',
@@ -113,8 +113,8 @@ export const processSteps = [
     text: 'Wir sehen uns Ihre Räume an, fragen nach Ihren Abläufen und klären Zugang und Zeiten. Kostenlos.',
   },
   {
-    title: 'Angebot in 48 h',
-    duration: 'innerhalb von 48 Stunden',
+    title: 'Angebot in 48 h',
+    duration: 'innerhalb von 48 Stunden',
     text: 'Sie erhalten ein schriftliches Angebot mit Leistungsverzeichnis, Intervallen und klaren Preisen.',
   },
   {
@@ -151,14 +151,14 @@ export const guaranteePoints = [
   },
   {
     title: 'Fester Ansprechpartner',
-    text: 'Eine Person, die Ihr Objekt kennt und direkt erreichbar ist. Rund um die Uhr, Antwort innerhalb von 24 Stunden.',
+    text: 'Eine Person, die Ihr Objekt kennt und direkt erreichbar ist. Rund um die Uhr, Antwort innerhalb von 24 Stunden.',
   },
   {
     title: 'Vertretung bei Ausfall',
     text: 'Fällt jemand aus, übernimmt eine eingewiesene Ersatzkraft. Ihre Reinigung findet statt, ohne dass Sie sich kümmern müssen.',
   },
   {
-    title: 'Schlüssel- und Zugangs\u00ADmanagement',
+    title: 'Schlüssel- und Zugangsmanagement',
     text: 'Schlüsselübergaben werden protokolliert. Zugang hat nur das feste Team. Alarmanlagen und Schließzeiten sind dokumentiert.',
   },
   {
@@ -166,7 +166,7 @@ export const guaranteePoints = [
     text: 'Unterlagen bleiben, wo sie liegen. Was wir in Ihren Räumen sehen, bleibt dort.',
   },
   {
-    title: 'Betriebshaftpflicht\u00ADversichert',
+    title: 'Betriebshaftpflichtversichert',
     text: 'Geht trotz aller Sorgfalt einmal etwas zu Bruch, sind Sie abgesichert. Den Nachweis senden wir Ihnen auf Anfrage.',
   },
 ] as { title: string; text: string; usesComplaintPeriod?: boolean; todo?: string }[]
@@ -193,7 +193,7 @@ export const values = [
 
 export const careers = {
   seoTitle: 'Jobs Reinigung Offenburg: Karriere',
-  seoDescription: 'Jobs bei CleanStar in Offenburg und im Ortenaukreis: feste Objekte, planbare Zeiten und ein Team, das zusammenhält. Bewerbung in 2 Minuten, auch per Telefon.',
+  seoDescription: 'Jobs bei CleanStar in Offenburg und im Ortenaukreis: feste Objekte, planbare Zeiten und ein Team, das zusammenhält. Bewerbung in 2 Minuten, auch per Telefon.',
   headline: 'Arbeiten bei CleanStar. Planbar, fair, im Team.',
   intro:
     'Gute Reinigung braucht gute Leute. Wir suchen Menschen, die sorgfältig arbeiten und sich auf ein verlässliches Team freuen. Die Bewerbung dauert zwei Minuten, Lebenslauf brauchen Sie keinen.',

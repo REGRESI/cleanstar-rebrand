@@ -17,7 +17,7 @@ const trail = [
 const included = [
   'Kostenlose Objektbesichtigung vor Ort',
   'Schriftliches Leistungsverzeichnis',
-  'Angebot innerhalb von 48 Stunden',
+  'Angebot innerhalb von 48 Stunden',
   'Fester Ansprechpartner',
   'Festes, eingewiesenes Team',
   'Ersatzkraft bei Ausfall',

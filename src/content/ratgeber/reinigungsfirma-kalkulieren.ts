@@ -11,7 +11,7 @@ const guide: Guide = {
   published: '2026-10-21',
   modified: '2026-10-21',
   answer:
-    'Den Stundensatz einer Reinigungsfirma berechnen Sie in vier Schritten: Lohn plus Arbeitgeberanteile durch den Anteil tatsächlich gearbeiteter Stunden teilen, Material pro Stunde addieren, Fixkosten auf die verkauften Stunden umlegen und zum Schluss einen Aufschlag für Gewinn und Wagnis aufschlagen. Bei 15,00 € Branchenmindestlohn landet ein realistischer Satz schnell bei über 29 € netto.',
+    'Den Stundensatz einer Reinigungsfirma berechnen Sie in vier Schritten: Lohn plus Arbeitgeberanteile durch den Anteil tatsächlich gearbeiteter Stunden teilen, Material pro Stunde addieren, Fixkosten auf die verkauften Stunden umlegen und zum Schluss einen Aufschlag für Gewinn und Wagnis aufschlagen. Bei 15,00 € Branchenmindestlohn landet ein realistischer Satz schnell bei über 29 € netto.',
   body: `
 ## Warum so viele Reinigungsfirmen zu billig starten
 
@@ -19,29 +19,29 @@ Der Stundenlohn ist die sichtbarste Zahl, und viele Gründer rechnen nur damit. 
 
 ## Schritt 1: Lohnkosten pro bezahlter Stunde
 
-Ausgangspunkt ist der Bruttostundenlohn. In der Gebäudereinigung gilt seit dem 1. Januar 2026 in der Innen- und Unterhaltsreinigung ein Branchenmindestlohn von **15,00 € pro Stunde**. Darunter dürfen Sie nicht zahlen.
+Ausgangspunkt ist der Bruttostundenlohn. In der Gebäudereinigung gilt seit dem 1. Januar 2026 in der Innen- und Unterhaltsreinigung ein Branchenmindestlohn von **15,00 € pro Stunde**. Darunter dürfen Sie nicht zahlen.
 
 Dazu kommen die Arbeitgeberanteile zur Sozialversicherung. 2026 sind das bei sozialversicherungspflichtig Beschäftigten:
 
 | Zweig | Arbeitgeberanteil 2026 |
 | --- | --- |
-| Rentenversicherung (18,6 % gesamt) | 9,3 % |
-| Krankenversicherung (14,6 % plus Zusatzbeitrag, im Schnitt 2,9 %) | 7,3 % plus 1,45 % |
-| Pflegeversicherung | 1,8 % |
-| Arbeitslosenversicherung (2,6 % gesamt) | 1,3 % |
-| **Summe** | **rund 21,15 %** |
+| Rentenversicherung (18,6 % gesamt) | 9,3 % |
+| Krankenversicherung (14,6 % plus Zusatzbeitrag, im Schnitt 2,9 %) | 7,3 % plus 1,45 % |
+| Pflegeversicherung | 1,8 % |
+| Arbeitslosenversicherung (2,6 % gesamt) | 1,3 % |
+| **Summe** | **rund 21,15 %** |
 
 Hinzu kommen Umlagen für Lohnfortzahlung und Mutterschaft, die Insolvenzgeldumlage und der Beitrag zur Berufsgenossenschaft. Sie hängen von Krankenkasse und Gefahrtarif ab, fragen Sie die Werte dort an. Für Minijobs gelten eigene Pauschalabgaben.
 
 ## Schritt 2: Ausfallzeiten einrechnen
 
-Ihre Mitarbeitenden werden auch bezahlt, wenn sie nicht arbeiten: im Urlaub, an Feiertagen, bei Krankheit. Der gesetzliche Mindesturlaub beträgt 24 Werktage, bei einer Fünf-Tage-Woche also 20 Arbeitstage. Tarifverträge und Arbeitsverträge sehen oft mehr vor. Dazu kommen Feiertage und Krankheitstage.
+Ihre Mitarbeitenden werden auch bezahlt, wenn sie nicht arbeiten: im Urlaub, an Feiertagen, bei Krankheit. Der gesetzliche Mindesturlaub beträgt 24 Werktage, bei einer Fünf-Tage-Woche also 20 Arbeitstage. Tarifverträge und Arbeitsverträge sehen oft mehr vor. Dazu kommen Feiertage und Krankheitstage.
 
 Diese bezahlten, aber nicht gearbeiteten Stunden müssen die gearbeiteten Stunden mittragen. Rechnerisch teilen Sie die Lohnkosten durch den Anteil der produktiven Zeit:
 
 > Lohnkosten je produktiver Stunde = Stundenlohn × (1 + Lohnnebenkosten) ÷ (1 − Ausfallquote)
 
-Bei 15,00 € Lohn, 21 % Lohnnebenkosten und einer angenommenen Ausfallquote von 15 % ergibt das **21,35 €** pro tatsächlich gearbeiteter Stunde. Schon hier liegen Sie rund 42 % über dem Stundenlohn.
+Bei 15,00 € Lohn, 21 % Lohnnebenkosten und einer angenommenen Ausfallquote von 15 % ergibt das **21,35 €** pro tatsächlich gearbeiteter Stunde. Schon hier liegen Sie rund 42 % über dem Stundenlohn.
 
 ## Schritt 3: Material und variable Kosten
 
@@ -69,24 +69,24 @@ Alle Werte außer Mindestlohn und Lohnnebenkosten sind Beispielannahmen. Setzen 
 
 | Posten | Annahme | Pro verkaufter Stunde |
 | --- | --- | --- |
-| Stundenlohn | 15,00 € (Branchenmindestlohn) | |
-| Lohnnebenkosten | 21 % | |
-| Ausfallquote | 15 % (Annahme) | |
-| Lohnkosten je produktiver Stunde | | 21,35 € |
-| Material | 0,80 € pro Stunde (Annahme) | 0,80 € |
-| Fixkosten | 1.880 € pro Monat bei 400 verkauften Stunden (Annahme) | 4,70 € |
-| **Selbstkosten** | | **26,85 €** |
-| Aufschlag Gewinn und Wagnis | 10 % (Annahme) | 2,69 € |
-| **Stundensatz netto** | | **29,54 €** |
-| Stundensatz brutto (19 % USt.) | | 35,15 € |
+| Stundenlohn | 15,00 € (Branchenmindestlohn) | |
+| Lohnnebenkosten | 21 % | |
+| Ausfallquote | 15 % (Annahme) | |
+| Lohnkosten je produktiver Stunde | | 21,35 € |
+| Material | 0,80 € pro Stunde (Annahme) | 0,80 € |
+| Fixkosten | 1.880 € pro Monat bei 400 verkauften Stunden (Annahme) | 4,70 € |
+| **Selbstkosten** | | **26,85 €** |
+| Aufschlag Gewinn und Wagnis | 10 % (Annahme) | 2,69 € |
+| **Stundensatz netto** | | **29,54 €** |
+| Stundensatz brutto (19 % USt.) | | 35,15 € |
 
-Der **Deckungsbeitrag** pro Stunde, also Verkaufspreis minus variable Kosten (Lohnkosten und Material), liegt in diesem Beispiel bei 7,39 €. Bei 400 Stunden im Monat sind das 2.954 €, aus denen die Fixkosten von 1.880 € bezahlt werden. Übrig bleiben 1.074 € Gewinn vor Steuern.
+Der **Deckungsbeitrag** pro Stunde, also Verkaufspreis minus variable Kosten (Lohnkosten und Material), liegt in diesem Beispiel bei 7,39 €. Bei 400 Stunden im Monat sind das 2.954 €, aus denen die Fixkosten von 1.880 € bezahlt werden. Übrig bleiben 1.074 € Gewinn vor Steuern.
 
-> Diese Rechnung ist ein Beispiel, keine Prognose. Ob Sie 400 Stunden im Monat verkaufen und welchen Preis Ihr Markt trägt, hängt von vielen Faktoren ab.
+> Diese Rechnung ist ein Beispiel, keine Prognose. Ob Sie 400 Stunden im Monat verkaufen und welchen Preis Ihr Markt trägt, hängt von vielen Faktoren ab.
 
 ## Minijob oder sozialversicherungspflichtig?
 
-In der Reinigung arbeiten viele Beschäftigte auf Minijob-Basis. Für den Arbeitgeber gelten dann statt der normalen Sozialversicherungsbeiträge Pauschalabgaben. 2026 sind das für gewerbliche Minijobs 15 % zur Rentenversicherung, 13 % zur Krankenversicherung (bei gesetzlich Versicherten) und 2 % Pauschsteuer, dazu Umlagen. Zusammen sind das rund 31 % und damit mehr als bei einer sozialversicherungspflichtigen Beschäftigung. Die Verdienstgrenze liegt 2026 bei 603 € im Monat. Für 2027 sind Änderungen bei den Pauschalabgaben angekündigt, prüfen Sie deshalb vor jeder Kalkulation den aktuellen Stand bei der Minijob-Zentrale.
+In der Reinigung arbeiten viele Beschäftigte auf Minijob-Basis. Für den Arbeitgeber gelten dann statt der normalen Sozialversicherungsbeiträge Pauschalabgaben. 2026 sind das für gewerbliche Minijobs 15 % zur Rentenversicherung, 13 % zur Krankenversicherung (bei gesetzlich Versicherten) und 2 % Pauschsteuer, dazu Umlagen. Zusammen sind das rund 31 % und damit mehr als bei einer sozialversicherungspflichtigen Beschäftigung. Die Verdienstgrenze liegt 2026 bei 603 € im Monat. Für 2027 sind Änderungen bei den Pauschalabgaben angekündigt, prüfen Sie deshalb vor jeder Kalkulation den aktuellen Stand bei der Minijob-Zentrale.
 
 Für die Kalkulation heißt das: Setzen Sie die Lohnnebenkosten passend zu Ihrem Personal an. Bei einem gemischten Team rechnen Sie mit einem Durchschnitt.
 
@@ -102,7 +102,7 @@ Weil Lohnkosten den größten Teil Ihrer Kosten ausmachen, sollten Ihre Verträg
 
 ## Stundensatz oder Pauschale?
 
-Viele Kunden wünschen sich einen festen Monatspreis. Das ist kein Widerspruch zur Kalkulation nach Stunden: Der Monatspreis ergibt sich aus den geplanten Stunden, dem Stundensatz und durchschnittlich 4,33 Wochen pro Monat. Wichtig ist, dass Sie intern wissen, wie viele Stunden im Preis stecken. Nur dann merken Sie, wenn ein Objekt regelmäßig mehr Zeit braucht als geplant.
+Viele Kunden wünschen sich einen festen Monatspreis. Das ist kein Widerspruch zur Kalkulation nach Stunden: Der Monatspreis ergibt sich aus den geplanten Stunden, dem Stundensatz und durchschnittlich 4,33 Wochen pro Monat. Wichtig ist, dass Sie intern wissen, wie viele Stunden im Preis stecken. Nur dann merken Sie, wenn ein Objekt regelmäßig mehr Zeit braucht als geplant.
 
 Weisen Sie die Stunden auch im Angebot aus. Das macht Ihren Preis nachvollziehbar und erleichtert spätere Gespräche, wenn sich der Umfang ändert.
 
@@ -112,7 +112,7 @@ Die beste Kalkulation ist nur eine Annahme, bis sie sich im Alltag bewährt. Ver
 
 ## Typische Fehler
 
-1. **Nur mit dem Lohn rechnen.** Lohnnebenkosten und Ausfallzeiten machen schnell 40 % und mehr aus.
+1. **Nur mit dem Lohn rechnen.** Lohnnebenkosten und Ausfallzeiten machen schnell 40 % und mehr aus.
 2. **Das eigene Gehalt vergessen.** Wenn Sie selbst putzen, planen und verkaufen, muss auch Ihre Zeit bezahlt werden.
 3. **Fahrzeiten ignorieren.** Zeit im Auto ist bezahlte Arbeitszeit, die kein Kunde direkt bezahlt. Ein enges Einzugsgebiet ist deshalb bares Geld.
 4. **Mit voller Auslastung rechnen.** Am Anfang haben Sie weniger Kunden, die Fixkosten pro Stunde sind höher.
@@ -129,7 +129,7 @@ Unser kostenloser [Kalkulationsrechner für Gründer](/reinigungsfirma-kalkulier
     },
     {
       q: 'Wie hoch sind die Lohnnebenkosten in der Gebäudereinigung?',
-      a: 'Die Arbeitgeberanteile zur Sozialversicherung betragen 2026 bei sozialversicherungspflichtig Beschäftigten rund 21 %. Dazu kommen Umlagen und der Beitrag zur Berufsgenossenschaft, die von Krankenkasse und Gefahrtarif abhängen.',
+      a: 'Die Arbeitgeberanteile zur Sozialversicherung betragen 2026 bei sozialversicherungspflichtig Beschäftigten rund 21 %. Dazu kommen Umlagen und der Beitrag zur Berufsgenossenschaft, die von Krankenkasse und Gefahrtarif abhängen.',
     },
     {
       q: 'Was ist der Deckungsbeitrag in der Reinigung?',
@@ -141,7 +141,7 @@ Unser kostenloser [Kalkulationsrechner für Gründer](/reinigungsfirma-kalkulier
       title: 'Verordnung über zwingende Arbeitsbedingungen in der Gebäudereinigung',
       publisher: 'Bundesministerium der Justiz, gesetze-im-internet.de',
       url: 'https://www.gesetze-im-internet.de/tvmindestlohngeb_ude_2024/',
-      stand: 'Lohngruppe 1 ab 01.01.2026: 15,00 €, gültig bis 31.12.2026',
+      stand: 'Lohngruppe 1 ab 01.01.2026: 15,00 €, gültig bis 31.12.2026',
     },
     {
       title: 'Aktuelle Beitragssätze in der Sozialversicherung',
@@ -150,13 +150,13 @@ Unser kostenloser [Kalkulationsrechner für Gründer](/reinigungsfirma-kalkulier
       stand: '2026',
     },
     {
-      title: 'Sozialversicherung: die Beitragssätze für 2026 (durchschnittlicher Zusatzbeitrag 2,9 %)',
+      title: 'Sozialversicherung: die Beitragssätze für 2026 (durchschnittlicher Zusatzbeitrag 2,9 %)',
       publisher: 'Haufe',
       url: 'https://www.haufe.de/personal/entgelt/beitragssaetze-zur-sozialversicherung_78_493770.html',
       stand: '2026',
     },
     {
-      title: '§ 3 Bundesurlaubsgesetz: Dauer des Urlaubs',
+      title: '§ 3 Bundesurlaubsgesetz: Dauer des Urlaubs',
       publisher: 'Bundesministerium der Justiz, gesetze-im-internet.de',
       url: 'https://www.gesetze-im-internet.de/burlg/__3.html',
       stand: 'abgerufen Oktober 2026',

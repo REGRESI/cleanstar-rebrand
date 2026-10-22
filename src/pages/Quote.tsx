@@ -17,7 +17,7 @@ export default function Quote() {
     <>
       <Seo
         title="Angebot Büroreinigung anfragen"
-        description="Angebot für Büroreinigung im Ortenaukreis anfragen: Richtpreis-Spanne in 60 Sekunden oder kostenlose Besichtigung. Antwort in 24 Stunden, unverbindlich."
+        description="Angebot für Büroreinigung im Ortenaukreis anfragen: Richtpreis-Spanne in 60 Sekunden oder kostenlose Besichtigung. Antwort in 24 Stunden, unverbindlich."
         path="/angebot"
         schema={[breadcrumbSchema(trail)]}
       />
@@ -26,14 +26,14 @@ export default function Quote() {
           <div className="lg:col-span-4">
             <Breadcrumbs trail={trail} />
             <p className="eyebrow mb-4">Angebot anfragen</p>
-            <RevealText as="h1" text="In 60 Sekunden zum Angebot." immediate className="heading-1" />
+            <RevealText as="h1" text="In 60 Sekunden zum Angebot." immediate className="heading-1" />
             <p className="lead fade-up-now mt-6" style={{ ['--d' as string]: '0.4s' }}>
               Ein paar Angaben zu Ihrem Objekt. Kennen Sie Ihre aktuellen Reinigungszeiten, zeigen wir Ihnen sofort eine Richtpreis-Spanne.
             </p>
             <ul className="fade-up-now mt-8 space-y-3" style={{ ['--d' as string]: '0.55s' }}>
               {[
-                [Clock, `Antwort innerhalb von ${company.promises.responseHours} Stunden`],
-                [Check, `Angebot innerhalb von ${company.promises.offerHours} Stunden`],
+                [Clock, `Antwort innerhalb von ${company.promises.responseHours} Stunden`],
+                [Check, `Angebot innerhalb von ${company.promises.offerHours} Stunden`],
                 [ShieldCheck, 'Kostenlos und unverbindlich'],
               ].map(([I, t], i) => {
                 const Icon = I as typeof Clock

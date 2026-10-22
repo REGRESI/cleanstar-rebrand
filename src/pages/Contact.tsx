@@ -18,7 +18,7 @@ const trail = [
 export default function Contact() {
   const cards = [
     { icon: Phone, label: 'Telefon', value: company.phone.display, href: company.phone.href, note: `Direkt anrufen, ${company.availability}` },
-    { icon: Mail, label: 'E-Mail', value: company.email, href: `mailto:${company.email}`, note: `Antwort innerhalb von ${company.promises.responseHours} Stunden` },
+    { icon: Mail, label: 'E-Mail', value: company.email, href: `mailto:${company.email}`, note: `Antwort innerhalb von ${company.promises.responseHours} Stunden` },
     ...(company.whatsapp.enabled
       ? [{ icon: MessageCircle, label: 'WhatsApp', value: 'Nachricht schreiben', href: `https://wa.me/${company.whatsapp.number}`, note: 'Öffnet WhatsApp' }]
       : []),
@@ -37,9 +37,9 @@ export default function Contact() {
         image="contact"
         eyebrow="Kontakt"
         title="Sprechen wir über Ihr Objekt."
-        lead="Rufen Sie an, schreiben Sie uns oder buchen Sie direkt einen Termin für die kostenlose Besichtigung. Wir melden uns innerhalb von 24 Stunden."
+        lead="Rufen Sie an, schreiben Sie uns oder buchen Sie direkt einen Termin für die kostenlose Besichtigung. Wir melden uns innerhalb von 24 Stunden."
       />
-      <Answer className="pt-12 sm:pt-16">{`CleanStar erreichen Sie rund um die Uhr telefonisch unter ${company.phone.display} oder per E-Mail an ${company.email}. Unsere Adresse: ${fullAddress()}. Auf Anfragen antworten wir innerhalb von ${company.promises.responseHours} Stunden.`}</Answer>
+      <Answer className="pt-12 sm:pt-16">{`CleanStar erreichen Sie rund um die Uhr telefonisch unter ${company.phone.display} oder per E-Mail an ${company.email}. Unsere Adresse: ${fullAddress()}. Auf Anfragen antworten wir innerhalb von ${company.promises.responseHours} Stunden.`}</Answer>
 
       <section className="py-20 sm:py-28" aria-label="Kontaktwege">
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
@@ -95,7 +95,7 @@ export default function Contact() {
             eyebrow="Objektbesichtigung"
             title="Kostenlose Besichtigung buchen."
             id="booking-title"
-            text="Wir sehen uns Ihre Räume an und schicken Ihnen innerhalb von 48 Stunden ein schriftliches Angebot."
+            text="Wir sehen uns Ihre Räume an und schicken Ihnen innerhalb von 48 Stunden ein schriftliches Angebot."
           />
           <div className="mt-12" data-reveal>
             <BookingEmbed />
