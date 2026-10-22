@@ -4,8 +4,7 @@ const guide: Guide = {
   slug: 'gute-reinigungsfirma-erkennen',
   title: 'Woran Sie eine gute Reinigungsfirma erkennen: Checkliste für Geschäftsführer',
   seoTitle: 'Gute Reinigungsfirma: Checkliste',
-  description:
-    'Woran erkennen Sie eine gute Reinigungsfirma? 12 Prüfpunkte für Geschäftsführer, von Besichtigung und Kalkulation bis Vertretung, Versicherung und Vertrag.',
+  description: 'Woran erkennen Sie eine gute Reinigungsfirma? 12 Prüfpunkte für Geschäftsführer, von Besichtigung und Kalkulation bis Vertretung, Versicherung und Vertrag.',
   category: 'unternehmen',
   author: 1,
   published: '2026-10-21',
@@ -29,7 +28,7 @@ Wie schnell meldet sich der Anbieter nach Ihrer Anfrage? Kommt das Angebot zum v
 
 ## Im Angebot
 
-### 3. Schriftliches Leistungsverzeichnis
+### 3. Ein Leistungsverzeichnis in Schriftform
 
 Im Angebot sollte stehen, welche Räume mit welchen Tätigkeiten wie oft gereinigt werden. "Büroreinigung dreimal wöchentlich" reicht nicht. Wie ein gutes Verzeichnis aussieht, lesen Sie im Artikel [Leistungsverzeichnis Büroreinigung](/ratgeber/leistungsverzeichnis-bueroreinigung).
 

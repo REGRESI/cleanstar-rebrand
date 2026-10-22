@@ -4,8 +4,7 @@ const guide: Guide = {
   slug: 'erste-kunden-reinigungsfirma',
   title: 'Erste Kunden für die Reinigungsfirma gewinnen: Was wirklich funktioniert',
   seoTitle: 'Reinigungsfirma: Kunden gewinnen',
-  description:
-    'Wie gewinnt eine neue Reinigungsfirma die ersten gewerblichen Kunden? Zielgruppe, Google-Profil, Website, Empfehlungen, Ansprache und ein Angebot, das überzeugt',
+  description: 'Wie gewinnt eine neue Reinigungsfirma die ersten gewerblichen Kunden? Zielgruppe, Google-Profil, Website, Empfehlungen, Ansprache und ein Angebot, das überzeugt',
   category: 'gruender',
   author: 1,
   published: '2026-10-21',
@@ -71,7 +70,7 @@ Viele Aufträge werden nicht über den Preis entschieden, sondern über den Eind
 3. Das Angebot zum zugesagten Termin schicken, mit Leistungsverzeichnis.
 4. Nach ein paar Tagen freundlich nachfragen.
 
-## 8. Öffentliche Ausschreibungen
+## 8. Ausschreibungen der öffentlichen Hand
 
 Auch Behörden, Schulen und kommunale Einrichtungen vergeben Reinigungsleistungen, meist über öffentliche Ausschreibungen. Die Anforderungen an Nachweise und Formalien sind hoch, und der Preis spielt oft eine große Rolle. Für den Start sind private Gewerbekunden meist der einfachere Weg.
 

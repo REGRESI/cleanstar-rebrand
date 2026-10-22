@@ -8,6 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 import { Markdown, headings } from '@/features/guide/Markdown'
 import { GuideCard, GuideCtaBox, GuideDownload, GuideMeta, ShareButtons, formatDate } from '@/features/guide/GuideParts'
 import { absoluteUrl, articleSchema, breadcrumbSchema, faqSchema, howToSchema } from '@/lib/schema'
+import { noOrphan } from '@/lib/format'
 import NotFound from './NotFound'
 
 export default function GuideArticle() {
@@ -53,7 +54,7 @@ export default function GuideArticle() {
         <div className="container-site max-w-4xl">
           <Breadcrumbs trail={trail} />
           <p className="eyebrow mb-5">{g.category === 'gruender' ? 'Ratgeber für Gründer' : 'Ratgeber für Unternehmen'}</p>
-          <h1 className="heading-1 text-balance">{g.title}</h1>
+          <h1 className="text-[clamp(1.5rem,7.2vw,2.25rem)] leading-[1.12] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]">{noOrphan(g.title, 22)}</h1>
           <div className="mt-8">
             <GuideMeta g={g} author={author} />
           </div>
@@ -73,7 +74,7 @@ export default function GuideArticle() {
           <ol className="mt-4 grid gap-x-8 gap-y-2 sm:grid-cols-2">
             {[...toc, { id: 'fragen', text: 'Häufige Fragen' }, { id: 'quellen', text: 'Quellen' }].map((h, i) => (
               <li key={h.id} className="flex gap-2 text-[0.9375rem]">
-                <span className="w-5 shrink-0 text-right text-muted tabular-nums">{i + 1}.</span>
+                <span className="w-7 shrink-0 text-right text-muted tabular-nums">{i + 1}.</span>
                 <a href={`#${h.id}`} className="text-ink underline-offset-4 hover:text-blue-hover hover:underline">
                   {h.text}
                 </a>
@@ -104,7 +105,7 @@ export default function GuideArticle() {
           <ol className="mt-4 space-y-3 text-sm text-muted">
             {g.sources.map((s, i) => (
               <li key={s.url} className="flex gap-3">
-                <span className="w-5 shrink-0 text-right tabular-nums">{i + 1}.</span>
+                <span className="w-7 shrink-0 text-right tabular-nums">{i + 1}.</span>
                 <span className="min-w-0 [overflow-wrap:anywhere]">
                   <a href={s.url} target="_blank" rel="noopener noreferrer" className="font-medium text-ink underline decoration-line underline-offset-4 hover:text-blue-hover">
                     {s.title}
@@ -115,8 +116,8 @@ export default function GuideArticle() {
             ))}
           </ol>
           <p className="mt-6 text-xs leading-relaxed text-muted">
-            Veröffentlicht am {formatDate(g.published)}, zuletzt geprüft am {formatDate(g.modified)}. Dieser Artikel dient der allgemeinen Information und ersetzt keine Rechts- oder
-            Steuerberatung.
+            Veröffentlicht am {formatDate(g.published)}, zuletzt geprüft am {formatDate(g.modified)}. Dieser Artikel dient der allgemeinen Information und ersetzt keine Rechts-
+            oder Steuerberatung.
           </p>
         </section>
 

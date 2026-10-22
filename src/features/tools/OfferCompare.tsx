@@ -154,11 +154,18 @@ export function OfferCompare() {
               aria-controls="offer-panel"
               onClick={() => setTab(i)}
               className={cn(
-                'min-h-11 truncate rounded-xl px-2 text-sm font-semibold transition',
+                'min-h-11 truncate rounded-xl px-1.5 text-[0.8125rem] font-semibold transition min-[360px]:px-2 min-[360px]:text-sm',
                 tab === i ? 'bg-white text-blue-hover shadow-soft' : 'text-ink/70 hover:text-ink',
               )}
             >
-              {x.name.trim() || `Angebot ${LETTERS[i]}`}
+              {!x.name.trim() || x.name.trim() === `Angebot ${LETTERS[i]}` ? (
+                <>
+                  <span className="max-[359px]:hidden">Angebot </span>
+                  {LETTERS[i]}
+                </>
+              ) : (
+                x.name.trim()
+              )}
             </button>
           ))}
         </div>

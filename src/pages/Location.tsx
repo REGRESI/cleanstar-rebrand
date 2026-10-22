@@ -39,7 +39,10 @@ export default function Location() {
     },
     {
       q: `Welche Reinigungsleistungen sind in ${short} am meisten gefragt?`,
-      a: `In ${short} fragen Unternehmen vor allem ${l.focus.map((f) => getService(f.service)!.name).join(', ').replace(/, ([^,]*)$/, ' und $1')} an. ${l.focus[0].why} Alle Leistungen bekommen Sie mit einem Ansprechpartner und einem Angebot.`,
+      a: `In ${short} fragen Unternehmen vor allem ${l.focus
+        .map((f) => getService(f.service)!.name)
+        .join(', ')
+        .replace(/, ([^,]*)$/, ' und $1')} an. ${l.focus[0].why} Alle Leistungen bekommen Sie mit einem Ansprechpartner und einem Angebot.`,
     },
     {
       q: `Was kostet eine Büroreinigung in ${short}?`,
@@ -54,7 +57,11 @@ export default function Location() {
   return (
     <>
       <Seo
-        title={fitTitle(city ? [`Reinigungsfirma ${short}: Büro & Gewerbe`, `Reinigungsfirma ${short}`] : [`Büroreinigung ${short}: Firma vor Ort`, `Büroreinigung ${short}: vor Ort`, `Büroreinigung ${short}`])}
+        title={fitTitle(
+          city
+            ? [`Reinigungsfirma ${short}: Büro & Gewerbe`, `Reinigungsfirma ${short}`]
+            : [`Büroreinigung ${short}: Firma vor Ort`, `Büroreinigung ${short}: vor Ort`, `Büroreinigung ${short}`],
+        )}
         description={fitDescription([
           `Reinigungsfirma für ${short}${hq ? ' mit Sitz vor Ort' : ` (ca. ${l.minutes} Min. ab Offenburg)`}: Büroreinigung, Fenster, Treppenhaus und Halle. Fester Ansprechpartner, Angebot in 48 Stunden.`,
           `Reinigungsfirma für ${short} (ca. ${l.minutes} Min. ab Offenburg): Büroreinigung, Fenster und Halle. Fester Ansprechpartner, Angebot in 48 Stunden.`,
@@ -91,7 +98,11 @@ export default function Location() {
           </li>
         </ul>
       </PageHero>
-      <Answer className="pt-12 sm:pt-16">{hq ? `CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg und reinigt Büros, Praxen und Gewerbeflächen in der ganzen Stadt, mit festem Team und festem Ansprechpartner.` : `CleanStar ist eine Reinigungsfirma aus Offenburg und reinigt Büros, Praxen und Gewerbeflächen in ${short}, rund ${l.minutes} Minuten von unserem Sitz entfernt, mit festem Team und festem Ansprechpartner.`}</Answer>
+      <Answer className="pt-12 sm:pt-16">
+        {hq
+          ? `CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg und reinigt Büros, Praxen und Gewerbeflächen in der ganzen Stadt, mit festem Team und festem Ansprechpartner.`
+          : `CleanStar ist eine Reinigungsfirma aus Offenburg und reinigt Büros, Praxen und Gewerbeflächen in ${short}, rund ${l.minutes} Minuten von unserem Sitz entfernt, mit festem Team und festem Ansprechpartner.`}
+      </Answer>
 
       <section className="py-24 sm:py-32" aria-labelledby="loc-detail">
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">

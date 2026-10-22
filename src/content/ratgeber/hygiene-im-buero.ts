@@ -4,8 +4,7 @@ const guide: Guide = {
   slug: 'hygiene-im-buero',
   title: 'Hygiene im Büro: Wo sich Keime sammeln und wie oft gereinigt werden sollte',
   seoTitle: 'Hygiene im Büro: Keime & Intervalle',
-  description:
-    'Hygiene im Büro: Welche Flächen viele Hände berühren, was der Arbeitsschutz verlangt und welche Reinigungsintervalle sich für Sanitär, Küche und Büro bewähren.',
+  description: 'Hygiene im Büro: Welche Flächen viele Hände berühren, was der Arbeitsschutz verlangt und welche Reinigungsintervalle sich für Sanitär, Küche und Büro bewähren.',
   category: 'unternehmen',
   author: 2,
   published: '2026-10-21',
@@ -13,7 +12,7 @@ const guide: Guide = {
   answer:
     'Im Büro sammeln sich Keime vor allem dort, wo viele Hände dieselben Flächen berühren: Türklinken, Lichtschalter, Aufzugsknöpfe, Kaffeemaschine, Kühlschrankgriffe, Wasserhähne und gemeinsam genutzte Geräte. Sanitärräume und Küche sollten bei jedem Einsatz gereinigt werden, Kontaktflächen mindestens wöchentlich, in Erkältungszeiten häufiger. Wirksamstes Mittel bleibt das Händewaschen.',
   body: `
-## Was das Arbeitsschutzrecht verlangt
+## Was im Arbeitsschutz gilt
 
 Die Arbeitsstättenverordnung verpflichtet Arbeitgeber, Arbeitsstätten den hygienischen Erfordernissen entsprechend zu reinigen und Verunreinigungen, die zu Gefährdungen führen können, unverzüglich zu beseitigen (§ 4 Absatz 2 ArbStättV). Ein festes Intervall schreibt die Verordnung dabei nicht vor. Wie oft gereinigt werden muss, hängt von der Nutzung ab und gehört in die Planung jedes Betriebs.
 

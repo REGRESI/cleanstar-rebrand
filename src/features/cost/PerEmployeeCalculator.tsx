@@ -24,8 +24,8 @@ function Range({
   const id = useId()
   return (
     <div>
-      <label htmlFor={id} className="flex items-baseline justify-between gap-3 text-sm font-medium text-ink">
-        {label}
+      <label htmlFor={id} className="flex flex-wrap items-baseline justify-between gap-x-3 text-sm font-medium text-ink">
+        <span className="min-w-0">{label}</span>
         <span className="text-lg font-semibold whitespace-nowrap tabular-nums">
           {formatNumber(value)} {unit}
         </span>
@@ -56,7 +56,7 @@ export function PerEmployeeCalculator() {
     <div className="grid grid-cols-1 gap-6 rounded-panel bg-glacier p-5 sm:p-8 lg:grid-cols-2 lg:gap-10">
       <div className="space-y-7">
         <Range label="Mitarbeiter in Ihren Räumen" value={employees} onChange={setEmployees} min={1} max={150} step={1} unit="Personen" />
-        <Range label="Reinigungsstunden pro Woche" value={hours} onChange={setHours} min={1} max={60} step={0.5} unit="Std." />
+        <Range label="Stunden pro Woche" value={hours} onChange={setHours} min={1} max={60} step={0.5} unit="Std." />
         <p className="text-sm text-muted">
           Das entspricht rund {formatEuroRange(netMin, netMax)} netto im Monat. Wie viele Stunden Ihr Objekt braucht, sehen wir bei der kostenlosen Besichtigung.
         </p>

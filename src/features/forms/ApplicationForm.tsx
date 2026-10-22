@@ -102,7 +102,7 @@ export function ApplicationForm() {
             *
           </span>
         </legend>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 min-[440px]:grid-cols-2 sm:grid-cols-3">
           {availability.map((a) => (
             <ChoiceCard key={a} value={a} label={a} className="p-3" {...register('availability')} />
           ))}

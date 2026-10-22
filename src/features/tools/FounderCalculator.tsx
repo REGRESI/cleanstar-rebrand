@@ -125,7 +125,9 @@ export function FounderCalculator() {
           <p className="text-sm text-white/65">
             netto{r.rateGross !== null && !v.smallBusiness ? `, ${formatEuro2(r.rateGross)} brutto` : v.smallBusiness ? ', ohne Umsatzsteuer' : ''}
           </p>
-          {missing && <p className="mt-4 rounded-xl bg-white/10 p-3 text-sm text-white/85">Tragen Sie die verkauften Stunden pro Monat ein, um Fixkosten und Stundensatz zu berechnen.</p>}
+          {missing && (
+            <p className="mt-4 rounded-xl bg-white/10 p-3 text-sm text-white/85">Tragen Sie die verkauften Stunden pro Monat ein, um Fixkosten und Stundensatz zu berechnen.</p>
+          )}
           <dl className="mt-6 space-y-2 border-t border-white/10 pt-5 text-sm">
             {lines.map(([k, val, strong]) => (
               <div key={k} className="flex justify-between gap-4">
@@ -134,7 +136,7 @@ export function FounderCalculator() {
               </div>
             ))}
           </dl>
-          <dl className="mt-6 grid grid-cols-2 gap-3">
+          <dl className="mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
             {[
               ['Deckungsbeitrag je Stunde', r.db === null ? '–' : formatEuro2(r.db)],
               ['Deckungsbeitrag im Monat', r.dbMonth === null ? '–' : formatEuro(r.dbMonth)],
@@ -151,8 +153,8 @@ export function FounderCalculator() {
         <p className="flex gap-3 rounded-2xl bg-amber-50 p-4 text-sm leading-relaxed text-amber-950 ring-1 ring-amber-200">
           <AlertTriangle aria-hidden className="mt-0.5 size-5 shrink-0" />
           <span>
-            <strong>Beispielrechnung, keine Prognose.</strong> Das Ergebnis hängt allein von Ihren Eingaben ab. Es ist keine Zusage von Umsatz, Gewinn oder Einkommen und ersetzt keine
-            Steuer- oder Unternehmensberatung.
+            <strong>Beispielrechnung, keine Prognose.</strong> Das Ergebnis hängt allein von Ihren Eingaben ab. Es ist keine Zusage von Umsatz, Gewinn oder Einkommen und ersetzt
+            keine Steuer- oder Unternehmensberatung.
           </span>
         </p>
         <div className="rounded-panel bg-glacier p-6 ring-1 ring-line">

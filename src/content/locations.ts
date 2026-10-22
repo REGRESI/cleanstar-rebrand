@@ -151,8 +151,7 @@ const texts: Record<string, LocationText> = {
     detail:
       'Wir planen Einsätze in Haslach so, dass das Team fest eingeteilt ist und Ihr Objekt kennt. Fragen und Wünsche gehen direkt an Ihren Ansprechpartner, ohne Callcenter und Ticketsystem.',
     route: 'Haslach erreichen wir über die B33 durch das Kinzigtal in rund einer halben Stunde.',
-    economy:
-      'Haslach ist ein Einkaufs- und Dienstleistungszentrum für das mittlere Kinzigtal, mit Einzelhandel, Praxen, Handwerk und Industriebetrieben im Tal.',
+    economy: 'Haslach ist ein Einkaufs- und Dienstleistungszentrum für das mittlere Kinzigtal, mit Einzelhandel, Praxen, Handwerk und Industriebetrieben im Tal.',
     focus: [
       { service: 'bueroreinigung', why: 'Büros und Verwaltungen, die einen festen Dienstleister im Tal suchen.' },
       { service: 'unterhaltsreinigung', why: 'Betriebe mit Sozialräumen und Fluren.' },
@@ -310,7 +309,8 @@ const texts: Record<string, LocationText> = {
     detail:
       'Wir reinigen Büros, Praxen und Gewerbeflächen in Renchen zu festen Zeiten, die zu Ihrem Betrieb passen. Was gemacht wird und wie oft, steht im Leistungsverzeichnis, das Sie vor dem Start bekommen.',
     route: 'Renchen liegt zwischen Appenweier und Achern nahe der A5, knapp 20 Minuten von Offenburg.',
-    economy: 'Renchen ist eine kleine Stadt mit Handwerk, Handel und mittelständischen Betrieben, dazu Praxen und Büros. Bekannt ist sie als Wirkungsort des Dichters Grimmelshausen.',
+    economy:
+      'Renchen ist eine kleine Stadt mit Handwerk, Handel und mittelständischen Betrieben, dazu Praxen und Büros. Bekannt ist sie als Wirkungsort des Dichters Grimmelshausen.',
     focus: [
       { service: 'bueroreinigung', why: 'Büros von mittelständischen Betrieben.' },
       { service: 'unterhaltsreinigung', why: 'Betriebe mit Fluren, Sozial- und Sanitärräumen.' },
@@ -341,10 +341,8 @@ const texts: Record<string, LocationText> = {
     nearby: ['kehl', 'achern', 'willstaett'],
   },
   kappelrodeck: {
-    intro:
-      'Kappelrodeck liegt im Achertal, umgeben von Weinbergen und Wald. Für Büros, Praxen und Betriebe im Tal sind wir mit festen Reinigungstagen verlässlich da.',
-    detail:
-      'Gerade in kleineren Orten zählt, dass immer dasselbe Team kommt. Wir planen Kappelrodeck fest ein und halten Zeiten und Umfang schriftlich fest.',
+    intro: 'Kappelrodeck liegt im Achertal, umgeben von Weinbergen und Wald. Für Büros, Praxen und Betriebe im Tal sind wir mit festen Reinigungstagen verlässlich da.',
+    detail: 'Gerade in kleineren Orten zählt, dass immer dasselbe Team kommt. Wir planen Kappelrodeck fest ein und halten Zeiten und Umfang schriftlich fest.',
     route: 'Kappelrodeck liegt im Achertal östlich von Achern, rund eine halbe Stunde von Offenburg.',
     economy: 'Kappelrodeck ist vom Weinbau und vom Tourismus im Achertal geprägt. Dazu kommen Handwerk, kleinere Gewerbebetriebe, Praxen und Büros.',
     focus: [
@@ -359,9 +357,9 @@ const texts: Record<string, LocationText> = {
     nearby: ['achern', 'sasbach', 'oberkirch'],
   },
   sasbach: {
-    intro: 'Sasbach liegt nördlich von Achern am Rand des Schwarzwalds. Für Unternehmen in Sasbach und den Ortsteilen übernehmen wir die regelmäßige Büro- und Unterhaltsreinigung.',
-    detail:
-      'Wir stimmen die Reinigungszeiten mit Ihrem Betrieb ab und halten sie ein. Fragen gehen direkt an Ihren Ansprechpartner, der Ihr Objekt kennt.',
+    intro:
+      'Sasbach liegt nördlich von Achern am Rand des Schwarzwalds. Für Unternehmen in Sasbach und den Ortsteilen übernehmen wir die regelmäßige Büro- und Unterhaltsreinigung.',
+    detail: 'Wir stimmen die Reinigungszeiten mit Ihrem Betrieb ab und halten sie ein. Fragen gehen direkt an Ihren Ansprechpartner, der Ihr Objekt kennt.',
     route: 'Sasbach liegt im Norden des Kreises nahe der A5, knapp eine halbe Stunde von Offenburg.',
     economy: 'Sasbach hat Gewerbe in der Ebene, Weinbau an den Hängen und Schulen, Praxen und Dienstleister. Viele Betriebe sind eng mit dem benachbarten Achern verbunden.',
     focus: [
@@ -377,8 +375,7 @@ const texts: Record<string, LocationText> = {
   },
   lautenbach: {
     intro: 'Lautenbach liegt im Renchtal zwischen Oberkirch und Oppenau. Für Betriebe im Tal sind wir über die B28 in gut 20 Minuten erreichbar.',
-    detail:
-      'Wir reinigen Büros, Praxen und Betriebsräume in Lautenbach im festen Rhythmus. Dasselbe Team kommt jedes Mal, damit nichts erklärt werden muss.',
+    detail: 'Wir reinigen Büros, Praxen und Betriebsräume in Lautenbach im festen Rhythmus. Dasselbe Team kommt jedes Mal, damit nichts erklärt werden muss.',
     route: 'Lautenbach liegt im Renchtal an der B28 oberhalb von Oberkirch, gut 20 Minuten von Offenburg.',
     economy: 'Lautenbach ist von Obstbau, Tourismus und Handwerk geprägt, dazu kommen Gewerbebetriebe im Tal.',
     focus: [
@@ -411,8 +408,7 @@ const texts: Record<string, LocationText> = {
   },
   'zell-am-harmersbach': {
     intro: 'Zell am Harmersbach liegt am Eingang des Harmersbachtals und ist bekannt für seine Keramiktradition. Für Betriebe in Zell sind wir in rund 25 Minuten vor Ort.',
-    detail:
-      'Wir reinigen Büros, Praxen und Gewerbeflächen in Zell im festen Rhythmus und halten den Umfang schriftlich fest. Ihr Ansprechpartner ist direkt erreichbar.',
+    detail: 'Wir reinigen Büros, Praxen und Gewerbeflächen in Zell im festen Rhythmus und halten den Umfang schriftlich fest. Ihr Ansprechpartner ist direkt erreichbar.',
     route: 'Zell am Harmersbach erreichen wir über die B33 und Biberach in rund 25 Minuten.',
     economy: 'Zell hat eine lange Tradition in der Keramikherstellung, dazu Industrie- und Handwerksbetriebe, Einzelhandel, Praxen und Büros.',
     focus: [
@@ -428,8 +424,7 @@ const texts: Record<string, LocationText> = {
   },
   biberach: {
     intro: 'Biberach liegt im Kinzigtal an der Mündung des Harmersbachtals. Unternehmen hier erreichen wir über die B33 in rund 20 Minuten.',
-    detail:
-      'Wir reinigen in Biberach zu festen Zeiten und mit demselben Team. So kennt jeder, der kommt, Ihr Objekt und Ihre Wünsche.',
+    detail: 'Wir reinigen in Biberach zu festen Zeiten und mit demselben Team. So kennt jeder, der kommt, Ihr Objekt und Ihre Wünsche.',
     route: 'Biberach im Kinzigtal liegt an der B33, rund 20 Minuten von Offenburg.',
     economy: 'Biberach ist eine kleinere Gemeinde mit Handwerk, Gewerbe und Tourismus, verbunden mit den Nachbarorten im Kinzig- und Harmersbachtal.',
     focus: [
@@ -444,9 +439,9 @@ const texts: Record<string, LocationText> = {
     nearby: ['zell-am-harmersbach', 'gengenbach', 'haslach'],
   },
   hausach: {
-    intro: 'Hausach im Kinzigtal ist ein Knotenpunkt der Schwarzwaldbahn und Ausgangspunkt ins Gutachtal. Für Betriebe hier planen wir feste Reinigungstage mit eingespieltem Team.',
-    detail:
-      'Weiter entfernte Orte wie Hausach betreuen wir genauso wie Offenburg: mit festem Ansprechpartner, schriftlichem Leistungsverzeichnis und Ersatzkraft bei Ausfall.',
+    intro:
+      'Hausach im Kinzigtal ist ein Knotenpunkt der Schwarzwaldbahn und Ausgangspunkt ins Gutachtal. Für Betriebe hier planen wir feste Reinigungstage mit eingespieltem Team.',
+    detail: 'Weiter entfernte Orte wie Hausach betreuen wir genauso wie Offenburg: mit festem Ansprechpartner, schriftlichem Leistungsverzeichnis und Ersatzkraft bei Ausfall.',
     route: 'Hausach liegt an der B33 im Kinzigtal, rund eine halbe Stunde von Offenburg.',
     economy: 'In Hausach gibt es Industrie und Gewerbe im Tal, dazu Handel, Praxen und Dienstleister für die umliegenden Gemeinden.',
     focus: [
@@ -462,8 +457,7 @@ const texts: Record<string, LocationText> = {
   },
   wolfach: {
     intro: 'Wolfach liegt im oberen Kinzigtal, wo die Wolf in die Kinzig mündet. Es ist einer der weiter entfernten Orte, die wir regelmäßig anfahren.',
-    detail:
-      'Für Wolfach planen wir feste Reinigungstage und ein festes Team. So lohnt sich die Anfahrt, und Sie bekommen dieselbe Qualität wie Betriebe direkt in Offenburg.',
+    detail: 'Für Wolfach planen wir feste Reinigungstage und ein festes Team. So lohnt sich die Anfahrt, und Sie bekommen dieselbe Qualität wie Betriebe direkt in Offenburg.',
     route: 'Wolfach erreichen wir über die B33 durch das Kinzigtal in rund 35 Minuten.',
     economy: 'Wolfach verbindet Industrie und Handwerk mit Tourismus im Schwarzwald. Dazu kommen Verwaltungen, Praxen und Dienstleister.',
     focus: [
@@ -479,8 +473,7 @@ const texts: Record<string, LocationText> = {
   },
   seelbach: {
     intro: 'Seelbach liegt im Schuttertal östlich von Lahr, unterhalb der Burgruine Hohengeroldseck. Für Betriebe im Tal sind wir mit festen Zeiten verlässlich da.',
-    detail:
-      'Wir reinigen Büros, Praxen und Betriebsräume in Seelbach im vereinbarten Rhythmus. Ihr Ansprechpartner kennt Ihr Objekt und ist direkt erreichbar.',
+    detail: 'Wir reinigen Büros, Praxen und Betriebsräume in Seelbach im vereinbarten Rhythmus. Ihr Ansprechpartner kennt Ihr Objekt und ist direkt erreichbar.',
     route: 'Seelbach liegt im Schuttertal und ist über Lahr in rund einer halben Stunde erreichbar.',
     economy: 'Seelbach hat Handwerk, Gewerbe und Tourismus im Schuttertal, dazu Praxen und kleinere Büros.',
     focus: [
@@ -496,8 +489,7 @@ const texts: Record<string, LocationText> = {
   },
   kippenheim: {
     intro: 'Kippenheim liegt südlich von Lahr an der B3, zwischen Rheinebene und Schwarzwald. Für Betriebe in Kippenheim und Schmieheim sind wir in rund 25 Minuten vor Ort.',
-    detail:
-      'Wir reinigen Büros, Praxen und Gewerbeflächen in Kippenheim zu Zeiten, die Ihren Betrieb nicht stören. Was gemacht wird, steht im Leistungsverzeichnis.',
+    detail: 'Wir reinigen Büros, Praxen und Gewerbeflächen in Kippenheim zu Zeiten, die Ihren Betrieb nicht stören. Was gemacht wird, steht im Leistungsverzeichnis.',
     route: 'Kippenheim liegt an der B3 südlich von Lahr, rund 25 Minuten von Offenburg.',
     economy: 'Kippenheim hat Gewerbe entlang der Verkehrsachsen, Handwerk und Landwirtschaft sowie Praxen und Büros.',
     focus: [
@@ -513,8 +505,7 @@ const texts: Record<string, LocationText> = {
   },
   mahlberg: {
     intro: 'Mahlberg mit seinem Schloss liegt zwischen Lahr und Ettenheim nahe der A5. Unternehmen in Mahlberg und Orschweier erreichen wir planbar.',
-    detail:
-      'Für Betriebe mit Büro und Lager bieten wir beides aus einer Hand. Büro und Sanitär im festen Rhythmus, Hallenflächen nach Bedarf.',
+    detail: 'Für Betriebe mit Büro und Lager bieten wir beides aus einer Hand. Büro und Sanitär im festen Rhythmus, Hallenflächen nach Bedarf.',
     route: 'Mahlberg liegt nahe der A5 zwischen Lahr und Ettenheim, rund 25 Minuten von Offenburg.',
     economy: 'Mahlberg hat durch die Lage an der A5 Gewerbe mit Handel und Logistik, dazu Handwerk und kleinere Büros.',
     focus: [
@@ -530,8 +521,7 @@ const texts: Record<string, LocationText> = {
   },
   ettenheim: {
     intro: 'Ettenheim im Süden der Ortenau hat eine barocke Altstadt und liegt an der A5. Für Unternehmen in Ettenheim sind wir in rund einer halben Stunde vor Ort.',
-    detail:
-      'Wir reinigen in Ettenheim mit festem Team und festen Zeiten. Ihr Ansprechpartner ist direkt erreichbar und kommt bei Bedarf selbst vorbei.',
+    detail: 'Wir reinigen in Ettenheim mit festem Team und festen Zeiten. Ihr Ansprechpartner ist direkt erreichbar und kommt bei Bedarf selbst vorbei.',
     route: 'Ettenheim liegt im Süden des Kreises an der A5, rund eine halbe Stunde von Offenburg.',
     economy: 'Ettenheim verbindet eine historische Altstadt mit Gewerbe an der Autobahn. Es gibt Handwerk, Handel, Praxen, Schulen und Verwaltungen.',
     focus: [
@@ -546,9 +536,9 @@ const texts: Record<string, LocationText> = {
     nearby: ['mahlberg', 'rust', 'kippenheim'],
   },
   rust: {
-    intro: 'Rust am Rhein ist durch seinen großen Freizeitpark bekannt. Rund um den Tourismus gibt es hier Betriebe mit Büro- und Verwaltungsflächen, die eine verlässliche Reinigung brauchen.',
-    detail:
-      'Wir reinigen Büros, Verwaltungen und Sozialräume in Rust zu Zeiten, die zu Ihrem Betrieb passen. Feste Teams, fester Ansprechpartner, Ersatz bei Ausfall.',
+    intro:
+      'Rust am Rhein ist durch seinen großen Freizeitpark bekannt. Rund um den Tourismus gibt es hier Betriebe mit Büro- und Verwaltungsflächen, die eine verlässliche Reinigung brauchen.',
+    detail: 'Wir reinigen Büros, Verwaltungen und Sozialräume in Rust zu Zeiten, die zu Ihrem Betrieb passen. Feste Teams, fester Ansprechpartner, Ersatz bei Ausfall.',
     route: 'Rust liegt im Südwesten des Kreises am Rhein, rund eine halbe Stunde von Offenburg über die A5.',
     economy: 'Rust ist stark vom Tourismus geprägt, mit Gastgewerbe, Freizeitbetrieben und Dienstleistern. Viele dieser Betriebe haben eigene Büros und Sozialräume.',
     focus: [
@@ -563,9 +553,9 @@ const texts: Record<string, LocationText> = {
     nearby: ['ettenheim', 'schwanau'],
   },
   schwanau: {
-    intro: 'Schwanau liegt in der Rheinebene westlich von Lahr, mit den Ortsteilen Ottenheim, Allmannsweier, Nonnenweier und Wittenweier. Betriebe hier betreuen wir mit festen Zeiten.',
-    detail:
-      'Wir reinigen Büros, Praxen und Betriebsräume in Schwanau im vereinbarten Rhythmus. Ihr Ansprechpartner ist direkt erreichbar, ohne Hotline.',
+    intro:
+      'Schwanau liegt in der Rheinebene westlich von Lahr, mit den Ortsteilen Ottenheim, Allmannsweier, Nonnenweier und Wittenweier. Betriebe hier betreuen wir mit festen Zeiten.',
+    detail: 'Wir reinigen Büros, Praxen und Betriebsräume in Schwanau im vereinbarten Rhythmus. Ihr Ansprechpartner ist direkt erreichbar, ohne Hotline.',
     route: 'Schwanau liegt westlich von Lahr in der Rheinebene, rund 25 Minuten von Offenburg.',
     economy: 'Schwanau ist ländlich geprägt, mit Handwerk, Landwirtschaft und kleineren Gewerbebetrieben in den Ortsteilen.',
     focus: [
@@ -581,8 +571,7 @@ const texts: Record<string, LocationText> = {
   },
   meissenheim: {
     intro: 'Meißenheim liegt in der Rheinebene zwischen Neuried und Schwanau. Für Betriebe in Meißenheim und Kürzell sind wir in gut 20 Minuten vor Ort.',
-    detail:
-      'Kleine Objekte sind bei uns genauso gut aufgehoben wie große. Wir reinigen in Meißenheim im festen Rhythmus und halten alles schriftlich fest.',
+    detail: 'Kleine Objekte sind bei uns genauso gut aufgehoben wie große. Wir reinigen in Meißenheim im festen Rhythmus und halten alles schriftlich fest.',
     route: 'Meißenheim liegt südwestlich von Offenburg in der Rheinebene, gut 20 Minuten entfernt.',
     economy: 'Meißenheim ist eine ländliche Gemeinde mit Handwerk, Landwirtschaft und kleineren Betrieben.',
     focus: [
@@ -598,8 +587,7 @@ const texts: Record<string, LocationText> = {
   },
   berghaupten: {
     intro: 'Berghaupten liegt am Eingang des Kinzigtals zwischen Ortenberg und Gengenbach. Für Betriebe hier sind wir in rund zehn Minuten vor Ort.',
-    detail:
-      'Die kurze Anfahrt macht es leicht, auch einmal kurzfristig eine Zusatzreinigung einzuschieben. Ihr Ansprechpartner kümmert sich darum.',
+    detail: 'Die kurze Anfahrt macht es leicht, auch einmal kurzfristig eine Zusatzreinigung einzuschieben. Ihr Ansprechpartner kümmert sich darum.',
     route: 'Berghaupten liegt südöstlich von Offenburg im unteren Kinzigtal, rund zehn Minuten entfernt.',
     economy: 'Berghaupten ist eine kleinere Gemeinde mit Weinbau, Handwerk und Gewerbe, eng verbunden mit Offenburg und Gengenbach.',
     focus: [

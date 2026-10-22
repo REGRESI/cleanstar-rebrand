@@ -8,7 +8,8 @@ import { noOrphan } from '@/lib/format'
  * Bei reduzierter Bewegung wird der Text statisch angezeigt.
  */
 export function RevealText({ as = 'h2', text, className, immediate, id }: { as?: ElementType; text: string; className?: string; immediate?: boolean; id?: string }) {
-  const words = noOrphan(text).split(' ')
+  // h1 ist auf dem Handy größer gesetzt, daher dort eine kürzere Grenze
+  const words = noOrphan(text, as === 'h1' ? 18 : 20).split(' ')
   return createElement(
     as,
     { className: cn(immediate && 'reveal-now', className), 'data-reveal-text': immediate ? undefined : '', id },

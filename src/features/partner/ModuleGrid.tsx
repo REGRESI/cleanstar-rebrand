@@ -44,7 +44,7 @@ export function ModuleGrid() {
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-xs font-semibold tracking-[0.12em] text-muted uppercase">Modul {String(i + 1).padStart(2, '0')}</span>
-                  <span className="mt-1 block text-xl font-semibold tracking-tight">{m.title}</span>
+                  <span className="mt-1 block text-lg font-semibold tracking-tight sm:text-xl">{m.title}</span>
                   <span className="mt-1 block text-sm text-muted">{m.summary}</span>
                 </span>
                 <span

@@ -109,8 +109,8 @@ export function PriceRange({ staff, hours, visits, dark }: { staff: number; hour
       </p>
       <p className={cn('mt-4 border-t pt-4 text-xs leading-relaxed', dark ? 'border-white/10 text-muted-dark' : 'border-line text-muted')}>
         Grundlage: {staff} {staff === 1 ? 'Reinigungskraft' : 'Reinigungskräfte'} × {formatNumber(hours)} Std. × {visits} Einsätze pro Woche × {formatNumber(pricing.weeksPerMonth)}{' '}
-        Wochen = rund {formatNumber(r.hours)} Stunden im Monat, zu {formatEuro2Range(hourlyRateNetMin(), hourlyRateNetMax())} netto pro Stunde. Unverbindliche
-        Orientierung. Das finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.
+        Wochen = rund {formatNumber(r.hours)} Stunden im Monat, zu {formatEuro2Range(hourlyRateNetMin(), hourlyRateNetMax())} netto pro Stunde. Unverbindliche Orientierung. Das
+        finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.
       </p>
     </div>
   )
@@ -318,7 +318,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                 <fieldset>
                   <legend className="mb-1 text-sm font-medium text-ink">Besondere Bereiche</legend>
                   <p className="mb-3 text-sm text-muted">Mehrfachauswahl. Diese Bereiche beeinflussen den Aufwand am stärksten.</p>
-                  <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-2.5 min-[440px]:grid-cols-2 sm:grid-cols-3">
                     {specialAreas.map((a) => (
                       <ChoiceCard key={a} value={a} label={a} className="p-3.5" {...register('areas')} />
                     ))}
@@ -443,7 +443,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
               <div className="space-y-8">
                 <fieldset>
                   <legend className="mb-3 text-sm font-medium text-ink">Gewünschtes Intervall</legend>
-                  <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-2.5 min-[440px]:grid-cols-2 sm:grid-cols-3">
                     {intervals.map((i) => (
                       <ChoiceCard key={i.id} type="radio" value={i.id} label={i.label} className="p-3.5" {...register('interval')} />
                     ))}

@@ -69,7 +69,10 @@ export default function Partner() {
           {page.hero.note}
         </p>
       </PageHero>
-      <Answer className="pt-12 sm:pt-16">Das CleanStar-Partnerprogramm richtet sich an Reinigungsfirmen und Gründer in ganz Deutschland, die mit erprobten Abläufen, Vorlagen und Werkzeugen aus unserem Betrieb in Offenburg arbeiten möchten. Konditionen klären wir im persönlichen Gespräch.</Answer>
+      <Answer className="pt-12 sm:pt-16">
+        Das CleanStar-Partnerprogramm richtet sich an Reinigungsfirmen und Gründer in ganz Deutschland, die mit erprobten Abläufen, Vorlagen und Werkzeugen aus unserem Betrieb in
+        Offenburg arbeiten möchten. Konditionen klären wir im persönlichen Gespräch.
+      </Answer>
 
       <Chunk>
         <ProblemSolution id="partner-problems" eyebrow={page.problems.eyebrow} headline={page.problems.headline} lead={page.problems.lead} items={page.problems.items} />

@@ -9,7 +9,7 @@ export default function FounderCalcPage() {
       seoTitle="Reinigungsfirma kalkulieren: Rechner"
       description="Kalkulationsrechner für Gründer: Stundensatz und Deckungsbeitrag einer Reinigungsfirma aus eigenen Annahmen berechnen. Mindestlohn 2026 als Startwert."
       eyebrow="Für Gründer"
-      title="Was muss eine Reinigungsstunde kosten?"
+      title="Was eine Reinigungsstunde kosten muss."
       lead="Geben Sie Ihre eigenen Annahmen ein: Lohn, Nebenkosten, Ausfallzeiten, Material, Fixkosten und Aufschlag. Der Rechner zeigt den nötigen Stundensatz und den Deckungsbeitrag. Startwerte gibt es nur dort, wo es eine belegbare Quelle gibt."
       answer="Den Stundensatz einer Reinigungsfirma berechnen Sie aus den Lohnkosten je produktiver Stunde, dem Material, den auf die verkauften Stunden umgelegten Fixkosten und einem Aufschlag für Gewinn und Wagnis. Allein der Branchenmindestlohn von 15,00 € ergibt mit Arbeitgeberanteilen und Urlaub schon rund 20 € Lohnkosten je gearbeiteter Stunde."
       ogType="partner"

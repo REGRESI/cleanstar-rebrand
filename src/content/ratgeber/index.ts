@@ -27,7 +27,11 @@ export const guideCategories: { id: GuideCategory; label: string; text: string }
 export const getGuide = (slug: string) => guides.find((g) => g.slug === slug)
 
 /** Wörter im Artikel (Antwort, Text und FAQ) */
-export const wordCount = (g: Guide) => [g.answer, g.body, ...g.faqs.flatMap((f) => [f.q, f.a])].join(' ').split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length
+export const wordCount = (g: Guide) =>
+  [g.answer, g.body, ...g.faqs.flatMap((f) => [f.q, f.a])]
+    .join(' ')
+    .split(/\s+/)
+    .filter((w) => /[\p{L}\d]/u.test(w)).length
 
 /** Lesedauer in Minuten (rund 200 Wörter pro Minute) */
 export const readingMinutes = (g: Guide) => Math.max(1, Math.round(wordCount(g) / 200))

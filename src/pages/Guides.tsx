@@ -71,16 +71,13 @@ export default function Guides() {
       <section aria-labelledby="tools-title" className="bg-glacier py-20 sm:py-24">
         <div className="container-site">
           <h2 id="tools-title" className="heading-2">
-            Rechner und Werkzeuge
+            Rechner und{'\u00A0'}Werkzeuge
           </h2>
           <p className="lead mt-4 max-w-2xl">Kostenlos, ohne Anmeldung. Ihre Eingaben bleiben in Ihrem Browser.</p>
           <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {tools.map((t) => (
               <li key={t.to}>
-                <Link
-                  to={t.to}
-                  className="group flex h-full flex-col rounded-card bg-white p-6 ring-1 ring-line transition hover:shadow-soft hover:ring-blue/30 active:ring-blue"
-                >
+                <Link to={t.to} className="group flex h-full flex-col rounded-card bg-white p-6 ring-1 ring-line transition hover:shadow-soft hover:ring-blue/30 active:ring-blue">
                   <span className="grid size-11 place-items-center rounded-xl bg-glacier text-blue">
                     <t.icon aria-hidden className="size-5" />
                   </span>

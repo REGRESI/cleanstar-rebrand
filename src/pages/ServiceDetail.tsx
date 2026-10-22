@@ -220,7 +220,7 @@ export default function ServiceDetail() {
       <section className={main ? 'bg-glacier py-24 sm:py-32' : 'bg-glacier py-24 sm:py-32'} aria-labelledby="sfaq-title">
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <SectionHeading eyebrow="Fragen" title={`Häufige Fragen zur ${s.name}`} id="sfaq-title" />
+            <SectionHeading eyebrow="Fragen" title={`${s.name}: häufige Fragen`} id="sfaq-title" />
           </div>
           <div className="lg:col-span-8" data-reveal>
             <Accordion items={s.faqs.map((f) => ({ title: f.q, content: f.a }))} />

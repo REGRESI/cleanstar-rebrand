@@ -34,9 +34,7 @@ export function localBusinessSchema() {
     ...(company.vatId ? { vatID: company.vatId } : {}),
     ...(company.foundedYear ? { foundingDate: String(company.foundedYear) } : {}),
     foundingLocation: { '@type': 'Place', name: company.seat },
-    founder: company.founders
-      .filter((f) => f.name)
-      .map((f) => ({ '@type': 'Person', name: f.name, jobTitle: f.role.replace('Gründer · ', 'Gründer, ') })),
+    founder: company.founders.filter((f) => f.name).map((f) => ({ '@type': 'Person', name: f.name, jobTitle: f.role.replace('Gründer · ', 'Gründer, ') })),
     address: {
       '@type': 'PostalAddress',
       streetAddress: company.address.street,
@@ -65,7 +63,12 @@ export function localBusinessSchema() {
       contactType: 'customer service',
       areaServed: 'DE',
       availableLanguage: 'German',
-      hoursAvailable: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' },
+      hoursAvailable: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        opens: '00:00',
+        closes: '23:59',
+      },
     },
     knowsAbout: ['Büroreinigung', 'Unterhaltsreinigung', 'Gebäudereinigung', 'Fensterreinigung', 'Treppenhausreinigung', 'Hallenreinigung', 'Hygienereinigung'],
     hasOfferCatalog: {

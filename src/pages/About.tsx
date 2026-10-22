@@ -191,7 +191,7 @@ export default function About() {
           <div className="lg:col-span-5">
             <SectionHeading
               eyebrow="Team"
-              title="Feste Teams statt wechselnder Gesichter."
+              title="Feste Teams statt ständig neuer Gesichter."
               id="team-title"
               text="Unsere Mitarbeitenden arbeiten in festen Objekten und werden dort eingearbeitet. So entsteht Routine, und Sie wissen, wer bei Ihnen arbeitet."
             />

@@ -97,9 +97,7 @@ export default function OfficeCity() {
               </p>
               <p className="mt-3 text-lg font-semibold">{c.example.label}</p>
               <p className="mt-1 text-sm text-white/70">Annahme: {c.example.note}.</p>
-              <p className="mt-6 text-3xl font-semibold tracking-tight tabular-nums">
-                {formatEuroRange(ex.grossMin, ex.grossMax)}
-              </p>
+              <p className="mt-6 text-2xl font-semibold tracking-tight whitespace-nowrap tabular-nums min-[360px]:text-3xl">{formatEuroRange(ex.grossMin, ex.grossMax)}</p>
               <p className="mt-1 text-sm text-white/70">
                 pro Monat brutto, bei rund {formatNumber(Math.round(ex.hours))} Stunden ({pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Stunde). Netto{' '}
                 {formatEuroRange(ex.netMin, ex.netMax)}.

@@ -49,7 +49,10 @@ export default function Services() {
           </>
         }
       />
-      <Answer className="pt-12 sm:pt-16">CleanStar bietet Unternehmen im Ortenaukreis Büroreinigung, Unterhaltsreinigung, Fensterreinigung, Treppenhausreinigung, Hallenreinigung und Hygienereinigung aus einer Hand, mit einem festen Ansprechpartner für alle Leistungen.</Answer>
+      <Answer className="pt-12 sm:pt-16">
+        CleanStar bietet Unternehmen im Ortenaukreis Büroreinigung, Unterhaltsreinigung, Fensterreinigung, Treppenhausreinigung, Hallenreinigung und Hygienereinigung aus einer
+        Hand, mit einem festen Ansprechpartner für alle Leistungen.
+      </Answer>
       <ServicesGrid heading={false} />
       <section className="py-24 sm:py-32" aria-labelledby="incl-title">
         <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">

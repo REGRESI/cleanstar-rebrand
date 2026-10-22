@@ -4,8 +4,7 @@ const guide: Guide = {
   slug: 'leistungsverzeichnis-bueroreinigung',
   title: 'Leistungsverzeichnis Büroreinigung: Was gehört rein?',
   seoTitle: 'Leistungsverzeichnis Büroreinigung',
-  description:
-    'Was gehört ins Leistungsverzeichnis für die Büroreinigung? Raumgruppen, Tätigkeiten, Intervalle, Zeiten und Kontrolle, mit kostenlosem Muster zum Download.',
+  description: 'Was gehört ins Leistungsverzeichnis für die Büroreinigung? Raumgruppen, Tätigkeiten, Intervalle, Zeiten und Kontrolle, mit kostenlosem Muster zum Download.',
   category: 'unternehmen',
   author: 1,
   published: '2026-10-21',
@@ -13,7 +12,7 @@ const guide: Guide = {
   answer:
     'Ein Leistungsverzeichnis für die Büroreinigung legt fest, welche Räume gereinigt werden, welche Tätigkeiten in jedem Raum anfallen und wie oft. Dazu kommen Reinigungszeiten, Zugang, Verbrauchsmaterial und die Regeln für Qualitätskontrolle und Reklamation. Es ist die wichtigste Grundlage für einen fairen Preis und für spätere Diskussionen.',
   body: `
-## Wozu ein Leistungsverzeichnis dient
+## Das Leistungsverzeichnis: wozu es dient
 
 Ohne Leistungsverzeichnis steht im Vertrag oft nur "Büroreinigung dreimal wöchentlich". Was das genau heißt, versteht jeder anders. Werden die Tastaturen abgewischt? Die Kühlschränke? Die Glastüren? Wer das nicht festlegt, diskutiert später darüber.
 

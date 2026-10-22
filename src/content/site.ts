@@ -18,8 +18,7 @@ export const home = {
   answer:
     'CleanStar ist eine Reinigungsfirma aus Offenburg, die sich auf Büroreinigung für Unternehmen im Ortenaukreis spezialisiert hat. Wir arbeiten mit festen Teams, einem festen Ansprechpartner und einer Ersatzkraft bei Ausfall, zu 35 bis 45 € brutto pro Mitarbeiterstunde.',
   seoTitle: 'Büroreinigung Offenburg & Ortenaukreis',
-  seoDescription:
-    'Reinigungsfirma aus Offenburg für Büroreinigung im Ortenaukreis: festes Team, fester Ansprechpartner, Ersatz bei Ausfall und Angebot in 48 Stunden.',
+  seoDescription: 'Reinigungsfirma aus Offenburg für Büroreinigung im Ortenaukreis: festes Team, fester Ansprechpartner, Ersatz bei Ausfall und Angebot in 48 Stunden.',
   hero: {
     eyebrow: 'Büroreinigung in Offenburg und der Ortenau',
     headline: 'Büroreinigung, auf die Verlass ist.',
@@ -39,7 +38,7 @@ export const home = {
   },
   problems: {
     eyebrow: 'Was Sie nicht mehr erleben werden',
-    headline: 'Sie haben Wichtigeres zu tun, als Ihrer Reinigungsfirma hinterherzutelefonieren.',
+    headline: 'Ihrer Reinigungsfirma hinterhertelefonieren? Das ist nicht Ihr Job.',
     lead: 'Vier Ärgernisse, die fast jeder Geschäftsführer kennt. Bei uns sind sie von Anfang an geregelt, schriftlich und überprüfbar.',
     items: [
       {
@@ -158,7 +157,7 @@ export const guaranteePoints = [
     text: 'Fällt jemand aus, übernimmt eine eingewiesene Ersatzkraft. Ihre Reinigung findet statt, ohne dass Sie sich kümmern müssen.',
   },
   {
-    title: 'Schlüssel- und Zugangsmanagement',
+    title: 'Schlüssel und Zugänge',
     text: 'Schlüsselübergaben werden protokolliert. Zugang hat nur das feste Team. Alarmanlagen und Schließzeiten sind dokumentiert.',
   },
   {
@@ -166,7 +165,7 @@ export const guaranteePoints = [
     text: 'Unterlagen bleiben, wo sie liegen. Was wir in Ihren Räumen sehen, bleibt dort.',
   },
   {
-    title: 'Betriebshaftpflichtversichert',
+    title: 'Mit Betriebshaftpflicht',
     text: 'Geht trotz aller Sorgfalt einmal etwas zu Bruch, sind Sie abgesichert. Den Nachweis senden wir Ihnen auf Anfrage.',
   },
 ] as { title: string; text: string; usesComplaintPeriod?: boolean; todo?: string }[]
@@ -175,7 +174,7 @@ export const guaranteePoints = [
 export const complaintSteps = [
   { title: 'Sie melden es', text: 'Ein Anruf oder eine E-Mail an Ihren festen Ansprechpartner genügt. Ein Foto hilft, ist aber kein Muss.' },
   {
-    title: company.complaintPeriod ? `Wir kommen innerhalb von ${company.complaintPeriod}` : 'Wir kommen kurzfristig',
+    title: company.complaintPeriod ? `Wir kommen innerhalb von ${company.complaintPeriod}` : 'Wir sind kurzfristig da',
     text: 'Sie erfahren sofort, wann nachgereinigt wird. Nachhaken müssen Sie nicht.',
   },
   {

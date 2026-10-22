@@ -4,8 +4,7 @@ const guide: Guide = {
   slug: 'unterhaltsreinigung-grundreinigung-sonderreinigung',
   title: 'Unterhaltsreinigung, Grundreinigung, Sonderreinigung: Unterschiede einfach erklärt',
   seoTitle: 'Unterhalts-, Grund- & Sonderreinigung',
-  description:
-    'Unterhaltsreinigung, Grundreinigung und Sonderreinigung im Vergleich: Was ist was, wann brauchen Sie welche Reinigung, und wie kombinieren Sie sie sinnvoll?',
+  description: 'Unterhaltsreinigung, Grundreinigung und Sonderreinigung im Vergleich: Was ist was, wann brauchen Sie welche Reinigung, und wie kombinieren Sie sie sinnvoll?',
   category: 'unternehmen',
   author: 2,
   published: '2026-10-21',
@@ -87,7 +86,7 @@ Eine Grundreinigung ist kein starrer Termin, sondern richtet sich nach dem Zusta
 - Fugen in Sanitärräumen sind dunkel geworden.
 - Kalk an Armaturen und Fliesen lässt sich mit normaler Reinigung nicht mehr entfernen.
 
-## Eine Grundreinigung organisieren
+## So organisieren Sie die Grundreinigung
 
 Eine Grundreinigung braucht Vorbereitung. Möbel müssen teilweise verrückt werden, Böden brauchen Zeit zum Trocknen, und während der Arbeiten sollten die Räume nicht genutzt werden. Bewährt hat sich:
 
@@ -96,7 +95,7 @@ Eine Grundreinigung braucht Vorbereitung. Möbel müssen teilweise verrückt wer
 3. Klären, welche Räume zu welcher Zeit nicht betreten werden dürfen.
 4. Nach der Grundreinigung die Unterhaltsreinigung prüfen, damit das Ergebnis lange hält.
 
-## Bauendreinigung als besondere Sonderreinigung
+## Bauendreinigung: ein Sonderfall
 
 Nach Umbau oder Renovierung bleibt feiner Baustaub, der sich auf allen Flächen absetzt, in Lüftungsgittern sammelt und bei jeder Bewegung neu verteilt. Eine Bauendreinigung entfernt diesen Staub gründlich, einschließlich Fensterrahmen, Heizkörpern, Steckdosen und Schränken innen. Planen Sie sie fest ein, bevor Mitarbeitende die Räume wieder beziehen, und stimmen Sie den Termin mit den Handwerkern ab, damit nach der Reinigung nicht noch einmal gearbeitet wird.
 
@@ -119,7 +118,7 @@ Nach Umbau oder Renovierung bleibt feiner Baustaub, der sich auf allen Flächen 
 
 Wenn Sie unsicher sind, welche Reinigung Ihr Objekt gerade braucht, fragen Sie bei der Besichtigung danach. Ein guter Anbieter erklärt Ihnen, was sinnvoll ist und was nicht, statt Ihnen möglichst viele Leistungen zu verkaufen.
 
-## Und die Fensterreinigung?
+## Was ist mit den Fenstern?
 
 Die Glas- und Fensterreinigung wird meist separat vereinbart, weil sie andere Ausrüstung braucht und in eigenen Intervallen stattfindet, oft vierteljährlich oder halbjährlich. In der Gebäudereinigung gilt für Glas- und Fassadenreinigung sogar eine eigene, höhere Lohngruppe.
 

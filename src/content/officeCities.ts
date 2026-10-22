@@ -25,8 +25,7 @@ export const officeCities: OfficeCity[] = [
     slug: 'offenburg',
     name: 'Offenburg',
     seoTitle: 'Büroreinigung Offenburg: Festes Team',
-    seoDescription:
-      'Büroreinigung in Offenburg vom Betrieb mit Sitz in der Stadt: festes Team, fester Ansprechpartner, Ersatz bei Ausfall. 35 bis 45 € brutto pro Stunde.',
+    seoDescription: 'Büroreinigung in Offenburg vom Betrieb mit Sitz in der Stadt: festes Team, fester Ansprechpartner, Ersatz bei Ausfall. 35 bis 45 € brutto pro Stunde.',
     answer:
       'CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg, die sich auf Büroreinigung für Unternehmen spezialisiert hat. Wir reinigen Büros, Praxen und Verwaltungen in der ganzen Stadt mit festem Team, festem Ansprechpartner und Ersatzkraft bei Ausfall, zu 35 bis 45 € brutto pro Mitarbeiterstunde.',
     intro:
@@ -126,7 +125,7 @@ export const officeCities: OfficeCity[] = [
         ],
       },
       {
-        title: 'Schichtbetrieb und Reinigungszeiten',
+        title: 'Reinigungszeiten im Schichtbetrieb',
         paragraphs: [
           'Betriebe mit Schichtarbeit können nicht einfach abends abschließen. Wir richten die Zeiten nach Ihrem Ablauf, zum Beispiel zwischen zwei Schichten, früh am Morgen oder am Wochenende. Die Zeiten stehen schriftlich im Angebot.',
         ],
@@ -162,8 +161,7 @@ export const officeCities: OfficeCity[] = [
     slug: 'kehl',
     name: 'Kehl',
     seoTitle: 'Büroreinigung Kehl: Feste Zeiten',
-    seoDescription:
-      'Büroreinigung in Kehl am Rhein: Empfang, Besprechungsräume und Büros jeden Morgen bereit. Festes Team, fester Ansprechpartner, Ersatz bei Ausfall.',
+    seoDescription: 'Büroreinigung in Kehl am Rhein: Empfang, Besprechungsräume und Büros jeden Morgen bereit. Festes Team, fester Ansprechpartner, Ersatz bei Ausfall.',
     answer:
       'CleanStar übernimmt die Büroreinigung in Kehl für Unternehmen in der Innenstadt, am Hafen und in den Ortsteilen. Wir kommen aus Offenburg, gut 20 Minuten entfernt, reinigen in festen Zeitfenstern mit festem Team und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
     intro:
@@ -230,8 +228,7 @@ export const officeCities: OfficeCity[] = [
     slug: 'achern',
     name: 'Achern',
     seoTitle: 'Büroreinigung Achern: mit Vertretung',
-    seoDescription:
-      'Büroreinigung in Achern für Mittelstand, Praxen und Verwaltungen. Festes Team, eingewiesene Ersatzkraft bei Ausfall, schriftliches Angebot in 48 Stunden.',
+    seoDescription: 'Büroreinigung in Achern für Mittelstand, Praxen und Verwaltungen. Festes Team, eingewiesene Ersatzkraft bei Ausfall, schriftliches Angebot in 48 Stunden.',
     answer:
       'CleanStar übernimmt die regelmäßige Büroreinigung in Achern für mittelständische Betriebe, Praxen und Verwaltungen. Wir sind über die A5 in rund 25 Minuten vor Ort, arbeiten mit festem Team und einer eingewiesenen Ersatzkraft und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
     intro:
@@ -292,8 +289,7 @@ export const officeCities: OfficeCity[] = [
     slug: 'oberkirch',
     name: 'Oberkirch',
     seoTitle: 'Büroreinigung Oberkirch: Feste Teams',
-    seoDescription:
-      'Büroreinigung in Oberkirch und im Renchtal: festes Team statt wechselnder Gesichter, schriftliches Leistungsverzeichnis und eigene Qualitätskontrolle.',
+    seoDescription: 'Büroreinigung in Oberkirch und im Renchtal: festes Team statt wechselnder Gesichter, schriftliches Leistungsverzeichnis und eigene Qualitätskontrolle.',
     answer:
       'CleanStar reinigt Büros, Praxen und Gewerbeflächen in Oberkirch und im Renchtal. Wir kommen aus Offenburg, rund 20 Minuten entfernt, schicken immer dasselbe Team, kontrollieren die Qualität selbst und berechnen 35 bis 45 € brutto pro Mitarbeiterstunde.',
     intro:

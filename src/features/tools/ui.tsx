@@ -65,7 +65,19 @@ export function NumberInput({
   )
 }
 
-export function TextInput({ label, value, onChange, placeholder, className }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; className?: string }) {
+export function TextInput({
+  label,
+  value,
+  onChange,
+  placeholder,
+  className,
+}: {
+  label: string
+  value: string
+  onChange: (v: string) => void
+  placeholder?: string
+  className?: string
+}) {
   const id = useId()
   return (
     <div className={className}>
@@ -139,7 +151,7 @@ export function Segmented<T extends string>({
       <legend className="mb-1.5 block text-sm font-medium text-ink">{label}</legend>
       <div className="flex flex-wrap gap-1.5 rounded-2xl bg-glacier p-1.5">
         {options.map((o) => (
-          <label key={o.id} className="min-w-0 flex-1">
+          <label key={o.id} className="flex-auto">
             <input type="radio" name={name} value={o.id} checked={value === o.id} onChange={() => onChange(o.id)} className="peer sr-only" />
             <span className="flex min-h-10 cursor-pointer items-center justify-center rounded-xl px-3 text-center text-sm leading-tight font-medium text-ink/75 transition peer-checked:bg-white peer-checked:text-blue-hover peer-checked:shadow-soft peer-focus-visible:ring-2 peer-focus-visible:ring-blue">
               {o.label}

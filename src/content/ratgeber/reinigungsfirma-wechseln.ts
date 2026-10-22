@@ -4,8 +4,7 @@ const guide: Guide = {
   slug: 'reinigungsfirma-wechseln',
   title: 'Reinigungsfirma wechseln: So geht es ohne Lücke in der Reinigung',
   seoTitle: 'Reinigungsfirma wechseln: Anleitung',
-  description:
-    'Reinigungsfirma wechseln ohne Lücke: Vertrag prüfen, Kündigungsfrist berechnen, neue Angebote einholen und die Übergabe planen. Schritt für Schritt mit Zeitplan',
+  description: 'Reinigungsfirma wechseln ohne Lücke: Vertrag prüfen, Kündigungsfrist berechnen, neue Angebote einholen und die Übergabe planen. Schritt für Schritt mit Zeitplan',
   category: 'unternehmen',
   author: 1,
   published: '2026-10-21',
@@ -13,7 +12,7 @@ const guide: Guide = {
   answer:
     'Eine Reinigungsfirma wechseln Sie ohne Lücke, wenn Sie rückwärts planen: Erst die Kündigungsfrist im bestehenden Vertrag prüfen, dann neue Angebote mit Besichtigung einholen, den neuen Anbieter fest zusagen lassen und erst danach kündigen. Der letzte Reinigungstag beim alten und der erste beim neuen Anbieter sollten direkt aufeinander folgen.',
   body: `
-## Warum Unternehmen ihre Reinigungsfirma wechseln
+## Warum Firmen den Anbieter wechseln
 
 Die Gründe sind fast immer dieselben: Die Qualität lässt nach einigen Monaten nach, die Reinigungskraft wechselt ständig, bei Ausfall kommt niemand, und bei Problemen erreicht man niemanden, der etwas entscheiden kann. Viele Geschäftsführer zögern trotzdem, weil sie eine Lücke fürchten, in der gar nicht gereinigt wird. Mit der richtigen Reihenfolge lässt sich das vermeiden.
 
@@ -28,7 +27,7 @@ Bevor Sie irgendetwas unternehmen, holen Sie den aktuellen Vertrag hervor und kl
 
 > Wenn Sie unsicher sind, wie eine Klausel zu verstehen ist, lassen Sie sie vor der Kündigung rechtlich prüfen. Dieser Artikel ersetzt keine Rechtsberatung.
 
-## Schritt 2: Den spätesten Kündigungstermin ausrechnen
+## Schritt 2: Bis wann Sie kündigen müssen
 
 Aus Frist und Kündigungstermin ergibt sich, bis wann die Kündigung beim Anbieter eingegangen sein muss und wann der letzte Reinigungstag ist. Ein Beispiel: Bei einer Frist von einem Monat zum Monatsende muss die Kündigung spätestens am letzten Tag eines Monats zugehen, damit der Vertrag am Ende des Folgemonats endet.
 
@@ -98,7 +97,7 @@ Je mehr der neue Anbieter weiß, desto besser kann er planen. Hilfreich sind:
 
 Je offener Sie im Vorgespräch sind, desto realistischer wird das Angebot.
 
-## Das Team und die Mitarbeitenden informieren
+## Ihr Team informieren
 
 Ein Wechsel betrifft auch Ihre Mitarbeitenden. Informieren Sie kurz, ab wann ein neues Team kommt, und an wen man sich wenden kann, wenn etwas auffällt. Gerade in den ersten Wochen sind Rückmeldungen aus dem Team wertvoll, weil sich Abläufe noch einspielen.
 

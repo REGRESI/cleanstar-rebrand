@@ -59,7 +59,7 @@ export function ToolPage(p: ToolPageProps) {
                 <ol className="mt-3 space-y-2 text-sm text-muted">
                   {p.sources.map((s, i) => (
                     <li key={s.url} className="flex gap-3">
-                      <span className="w-5 shrink-0 text-right tabular-nums">{i + 1}.</span>
+                      <span className="w-7 shrink-0 text-right tabular-nums">{i + 1}.</span>
                       <span className="min-w-0 [overflow-wrap:anywhere]">
                         <a href={s.url} target="_blank" rel="noopener noreferrer" className="font-medium text-ink underline underline-offset-4 hover:text-blue-hover">
                           {s.title}

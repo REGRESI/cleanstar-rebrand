@@ -31,8 +31,7 @@ export const partnerFlags = {
 /* ------------------------------------------------------------------ */
 export const partnerPage = {
   seoTitle: 'Partnerprogramm Reinigungsfirma',
-  seoDescription:
-    'Werden Sie CleanStar-Partner: für Reinigungsfirmen und Gründer in ganz Deutschland. Erprobte Abläufe für Büroreinigung, Qualitätssystem und Einarbeitung.',
+  seoDescription: 'Werden Sie CleanStar-Partner: für Reinigungsfirmen und Gründer in ganz Deutschland. Erprobte Abläufe für Büroreinigung, Qualitätssystem und Einarbeitung.',
   hero: {
     eyebrow: 'Partnerprogramm',
     headline: 'Werden Sie CleanStar-Partner in Ihrer Region.',
@@ -58,7 +57,7 @@ export const partnerPage = {
       },
       {
         problem: 'Qualitätskontrolle passiert, wenn sich jemand beschwert.',
-        solution: 'Checklisten, regelmäßige Kontrollen und ein fester Reklamationsprozess. Qualität wird messbar.',
+        solution: 'Checklisten, regelmäßige Kontrollen und ein fester Ablauf bei Reklamationen. Qualität wird messbar.',
       },
       {
         problem: 'Alles hängt am Inhaber.',
@@ -157,7 +156,7 @@ export const partnerModules: PartnerModule[] = [
     enabled: true,
     icon: 'quality',
     title: 'Qualität',
-    summary: 'Unsere Checklisten, Qualitätskontrollen und Qualitätsgarantie gelten 1:1 auch für Partner.',
+    summary: 'Unsere Checklisten, Kontrollen und die Qualitätsgarantie gelten 1:1 auch für Partner.',
     items: ['Checklisten je Leistung und Objekt', 'Regelmäßige Qualitätskontrollen', 'Fester Ablauf bei Reklamationen', 'Die CleanStar-Qualitätsgarantie für Ihre Kunden'],
   },
   {

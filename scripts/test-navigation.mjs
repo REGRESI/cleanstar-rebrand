@@ -88,6 +88,7 @@ async function runDevice(browser, label, opts) {
     page.on('pageerror', (e) => failures.push(`${label}: Skriptfehler ${e.message}`))
     while (queue.length) {
       const src = queue.shift()
+      if (process.env.PROGRESS) console.error(`${label}: ${pages.length - queue.length}/${pages.length} ${src}`)
       await page.goto(B + src)
       await ready(page)
       const links = await collectLinks(page)

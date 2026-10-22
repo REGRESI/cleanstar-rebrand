@@ -74,7 +74,7 @@ export default function Process() {
           </>
         }
       />
-      <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Montagmorgen." eyebrow="Schritt für Schritt" />
+      <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" />
       <section className="bg-glacier py-24 sm:py-32" aria-labelledby="details-title">
         <div className="container-site">
           <SectionHeading eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />

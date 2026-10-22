@@ -135,8 +135,7 @@ export const services: Service[] = [
     name: 'Unterhaltsreinigung',
     short: 'Praxis, Kanzlei oder Verwaltung bleiben dauerhaft gepflegt, ohne dass Sie daran denken müssen.',
     seoTitle: 'Unterhaltsreinigung Offenburg',
-    seoDescription:
-      'Unterhaltsreinigung für Praxen, Kanzleien, Verwaltungen und Gewerbeflächen in Offenburg und Umgebung. Fester Plan, festes Team, kostenlose Besichtigung.',
+    seoDescription: 'Unterhaltsreinigung für Praxen, Kanzleien, Verwaltungen und Gewerbeflächen in Offenburg und Umgebung. Fester Plan, festes Team, kostenlose Besichtigung.',
     headline: 'Unterhaltsreinigung im festen Rhythmus.',
     intro:
       'Die laufende Reinigung, die Ihre Räume dauerhaft in gutem Zustand hält. Wir legen gemeinsam fest, was wie oft gereinigt wird, und halten uns daran. Das Ergebnis prüfen wir regelmäßig selbst.',
@@ -198,7 +197,7 @@ export const services: Service[] = [
     short: 'Klare Sicht und ein Eingang, der Besucher überzeugt. Innen und außen, inklusive Rahmen.',
     seoTitle: 'Fensterreinigung Offenburg & Ortenau',
     seoDescription: 'Fensterreinigung für Büros und Gewerbe in Offenburg, Lahr, Kehl und im ganzen Ortenaukreis. Glasflächen, Rahmen und Falze. Kostenlose Besichtigung.',
-    headline: 'Klare Sicht. Streifenfrei.',
+    headline: 'Streifenfrei. Klare Sicht.',
     intro:
       'Saubere Fenster sind das Erste, was Besucher sehen. Wir reinigen Glasflächen, Rahmen und Falze gründlich und planbar, einzeln oder als festen Bestandteil Ihrer Büroreinigung.',
     image: 'svc-fenster',
@@ -296,7 +295,7 @@ export const services: Service[] = [
     short: 'Sichere, saubere Wege in Lager und Produktion. Mit Maschinen, die zu Ihrer Fläche passen.',
     seoTitle: 'Hallenreinigung Ortenau & Offenburg',
     seoDescription: 'Hallenreinigung für Lager, Produktion und Gewerbe in Offenburg, Lahr, Kehl und Umgebung. Planbar außerhalb Ihrer Betriebszeiten. Kostenlose Besichtigung.',
-    headline: 'Saubere Hallen. Ohne Ihren Betrieb aufzuhalten.',
+    headline: 'Saubere Hallen, ohne Ihren Betrieb zu stören.',
     intro:
       'In Hallen zählt Planung: Laufwege, Maschinen, Schichtzeiten. Wir sehen uns Ihre Halle vorher an, wählen die passende Technik und reinigen dann, wenn es Ihren Betrieb nicht stört.',
     image: 'svc-halle',

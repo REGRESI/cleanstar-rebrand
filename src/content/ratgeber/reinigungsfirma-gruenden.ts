@@ -2,10 +2,9 @@ import type { Guide } from './types'
 
 const guide: Guide = {
   slug: 'reinigungsfirma-gruenden',
-  title: 'Reinigungsfirma gründen: Schritt-für-Schritt-Anleitung',
+  title: 'Reinigungsfirma gründen: die Anleitung Schritt für Schritt',
   seoTitle: 'Reinigungsfirma gründen: Anleitung',
-  description:
-    'Reinigungsfirma gründen in Deutschland: Voraussetzungen, Handwerkskammer, Gewerbe, Finanzamt, Berufsgenossenschaft, Pflichten der Branche und erste Kunden.',
+  description: 'Reinigungsfirma gründen in Deutschland: Voraussetzungen, Handwerkskammer, Gewerbe, Finanzamt, Berufsgenossenschaft, Pflichten der Branche und erste Kunden.',
   category: 'gruender',
   author: 0,
   published: '2026-10-21',
@@ -55,7 +54,7 @@ Nach der Gewerbeanmeldung reichen Sie den Fragebogen zur steuerlichen Erfassung 
 
 Im Fragebogen entscheiden Sie auch über die **Kleinunternehmerregelung**. Seit 2025 gilt: Wer im Vorjahr höchstens 25.000 € und im laufenden Jahr voraussichtlich höchstens 100.000 € Umsatz macht, kann ohne Umsatzsteuer abrechnen, verzichtet dafür aber auf den Vorsteuerabzug. Gewerbliche Kunden können die Umsatzsteuer meist ohnehin abziehen. Ob die Regelung sinnvoll ist, klären Sie am besten mit Ihrer Steuerberatung.
 
-## Schritt 6: Berufsgenossenschaft
+## Schritt 6: Unfallversicherung bei der BG
 
 Jedes Unternehmen muss sich binnen einer Woche bei der zuständigen Berufsgenossenschaft melden (§ 192 SGB VII). Die Pflicht gilt als erfüllt, wenn die Gewerbeanmeldung innerhalb dieser Woche erfolgt ist. Für Reinigungsbetriebe ist in der Regel die BG BAU zuständig. Sie ist die gesetzliche Unfallversicherung für Ihre Mitarbeitenden. Ob und wie Sie sich als Unternehmer selbst dort versichern, klären Sie direkt mit der Berufsgenossenschaft.
 
@@ -83,7 +82,7 @@ Die Verordnung zum Branchenmindestlohn gilt bis Ende 2026, die Werte für 2027 w
 Die Gebäudereinigung gehört zu den Branchen, für die der Gesetzgeber zusätzliche Pflichten gegen Schwarzarbeit vorsieht:
 
 - **Sofortmeldung:** Der Beginn jeder Beschäftigung muss spätestens bei Arbeitsaufnahme an die Datenstelle der Rentenversicherung gemeldet werden (§ 28a Absatz 4 SGB IV), auch bei Minijobs.
-- **Ausweis mitführen:** Beschäftigte müssen bei der Arbeit einen Personalausweis oder Pass dabeihaben und bei Kontrollen vorlegen (§ 2a Schwarzarbeitsbekämpfungsgesetz). Der Arbeitgeber muss jede Person nachweislich und schriftlich darauf hinweisen.
+- **Ausweis mitführen:** Beschäftigte müssen bei der Arbeit einen Personalausweis oder Pass dabeihaben und bei Kontrollen vorlegen (§ 2a des Gesetzes zur Bekämpfung der Schwarzarbeit). Der Arbeitgeber muss jede Person nachweislich und schriftlich darauf hinweisen.
 - **Arbeitszeit aufzeichnen:** Beginn, Ende und Dauer der täglichen Arbeitszeit sind aufzuzeichnen und aufzubewahren (§ 17 Mindestlohngesetz).
 
 Der Zoll prüft diese Pflichten in der Branche regelmäßig. Richten Sie die Abläufe von Anfang an sauber ein, zum Beispiel mit einer einfachen Zeiterfassung per App.

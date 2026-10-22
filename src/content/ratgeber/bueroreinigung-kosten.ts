@@ -4,8 +4,7 @@ const guide: Guide = {
   slug: 'bueroreinigung-kosten',
   title: 'Was kostet Büroreinigung? Preise, Faktoren und Beispielrechnungen',
   seoTitle: 'Büroreinigung Kosten: Preise 2026',
-  description:
-    'Was kostet Büroreinigung pro Stunde und Monat? Stundensätze, Kostenfaktoren und drei Beispielrechnungen für kleine, mittlere und große Büros im Ortenaukreis.',
+  description: 'Was kostet Büroreinigung pro Stunde und Monat? Stundensätze, Kostenfaktoren und drei Beispielrechnungen für kleine, mittlere und große Büros im Ortenaukreis.',
   category: 'unternehmen',
   author: 0,
   published: '2026-10-21',

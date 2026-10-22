@@ -177,10 +177,14 @@ export function FloorPlan() {
               <h3 className="mt-1.5 text-2xl font-semibold tracking-tight">{zone.name}</h3>
               <ul className="mt-6 space-y-3.5">
                 {zone.tasks.map((t) => (
-                  <li key={t.task} className="flex items-start gap-3">
+                  <li key={t.task} className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-1 min-[400px]:grid-cols-[auto_minmax(0,1fr)_auto]">
                     <Check aria-hidden className="mt-1 size-4 shrink-0 text-fresh-ink" strokeWidth={3} />
-                    <span className="min-w-0 flex-1 text-ink/90">{t.task}</span>
-                    <span className={cn('shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap', badge[t.freq])}>{freqLabel(t.freq, interval)}</span>
+                    <span className="text-ink/90">{t.task}</span>
+                    <span
+                      className={cn('col-start-2 justify-self-start rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap min-[400px]:col-start-auto', badge[t.freq])}
+                    >
+                      {freqLabel(t.freq, interval)}
+                    </span>
                   </li>
                 ))}
               </ul>

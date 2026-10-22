@@ -36,7 +36,7 @@ export const faqs: Faq[] = [
   },
   {
     category: 'Kosten und Vertrag',
-    q: 'Bekomme ich eine Rechnung mit ausgewiesener Mehrwertsteuer?',
+    q: 'Bekomme ich eine Rechnung mit Mehrwertsteuer?',
     a: 'Ja. Sie erhalten eine ordentliche Rechnung mit Netto, Mehrwertsteuer und Brutto, sodass Sie als Unternehmen die Vorsteuer abziehen können.',
   },
   {

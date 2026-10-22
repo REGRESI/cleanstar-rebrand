@@ -34,7 +34,7 @@ export function CompanyDocs() {
     window.setTimeout(() => setCopied(false), 2400)
   }
   const files = [
-    { ...downloads.serviceList, title: 'Muster-Leistungsverzeichnis', note: 'Raum für Raum, mit Intervallen' },
+    { ...downloads.serviceList, title: 'Muster: Was wird wie oft gereinigt?', note: 'Raum für Raum, mit Intervallen' },
     { ...downloads.checklist, title: 'Checkliste: gute Büroreinigung erkennen', note: 'Zum Vergleichen von Angeboten' },
   ]
 

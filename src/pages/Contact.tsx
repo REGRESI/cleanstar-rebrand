@@ -56,9 +56,18 @@ export default function Contact() {
                 <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-blue text-white">
                   <c.icon aria-hidden className="size-5" />
                 </span>
-                <span>
+                <span className="min-w-0">
                   <span className="block text-sm text-muted">{c.label}</span>
-                  <span className="block text-lg font-semibold break-all text-ink group-hover:text-blue">{c.value}</span>
+                  <span className="block text-base font-semibold text-ink group-hover:text-blue min-[420px]:text-lg">
+                    {c.value.includes('@') ? (
+                      <>
+                        {c.value.split('@')[0]}@<wbr />
+                        {c.value.split('@')[1]}
+                      </>
+                    ) : (
+                      c.value
+                    )}
+                  </span>
                   <span className="block text-xs text-muted">{c.note}</span>
                 </span>
               </a>

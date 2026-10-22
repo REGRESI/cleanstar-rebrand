@@ -43,8 +43,7 @@ export function ShareButtons({ title, url }: { title: string; url: string }) {
   const [native, setNative] = useState(false)
   useEffect(() => setNative(typeof navigator !== 'undefined' && 'share' in navigator), [])
   const enc = encodeURIComponent
-  const cls =
-    'inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft'
+  const cls = 'inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft'
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="mr-1 text-sm font-semibold text-ink">Artikel teilen:</span>
@@ -155,7 +154,7 @@ export function GuideCtaBox({ type }: { type: GuideCta }) {
 
 export function GuideDownload({ id }: { id: 'serviceList' | 'checklist' }) {
   const d = downloads[id]
-  const label = id === 'serviceList' ? 'Muster-Leistungsverzeichnis Büroreinigung' : 'Checkliste: Woran Sie eine gute Büroreinigung erkennen'
+  const label = id === 'serviceList' ? 'Muster: Was wird wie oft gereinigt?' : 'Checkliste: Woran Sie eine gute Büroreinigung erkennen'
   return (
     <a
       href={d.href}

@@ -39,7 +39,12 @@ function inline(text: string): ReactNode[] {
   let i = 0
   while ((m = re.exec(text))) {
     if (m.index > last) out.push(text.slice(last, m.index))
-    if (m[1]) out.push(<strong key={i++} className="font-semibold text-ink">{m[1]}</strong>)
+    if (m[1])
+      out.push(
+        <strong key={i++} className="font-semibold text-ink">
+          {m[1]}
+        </strong>,
+      )
     else {
       const href = m[3]
       const cls = 'font-medium text-blue-hover underline decoration-blue/30 underline-offset-4 hover:decoration-blue'
@@ -72,14 +77,14 @@ export function Markdown({ source }: { source: string }) {
           const t = b.slice(3).trim()
           return (
             <h2 key={bi} id={slugify(t)} className="mt-14 scroll-mt-28 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-              {noOrphan(t)}
+              {noOrphan(t, 20)}
             </h2>
           )
         }
         if (b.startsWith('### ')) {
           return (
             <h3 key={bi} className="mt-10 text-xl font-semibold tracking-tight text-ink">
-              {noOrphan(b.slice(4).trim())}
+              {noOrphan(b.slice(4).trim(), 24)}
             </h3>
           )
         }

@@ -1,4 +1,5 @@
 import { useId, useState, type ReactNode } from 'react'
+import { noOrphan } from '@/lib/format'
 import { motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import { cn } from '@/lib/cn'
@@ -46,7 +47,7 @@ export function Accordion({
                   dark ? 'text-white hover:text-fresh' : 'text-ink hover:text-blue',
                 )}
               >
-                <span className="min-w-0">{it.title}</span>
+                <span className="min-w-0">{typeof it.title === 'string' ? noOrphan(it.title, 22) : it.title}</span>
                 <span
                   aria-hidden
                   className={cn(

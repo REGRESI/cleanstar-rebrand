@@ -16,7 +16,11 @@ export default function Privacy() {
   const provider = company.forms.provider === 'web3forms' ? 'Web3Forms' : 'Formspree (Formspree, Inc., USA)'
   return (
     <>
-      <Seo title="Datenschutzerklärung" description={`Datenschutzerklärung der ${company.legalName} aus Offenburg: welche Daten wir verarbeiten, wofür, wie lange und welche Rechte Sie als Besucher haben.`} path="/datenschutz" />
+      <Seo
+        title="Datenschutzerklärung"
+        description={`Datenschutzerklärung der ${company.legalName} aus Offenburg: welche Daten wir verarbeiten, wofür, wie lange und welche Rechte Sie als Besucher haben.`}
+        path="/datenschutz"
+      />
       <PageHero
         trail={trail}
         title="Datenschutzerklärung"
@@ -48,7 +52,7 @@ export default function Privacy() {
               Ein Datenschutzbeauftragter ist nach unserer Einschätzung nicht zu benennen. <Check>Pflicht zur Benennung (Art. 37 DSGVO, § 38 BDSG)</Check>
             </p>
 
-            <h2>2. Hosting und Server-Logfiles</h2>
+            <h2>2. Hosting und Server-Logfiles</h2>
             <p>
               Diese Website wird über GitHub Pages bereitgestellt, einen Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Beim Aufruf der
               Website verarbeitet GitHub automatisch Daten, die Ihr Browser übermittelt (insbesondere IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Referrer, Browser und
@@ -68,7 +72,7 @@ export default function Privacy() {
             <h2>4. Schriftarten</h2>
             <p>Die verwendeten Schriftarten sind lokal auf unserem Server gespeichert. Es besteht keine Verbindung zu Google oder anderen Schriftanbietern.</p>
 
-            <h2>5. Kontaktformular, Angebots-Konfigurator und Bewerbungsformular</h2>
+            <h2>5. Kontaktformular, Konfigurator und Bewerbung</h2>
             <p>
               Wenn Sie uns über ein Formular kontaktieren, verarbeiten wir Ihre Angaben (z. B. Name, Unternehmen, E-Mail, Telefon, Angaben zum Objekt, Nachricht) zur Bearbeitung
               Ihrer Anfrage und für Anschlussfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie Ihre Einwilligung nach Art. 6 Abs. 1 lit. a

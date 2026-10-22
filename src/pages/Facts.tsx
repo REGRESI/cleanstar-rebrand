@@ -3,7 +3,7 @@ import { company, fullAddress } from '@/content/company'
 import { locations, shortName } from '@/content/locations'
 import { services } from '@/content/services'
 import { hourlyRateNetMax, hourlyRateNetMin, pricing } from '@/content/pricing'
-import { formatEuro2Range } from '@/lib/format'
+import { formatEuro2Range, noOrphan } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { breadcrumbSchema, faqSchema, localBusinessSchema } from '@/lib/schema'
@@ -28,7 +28,7 @@ export function factGroups() {
         `Gegründet wurde CleanStar von ${join(founders)}, die vertretungsberechtigten Gesellschafter der GbR.`,
         company.yearsOfExperience ? `Das Team bringt über ${company.yearsOfExperience} Jahre Erfahrung in der Reinigung mit.` : null,
         company.vatId ? `Die Umsatzsteuer-Identifikationsnummer lautet ${company.vatId}.` : null,
-        company.liabilityInsurance ? 'CleanStar hat eine Betriebshaftpflichtversicherung.' : null,
+        company.liabilityInsurance ? 'CleanStar ist über eine Betriebshaftpflicht versichert.' : null,
       ],
     },
     {
@@ -100,7 +100,7 @@ export default function Facts() {
         {groups.map((g) => (
           <section key={g.title} aria-labelledby={`f-${g.title}`} className="mt-12">
             <h2 id={`f-${g.title}`} className="text-2xl font-semibold tracking-tight">
-              {g.title}
+              {noOrphan(g.title, 20)}
             </h2>
             <ul className="mt-5 divide-y divide-line rounded-card bg-white ring-1 ring-line">
               {g.facts.map((f) => (
@@ -127,7 +127,10 @@ export default function Facts() {
               ['/impressum', 'Impressum'],
             ].map(([to, label]) => (
               <li key={to}>
-                <Link to={to} className="inline-flex min-h-10 items-center rounded-full bg-white px-4 text-sm font-medium ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft">
+                <Link
+                  to={to}
+                  className="inline-flex min-h-10 items-center rounded-full bg-white px-4 text-sm font-medium ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft"
+                >
                   {label}
                 </Link>
               </li>

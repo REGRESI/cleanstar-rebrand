@@ -4,8 +4,7 @@ const guide: Guide = {
   slug: 'franchise-oder-allein-starten',
   title: 'Franchise oder allein starten? Vor- und Nachteile ehrlich verglichen',
   seoTitle: 'Reinigungsfirma Franchise oder allein?',
-  description:
-    'Reinigungsfirma als Franchise oder allein gründen? Vor- und Nachteile, Kosten, Vertragsfragen und Aufklärungspflichten ehrlich verglichen, mit Fragenliste.',
+  description: 'Reinigungsfirma als Franchise oder allein gründen? Vor- und Nachteile, Kosten, Vertragsfragen und Aufklärungspflichten ehrlich verglichen, mit Fragenliste.',
   category: 'gruender',
   author: 0,
   published: '2026-10-21',

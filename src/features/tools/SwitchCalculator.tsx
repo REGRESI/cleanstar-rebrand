@@ -27,7 +27,8 @@ const addMonths = (d: Date, n: number) => {
   const last = endOfMonth(d.getFullYear(), d.getMonth() + n).getDate()
   return new Date(d.getFullYear(), d.getMonth() + n, Math.min(d.getDate(), last))
 }
-const fmt = (d: Date) => d.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+// Tag, Monat und Jahr nie trennen: „30. November 2026“
+const fmt = (d: Date) => d.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).replace(/(\d+\.) (\S+) (\d{4})/, '$1\u00A0$2\u00A0$3')
 const fmtShort = (d: Date) => d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
 /** Spätester Zugang der Kündigung für ein Vertragsende */
@@ -90,10 +91,7 @@ export function SwitchCalculator() {
   // Heute erst im Browser bestimmen (vorgerendertes HTML soll kein festes Datum enthalten)
   const [today, setToday] = useState<Date | null>(null)
   useEffect(() => setToday(new Date()), [])
-  const r = useMemo(
-    () => (today ? computeSwitch({ today, kind: s.kind, notice: s.notice, term: s.term, start: s.start, months: s.months, renew: s.renew }) : null),
-    [today, s],
-  )
+  const r = useMemo(() => (today ? computeSwitch({ today, kind: s.kind, notice: s.notice, term: s.term, start: s.start, months: s.months, renew: s.renew }) : null), [today, s])
   const [copied, setCopied] = useState(false)
 
   const letter = `${s.me || '[Ihr Unternehmen, Anschrift]'}
@@ -155,9 +153,7 @@ Mit freundlichen Grüßen
             ]}
           />
         )}
-        <p className="text-xs leading-relaxed text-muted">
-          Die Angaben finden Sie in Ihrem Vertrag. Maßgeblich ist immer, was dort steht. Ihre Eingaben bleiben in Ihrem Browser.
-        </p>
+        <p className="text-xs leading-relaxed text-muted">Die Angaben finden Sie in Ihrem Vertrag. Maßgeblich ist immer, was dort steht. Ihre Eingaben bleiben in Ihrem Browser.</p>
       </div>
 
       <div className="space-y-6 lg:col-span-7">
@@ -168,19 +164,25 @@ Mit freundlichen Grüßen
           {!today ? (
             <p className="mt-4 text-white/70">Wird berechnet …</p>
           ) : r?.expired ? (
-            <p className="mt-4 text-white/80">Mit diesen Angaben ist der Vertrag bereits ausgelaufen oder eine Kündigung zum nächsten Termin ist nicht mehr möglich. Prüfen Sie Laufzeit und Verlängerung.</p>
+            <p className="mt-4 text-white/80">
+              Mit diesen Angaben ist der Vertrag bereits ausgelaufen oder eine Kündigung zum nächsten Termin ist nicht mehr möglich. Prüfen Sie Laufzeit und Verlängerung.
+            </p>
           ) : !r?.end ? (
             <p className="mt-4 text-white/70">Bitte Vertragsbeginn und Laufzeit eintragen.</p>
           ) : (
             <>
               <p className="mt-2 text-white/70">
-                {r.daysLeft <= 0 ? 'Wenn Sie heute kündigen,' : `Sie haben noch ${r.daysLeft} ${r.daysLeft === 1 ? 'Tag' : 'Tage'} Zeit. Wenn die Kündigung rechtzeitig eingeht,`} können Sie am{' '}
-                <strong className="text-white">{fmtShort(r.first)}</strong> mit einem neuen Anbieter starten.
+                {r.daysLeft <= 0
+                  ? 'Wenn Sie heute kündigen,'
+                  : `Sie haben noch ${r.daysLeft}\u00A0${r.daysLeft === 1 ? 'Tag' : 'Tage'} Zeit. Wenn die Kündigung rechtzeitig eingeht,`}{' '}
+                können Sie am <strong className="text-white">{fmtShort(r.first)}</strong> mit einem neuen Anbieter starten.
               </p>
               <ol className="relative mt-8 space-y-6 before:absolute before:top-2 before:bottom-2 before:left-5 before:w-px before:bg-white/15">
                 {steps.map((st, i) => (
                   <li key={st.title} className="relative flex gap-4">
-                    <span className={cn('relative grid size-10 shrink-0 place-items-center rounded-full ring-4 ring-ink', i === 2 ? 'bg-fresh text-ink' : 'bg-white/10 text-white')}>
+                    <span
+                      className={cn('relative grid size-10 shrink-0 place-items-center rounded-full ring-4 ring-ink', i === 2 ? 'bg-fresh text-ink' : 'bg-white/10 text-white')}
+                    >
                       <st.icon aria-hidden className="size-5" />
                     </span>
                     <span className="min-w-0 pt-0.5">
@@ -230,8 +232,8 @@ Mit freundlichen Grüßen
             </button>
           </div>
           <p className="mt-4 text-xs leading-relaxed text-muted">
-            Hinweis: Die Vorlage ist eine allgemeine Formulierungshilfe und keine Rechtsberatung. Prüfen Sie Frist und Form (zum Beispiel Schriftform mit Unterschrift) in Ihrem Vertrag
-            und senden Sie die Kündigung so, dass Sie den Zugang nachweisen können.
+            Hinweis: Die Vorlage ist eine allgemeine Formulierungshilfe und keine Rechtsberatung. Prüfen Sie Frist und Form (zum Beispiel Schriftform mit Unterschrift) in Ihrem
+            Vertrag und senden Sie die Kündigung so, dass Sie den Zugang nachweisen können.
           </p>
         </section>
 

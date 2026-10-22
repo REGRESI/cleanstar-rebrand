@@ -88,6 +88,7 @@ export function CostCalculator() {
   const verdict = calc.own < calc.csMin ? 'own' : calc.own > calc.csMax ? 'cs' : 'equal'
   const scale = Math.max(calc.own, calc.csMax) * 1.08 || 1
   const fmt = (v: number) => formatEuro(v)
+  const fmtInt = (v: number) => Math.round(v).toLocaleString('de-DE')
 
   const breakdown: [string, number, string][] = [
     ['Bruttolohn', calc.wage, `${formatNumber(calc.hoursMonth)} Std. × ${formatEuro2(a.hourlyWage)}`],
@@ -104,7 +105,7 @@ export function CostCalculator() {
         <div className="border-b border-line p-6 sm:p-8 lg:col-span-5 lg:border-r lg:border-b-0">
           <h3 className="text-xl font-semibold tracking-tight">Ihre Situation</h3>
           <div className="mt-6 grid grid-cols-2 gap-4">
-            <Num label="Reinigungsstunden pro Woche" value={a.hoursPerWeek} onChange={set('hoursPerWeek')} unit="Std." step={0.5} min={1} max={200} />
+            <Num label="Stunden pro Woche" value={a.hoursPerWeek} onChange={set('hoursPerWeek')} unit="Std." step={0.5} min={1} max={200} />
             <Num label="Stundenlohn eigene Kraft" value={a.hourlyWage} onChange={set('hourlyWage')} unit="€" step={0.25} min={1} max={60} />
           </div>
           <fieldset className="mt-5">
@@ -201,10 +202,12 @@ export function CostCalculator() {
               <p className="mt-1 text-xs text-muted">entspricht {formatEuro2(calc.ownPerHour)} pro geleisteter Stunde</p>
             </div>
             <div>
-              <div className="flex items-baseline justify-between gap-4">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4">
                 <span className="text-sm font-medium text-ink">CleanStar</span>
-                <span className="text-2xl font-semibold tracking-tight">
-                  <AnimatedNumber value={calc.csMin} format={fmt} /> – <AnimatedNumber value={calc.csMax} format={fmt} />
+                <span className="text-xl font-semibold tracking-tight whitespace-nowrap min-[420px]:text-2xl">
+                  <AnimatedNumber value={calc.csMin} format={fmtInt} />
+                  {'\u00A0'}bis{'\u00A0'}
+                  <AnimatedNumber value={calc.csMax} format={fmt} />
                 </span>
               </div>
               <div className="relative mt-2 h-3 overflow-hidden rounded-full bg-white ring-1 ring-line">
@@ -222,7 +225,8 @@ export function CostCalculator() {
                 />
               </div>
               <p className="mt-1 text-xs text-muted">
-                {pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Mitarbeiterstunde ({formatEuro2Range(net(pricing.hourlyRateGrossMin), net(pricing.hourlyRateGrossMax))} netto), gleiche Stundenzahl angenommen
+                {pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Mitarbeiterstunde (
+                {formatEuro2Range(net(pricing.hourlyRateGrossMin), net(pricing.hourlyRateGrossMax))} netto), gleiche Stundenzahl angenommen
               </p>
             </div>
           </div>

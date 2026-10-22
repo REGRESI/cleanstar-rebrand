@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { noOrphan } from '@/lib/format'
 import { CalendarCheck, Check, Mail, MessageSquareText, Phone, Sparkles } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
@@ -72,7 +73,10 @@ export default function Guarantee() {
         image="quality-check"
         actions={<QuoteButton size="lg" arrow />}
       />
-      <Answer className="pt-12 sm:pt-16">Die Qualitätsgarantie von CleanStar bedeutet: Passt etwas nicht, reinigen wir kostenlos nach und klären die Ursache mit dem Team. Dazu kommen eigene Qualitätskontrollen, ein fester Ansprechpartner und eine Ersatzkraft bei Ausfall.</Answer>
+      <Answer className="pt-12 sm:pt-16">
+        Die Qualitätsgarantie von CleanStar bedeutet: Passt etwas nicht, reinigen wir kostenlos nach und klären die Ursache mit dem Team. Dazu kommen eigene Qualitätskontrollen,
+        ein fester Ansprechpartner und eine Ersatzkraft bei Ausfall.
+      </Answer>
 
       <section className="py-24 sm:py-32" aria-labelledby="points-title">
         <div className="container-site grid grid-cols-1 gap-14 lg:grid-cols-12">
@@ -138,7 +142,7 @@ export default function Guarantee() {
                       <Check className="size-5" strokeWidth={3} />
                     </span>
                     <div className="min-w-0">
-                      <h3 className="text-xl font-semibold tracking-tight">{p.title}</h3>
+                      <h3 className="text-xl font-semibold tracking-tight">{noOrphan(p.title, 16)}</h3>
                       <p className="mt-2 leading-relaxed text-muted">
                         {p.usesComplaintPeriod && company.complaintPeriod
                           ? `Passt etwas nicht, melden Sie es Ihrem Ansprechpartner. Wir reinigen kostenlos nach, innerhalb von ${company.complaintPeriod}.`
@@ -184,7 +188,7 @@ export default function Guarantee() {
                   </span>
                   <div className="flow-body flex-1 rounded-card bg-white/[0.04] p-6 ring-1 ring-white/10 transition-all duration-500 md:w-full">
                     <p className="text-xs font-semibold tracking-[0.12em] text-white/50 uppercase">Schritt {i + 1}</p>
-                    <h3 className="mt-2 text-xl font-semibold">{s.title}</h3>
+                    <h3 className="mt-2 text-lg font-semibold sm:text-xl">{noOrphan(s.title, 16)}</h3>
                     <p className="mt-2 leading-relaxed text-muted-dark">{s.text}</p>
                   </div>
                 </li>

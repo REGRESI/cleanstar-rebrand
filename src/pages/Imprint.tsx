@@ -10,7 +10,11 @@ const trail = [
 export default function Imprint() {
   return (
     <>
-      <Seo title="Impressum" description={`Impressum der ${company.legalName}, ${fullAddress()}: vertretungsberechtigte Gesellschafter, Kontakt und Umsatzsteuer-ID.`} path="/impressum" />
+      <Seo
+        title="Impressum"
+        description={`Impressum der ${company.legalName}, ${fullAddress()}: vertretungsberechtigte Gesellschafter, Kontakt und Umsatzsteuer-ID.`}
+        path="/impressum"
+      />
       <PageHero trail={trail} title="Impressum" />
       <section className="py-16 sm:py-24">
         <div className="container-site">
@@ -40,7 +44,7 @@ export default function Imprint() {
             <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
             <p>{company.partners?.[0]}, Anschrift wie oben.</p>
 
-            <h2>Verbraucherstreitbeilegung</h2>
+            <h2>Streitbeilegung für Verbraucher</h2>
             <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
 
             <h2>Haftung für Inhalte und Links</h2>

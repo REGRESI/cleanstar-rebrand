@@ -20,7 +20,7 @@ export function AboutTeaser() {
               <Picture id={f.image as ImageId} compact sizes="(min-width:1024px) 16vw, 33vw" />
               <figcaption className="mt-3 text-xs sm:text-sm">
                 <span className="block font-semibold text-ink">{f.name ?? `Gründer ${i + 1}`}</span>
-                <span className="block leading-snug text-muted">{f.role.replace('Gründer · ', '')}</span>
+                <span className="block leading-snug text-muted max-[359px]:hidden">{f.role.replace('Gründer · ', '')}</span>
               </figcaption>
             </figure>
           ))}

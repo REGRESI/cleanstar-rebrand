@@ -4,8 +4,7 @@ const guide: Guide = {
   slug: 'reinigungsfirma-kalkulieren',
   title: 'Reinigungsfirma kalkulieren: Stundensatz richtig berechnen',
   seoTitle: 'Stundensatz Reinigungsfirma berechnen',
-  description:
-    'Stundensatz der Reinigungsfirma berechnen: Lohn, Nebenkosten, Ausfallzeiten, Material, Fixkosten und Aufschlag. Mit Rechenweg, Beispiel und kostenlosem Rechner.',
+  description: 'Stundensatz der Reinigungsfirma berechnen: Lohn, Nebenkosten, Ausfallzeiten, Material, Fixkosten und Aufschlag. Mit Rechenweg, Beispiel und kostenlosem Rechner.',
   category: 'gruender',
   author: 0,
   published: '2026-10-21',
@@ -63,7 +62,7 @@ Den Monatsbetrag teilen Sie durch die Stunden, die Sie pro Monat voraussichtlich
 
 Ein Unternehmen braucht einen Gewinn, um Rücklagen zu bilden, Ausfälle von Kunden zu überstehen und zu investieren. Der Aufschlag kommt auf die Selbstkosten. Wie hoch er sein kann, entscheidet am Ende der Markt in Ihrer Region.
 
-## Ein durchgerechnetes Beispiel
+## Ein Beispiel zum Nachrechnen
 
 Alle Werte außer Mindestlohn und Lohnnebenkosten sind Beispielannahmen. Setzen Sie Ihre eigenen Zahlen ein.
 
@@ -84,7 +83,7 @@ Der **Deckungsbeitrag** pro Stunde, also Verkaufspreis minus variable Kosten (Lo
 
 > Diese Rechnung ist ein Beispiel, keine Prognose. Ob Sie 400 Stunden im Monat verkaufen und welchen Preis Ihr Markt trägt, hängt von vielen Faktoren ab.
 
-## Minijob oder sozialversicherungspflichtig?
+## Minijob oder reguläre Anstellung?
 
 In der Reinigung arbeiten viele Beschäftigte auf Minijob-Basis. Für den Arbeitgeber gelten dann statt der normalen Sozialversicherungsbeiträge Pauschalabgaben. 2026 sind das für gewerbliche Minijobs 15 % zur Rentenversicherung, 13 % zur Krankenversicherung (bei gesetzlich Versicherten) und 2 % Pauschsteuer, dazu Umlagen. Zusammen sind das rund 31 % und damit mehr als bei einer sozialversicherungspflichtigen Beschäftigung. Die Verdienstgrenze liegt 2026 bei 603 € im Monat. Für 2027 sind Änderungen bei den Pauschalabgaben angekündigt, prüfen Sie deshalb vor jeder Kalkulation den aktuellen Stand bei der Minijob-Zentrale.
 

@@ -121,7 +121,13 @@ export function Header() {
           >
             <nav aria-label="Mobile Navigation">
               <ul className="divide-y divide-line border-b border-line">
-                {[{ label: 'Startseite', to: '/' }, ...navigation, { label: 'Ratgeber', to: '/ratgeber' }, { label: 'Karriere', to: '/karriere' }, { label: 'FAQ', to: '/faq' }].map((item, i) => (
+                {[
+                  { label: 'Startseite', to: '/' },
+                  ...navigation,
+                  { label: 'Ratgeber', to: '/ratgeber' },
+                  { label: 'Karriere', to: '/karriere' },
+                  { label: 'FAQ', to: '/faq' },
+                ].map((item, i) => (
                   <motion.li key={item.to} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.04 * i + 0.05 }}>
                     <NavLink
                       to={item.to}
