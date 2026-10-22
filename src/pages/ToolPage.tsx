@@ -26,7 +26,7 @@ export interface ToolPageProps {
 /** Gemeinsamer Rahmen für Rechner und Werkzeuge: Kopf, kurze Antwort, Werkzeug, FAQ, Quellen, Links */
 export function ToolPage(p: ToolPageProps) {
   const trail = [
-    { name: 'Start', path: '/' },
+    { name: 'Startseite', path: '/' },
     { name: 'Ratgeber', path: '/ratgeber' },
     { name: p.name, path: p.path },
   ]

@@ -25,7 +25,7 @@ export default function Location() {
   const short = shortName(l)
   const path = `/einzugsgebiet/${l.slug}`
   const trail = [
-    { name: 'Start', path: '/' },
+    { name: 'Startseite', path: '/' },
     { name: 'Einzugsgebiet', path: '/einzugsgebiet' },
     { name: short, path },
   ]

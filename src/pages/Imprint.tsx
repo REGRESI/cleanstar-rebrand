@@ -3,7 +3,7 @@ import { PageHero } from '@/components/ui/PageHero'
 import { company, fullAddress } from '@/content/company'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Impressum', path: '/impressum' },
 ]
 

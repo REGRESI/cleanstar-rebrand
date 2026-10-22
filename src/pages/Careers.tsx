@@ -13,7 +13,7 @@ import { company } from '@/content/company'
 import { breadcrumbSchema } from '@/lib/schema'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Karriere', path: '/karriere' },
 ]
 

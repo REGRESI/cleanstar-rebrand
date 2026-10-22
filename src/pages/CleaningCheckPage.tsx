@@ -5,7 +5,7 @@ import { checkQuestions } from '@/content/check'
 import { breadcrumbSchema } from '@/lib/schema'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Reinigungs-Check', path: '/reinigungs-check' },
 ]
 

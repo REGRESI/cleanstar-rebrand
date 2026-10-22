@@ -27,7 +27,7 @@ export default function OfficeCity() {
   if (!c || !loc) return <NotFound />
   const path = `/bueroreinigung/${c.slug}`
   const trail = [
-    { name: 'Start', path: '/' },
+    { name: 'Startseite', path: '/' },
     { name: 'Büroreinigung', path: '/leistungen/bueroreinigung' },
     { name: c.name, path },
   ]

@@ -10,7 +10,7 @@ import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { breadcrumbSchema } from '@/lib/schema'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Einzugsgebiet', path: '/einzugsgebiet' },
 ]
 

@@ -10,7 +10,7 @@ import { breadcrumbSchema, faqSchema } from '@/lib/schema'
 import { cn } from '@/lib/cn'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'FAQ', path: '/faq' },
 ]
 const categories = Array.from(new Set(faqs.map((f) => f.category))) as FaqItem['category'][]

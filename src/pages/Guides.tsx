@@ -9,7 +9,7 @@ import { breadcrumbSchema } from '@/lib/schema'
 import { absoluteUrl } from '@/lib/schema'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Ratgeber', path: '/ratgeber' },
 ]
 

@@ -9,7 +9,7 @@ import { PageHero } from '@/components/ui/PageHero'
 import { breadcrumbSchema, faqSchema, localBusinessSchema } from '@/lib/schema'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Fakten', path: '/fakten' },
 ]
 

@@ -11,7 +11,7 @@ import { company, fullAddress } from '@/content/company'
 import { breadcrumbSchema, localBusinessSchema } from '@/lib/schema'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Kontakt', path: '/kontakt' },
 ]
 

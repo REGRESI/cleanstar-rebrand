@@ -11,7 +11,7 @@ import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
 import { breadcrumbSchema } from '@/lib/schema'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Ablauf', path: '/ablauf' },
 ]
 

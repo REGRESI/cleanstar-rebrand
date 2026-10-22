@@ -25,7 +25,7 @@ const RegionMap = lazy(() => import('@/features/partner/RegionMap').then((m) => 
 const Chunk = ({ children }: { children: React.ReactNode }) => <Suspense fallback={null}>{children}</Suspense>
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Partner werden', path: '/partner' },
 ]
 

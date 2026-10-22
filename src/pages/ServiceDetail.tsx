@@ -30,7 +30,7 @@ export default function ServiceDetail() {
   if (!s) return <NotFound />
   const path = `/leistungen/${s.slug}`
   const trail = [
-    { name: 'Start', path: '/' },
+    { name: 'Startseite', path: '/' },
     { name: 'Leistungen', path: '/leistungen' },
     { name: s.name, path },
   ]

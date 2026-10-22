@@ -5,7 +5,7 @@ import { Todo } from '@/components/ui/Todo'
 import { company, fullAddress } from '@/content/company'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Datenschutz', path: '/datenschutz' },
 ]
 

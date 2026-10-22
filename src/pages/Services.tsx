@@ -10,7 +10,7 @@ import { breadcrumbSchema } from '@/lib/schema'
 import { Check } from 'lucide-react'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Leistungen', path: '/leistungen' },
 ]
 

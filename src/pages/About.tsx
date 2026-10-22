@@ -23,7 +23,7 @@ const responsibilities = [
 ]
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Über uns', path: '/ueber-uns' },
 ]
 

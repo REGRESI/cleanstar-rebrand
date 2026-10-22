@@ -18,7 +18,7 @@ export default function GuideArticle() {
   const author = company.founders[g.author]
   const path = `/ratgeber/${g.slug}`
   const trail = [
-    { name: 'Start', path: '/' },
+    { name: 'Startseite', path: '/' },
     { name: 'Ratgeber', path: '/ratgeber' },
     { name: g.title.split(':')[0], path },
   ]

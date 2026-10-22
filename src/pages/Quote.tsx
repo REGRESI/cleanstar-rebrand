@@ -8,7 +8,7 @@ import { breadcrumbSchema } from '@/lib/schema'
 import { CallbackButton } from '@/features/callback/Callback'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Angebot', path: '/angebot' },
 ]
 

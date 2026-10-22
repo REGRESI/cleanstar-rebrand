@@ -19,7 +19,7 @@ import { cn } from '@/lib/cn'
 import { CallbackButton } from '@/features/callback/Callback'
 
 const trail = [
-  { name: 'Start', path: '/' },
+  { name: 'Startseite', path: '/' },
   { name: 'Qualitätsgarantie', path: '/qualitaetsgarantie' },
 ]
 
