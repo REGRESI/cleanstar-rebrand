@@ -123,7 +123,7 @@ export default function Guarantee() {
                       <h3
                         className={cn(
                           'text-[1.25rem] leading-[1.2] font-medium tracking-[-0.02em] transition-colors duration-500 min-[400px]:text-[1.5rem] sm:text-[1.75rem]',
-                          on ? 'text-ink' : 'text-ink/55',
+                          on ? 'text-ink' : 'text-ink-2',
                         )}
                       >
                         {noOrphan(p.title, 16)}

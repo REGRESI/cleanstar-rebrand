@@ -20,11 +20,11 @@ Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) bettet alle
 
 | # | Dateiname | Format | Mindestgröße | Verwendet auf |
 |---|---|---|---|---|
-| 1 | `vorher-buero.jpg` | 16:9 | 1920 × 1080 px | Startseite (Vorher/Nachher), Büroreinigung |
-| 2 | `nachher-buero.jpg` | 16:9 | 1920 × 1080 px | Startseite (Vorher/Nachher), Büroreinigung |
+| 1 | `vorher-buero.jpg` | 16:9 | 1920 × 1080 px | Büroreinigung (Vorher/Nachher) |
+| 2 | `nachher-buero.jpg` | 16:9 | 1920 × 1080 px | Büroreinigung (Vorher/Nachher), Bildbänder Leistungen und Qualitätsgarantie, Ablauf (Erster Monat) |
 | 3 | `leistung-bueroreinigung.jpg` | 16:9 | 2400 × 1350 px | Büroreinigung (Hero), Leistungskarte Startseite und Leistungsübersicht |
 | 4 | `bueroreinigung-detail.jpg` | 4:3 | 1600 × 1200 px | Büroreinigung |
-| 5 | `leistung-unterhaltsreinigung.jpg` | 16:9 | 2400 × 1350 px | Unterhaltsreinigung (Hero), Leistungskarte |
+| 5 | `leistung-unterhaltsreinigung.jpg` | 16:9 | 2400 × 1350 px | Unterhaltsreinigung (Hero), Leistungskarte, Ablauf (Kopfbild) |
 | 6 | `leistung-fensterreinigung.jpg` | 16:9 | 2400 × 1350 px | Fensterreinigung (Hero), Leistungskarte |
 | 7 | `leistung-treppenhausreinigung.jpg` | 16:9 | 2400 × 1350 px | Treppenhausreinigung (Hero), Leistungskarte |
 | 8 | `leistung-hallenreinigung.jpg` | 16:9 | 2400 × 1350 px | Hallenreinigung (Hero), Leistungskarte |
@@ -35,16 +35,16 @@ Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) bettet alle
 | 13 | `team-im-einsatz.jpg` | 16:9 | 2400 × 1350 px | Über uns, Karriere |
 | 14 | `buero-reinigung-abend.jpg` | 21:9 | 1920 × 823 px | Startseite (Bildband zwischen Versprechen und Leistungen) |
 | 15 | `team-besprechung.jpg` | 4:3 | 1600 × 1200 px | Qualitätsgarantie |
-| 16 | `buero-am-morgen.jpg` | 16:9 | 1600 × 900 px | Ablauf (Erster Monat) |
+| 16 | `buero-am-morgen.jpg` | 16:9 | 1600 × 900 px | derzeit nicht verwendet (Hochhäuser im Fenster) |
 | 17 | `qualitaetskontrolle.jpg` | 16:9 | 2400 × 1350 px | Qualitätsgarantie |
-| 18 | `objektbesichtigung.jpg` | 16:9 | 2400 × 1350 px | Ablauf |
+| 18 | `objektbesichtigung.jpg` | 16:9 | 2400 × 1350 px | derzeit nicht verwendet (Hochhäuser im Fenster) |
 | 19 | `karriere.jpg` | 16:9 | 2400 × 1350 px | Karriere |
 | 20 | `region-ortenau.jpg` | 21:9 | 2560 × 1097 px | Einzugsgebiet |
 | 21 | `kontakt.jpg` | 4:3 | 1600 × 1200 px | Kontakt |
-| 22 | `partner-hero.jpg` | 16:9 | 2400 × 1350 px | Partnerprogramm (Hero) |
+| 22 | `partner-hero.jpg` | 16:9 | 2400 × 1350 px | derzeit nicht verwendet (Hochhäuser im Fenster) |
 | 23 | `partner-gruender.jpg` | 4:3 | 1600 × 1200 px | Partnerprogramm (Weg Gründung) |
 | 24 | `partner-bestand.jpg` | 4:3 | 1600 × 1200 px | Partnerprogramm (Weg bestehende Firma) |
-| 25 | `partner-einarbeitung.jpg` | 16:9 | 2400 × 1350 px | Partnerprogramm (Modul Einarbeitung und Support) |
+| 25 | `partner-einarbeitung.jpg` | 16:9 | 2400 × 1350 px | Partnerprogramm (Kopfbild, Modul Einarbeitung und Support) |
 
 ## Bilder im Detail
 
@@ -54,9 +54,9 @@ Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) bettet alle
 - **Pfad:** `bilder/vorher-buero.jpg` → `public/images/vorher-buero-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 1920 × 1080 px
-- **Verwendet auf:** Startseite (Vorher/Nachher), Büroreinigung
-- **Inhalt:** VORHER: Arbeitsplatz am Abend, benutzte Tassen, Krümel, Fingerabdrücke, Staub, 16:9
-- **Alt-Text:** Schreibtisch vor der Reinigung mit Kaffeetassen, Krümeln und Staub auf dem Monitor
+- **Verwendet auf:** Büroreinigung (Vorher/Nachher)
+- **Inhalt:** VORHER: dasselbe Großraumbüro am Abend, benutzte Arbeitsplätze, Blick auf die Hügel, 16:9 (Standbild aus dem Hero-Video)
+- **Alt-Text:** Großraumbüro am Abend nach Feierabend: benutzte Tassen, Papiere und verschobene Stühle an den Arbeitsplätzen
 - **Status:** vorhanden
 
 **Prompt:**
@@ -71,9 +71,9 @@ Modern open-plan office desk in the evening after a workday, used coffee mugs, c
 - **Pfad:** `bilder/nachher-buero.jpg` → `public/images/nachher-buero-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 1920 × 1080 px
-- **Verwendet auf:** Startseite (Vorher/Nachher), Büroreinigung
-- **Inhalt:** NACHHER: derselbe Arbeitsplatz, identischer Bildausschnitt, makellos sauber, 16:9
-- **Alt-Text:** Derselbe Schreibtisch nach der Reinigung, aufgeräumt, glänzende Oberflächen
+- **Verwendet auf:** Büroreinigung (Vorher/Nachher), Bildbänder Leistungen und Qualitätsgarantie, Ablauf (Erster Monat)
+- **Inhalt:** NACHHER: dasselbe Großraumbüro am Morgen, identischer Bildausschnitt, makellos, 16:9 (Standbild aus dem Hero-Video)
+- **Alt-Text:** Dasselbe Großraumbüro am Morgen nach der Reinigung: freie, saubere Schreibtische im Morgenlicht
 - **Status:** vorhanden
 
 **Prompt:**
@@ -122,7 +122,7 @@ Close-up of a gloved hand with a blue microfiber cloth cleaning a keyboard and d
 - **Pfad:** `bilder/leistung-unterhaltsreinigung.jpg` → `public/images/leistung-unterhaltsreinigung-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 2400 × 1350 px
-- **Verwendet auf:** Unterhaltsreinigung (Hero), Leistungskarte
+- **Verwendet auf:** Unterhaltsreinigung (Hero), Leistungskarte, Ablauf (Kopfbild)
 - **Inhalt:** Empfangsbereich eines Unternehmens, frisch gewischter Steinboden, Morgenlicht, 16:9
 - **Alt-Text:** Heller Empfangsbereich mit frisch gewischtem Steinboden, am Rand ein CleanStar-Reinigungswagen
 - **Status:** vorhanden
@@ -309,7 +309,7 @@ Cleaning team supervisor showing a checklist on a tablet to two team members in 
 - **Pfad:** `bilder/buero-am-morgen.jpg` → `public/images/buero-am-morgen-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 1600 × 900 px
-- **Verwendet auf:** Ablauf (Erster Monat)
+- **Verwendet auf:** derzeit nicht verwendet (Hochhäuser im Fenster)
 - **Inhalt:** Sauberes Büro am Morgen: leere, aufgeräumte Arbeitsplätze im Tageslicht, 16:9
 - **Alt-Text:** Aufgeräumtes, sauberes Großraumbüro im Morgenlicht, Schreibtische frei, Stühle ordentlich
 - **Status:** vorhanden
@@ -343,7 +343,7 @@ Quality inspection in a clean office: a hand holding a tablet with a checklist w
 - **Pfad:** `bilder/objektbesichtigung.jpg` → `public/images/objektbesichtigung-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 2400 × 1350 px
-- **Verwendet auf:** Ablauf
+- **Verwendet auf:** derzeit nicht verwendet (Hochhäuser im Fenster)
 - **Inhalt:** Objektbesichtigung: zwei Personen gehen durch leeres Büro, eine macht Notizen, 16:9
 - **Alt-Text:** Objektbesichtigung: Begehung eines Büros mit Notizen zur Fläche
 - **Status:** vorhanden
@@ -411,7 +411,7 @@ Top-down view of a tidy light desk with a smartphone, a notebook with a pen and 
 - **Pfad:** `bilder/partner-hero.jpg` → `public/images/partner-hero-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 2400 × 1350 px
-- **Verwendet auf:** Partnerprogramm (Hero)
+- **Verwendet auf:** derzeit nicht verwendet (Hochhäuser im Fenster)
 - **Inhalt:** Partner: zwei Unternehmer per Handschlag im hellen Besprechungsraum, Tablet und Unterlagen auf dem Tisch, 16:9
 - **Alt-Text:** Zwei Unternehmer geben sich in einem hellen Besprechungsraum die Hand
 - **Status:** vorhanden
@@ -462,7 +462,7 @@ Owner of a small cleaning company in a tidy storage room with shelves of labeled
 - **Pfad:** `bilder/partner-einarbeitung.jpg` → `public/images/partner-einarbeitung-<breite>.avif|webp`
 - **Seitenverhältnis:** 16:9
 - **Mindestauflösung:** 2400 × 1350 px
-- **Verwendet auf:** Partnerprogramm (Modul Einarbeitung und Support)
+- **Verwendet auf:** Partnerprogramm (Kopfbild, Modul Einarbeitung und Support)
 - **Inhalt:** Partner Einarbeitung: Trainer erklärt Ablauf am großen Bildschirm, drei Teilnehmende mit Notizbüchern, 16:9
 - **Alt-Text:** Einarbeitung: Trainer erklärt drei neuen Partnern einen Ablauf am Bildschirm
 - **Status:** vorhanden

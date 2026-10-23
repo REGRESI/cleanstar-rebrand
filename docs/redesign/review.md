@@ -54,3 +54,12 @@ Grundlage: Vorher/Nachher der Startseite in `docs/redesign/rhythmus/` (1440 und 
 | 30 | Alle Seiten | „Kurz gesagt“ direkt unter dem Seitenkopf bremste den Einstieg. | Als „Auf einen Blick“ ans Ende des Hauptinhalts vor den Abschluss, nur Haarlinie, Inhalt unverändert. | behoben |
 | 31 | Glanz-Momente | Keine. | Glanz-Stern aus dem Markenzeichen blitzt einmal kurz auf: am Ende des Hero-Videos auf den Tischen, neben jeder Lösung nach dem Durchstreichen, bei jedem abgehakten Prüfpunkt. Unter einer Sekunde, höchstens drei gleichzeitig, bei reduzierter Bewegung aus. | umgesetzt |
 | 32 | Startseite und Footer | Die Leitidee steht im Abschluss und im Footer kurz hintereinander. | Bewusst so gelassen, beides war gewünscht; zwischen beiden liegen die Footer-Spalten. | Entscheidung |
+
+## Letzte Korrekturen
+
+| Nr. | Bereich | Befund | Maßnahme | Status |
+| --- | --- | --- | --- | --- |
+| 33 | Bilder | Fotos mit Hochhaus-Skyline passen nicht zu Offenburg: Vorher/Nachher-Paar, „Büro am Morgen“, „Objektbesichtigung“, Partner-Kopfbild. | Vorher/Nachher jetzt aus dem Hero-Video (dasselbe Büro am Abend und am Morgen, Hügel im Fenster); Bildbänder Leistungen und Qualitätsgarantie sowie Ablauf „Erster Monat“ mit dem Morgenbüro; Ablauf-Kopfbild Eingangshalle; Kontakt-Bildband Region; Partner-Kopfbild Einarbeitung, Partner-Bildband Halle. Die Skyline-Fotos sind in `images.ts` als „derzeit nicht verwendet“ markiert. | behoben |
+| 34 | Startseite | Leitidee im Abschluss und direkt danach im Footer. | Abschluss wieder mit „Ein Gespräch. Eine Besichtigung. Ein klares Angebot.“ als große Headline; Leitidee nur im Hero und im Footer. | behoben |
+| 35 | Leistungsliste | Nicht aktive Zeilen grau, wirkten deaktiviert. | Alle Titel in voller Textfarbe; aktive Zeile nur mit Nummer in Markenblau, leicht versetztem Pfeil und Fotowechsel. | behoben |
+| 36 | Prüfpunkte, Ablauf mobil | Noch nicht erreichte Einträge zu grau. | Nur noch leicht abgeschwächt (zweiter Textton statt Grau), Beschreibungen immer in normaler Textfarbe. | behoben |

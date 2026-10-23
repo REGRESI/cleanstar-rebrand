@@ -23,7 +23,7 @@ const Chunk = ({ children }: { children: ReactNode }) => <Suspense fallback={nul
  * Startseite: eine Geschichte in acht Schritten.
  * 1 Hero mit Scroll-Video (Leitidee) · 2 Versprechen, danach ein randloses Bildband · 3 Das kennen Sie vielleicht (dunkel) ·
  * 4 Leistungen · 5 Beweise (nur mit Einträgen) · 6 Gründer (Papierfläche) · 7 Einzugsgebiet · Auf einen Blick und Werkzeuge ·
- * 8 Abschluss (dunkel, mit der Leitidee). Nie mehr als zwei helle Textabschnitte hintereinander.
+ * 8 Abschluss (dunkel). Die Leitidee steht im Hero und im Footer. Nie mehr als zwei helle Textabschnitte hintereinander.
  */
 export default function Home() {
   // Abschnittsnummern: Beweise zählen nur mit, wenn sie erscheinen
@@ -58,7 +58,7 @@ export default function Home() {
         <ToolsLine />
       </Chunk>
       <Chunk>
-        <FinalCta index={n(proof ? 7 : 6)} promise />
+        <FinalCta index={n(proof ? 7 : 6)} />
       </Chunk>
     </>
   )

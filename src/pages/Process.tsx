@@ -60,8 +60,8 @@ export default function Process() {
         eyebrow="Ablauf"
         title="So arbeiten wir zusammen."
         lead="Sechs klare Schritte, ohne Überraschungen. Ihr Aufwand: ein Termin für die Besichtigung. Den Rest organisieren wir, und im ersten Monat können Sie jederzeit kündigen."
-        image="inspection"
-        caption="Objektbesichtigung"
+        image="svc-unterhalt"
+        caption="Fester Start im Objekt"
         actions={
           <>
             <QuoteButton size="lg" arrow>
@@ -74,7 +74,7 @@ export default function Process() {
         }
       />
       <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" index="01" />
-      <ImageBand id="svc-unterhalt" />
+      <ImageBand id="evening-clean" />
       <section className="section bg-surface" aria-labelledby="details-title">
         <div className="container-site">
           <SectionHeading layout="rail" index="02" eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />
@@ -109,7 +109,7 @@ export default function Process() {
             </div>
           </div>
           <div className="col-span-12 lg:col-span-5 lg:col-start-8">
-            <Picture id="trial-clean" ratio="4:5" reveal tone="dark" sizes="(min-width:1024px) 40vw, 100vw" />
+            <Picture id="after-office" ratio="4:5" reveal tone="dark" sizes="(min-width:1024px) 40vw, 100vw" />
           </div>
         </div>
       </section>

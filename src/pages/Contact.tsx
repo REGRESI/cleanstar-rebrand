@@ -83,7 +83,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <ImageBand id="inspection" caption="Objektbesichtigung vor Ort" />
+      <ImageBand id="region" caption="Wir kommen zu Ihnen, im ganzen Ortenaukreis" />
       <section id="besichtigung" className="section scroll-mt-28 bg-surface" aria-labelledby="booking-title">
         <div className="container-site">
           <SectionHeading

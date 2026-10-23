@@ -43,22 +43,22 @@ export const images = {
     available: true,
     ratio: '16:9',
     minWidth: 1920,
-    alt: 'Schreibtisch vor der Reinigung mit Kaffeetassen, Krümeln und Staub auf dem Monitor',
-    label: 'VORHER: Arbeitsplatz am Abend, benutzte Tassen, Krümel, Fingerabdrücke, Staub, 16:9',
+    alt: 'Großraumbüro am Abend nach Feierabend: benutzte Tassen, Papiere und verschobene Stühle an den Arbeitsplätzen',
+    label: 'VORHER: dasselbe Großraumbüro am Abend, benutzte Arbeitsplätze, Blick auf die Hügel, 16:9 (Standbild aus dem Hero-Video)',
     prompt:
       'Modern open-plan office desk in the evening after a workday, used coffee mugs, crumbs, sticky notes, fingerprints on the glass desk divider, light dust on the monitor stand, slightly dim warm overhead light, same camera position as the matching after-image, eye level, wide angle',
-    usedOn: 'Startseite (Vorher/Nachher), Büroreinigung',
+    usedOn: 'Büroreinigung (Vorher/Nachher)',
   }),
   'after-office': img({
     file: 'nachher-buero',
     available: true,
     ratio: '16:9',
     minWidth: 1920,
-    alt: 'Derselbe Schreibtisch nach der Reinigung, aufgeräumt, glänzende Oberflächen',
-    label: 'NACHHER: derselbe Arbeitsplatz, identischer Bildausschnitt, makellos sauber, 16:9',
+    alt: 'Dasselbe Großraumbüro am Morgen nach der Reinigung: freie, saubere Schreibtische im Morgenlicht',
+    label: 'NACHHER: dasselbe Großraumbüro am Morgen, identischer Bildausschnitt, makellos, 16:9 (Standbild aus dem Hero-Video)',
     prompt:
       'The exact same modern open-plan office desk from the identical camera position, now spotless: clear desk surface, polished glass divider without fingerprints, dust-free monitor, chair neatly pushed in, bright clean morning daylight, fresh and calm atmosphere',
-    usedOn: 'Startseite (Vorher/Nachher), Büroreinigung',
+    usedOn: 'Büroreinigung (Vorher/Nachher), Bildbänder Leistungen und Qualitätsgarantie, Ablauf (Erster Monat)',
   }),
   'svc-buero': img({
     file: 'leistung-bueroreinigung',
@@ -92,7 +92,7 @@ export const images = {
     label: 'Empfangsbereich eines Unternehmens, frisch gewischter Steinboden, Morgenlicht, 16:9',
     prompt:
       'Bright corporate reception area in the early morning, freshly mopped light stone floor with subtle reflections, cleaning trolley parked discreetly at the edge, nobody in focus, calm architectural composition',
-    usedOn: 'Unterhaltsreinigung (Hero), Leistungskarte',
+    usedOn: 'Unterhaltsreinigung (Hero), Leistungskarte, Ablauf (Kopfbild)',
   }),
   'svc-fenster': img({
     file: 'leistung-fensterreinigung',
@@ -210,7 +210,7 @@ export const images = {
     alt: 'Aufgeräumtes, sauberes Großraumbüro im Morgenlicht, Schreibtische frei, Stühle ordentlich',
     label: 'Sauberes Büro am Morgen: leere, aufgeräumte Arbeitsplätze im Tageslicht, 16:9',
     prompt: 'Clean, tidy open-plan office in the morning, empty desks with monitors, chairs pushed in, bright daylight through large windows, calm and orderly',
-    usedOn: 'Ablauf (Erster Monat)',
+    usedOn: 'derzeit nicht verwendet (Hochhäuser im Fenster)',
   }),
   'quality-check': img({
     file: 'qualitaetskontrolle',
@@ -232,7 +232,7 @@ export const images = {
     label: 'Objektbesichtigung: zwei Personen gehen durch leeres Büro, eine macht Notizen, 16:9',
     prompt:
       'Two professionals walking through an empty modern office during a site inspection, one taking notes on a clipboard, pointing at the floor area, bright daylight, architectural wide shot',
-    usedOn: 'Ablauf',
+    usedOn: 'derzeit nicht verwendet (Hochhäuser im Fenster)',
   }),
   careers: img({
     file: 'karriere',
@@ -275,7 +275,7 @@ export const images = {
     label: 'Partner: zwei Unternehmer per Handschlag im hellen Besprechungsraum, Tablet und Unterlagen auf dem Tisch, 16:9',
     prompt:
       'Two business owners in their late thirties shaking hands in a bright modern office meeting room, one in a navy quarter-zip, the other in a light shirt, warm and confident atmosphere, tablet and documents on a white table, large windows, seen at a slight angle, faces natural and friendly',
-    usedOn: 'Partnerprogramm (Hero)',
+    usedOn: 'derzeit nicht verwendet (Hochhäuser im Fenster)',
   }),
   'partner-founder': img({
     file: 'partner-gruender',
@@ -308,7 +308,7 @@ export const images = {
     label: 'Partner Einarbeitung: Trainer erklärt Ablauf am großen Bildschirm, drei Teilnehmende mit Notizbüchern, 16:9',
     prompt:
       'Onboarding session in a modern office: a trainer explains a cleaning process on a large screen showing simple abstract diagrams to three new partners sitting at a table with notebooks, engaged and focused, natural light',
-    usedOn: 'Partnerprogramm (Modul Einarbeitung und Support)',
+    usedOn: 'Partnerprogramm (Kopfbild, Modul Einarbeitung und Support)',
   }),
 } satisfies Record<string, ImageSpec>
 

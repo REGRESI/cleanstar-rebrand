@@ -50,7 +50,7 @@ export default function Services() {
         }
       />
       <ServicesGrid heading={false} />
-      <ImageBand id="trial-clean" />
+      <ImageBand id="after-office" />
       <section className="section bg-surface" aria-labelledby="incl-title">
         <div className="container-site">
           <SectionHeading

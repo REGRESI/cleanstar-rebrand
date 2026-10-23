@@ -13,7 +13,8 @@ const featuredAreas = ['Arbeitsplätze und Besprechung', 'Teeküche und Sanitär
 /**
  * Leistungen als editoriale Liste.
  * Büroreinigung als großer Abschnitt mit randlosem Foto, die übrigen Leistungen als Zeilen mit Nummer,
- * großem Titel und Kurztext. Desktop: Beim Überfahren einer Zeile erscheint das passende Foto an fester Position.
+ * großem Titel und Kurztext. Alle Zeilen stehen in voller Textfarbe; die aktive Zeile (Desktop) zeigt nur dezent
+ * Nummer in Markenblau, leicht versetzten Pfeil und das passende Foto an fester Position.
  */
 export function ServicesGrid({ heading = true, index }: { heading?: boolean; index?: string }) {
   const Title = heading ? 'h3' : 'h2'
@@ -75,18 +76,17 @@ export function ServicesGrid({ heading = true, index }: { heading?: boolean; ind
                   className="group grid grid-cols-[2.75rem_1fr_auto] items-baseline gap-x-4 py-7 sm:grid-cols-[4rem_1fr_auto] sm:py-9"
                   data-reveal
                 >
-                  <span className="t-label">{String(i + 2).padStart(2, '0')}</span>
+                  <span className={cn('t-label transition-colors duration-300 group-hover:text-blue', active === i && 'lg:text-blue')}>{String(i + 2).padStart(2, '0')}</span>
                   <span className="min-w-0">
-                    <Title
-                      className={cn('t-h3 max-[400px]:text-[1.125rem] transition-colors duration-300', active === i ? 'lg:text-ink' : 'lg:text-ink/55', 'group-hover:text-ink')}
-                    >
-                      {s.name}
-                    </Title>
+                    <Title className="t-h3 text-ink max-[400px]:text-[1.125rem]">{s.name}</Title>
                     <span className="mt-2 block max-w-[46ch] text-ink-2">{s.short}</span>
                   </span>
                   <ArrowUpRight
                     aria-hidden
-                    className="size-5 self-center text-ink transition-transform duration-500 ease-cs group-hover:translate-x-1 group-hover:-translate-y-1"
+                    className={cn(
+                      'size-5 self-center text-ink transition-transform duration-500 ease-cs group-hover:translate-x-1 group-hover:-translate-y-1',
+                      active === i && 'lg:translate-x-1 lg:-translate-y-1',
+                    )}
                     strokeWidth={1.5}
                   />
                 </Link>

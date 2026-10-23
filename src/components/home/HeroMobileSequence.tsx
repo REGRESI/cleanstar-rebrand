@@ -80,8 +80,8 @@ export function HeroMobileSequence({ onFailed }: { onFailed: () => void }) {
               <li key={s.title} aria-current={on ? 'step' : undefined} className="grid grid-cols-[2.5rem_1fr] border-b border-line py-3">
                 <span className="t-label pt-0.5">{String(i + 1).padStart(2, '0')}</span>
                 <span>
-                  <span className={cn('block font-medium transition-colors duration-300', on ? 'text-ink' : 'text-muted')}>{s.title}</span>
-                  <span className={cn('block text-[0.9375rem] transition-colors duration-300', on ? 'text-ink-2' : 'text-muted')}>{s.text}</span>
+                  <span className={cn('block font-medium transition-colors duration-300', on ? 'text-ink' : 'text-ink-2')}>{s.title}</span>
+                  <span className="block text-[0.9375rem] text-ink-2">{s.text}</span>
                 </span>
               </li>
             )

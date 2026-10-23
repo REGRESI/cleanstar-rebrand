@@ -1,7 +1,7 @@
 import { RevealText } from '@/components/ui/RevealText'
 import { ContactPerson } from '@/components/ui/ContactPerson'
 import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
-import { brand, home } from '@/content/site'
+import { home } from '@/content/site'
 import { company } from '@/content/company'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { useQuote, type ObjectType } from '@/features/configurator/QuoteContext'
@@ -13,11 +13,8 @@ const types: { id: ObjectType; label: string }[] = [
   { id: 'sonstiges', label: 'Sonstiges' },
 ]
 
-/**
- * Abschluss auf dunklem Grund: kostenlose Besichtigung, Ansprechpartner, 24/7, direkter Einstieg in den Konfigurator.
- * `promise`: Die Leitidee steht groß als Überschrift, die eigentliche Überschrift darunter (Startseite).
- */
-export function FinalCta({ headline = home.finalCta.headline, index, promise }: { headline?: string; index?: string; promise?: boolean }) {
+/** Abschluss auf dunklem Grund: kostenlose Besichtigung, Ansprechpartner, 24/7, direkter Einstieg in den Konfigurator. */
+export function FinalCta({ headline = home.finalCta.headline, index }: { headline?: string; index?: string }) {
   const { open } = useQuote()
   return (
     <section className="on-dark section bg-night text-paper" aria-labelledby="cta-title">
@@ -28,14 +25,7 @@ export function FinalCta({ headline = home.finalCta.headline, index, promise }: 
             {index ? `${index} / ` : ''}
             {home.finalCta.eyebrow}
           </p>
-          {promise ? (
-            <div className="col-span-12">
-              <RevealText as="h2" id="cta-title" text={brand.promiseSet} className="t-display" />
-              <RevealText as="p" text={headline} className="t-h3 mt-10 max-w-[24ch] text-paper lg:mt-14" />
-            </div>
-          ) : (
-            <RevealText as="h2" id="cta-title" text={headline} className="t-h1 col-span-12 max-w-[16ch] lg:col-span-9" />
-          )}
+          <RevealText as="h2" id="cta-title" text={headline} className="t-h1 col-span-12 max-w-[16ch] lg:col-span-9" />
         </div>
 
         <div className="grid-site mt-12 gap-y-14 lg:mt-20">

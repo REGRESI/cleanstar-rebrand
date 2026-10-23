@@ -54,7 +54,7 @@ export default function Partner() {
         eyebrow={page.hero.eyebrow}
         title={page.hero.headline}
         lead={page.hero.sub}
-        image="partner-hero"
+        image="partner-onboarding"
         actions={
           <>
             <Button href="#bewerbung" size="lg" arrow onClick={(e) => (e.preventDefault(), toForm())}>
@@ -145,7 +145,7 @@ export default function Partner() {
         </section>
       </Chunk>
       <Chunk>
-        <ImageBand id="partner-onboarding" />
+        <ImageBand id="svc-halle" />
         <ProcessTimeline index="06" eyebrow="Ablauf" title="In sieben Schritten zum Partner." steps={partnerSteps} id="partner-process-title" />
       </Chunk>
       <Chunk>
