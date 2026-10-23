@@ -18,3 +18,24 @@ Grundlage: Ganzseiten-Screenshots auf 1440 px und 390 px von Start, Leistungen, 
 | 10 | Einzugsgebiet | Karte ohne Leuchten, nur Tinte und Blau, Ortsliste mit Mono-Fahrzeiten. Ortsnamen der kleinen Orte erst beim Überfahren. | Passt zum Konzept, keine Änderung. | in Ordnung |
 | 11 | Qualitätsgarantie | Fortschritt „00 / 08“ und Nummerierung sitzen, Reklamationsablauf dunkel abgesetzt. | Keine Änderung. | in Ordnung |
 | 12 | Ablauf | Große Ziffern mit Linie statt Slider, Wechsel-Rechner eingebettet. | Keine Änderung. | in Ordnung |
+
+## Durchgang 2
+
+Grundlage: neue Screenshots nach Durchgang 1 (Start, Karriere, FAQ, Über uns, Leistungen auf 1440 und 390 px), Typografie-Prüfung aller 74 Seiten auf 320, 375, 390, 1440 und 1920 px, Prüfung des Handy-Menüs nach dem Scrollen.
+
+| Nr. | Seite | Befund | Maßnahme | Status |
+| --- | --- | --- | --- | --- |
+| 13 | Start mobil, Hero | Die Mono-Zeile liegt auf dem Handy auf dem hellen Himmel des Fotos und bleibt trotz voller Deckkraft schwach. | Abdunklung von unten reicht auf dem Handy höher (90 % statt 70 % der Bildhöhe) und ist dort etwas kräftiger. | behoben |
+| 14 | Alle Seiten mobil, Menü | Nach dem Herunterscrollen öffnete sich das Vollbild-Menü nur in der Höhe der Kopfzeile, weil die verschobene Kopfzeile Bezugsrahmen für das Menü war. Dazu fehlte dem Menüknopf die Beschriftung für Screenreader. | Nur die Leiste wird verschoben, das Menü liegt außerhalb davon. Beschriftung „Menü öffnen“ bzw. „Menü schließen“ wieder ergänzt. | behoben |
+| 15 | Start, Leistungen (320 px) | Leistungsnamen wie „Treppenhausreinigung“ ragten in der Liste über den Rand. | Unter 400 px etwas kleinere Schrift für die Leistungszeilen. | behoben |
+| 16 | Qualitätsgarantie (320 px) | Drei Zusagen ragten über den Rand. | Unter 400 px kleinere Zeilenüberschrift. | behoben |
+| 17 | Ratgeber-Artikel (320 bis 390 px) | Lange Titel liefen über den Rand und erzeugten seitliches Scrollen. | Kleinere Mindestgröße der Artikelüberschrift, Schutz gegen einzelne Wörter in der letzten Zeile nur bei kurzen Wortpaaren. | behoben |
+| 18 | Ablauf, Wechsel-Rechner (320 px) | Datum „Montag, 30. November 2026“ ragte über die Karte. | Unter 400 px kleinere Schrift. | behoben |
+| 19 | Footer (320 px) | „Treppenhausreinigung“ ragte in der zweispaltigen Linkliste über den Rand. | Unter 400 px eine Spalte. | behoben |
+| 20 | Angebot | „innerhalb von 24 Stunden“ konnte zwischen Zahl und Einheit umbrechen. | Geschütztes Leerzeichen. | behoben |
+| 21 | Fakten | Überschrift „Mehr erfahren“ über den Links (Muster aus der Liste der Vorlagen-Floskeln). | Umbenannt in „Weiterführende Seiten“. | behoben |
+| 22 | Start mobil, Hero | In 320 bis 390 px steht „müssen.“ allein in der letzten Zeile. | Bewusst so gelassen: „nachfragen müssen.“ passt in Displaygröße nicht in eine Handyzeile, eine kleinere Schrift würde das Versprechen schwächen. | Entscheidung |
+| 23 | Über uns, Ratgeber, Einzugsgebiet, Reinigungs-Check | Einzelne lange Wörter („Zuständigkeiten.“, „Beispielrechnungen“, „zuhause.“, „Reinigung?“) in der letzten Zeile auf schmalen Bildschirmen. | Kein Fehler: Die Wortpaare passen nicht gemeinsam in eine Zeile, ein Zusammenhalten würde Überlauf erzeugen. | Entscheidung |
+| 24 | Alle Seiten | Suche nach Resten der Vorlagen-Muster im Code: große Rundungen, Schatten, Großbuchstaben-Labels, Verläufe als Schmuck, Glas-Effekte, Icon-Kreise, Linksrand-Hinweise, „Mehr erfahren“. | Keine Treffer mehr. Übrig sind zwei kleine Statuspunkte (rund, 6 px) und die Abdunklung im Hero-Foto, beide funktional. | in Ordnung |
+
+Ergebnis Typografie-Prüfung nach Durchgang 2: kein Überlauf und kein seitliches Scrollen mehr auf 320, 375, 390, 1440 und 1920 px; die verbliebenen Hinweise sind die unter Nr. 22 und 23 begründeten.
