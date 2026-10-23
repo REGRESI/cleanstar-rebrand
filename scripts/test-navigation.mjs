@@ -103,6 +103,10 @@ async function runDevice(browser, label, opts) {
         const from = await scrollToBottom(page)
         let clicked
         if (l.menu) {
+          // Die Kopfzeile blendet sich beim Herunterscrollen aus und erscheint beim Hochscrollen wieder
+          await page.evaluate(() => window.scrollBy(0, -200))
+          await page.waitForFunction(() => (document.querySelector('[aria-controls="mobile-menu"]')?.getBoundingClientRect().top ?? -1) >= 0)
+          await page.waitForTimeout(700)
           await page.getByRole('button', { name: 'Menü öffnen' }).click()
           const link = page.locator('#mobile-menu a[href="' + l.href + '"]').first()
           clicked = (await link.count()) > 0

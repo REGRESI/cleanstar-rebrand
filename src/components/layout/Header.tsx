@@ -65,8 +65,14 @@ export function Header() {
   }, [menu])
 
   return (
-    <header className={cn('fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-cs focus-within:translate-y-0', hidden && !menu && '-translate-y-full')}>
-      <div className="relative z-10 border-b border-line bg-paper">
+    // Nur die Leiste wird verschoben: Ein transformierter <header> wäre Bezugsrahmen für das feste Vollbild-Menü
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+      <div
+        className={cn(
+          'pointer-events-auto relative z-10 border-b border-line bg-paper transition-transform duration-500 ease-cs focus-within:translate-y-0',
+          hidden && !menu && '-translate-y-full',
+        )}
+      >
         <div className="container-site flex h-16 items-center justify-between gap-6 lg:h-[4.75rem]">
           <HomeLink label={`${company.name}, zur Startseite`} className="shrink-0" onNavigate={() => setMenu(false)}>
             <Logo className="w-[124px] lg:w-[142px]" />
@@ -97,6 +103,7 @@ export function Header() {
             <button
               type="button"
               className="-mr-2 flex h-11 items-center gap-3 px-2 text-[0.9375rem] font-medium text-ink lg:hidden"
+              aria-label={menu ? 'Menü schließen' : 'Menü öffnen'}
               aria-expanded={menu}
               aria-controls="mobile-menu"
               onClick={() => setMenu((m) => !m)}
@@ -116,7 +123,7 @@ export function Header() {
           <motion.div
             id="mobile-menu"
             data-lenis-prevent
-            className="fixed inset-0 flex flex-col overflow-y-auto bg-paper pt-16 lg:hidden"
+            className="pointer-events-auto fixed inset-0 flex flex-col overflow-y-auto bg-paper pt-16 lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
