@@ -101,7 +101,7 @@ export const home = {
   },
   about: {
     eyebrow: 'Die Gründer',
-    headline: 'Drei Gründer. Drei Gesichter, die Sie kennen.',
+    headline: 'Drei Gründer. Drei Gesichter, die Sie kennenlernen.',
     text: 'Bei CleanStar sprechen Sie mit den Menschen, die entscheiden. Kein Callcenter, keine Zentrale in einer anderen Stadt. Jeder von uns hat seinen Bereich, und wer bei uns anruft, erreicht jemanden, der sein Wort hält.',
     /** Ein Satz für die Startseite */
     short: 'Bei CleanStar sprechen Sie mit den Menschen, die entscheiden. Kein Callcenter, keine Zentrale in einer anderen Stadt.',

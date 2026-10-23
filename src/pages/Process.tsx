@@ -1,3 +1,4 @@
+import { ImageBand } from '@/components/ui/ImageBand'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -73,7 +74,8 @@ export default function Process() {
         }
       />
       <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" index="01" />
-      <section className="section pt-0!" aria-labelledby="details-title">
+      <ImageBand id="svc-unterhalt" />
+      <section className="section bg-surface" aria-labelledby="details-title">
         <div className="container-site">
           <SectionHeading layout="rail" index="02" eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />
           <ul className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4">

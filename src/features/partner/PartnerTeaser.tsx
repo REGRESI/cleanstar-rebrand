@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 
 /** Schmaler Hinweis auf das Partnerprogramm (Über uns, Karriere): eine Zeile mit Haarlinien, kein Kasten. */
-export function PartnerTeaser() {
+export function PartnerTeaser({ className = 'pb-24 lg:pb-36' }: { className?: string }) {
   return (
-    <section aria-label="Partnerprogramm" className="pb-24 lg:pb-36">
+    <section aria-label="Partnerprogramm" className={className}>
       <div className="container-site">
         <Link to="/partner" className="group grid-site gap-y-3 border-y border-line py-7" data-reveal>
           <span className="t-label col-span-12 lg:col-span-3 lg:pt-1">Partnerprogramm</span>

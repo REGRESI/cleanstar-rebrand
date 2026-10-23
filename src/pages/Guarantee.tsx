@@ -3,6 +3,8 @@ import { noOrphan } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
+import { ImageBand } from '@/components/ui/ImageBand'
+import { Sparkle } from '@/components/ui/Sparkle'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
 import { Todo } from '@/components/ui/Todo'
@@ -73,10 +75,6 @@ export default function Guarantee() {
         caption="Qualitätskontrolle vor Ort"
         actions={<QuoteButton size="lg" arrow />}
       />
-      <Answer className="pt-20 sm:pt-28">
-        Die Qualitätsgarantie von CleanStar bedeutet: Passt etwas nicht, reinigen wir kostenlos nach und klären die Ursache mit dem Team. Dazu kommen eigene Qualitätskontrollen,
-        ein fester Ansprechpartner und eine Ersatzkraft bei Ausfall.
-      </Answer>
 
       <section className="section" aria-labelledby="points-title">
         <div className="container-site grid-site gap-y-12">
@@ -129,6 +127,9 @@ export default function Guarantee() {
                         )}
                       >
                         {noOrphan(p.title, 16)}
+                        <span aria-hidden className="relative inline-block w-0">
+                          <Sparkle play={on} delay={0.15} className="absolute bottom-[0.2em] left-[0.3em] size-[0.6em]" />
+                        </span>
                       </h3>
                       <p className="measure mt-3 text-ink-2">
                         {p.usesComplaintPeriod && company.complaintPeriod
@@ -144,6 +145,8 @@ export default function Guarantee() {
           </div>
         </div>
       </section>
+
+      <ImageBand id="after-office" />
 
       <section className="on-dark section bg-night text-paper" aria-labelledby="complaint-title">
         <div className="container-site">
@@ -204,6 +207,10 @@ export default function Guarantee() {
         </div>
       </section>
 
+      <Answer>
+        Die Qualitätsgarantie von CleanStar bedeutet: Passt etwas nicht, reinigen wir kostenlos nach und klären die Ursache mit dem Team. Dazu kommen eigene Qualitätskontrollen,
+        ein fester Ansprechpartner und eine Ersatzkraft bei Ausfall.
+      </Answer>
       <FinalCta />
     </>
   )

@@ -3,7 +3,7 @@ import { PageHero } from '@/components/ui/PageHero'
 import { places } from '@/content/places'
 import { Answer } from '@/components/ui/Answer'
 import { RevealText } from '@/components/ui/RevealText'
-import { Picture } from '@/components/ui/Picture'
+import { ImageBand } from '@/components/ui/ImageBand'
 import { AreaMap } from '@/features/map/AreaMap'
 import { FinalCta } from '@/components/home/FinalCta'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
@@ -31,7 +31,6 @@ export default function Area() {
         lead="Unser Sitz ist in Offenburg, mitten im Kreis. Von hier aus sind wir schnell bei Ihnen, ob in Kehl am Rhein, in Achern im Norden oder in Haslach im Kinzigtal."
         actions={<QuoteButton size="lg" arrow />}
       />
-      <Answer className="pt-20 sm:pt-28">{`CleanStar reinigt Büros und Gewerbeflächen in ${places.length} Orten im Ortenaukreis, von Rheinau im Norden bis Ettenheim und Rust im Süden und Wolfach im Kinzigtal. Unser Sitz ist in Offenburg.`}</Answer>
       <section className="section-tight" aria-labelledby="map-title">
         <div className="container-site">
           <h2 id="map-title" className="sr-only">
@@ -40,22 +39,20 @@ export default function Area() {
           <AreaMap />
         </div>
       </section>
-      <section className="section" aria-labelledby="why-local-title">
-        <div className="container-site grid-site gap-y-12 lg:items-end">
-          <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+      <ImageBand id="region" caption="Ortenaukreis" />
+      <section className="on-dark section bg-night text-paper" aria-labelledby="why-local-title">
+        <div className="container-site grid-site gap-y-8 lg:items-end">
           <div className="col-span-12 lg:col-span-6">
             <p className="t-label mb-6">Warum regional</p>
             <RevealText as="h2" text="Kurze Wege sind kein Detail." id="why-local-title" className="t-h2" />
-            <p className="t-lead measure mt-8" data-reveal>
-              Wenn ein Team ausfällt oder Sie kurzfristig eine Zusatzreinigung brauchen, zählt jede Minute Anfahrt. Weil wir uns auf den Ortenaukreis konzentrieren, können wir
-              planen, vertreten und nachreinigen, ohne lange Wege.
-            </p>
           </div>
-          <div className="col-span-12 lg:col-span-5 lg:col-start-8">
-            <Picture id="region" ratio="4:5" reveal sizes="(min-width:1024px) 40vw, 100vw" caption="Ortenaukreis" />
-          </div>
+          <p className="t-lead col-span-12 measure lg:col-span-5 lg:col-start-8" data-reveal>
+            Wenn ein Team ausfällt oder Sie kurzfristig eine Zusatzreinigung brauchen, zählt jede Minute Anfahrt. Weil wir uns auf den Ortenaukreis konzentrieren, können wir
+            planen, vertreten und nachreinigen, ohne lange Wege.
+          </p>
         </div>
       </section>
+      <Answer className="pt-20 sm:pt-28 lg:pt-36">{`CleanStar reinigt Büros und Gewerbeflächen in ${places.length} Orten im Ortenaukreis, von Rheinau im Norden bis Ettenheim und Rust im Süden und Wolfach im Kinzigtal. Unser Sitz ist in Offenburg.`}</Answer>
       <FinalCta />
     </>
   )

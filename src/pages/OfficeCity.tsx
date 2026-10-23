@@ -8,6 +8,7 @@ import { formatNumber, formatEuroRange } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
+import { ImageBand } from '@/components/ui/ImageBand'
 import { FaqBlock } from '@/components/ui/FaqBlock'
 import { InlineLinks } from '@/components/ui/Editorial'
 import { Button } from '@/components/ui/Button'
@@ -62,8 +63,6 @@ export default function OfficeCity() {
         </div>
       </PageHero>
 
-      <Answer className="pt-4">{c.answer}</Answer>
-
       <section className="section" aria-label={`Büroreinigung in ${c.name} im Detail`}>
         <div className="container-site grid-site gap-y-16">
           <div className="col-span-12 space-y-16 lg:col-span-7">
@@ -116,9 +115,11 @@ export default function OfficeCity() {
         </div>
       </section>
 
-      <FaqBlock className="section pt-0!" title={`Büroreinigung ${c.name}: Ihre Fragen.`} id="oc-faq" items={c.faqs.map((f) => ({ title: f.q, content: f.a }))} />
+      <ImageBand id="svc-buero" />
 
-      <nav className="container-site pb-24 lg:pb-36" aria-labelledby="oc-more">
+      <FaqBlock className="section bg-surface" title={`Büroreinigung ${c.name}: Ihre Fragen.`} id="oc-faq" items={c.faqs.map((f) => ({ title: f.q, content: f.a }))} />
+
+      <nav className="container-site pt-20 pb-12 sm:pt-28 lg:pt-36 lg:pb-14" aria-labelledby="oc-more">
         <div className="grid-site gap-y-5 border-t border-line pt-6">
           <h2 id="oc-more" className="t-label col-span-12 lg:col-span-4">
             Mehr zu {c.name} und Umgebung
@@ -133,6 +134,7 @@ export default function OfficeCity() {
           />
         </div>
       </nav>
+      <Answer>{c.answer}</Answer>
       <FinalCta headline={`Büroreinigung in ${c.name}: Lernen wir uns kennen.`} />
     </>
   )

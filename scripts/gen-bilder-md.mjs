@@ -88,6 +88,7 @@ Das neue Design zeigt jedes Bild in einem festen Rahmen mit festem Seitenverhäl
 | Porträt | 4:5 | Über uns, Startseite, Kontakt, Ratgeber-Autor | Gründer einzeln vor ruhigem, hellem Hintergrund, Brusthöhe, Blick in die Kamera | Kopf im oberen Drittel, Schultern vollständig |
 | Detail hoch | 4:5 | Büroreinigung, Qualitätsgarantie, Ablauf, Einzugsgebiet, Karriere, Partner | Detail einer Handlung: Tuch auf Tischfläche, Checkliste, Schlüsselübergabe, Teambesprechung, Gebäude in der Region | Hochformat, Hände oder Gegenstand mittig |
 | Team breit | 3:2 | Über uns | Zwei bis drei Personen bei der Arbeit im Flur oder Büro | Personen im mittleren Bereich, Boden sichtbar |
+| Bildband (randlos) | 21:9 ab Tablet, 4:3 auf dem Handy | Startseite, Leistungen, Leistungsseiten, Qualitätsgarantie, Ablauf, Einzugsgebiet, Standortseiten, Über uns, Karriere, Kontakt, Partner, Ratgeber | Weite, ruhige Ansichten: Großraumbüro mit Fensterfront, Flur mit Team, Gebäude in der Region, Treppenhaus | Volle Breite, bewegt sich beim Scrollen leicht: oben und unten je 10 % Reserve, nichts Wichtiges an den Rändern, mindestens 1920 px breit |
 | Vorher und Nachher | 16:9 | Büroreinigung | Derselbe Arbeitsplatz vorher und nachher, Stativ, gleiche Position und gleiches Licht | Kamera darf sich zwischen den Aufnahmen nicht bewegen |
 
 ### Zusätzlich gewünscht (sobald Freigaben vorliegen)

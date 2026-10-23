@@ -1,7 +1,7 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { Picture } from '@/components/ui/Picture'
+import { ImageBand } from '@/components/ui/ImageBand'
 import { Todo } from '@/components/ui/Todo'
 import { Accordion } from '@/components/ui/Accordion'
 import { Button } from '@/components/ui/Button'
@@ -51,9 +51,9 @@ export default function Careers() {
           </p>
         </div>
       </section>
-      <section className="section pt-0!" aria-labelledby="jobs-title">
+      <ImageBand id="team-work" />
+      <section className="section bg-surface" aria-labelledby="jobs-title">
         <div className="container-site grid-site gap-y-12">
-          <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
           <div className="col-span-12 lg:col-span-4">
             <SectionHeading
               index="02"
@@ -63,9 +63,6 @@ export default function Careers() {
               size="h3"
               text="Keine passende Stelle dabei? Bewerben Sie sich trotzdem, wir freuen uns über gute Leute."
             />
-            <div className="mt-10 hidden lg:block">
-              <Picture id="team-work" ratio="4:5" reveal sizes="30vw" />
-            </div>
           </div>
           <div className="col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
             <Accordion

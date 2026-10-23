@@ -61,24 +61,7 @@ export function Footer() {
   return (
     <footer className="relative border-t border-line bg-paper pb-24 lg:pb-0">
       <div className="container-site">
-        {/* Schlusssatz: das Markenversprechen */}
-        <div className="grid-site gap-y-10 pt-24 pb-20 lg:pt-40 lg:pb-32">
-          <RevealText
-            as="p"
-            text={brand.promiseSet}
-            className="col-span-12 text-[clamp(2.75rem,1rem+6.2vw,7.5rem)] leading-[0.98] font-medium tracking-[-0.045em] lg:col-span-10"
-          />
-          <div className="col-span-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10" data-reveal>
-            <QuoteButton variant="link" className="text-lg">
-              Kostenlose Besichtigung anfragen
-            </QuoteButton>
-            <a href={company.phone.href} className="ulink self-start font-mono text-[0.9375rem] text-ink sm:self-auto">
-              {company.phone.display} · {company.availability}
-            </a>
-          </div>
-        </div>
-
-        <div className="grid-site gap-y-12">
+        <div className="grid-site gap-y-12 pt-20 lg:pt-28">
           <div className="col-span-12 border-t border-line pt-5 md:col-span-6 lg:col-span-4">
             <h2 className="t-label">Kontakt</h2>
             <ul className="mt-5 space-y-3">
@@ -158,10 +141,21 @@ export function Footer() {
           </Column>
         </div>
 
-        {/* Logo groß als Abschluss */}
-        <div className="mt-24 border-t border-line pt-10 lg:mt-32 lg:pt-14">
-          <HomeLink label={`${company.name}, zur Startseite`} className="block">
-            <Logo className="w-full max-w-[64rem]" />
+        {/* Schluss: die Leitidee in der Display-Schrift, darunter das Logo groß und einfarbig */}
+        <div className="mt-24 grid-site gap-y-10 border-t border-line pt-16 lg:mt-36 lg:pt-24">
+          <RevealText as="p" text={brand.promiseSet} className="t-display col-span-12" />
+          <div className="col-span-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10" data-reveal>
+            <QuoteButton variant="link" className="text-lg">
+              Kostenlose Besichtigung anfragen
+            </QuoteButton>
+            <a href={company.phone.href} className="ulink self-start font-mono text-[0.9375rem] text-ink sm:self-auto">
+              {company.phone.display} · {company.availability}
+            </a>
+          </div>
+        </div>
+        <div className="mt-16 lg:mt-24">
+          <HomeLink label={`${company.name}, zur Startseite`} className="block text-ink">
+            <Logo mono className="w-full max-w-[64rem]" />
           </HomeLink>
         </div>
 

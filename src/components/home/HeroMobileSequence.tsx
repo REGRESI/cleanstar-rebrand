@@ -4,6 +4,8 @@ import { home } from '@/content/site'
 import { cn } from '@/lib/cn'
 import { useHeroSequence } from './useHeroSequence'
 import { KeyOverlays } from './KeyOverlays'
+import { GLINTS } from './glints'
+import { Sparkle } from '@/components/ui/Sparkle'
 
 /** Grenzen der drei Schritte im Sequenzfortschritt (Feierabend, Reinigung, Morgen) */
 const STEP_AT = [0, 0.5, 0.9]
@@ -49,6 +51,16 @@ export function HeroMobileSequence({ onFailed }: { onFailed: () => void }) {
           <img src={hero.mobile[0]} alt="" aria-hidden loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover" />
           <canvas ref={canvas} aria-hidden className={cn('absolute inset-0 size-full object-cover transition-opacity duration-300', seq.drawn ? 'opacity-100' : 'opacity-0')} />
           {seq.load && <KeyOverlays activeKey={seq.activeKey} variant="m" />}
+          {/* Morgen: kurze Glanzpunkte auf den Tischen, einmalig */}
+          {GLINTS.map((g, i) => (
+            <Sparkle
+              key={i}
+              play={step === 2}
+              delay={g.delay}
+              className="absolute -translate-x-1/2 -translate-y-1/2"
+              style={{ left: `${g.x * 100}%`, top: `${g.y * 100}%`, width: g.size * 0.6, height: g.size * 0.6 }}
+            />
+          ))}
           {seq.load && seq.progress < 1 && (
             <span
               aria-hidden

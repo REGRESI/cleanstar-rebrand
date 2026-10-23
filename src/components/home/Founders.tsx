@@ -9,7 +9,7 @@ import type { ImageId } from '@/content/images'
 export function Founders({ index }: { index?: string }) {
   const founders = company.founders.slice(0, 3)
   return (
-    <section className="section" aria-labelledby="about-title">
+    <section className="section bg-surface" aria-labelledby="about-title">
       <div className="container-site">
         <SectionHeading layout="rail" index={index} eyebrow={home.about.eyebrow} title={home.about.headline} text={home.about.short} id="about-title" />
         <ul className="grid-site mt-16 gap-y-12 lg:mt-24">

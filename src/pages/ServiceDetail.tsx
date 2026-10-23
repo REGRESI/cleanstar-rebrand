@@ -4,6 +4,7 @@ import { home } from '@/content/site'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
+import { ImageBand } from '@/components/ui/ImageBand'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
 import { RevealText } from '@/components/ui/RevealText'
@@ -54,7 +55,6 @@ export default function ServiceDetail() {
           </>
         }
       />
-      <Answer className="pt-20 sm:pt-28">{`CleanStar übernimmt die ${s.name} für Unternehmen in Offenburg und im ganzen Ortenaukreis. ${s.short}`}</Answer>
 
       {/* Die vier Punkte: einheitliche Spalten mit Haarlinie, auf allen Leistungsseiten gleich */}
       <section className="section-tight" aria-label="Das zeichnet uns aus">
@@ -108,7 +108,7 @@ export default function ServiceDetail() {
       </section>
 
       {/* Intervalle und Zielgruppen */}
-      <section className="section pt-0!" aria-label="Intervalle und Zielgruppen">
+      <section className="section bg-surface" aria-label="Intervalle und Zielgruppen">
         <div className="container-site grid-site gap-y-16">
           <div className="col-span-12 lg:col-span-6">
             <h2 className="t-h3" data-reveal>
@@ -131,9 +131,11 @@ export default function ServiceDetail() {
         </div>
       </section>
 
+      {!main && <ImageBand id="team-work" />}
+
       {main && (
         <>
-          <section id="grundriss" className="section scroll-mt-24 pt-0!" aria-labelledby="plan-title">
+          <section id="grundriss" className="section scroll-mt-24" aria-labelledby="plan-title">
             <div className="container-site">
               <SectionHeading
                 layout="split"
@@ -169,7 +171,8 @@ export default function ServiceDetail() {
               </div>
             </div>
           </section>
-          <section className="section pt-0!" aria-labelledby="cost-title">
+          <ImageBand id="team-work" />
+          <section className="section" aria-labelledby="cost-title">
             <div className="container-site">
               <SectionHeading
                 layout="split"
@@ -201,7 +204,7 @@ export default function ServiceDetail() {
       )}
 
       {/* FAQ */}
-      <section className={main ? 'section pt-0!' : 'section'} aria-labelledby="sfaq-title">
+      <section className="section bg-surface" aria-labelledby="sfaq-title">
         <div className="container-site grid-site gap-y-10">
           <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
           <div className="col-span-12 lg:col-span-4">
@@ -214,14 +217,14 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      <section className="section pt-0!">
+      <section className="on-dark section bg-night text-paper">
         <div className="container-site">
-          <LeadMagnet />
+          <LeadMagnet dark />
         </div>
       </section>
 
-      {/* Interne Verlinkung: Orte, Ratgeber, weitere Leistungen */}
-      <section className="pb-24 lg:pb-36" aria-label="Weiterlesen">
+      {/* Interne Verlinkung: Orte, Ratgeber, weitere Leistungen; danach „Auf einen Blick“ als Schluss */}
+      <section className="section pb-16! lg:pb-20!" aria-label="Weiterlesen">
         <div className="container-site grid-site gap-y-16">
           <div className="col-span-12 lg:col-span-4">
             <h2 id="near-title" className="t-label">
@@ -258,6 +261,7 @@ export default function ServiceDetail() {
         </div>
       </section>
 
+      <Answer>{`CleanStar übernimmt die ${s.name} für Unternehmen in Offenburg und im ganzen Ortenaukreis. ${s.short}`}</Answer>
       <FinalCta headline={`Bereit für eine ${s.name}, um die Sie sich nicht kümmern müssen?`} />
     </>
   )

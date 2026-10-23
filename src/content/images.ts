@@ -181,6 +181,17 @@ export const images = {
       'Two professional cleaners in matching navy uniforms working calmly in a bright office corridor, one vacuuming, one wiping a glass door, natural movement, seen from a distance, documentary style',
     usedOn: 'Über uns, Karriere',
   }),
+  'evening-clean': img({
+    file: 'buero-reinigung-abend',
+    available: true,
+    ratio: '21:9',
+    minWidth: 1920,
+    alt: 'Eine CleanStar-Mitarbeiterin reinigt am Abend einen Schreibtisch in einem hellen Großraumbüro mit Blick ins Grüne',
+    label: 'Bildband: Reinigung im Großraumbüro, weite Ansicht mit Fensterfront, 21:9',
+    prompt:
+      'Wide view of a bright open-plan office in the early evening, one cleaner in navy uniform wiping a desk, cleaning trolley nearby, large windows with green hills, calm and orderly, documentary style',
+    usedOn: 'Startseite (Bildband zwischen Versprechen und Leistungen)',
+  }),
   'team-briefing': img({
     file: 'team-besprechung',
     available: true,

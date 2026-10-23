@@ -1,6 +1,6 @@
 # Bildliste CleanStar-Website
 
-Alle 24 Bilder, die die Website braucht. Bis ein Foto vorliegt, zeigt die Website einen beschrifteten Platzhalter im richtigen Seitenverhältnis.
+Alle 25 Bilder, die die Website braucht. Bis ein Foto vorliegt, zeigt die Website einen beschrifteten Platzhalter im richtigen Seitenverhältnis.
 
 ## So bauen Sie ein Bild ein
 
@@ -33,17 +33,18 @@ Hinweis: Die Einzeldatei-Vorschau (`preview/cleanstar-website.html`) bettet alle
 | 11 | `gruender-2.jpg` | 4:5 | 1200 × 1500 px | Über uns, Startseite (Über-uns-Teaser) |
 | 12 | `gruender-3.jpg` | 4:5 | 1200 × 1500 px | Über uns (nur wenn drei Gründer in company.ts eingetragen sind) |
 | 13 | `team-im-einsatz.jpg` | 16:9 | 2400 × 1350 px | Über uns, Karriere |
-| 14 | `team-besprechung.jpg` | 4:3 | 1600 × 1200 px | Qualitätsgarantie |
-| 15 | `buero-am-morgen.jpg` | 16:9 | 1600 × 900 px | Ablauf (Erster Monat) |
-| 16 | `qualitaetskontrolle.jpg` | 16:9 | 2400 × 1350 px | Qualitätsgarantie |
-| 17 | `objektbesichtigung.jpg` | 16:9 | 2400 × 1350 px | Ablauf |
-| 18 | `karriere.jpg` | 16:9 | 2400 × 1350 px | Karriere |
-| 19 | `region-ortenau.jpg` | 21:9 | 2560 × 1097 px | Einzugsgebiet |
-| 20 | `kontakt.jpg` | 4:3 | 1600 × 1200 px | Kontakt |
-| 21 | `partner-hero.jpg` | 16:9 | 2400 × 1350 px | Partnerprogramm (Hero) |
-| 22 | `partner-gruender.jpg` | 4:3 | 1600 × 1200 px | Partnerprogramm (Weg Gründung) |
-| 23 | `partner-bestand.jpg` | 4:3 | 1600 × 1200 px | Partnerprogramm (Weg bestehende Firma) |
-| 24 | `partner-einarbeitung.jpg` | 16:9 | 2400 × 1350 px | Partnerprogramm (Modul Einarbeitung und Support) |
+| 14 | `buero-reinigung-abend.jpg` | 21:9 | 1920 × 823 px | Startseite (Bildband zwischen Versprechen und Leistungen) |
+| 15 | `team-besprechung.jpg` | 4:3 | 1600 × 1200 px | Qualitätsgarantie |
+| 16 | `buero-am-morgen.jpg` | 16:9 | 1600 × 900 px | Ablauf (Erster Monat) |
+| 17 | `qualitaetskontrolle.jpg` | 16:9 | 2400 × 1350 px | Qualitätsgarantie |
+| 18 | `objektbesichtigung.jpg` | 16:9 | 2400 × 1350 px | Ablauf |
+| 19 | `karriere.jpg` | 16:9 | 2400 × 1350 px | Karriere |
+| 20 | `region-ortenau.jpg` | 21:9 | 2560 × 1097 px | Einzugsgebiet |
+| 21 | `kontakt.jpg` | 4:3 | 1600 × 1200 px | Kontakt |
+| 22 | `partner-hero.jpg` | 16:9 | 2400 × 1350 px | Partnerprogramm (Hero) |
+| 23 | `partner-gruender.jpg` | 4:3 | 1600 × 1200 px | Partnerprogramm (Weg Gründung) |
+| 24 | `partner-bestand.jpg` | 4:3 | 1600 × 1200 px | Partnerprogramm (Weg bestehende Firma) |
+| 25 | `partner-einarbeitung.jpg` | 16:9 | 2400 × 1350 px | Partnerprogramm (Modul Einarbeitung und Support) |
 
 ## Bilder im Detail
 
@@ -268,7 +269,24 @@ Optional third founder portrait (real person), same setting, light and styling a
 Two professional cleaners in matching navy uniforms working calmly in a bright office corridor, one vacuuming, one wiping a glass door, natural movement, seen from a distance, documentary style. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
 ```
 
-### 14. team-besprechung
+### 14. buero-reinigung-abend
+
+- **ID im Code:** `evening-clean`
+- **Pfad:** `bilder/buero-reinigung-abend.jpg` → `public/images/buero-reinigung-abend-<breite>.avif|webp`
+- **Seitenverhältnis:** 21:9
+- **Mindestauflösung:** 1920 × 823 px
+- **Verwendet auf:** Startseite (Bildband zwischen Versprechen und Leistungen)
+- **Inhalt:** Bildband: Reinigung im Großraumbüro, weite Ansicht mit Fensterfront, 21:9
+- **Alt-Text:** Eine CleanStar-Mitarbeiterin reinigt am Abend einen Schreibtisch in einem hellen Großraumbüro mit Blick ins Grüne
+- **Status:** vorhanden
+
+**Prompt:**
+
+```
+Wide view of a bright open-plan office in the early evening, one cleaner in navy uniform wiping a desk, cleaning trolley nearby, large windows with green hills, calm and orderly, documentary style. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 21:9.
+```
+
+### 15. team-besprechung
 
 - **ID im Code:** `team-briefing`
 - **Pfad:** `bilder/team-besprechung.jpg` → `public/images/team-besprechung-<breite>.avif|webp`
@@ -285,7 +303,7 @@ Two professional cleaners in matching navy uniforms working calmly in a bright o
 Cleaning team supervisor showing a checklist on a tablet to two team members in a modern office lobby, friendly and focused, natural light, hands and tablet in focus. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 4:3.
 ```
 
-### 15. buero-am-morgen
+### 16. buero-am-morgen
 
 - **ID im Code:** `trial-clean`
 - **Pfad:** `bilder/buero-am-morgen.jpg` → `public/images/buero-am-morgen-<breite>.avif|webp`
@@ -302,7 +320,7 @@ Cleaning team supervisor showing a checklist on a tablet to two team members in 
 Clean, tidy open-plan office in the morning, empty desks with monitors, chairs pushed in, bright daylight through large windows, calm and orderly. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
 ```
 
-### 16. qualitaetskontrolle
+### 17. qualitaetskontrolle
 
 - **ID im Code:** `quality-check`
 - **Pfad:** `bilder/qualitaetskontrolle.jpg` → `public/images/qualitaetskontrolle-<breite>.avif|webp`
@@ -319,7 +337,7 @@ Clean, tidy open-plan office in the morning, empty desks with monitors, chairs p
 Quality inspection in a clean office: a hand holding a tablet with a checklist while another hand runs a white glove along a desk edge, crisp focus, cool light, calm and precise mood. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
 ```
 
-### 17. objektbesichtigung
+### 18. objektbesichtigung
 
 - **ID im Code:** `inspection`
 - **Pfad:** `bilder/objektbesichtigung.jpg` → `public/images/objektbesichtigung-<breite>.avif|webp`
@@ -336,7 +354,7 @@ Quality inspection in a clean office: a hand holding a tablet with a checklist w
 Two professionals walking through an empty modern office during a site inspection, one taking notes on a clipboard, pointing at the floor area, bright daylight, architectural wide shot. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
 ```
 
-### 18. karriere
+### 19. karriere
 
 - **ID im Code:** `careers`
 - **Pfad:** `bilder/karriere.jpg` → `public/images/karriere-<breite>.avif|webp`
@@ -353,7 +371,7 @@ Two professionals walking through an empty modern office during a site inspectio
 Friendly cleaning staff member in a navy uniform with a well-organized cleaning trolley in a bright office corridor, natural relaxed smile, documentary style, respectful and dignified. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
 ```
 
-### 19. region-ortenau
+### 20. region-ortenau
 
 - **ID im Code:** `region`
 - **Pfad:** `bilder/region-ortenau.jpg` → `public/images/region-ortenau-<breite>.avif|webp`
@@ -370,7 +388,7 @@ Friendly cleaning staff member in a navy uniform with a well-organized cleaning 
 Modern low-rise office building in a small southern German town business park, vineyards and forested Black Forest hills in the background, late afternoon light, clear sky, wide panoramic composition. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 21:9.
 ```
 
-### 20. kontakt
+### 21. kontakt
 
 - **ID im Code:** `contact`
 - **Pfad:** `bilder/kontakt.jpg` → `public/images/kontakt-<breite>.avif|webp`
@@ -387,7 +405,7 @@ Modern low-rise office building in a small southern German town business park, v
 Top-down view of a tidy light desk with a smartphone, a notebook with a pen and a cup of coffee, lots of negative space, soft daylight, minimal. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 4:3.
 ```
 
-### 21. partner-hero
+### 22. partner-hero
 
 - **ID im Code:** `partner-hero`
 - **Pfad:** `bilder/partner-hero.jpg` → `public/images/partner-hero-<breite>.avif|webp`
@@ -404,7 +422,7 @@ Top-down view of a tidy light desk with a smartphone, a notebook with a pen and 
 Two business owners in their late thirties shaking hands in a bright modern office meeting room, one in a navy quarter-zip, the other in a light shirt, warm and confident atmosphere, tablet and documents on a white table, large windows, seen at a slight angle, faces natural and friendly. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 16:9.
 ```
 
-### 22. partner-gruender
+### 23. partner-gruender
 
 - **ID im Code:** `partner-founder`
 - **Pfad:** `bilder/partner-gruender.jpg` → `public/images/partner-gruender-<breite>.avif|webp`
@@ -421,7 +439,7 @@ Two business owners in their late thirties shaking hands in a bright modern offi
 Young entrepreneur standing next to a clean white compact van and a neatly packed cleaning trolley in front of a modern office building in the morning, proud and calm, navy work jacket, documentary style, van without any branding. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 4:3.
 ```
 
-### 23. partner-bestand
+### 24. partner-bestand
 
 - **ID im Code:** `partner-existing`
 - **Pfad:** `bilder/partner-bestand.jpg` → `public/images/partner-bestand-<breite>.avif|webp`
@@ -438,7 +456,7 @@ Young entrepreneur standing next to a clean white compact van and a neatly packe
 Owner of a small cleaning company in a tidy storage room with shelves of labeled cleaning supplies and microfiber cloths, reviewing a checklist on a tablet, organized and professional, soft daylight. Photorealistic editorial photography, calm premium look, soft natural light with cool daylight tones and subtle blue accents, clean modern architecture, precise composition with lots of negative space, muted color palette (white, light grey, navy, hints of aqua), shot on full-frame camera, 35mm lens, f/2.8, high dynamic range, no text, no logos, no watermarks. Aspect ratio 4:3.
 ```
 
-### 24. partner-einarbeitung
+### 25. partner-einarbeitung
 
 - **ID im Code:** `partner-onboarding`
 - **Pfad:** `bilder/partner-einarbeitung.jpg` → `public/images/partner-einarbeitung-<breite>.avif|webp`
@@ -484,6 +502,7 @@ Das neue Design zeigt jedes Bild in einem festen Rahmen mit festem Seitenverhäl
 | Porträt | 4:5 | Über uns, Startseite, Kontakt, Ratgeber-Autor | Gründer einzeln vor ruhigem, hellem Hintergrund, Brusthöhe, Blick in die Kamera | Kopf im oberen Drittel, Schultern vollständig |
 | Detail hoch | 4:5 | Büroreinigung, Qualitätsgarantie, Ablauf, Einzugsgebiet, Karriere, Partner | Detail einer Handlung: Tuch auf Tischfläche, Checkliste, Schlüsselübergabe, Teambesprechung, Gebäude in der Region | Hochformat, Hände oder Gegenstand mittig |
 | Team breit | 3:2 | Über uns | Zwei bis drei Personen bei der Arbeit im Flur oder Büro | Personen im mittleren Bereich, Boden sichtbar |
+| Bildband (randlos) | 21:9 ab Tablet, 4:3 auf dem Handy | Startseite, Leistungen, Leistungsseiten, Qualitätsgarantie, Ablauf, Einzugsgebiet, Standortseiten, Über uns, Karriere, Kontakt, Partner, Ratgeber | Weite, ruhige Ansichten: Großraumbüro mit Fensterfront, Flur mit Team, Gebäude in der Region, Treppenhaus | Volle Breite, bewegt sich beim Scrollen leicht: oben und unten je 10 % Reserve, nichts Wichtiges an den Rändern, mindestens 1920 px breit |
 | Vorher und Nachher | 16:9 | Büroreinigung | Derselbe Arbeitsplatz vorher und nachher, Stativ, gleiche Position und gleiches Licht | Kamera darf sich zwischen den Aufnahmen nicht bewegen |
 
 ### Zusätzlich gewünscht (sobald Freigaben vorliegen)

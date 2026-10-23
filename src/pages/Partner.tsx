@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
+import { ImageBand } from '@/components/ui/ImageBand'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { FaqBlock } from '@/components/ui/FaqBlock'
 import { NumberedRows } from '@/components/ui/Editorial'
@@ -69,16 +70,12 @@ export default function Partner() {
           {page.hero.note}
         </p>
       </PageHero>
-      <Answer className="pt-20 sm:pt-28">
-        Das CleanStar-Partnerprogramm richtet sich an Reinigungsfirmen und Gründer in ganz Deutschland, die mit erprobten Abläufen, Vorlagen und Werkzeugen aus unserem Betrieb in
-        Offenburg arbeiten möchten. Konditionen klären wir im persönlichen Gespräch.
-      </Answer>
 
       <Chunk>
         <ProblemSolution id="partner-problems" index="01" eyebrow={page.problems.eyebrow} headline={page.problems.headline} lead={page.problems.lead} items={page.problems.items} />
       </Chunk>
       <Chunk>
-        <section className="section pt-0!" aria-labelledby="ways-title">
+        <section className="section" aria-labelledby="ways-title">
           <div className="container-site">
             <SectionHeading
               layout="split"
@@ -95,7 +92,7 @@ export default function Partner() {
         </section>
       </Chunk>
       <Chunk>
-        <section className="section pt-0!" aria-labelledby="modules-title">
+        <section className="section bg-surface" aria-labelledby="modules-title">
           <div className="container-site">
             <SectionHeading
               layout="split"
@@ -148,10 +145,11 @@ export default function Partner() {
         </section>
       </Chunk>
       <Chunk>
+        <ImageBand id="partner-onboarding" />
         <ProcessTimeline index="06" eyebrow="Ablauf" title="In sieben Schritten zum Partner." steps={partnerSteps} id="partner-process-title" />
       </Chunk>
       <Chunk>
-        <section className="section pt-0!" aria-labelledby="conditions-title">
+        <section className="section bg-surface" aria-labelledby="conditions-title">
           <div className="container-site grid-site gap-y-10">
             <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
             <div className="col-span-12 lg:col-span-4">
@@ -181,7 +179,7 @@ export default function Partner() {
         </section>
       </Chunk>
       <Chunk>
-        <section id="bewerbung" className="section scroll-mt-24 pt-0!" aria-labelledby="apply-title">
+        <section id="bewerbung" className="section scroll-mt-24" aria-labelledby="apply-title">
           <div className="container-site grid-site gap-y-14">
             <span aria-hidden data-reveal-rule className="rule col-span-12" />
             <div className="col-span-12 lg:col-span-4">
@@ -238,7 +236,7 @@ export default function Partner() {
       </Chunk>
       <Chunk>
         <FaqBlock
-          className="section pt-0!"
+          className="section bg-surface"
           label="Partner-FAQ"
           title="Ehrliche Antworten auf die wichtigsten Fragen."
           id="pfaq-title"
@@ -252,6 +250,12 @@ export default function Partner() {
             ),
           }))}
         />
+      </Chunk>
+      <Chunk>
+        <Answer className="pt-20 sm:pt-28 lg:pt-36">
+          Das CleanStar-Partnerprogramm richtet sich an Reinigungsfirmen und Gründer in ganz Deutschland, die mit erprobten Abläufen, Vorlagen und Werkzeugen aus unserem Betrieb in
+          Offenburg arbeiten möchten. Konditionen klären wir im persönlichen Gespräch.
+        </Answer>
       </Chunk>
       <Chunk>
         <section className="on-dark section bg-night text-paper" aria-labelledby="pcta-title">

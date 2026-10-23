@@ -1,6 +1,7 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
+import { ImageBand } from '@/components/ui/ImageBand'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
 import { Todo } from '@/components/ui/Todo'
@@ -45,7 +46,6 @@ export default function About() {
         title="Ein Reinigungsdienst, den Sie persönlich kennen."
         lead="Keine Hotline, keine Zentrale, kein wechselndes Personal. Sie sprechen mit den Gründern selbst, und das Team in Ihrem Büro bleibt dasselbe."
       />
-      <Answer className="pt-20 sm:pt-28">{`CleanStar wurde ${company.foundedYear} in Offenburg von Nico Schütterle, Lino Resham und Eknoor Singh gegründet. Die drei Gesellschafter führen den Betrieb selbst und sind direkt für Kunden erreichbar.`}</Answer>
 
       <section className="section" aria-labelledby="founders-title">
         <div className="container-site">
@@ -126,7 +126,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="section pt-0!" aria-labelledby="story-title">
+      <section className="section bg-surface" aria-labelledby="story-title">
         <div className="container-site grid-site gap-y-10">
           <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
           <div className="col-span-12 lg:col-span-4">
@@ -150,7 +150,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="section pt-0!" aria-labelledby="values-title">
+      <section className="section" aria-labelledby="values-title">
         <div className="container-site">
           <SectionHeading layout="rail" index="04" eyebrow="Werte" title="Woran Sie uns messen können." id="values-title" />
           <FeatureColumns className="mt-14 lg:mt-20" items={values} />
@@ -182,21 +182,20 @@ export default function About() {
         </div>
       )}
 
-      <section className="section pt-0!" aria-labelledby="team-title">
-        <div className="container-site grid-site gap-y-10 lg:items-end">
-          <div className="col-span-12 lg:col-span-7">
-            <Picture id="team-work" ratio="3:2" reveal sizes="(min-width:1024px) 60vw, 100vw" caption="Festes Team im Objekt" />
-          </div>
-          <div className="col-span-12 lg:col-span-4 lg:col-start-9">
+      <ImageBand id="team-work" caption="Festes Team im Objekt" />
+      <section className="on-dark section bg-night text-paper" aria-labelledby="team-title">
+        <div className="container-site grid-site gap-y-8 lg:items-end">
+          <div className="col-span-12 lg:col-span-6">
             <p className="t-label mb-6">Team</p>
-            <RevealText as="h2" text="Feste Teams statt ständig neuer Gesichter." id="team-title" className="t-h3" />
-            <p className="mt-6 text-ink-2" data-reveal>
-              Unsere Mitarbeitenden arbeiten in festen Objekten und werden dort eingearbeitet. So entsteht Routine, und Sie wissen, wer bei Ihnen arbeitet.
-            </p>
+            <RevealText as="h2" text="Feste Teams statt ständig neuer Gesichter." id="team-title" className="t-h2" />
           </div>
+          <p className="t-lead col-span-12 measure text-paper lg:col-span-5 lg:col-start-8" data-reveal>
+            Unsere Mitarbeitenden arbeiten in festen Objekten und werden dort eingearbeitet. So entsteht Routine, und Sie wissen, wer bei Ihnen arbeitet.
+          </p>
         </div>
       </section>
-      <PartnerTeaser />
+      <PartnerTeaser className="pt-20 pb-12 sm:pt-28 lg:pt-36 lg:pb-14" />
+      <Answer>{`CleanStar wurde ${company.foundedYear} in Offenburg von Nico Schütterle, Lino Resham und Eknoor Singh gegründet. Die drei Gesellschafter führen den Betrieb selbst und sind direkt für Kunden erreichbar.`}</Answer>
       <FinalCta />
     </>
   )

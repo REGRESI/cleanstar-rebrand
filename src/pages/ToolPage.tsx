@@ -39,11 +39,10 @@ export function ToolPage(p: ToolPageProps) {
         schema={[webAppSchema({ name: p.name, description: p.description, path: p.path }), breadcrumbSchema(trail), faqSchema(p.faqs)]}
       />
       <PageHero trail={trail} eyebrow={p.eyebrow} title={p.title} lead={p.lead} />
-      <Answer className="pt-20 sm:pt-28">{p.answer}</Answer>
       <section aria-label={p.name} className="section-tight">
         <div className="container-site">{p.children}</div>
       </section>
-      <FaqBlock title="Fragen zum Werkzeug" id="tool-faq" items={p.faqs.map((f) => ({ title: f.q, content: f.a }))}>
+      <FaqBlock className="section bg-surface" title="Fragen zum Werkzeug" id="tool-faq" items={p.faqs.map((f) => ({ title: f.q, content: f.a }))}>
         {p.sources && (
           <div className="mt-14">
             <h3 className="t-label">Quellen der Startwerte</h3>
@@ -63,7 +62,7 @@ export function ToolPage(p: ToolPageProps) {
           </div>
         )}
       </FaqBlock>
-      <nav aria-labelledby="tool-more" className="container-site pb-24 lg:pb-36">
+      <nav aria-labelledby="tool-more" className="container-site pt-20 pb-12 sm:pt-28 lg:pt-36 lg:pb-14">
         <div className="grid-site gap-y-5 border-t border-line pt-6">
           <h2 id="tool-more" className="t-label col-span-12 lg:col-span-4">
             Passend dazu
@@ -71,6 +70,7 @@ export function ToolPage(p: ToolPageProps) {
           <InlineLinks className="col-span-12 lg:col-span-8" items={p.links} />
         </div>
       </nav>
+      <Answer>{p.answer}</Answer>
     </>
   )
 }

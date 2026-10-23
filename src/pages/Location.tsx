@@ -6,6 +6,7 @@ import { company } from '@/content/company'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
+import { ImageBand } from '@/components/ui/ImageBand'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { FaqBlock } from '@/components/ui/FaqBlock'
 import { InlineLinks, LinkRows, NumberedRows } from '@/components/ui/Editorial'
@@ -91,11 +92,6 @@ export default function Location() {
           {hq ? 'Unser Sitz' : `ca.\u00A0${l.minutes}\u00A0Min. von Offenburg`} · {company.serviceArea}
         </p>
       </PageHero>
-      <Answer className="pt-4">
-        {hq
-          ? `CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg und reinigt Büros, Praxen und Gewerbeflächen in der ganzen Stadt, mit festem Team und festem Ansprechpartner.`
-          : `CleanStar ist eine Reinigungsfirma aus Offenburg und reinigt Büros, Praxen und Gewerbeflächen in ${short}, rund ${l.minutes} Minuten von unserem Sitz entfernt, mit festem Team und festem Ansprechpartner.`}
-      </Answer>
 
       <section className="section" aria-labelledby="loc-detail">
         <div className="container-site grid-site gap-y-10">
@@ -128,10 +124,13 @@ export default function Location() {
         </div>
       </section>
 
-      <section className="section pt-0!" aria-labelledby="loc-focus">
+      <ImageBand id="region" />
+
+      <section className="on-dark section bg-night text-paper" aria-labelledby="loc-focus">
         <div className="container-site">
           <SectionHeading layout="rail" eyebrow={`Gefragt in ${short}`} title={`Was Unternehmen in ${short} bei uns buchen.`} id="loc-focus" />
           <NumberedRows
+            dark
             className="mt-14 lg:mt-20"
             items={l.focus.map((f) => {
               const sv = getService(f.service)!
@@ -156,7 +155,7 @@ export default function Location() {
         </div>
       </section>
 
-      <section className="section pt-0!" aria-labelledby="loc-services">
+      <section className="section" aria-labelledby="loc-services">
         <div className="container-site grid-site gap-y-10">
           <div className="col-span-12 lg:col-span-4">
             <p className="t-label mb-6">Leistungen</p>
@@ -168,10 +167,10 @@ export default function Location() {
         </div>
       </section>
 
-      <FaqBlock className="section pt-0!" title={`Reinigung in ${short}: kurz beantwortet.`} id="loc-faq" items={faqs.map((f) => ({ title: f.q, content: f.a }))} />
+      <FaqBlock className="section bg-surface" title={`Reinigung in ${short}: kurz beantwortet.`} id="loc-faq" items={faqs.map((f) => ({ title: f.q, content: f.a }))} />
 
       {nearby.length > 0 && (
-        <nav className="container-site pb-24 lg:pb-36" aria-labelledby="loc-near">
+        <nav className="container-site pt-20 pb-12 sm:pt-28 lg:pt-36 lg:pb-14" aria-labelledby="loc-near">
           <div className="grid-site gap-y-5 border-t border-line pt-6">
             <h2 id="loc-near" className="t-label col-span-12 lg:col-span-4">
               Auch in der Nähe
@@ -185,6 +184,11 @@ export default function Location() {
           </div>
         </nav>
       )}
+      <Answer className={nearby.length > 0 ? undefined : 'pt-20 sm:pt-28 lg:pt-36'}>
+        {hq
+          ? `CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg und reinigt Büros, Praxen und Gewerbeflächen in der ganzen Stadt, mit festem Team und festem Ansprechpartner.`
+          : `CleanStar ist eine Reinigungsfirma aus Offenburg und reinigt Büros, Praxen und Gewerbeflächen in ${short}, rund ${l.minutes} Minuten von unserem Sitz entfernt, mit festem Team und festem Ansprechpartner.`}
+      </Answer>
       <FinalCta headline={`Ihr Büro in ${short}. Sauber, ohne dass Sie sich kümmern müssen.`} />
     </>
   )

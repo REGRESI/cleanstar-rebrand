@@ -31,6 +31,7 @@ export function RevealText({
   immediate,
   id,
   kicker,
+  kickerAfter,
   wordsClassName,
 }: {
   as?: ElementType
@@ -40,6 +41,8 @@ export function RevealText({
   id?: string
   /** Vorzeile innerhalb derselben Überschrift (z. B. Keyword-Zeile in Monospace über der Leitidee) */
   kicker?: ReactNode
+  /** Vorzeile optisch unter die Wörter setzen; im HTML bleibt sie vorn (Keyword am Anfang der Überschrift) */
+  kickerAfter?: boolean
   /** Klassen für den Block mit den Wörtern (nur zusammen mit kicker sinnvoll) */
   wordsClassName?: string
 }) {
@@ -67,9 +70,9 @@ export function RevealText({
   ))
   const heading = createElement(
     as,
-    { ref, className: cn(immediate && 'reveal-now', className), 'data-reveal-text': immediate ? undefined : '', id },
+    { ref, className: cn(immediate && 'reveal-now', kickerAfter && 'flex flex-col', className), 'data-reveal-text': immediate ? undefined : '', id },
     kicker,
-    wordsClassName ? <span className={wordsClassName}>{wordEls}</span> : wordEls,
+    wordsClassName ? <span className={cn(kickerAfter && '-order-1', wordsClassName)}>{wordEls}</span> : wordEls,
   )
   if (!immediate) return heading
   return (

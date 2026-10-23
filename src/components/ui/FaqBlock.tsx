@@ -10,6 +10,7 @@ export function FaqBlock({
   label = 'Fragen',
   children,
   className = 'section',
+  dark,
 }: {
   title: string
   id: string
@@ -17,6 +18,8 @@ export function FaqBlock({
   label?: string
   children?: ReactNode
   className?: string
+  /** Für dunkle Abschnitte (className mit on-dark bg-night) */
+  dark?: boolean
 }) {
   return (
     <section className={className} aria-labelledby={id}>
@@ -28,7 +31,7 @@ export function FaqBlock({
         </div>
         <div className="col-span-12 lg:col-span-8">
           <div data-reveal>
-            <Accordion items={items} />
+            <Accordion items={items} dark={dark} />
           </div>
           {children}
         </div>

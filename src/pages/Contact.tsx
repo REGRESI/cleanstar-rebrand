@@ -1,6 +1,7 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
+import { ImageBand } from '@/components/ui/ImageBand'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { ContactForm } from '@/features/forms/ContactForm'
 import { BookingEmbed } from '@/features/booking/BookingEmbed'
@@ -38,7 +39,6 @@ export default function Contact() {
         title="Sprechen wir über Ihr Objekt."
         lead="Rufen Sie an, schreiben Sie uns oder buchen Sie direkt einen Termin für die kostenlose Besichtigung. Wir melden uns innerhalb von 24 Stunden."
       />
-      <Answer className="pt-20 sm:pt-28">{`CleanStar erreichen Sie rund um die Uhr telefonisch unter ${company.phone.display} oder per E-Mail an ${company.email}. Unsere Adresse: ${fullAddress()}. Auf Anfragen antworten wir innerhalb von ${company.promises.responseHours} Stunden.`}</Answer>
 
       <section className="section" aria-label="Kontaktwege">
         <div className="container-site grid-site gap-y-16">
@@ -83,7 +83,8 @@ export default function Contact() {
         </div>
       </section>
 
-      <section id="besichtigung" className="section scroll-mt-28 pt-0!" aria-labelledby="booking-title">
+      <ImageBand id="inspection" caption="Objektbesichtigung vor Ort" />
+      <section id="besichtigung" className="section scroll-mt-28 bg-surface" aria-labelledby="booking-title">
         <div className="container-site">
           <SectionHeading
             layout="split"
@@ -98,7 +99,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section id="unterlagen" className="section scroll-mt-28 pt-0!" aria-labelledby="docs-title">
+      <section id="unterlagen" className="section scroll-mt-28" aria-labelledby="docs-title">
         <div className="container-site">
           <SectionHeading
             layout="split"
@@ -112,6 +113,7 @@ export default function Contact() {
           </div>
         </div>
       </section>
+      <Answer>{`CleanStar erreichen Sie rund um die Uhr telefonisch unter ${company.phone.display} oder per E-Mail an ${company.email}. Unsere Adresse: ${fullAddress()}. Auf Anfragen antworten wir innerhalb von ${company.promises.responseHours} Stunden.`}</Answer>
     </>
   )
 }

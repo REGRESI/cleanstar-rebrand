@@ -39,3 +39,18 @@ Grundlage: neue Screenshots nach Durchgang 1 (Start, Karriere, FAQ, Über uns, L
 | 24 | Alle Seiten | Suche nach Resten der Vorlagen-Muster im Code: große Rundungen, Schatten, Großbuchstaben-Labels, Verläufe als Schmuck, Glas-Effekte, Icon-Kreise, Linksrand-Hinweise, „Mehr erfahren“. | Keine Treffer mehr. Übrig sind zwei kleine Statuspunkte (rund, 6 px) und die Abdunklung im Hero-Foto, beide funktional. | in Ordnung |
 
 Ergebnis Typografie-Prüfung nach Durchgang 2: kein Überlauf und kein seitliches Scrollen mehr auf 320, 375, 390, 1440 und 1920 px; die verbliebenen Hinweise sind die unter Nr. 22 und 23 begründeten.
+
+## Feinschliff: Rhythmus, Lebendigkeit, Details
+
+Grundlage: Vorher/Nachher der Startseite in `docs/redesign/rhythmus/` (1440 und 390 px), Übersicht aller Hauptseiten auf 1440 px, Kontrastmessung im Hero, Typografie-Prüfung aller 74 Seiten.
+
+| Nr. | Bereich | Befund | Maßnahme | Status |
+| --- | --- | --- | --- | --- |
+| 25 | Startseite | Nach dem Hero fast nur Off-White mit Text, gleichförmig. | Takt aus hell, Bild, dunkel und Papierfläche: Versprechen hell, randloses Bildband (21:9, dezente Parallax), „Das kennen Sie vielleicht“ dunkel, Leistungen hell, Gründer auf Papierfläche, Einzugsgebiet hell, Schlussblock, Abschluss dunkel mit der Leitidee. Nie mehr als zwei helle Textabschnitte hintereinander. | behoben |
+| 26 | Startseite | Im ersten Entwurf folgten Bildband und das große Büroreinigungs-Foto (ebenfalls 21:9) fast direkt aufeinander und wirkten doppelt. | Bildband direkt nach dem Versprechen; die großen Bilder verteilen sich gleichmäßig. | behoben |
+| 27 | Unterseiten | Gleiche Gleichförmigkeit auf Leistungen, Leistungsseiten, Garantie, Ablauf, Einzugsgebiet, Standortseiten, Über uns, Karriere, Kontakt, Partner, Ratgeber, Werkzeuge. | Je Seite mindestens ein randloses Bildband und ein dunkler Abschnitt, wo es passt; Zwischenabschnitte auf Papierfläche. Im Ratgeber lagen zwei dunkle Abschnitte direkt nacheinander, die Werkzeugliste ist jetzt hell. | behoben |
+| 28 | Hero | Keyword-Zeile über der Headline stand auf dem hellen Himmel. | Zeile unter der Leitidee, über dem Button; 14 px mobil, 16 px Desktop, Gewicht 500 (IBM Plex Mono Medium ergänzt), volle Deckkraft, leicht erhöhte Laufweite; Verlauf von unten hinter dem ganzen Textblock. Der Verlauf bleibt voll, bis der Text ausgeblendet ist. Gemessen: schlechtester Einzelpixel hinter der Zeile 8,3 : 1 auf allen Frames mit Text (375, 390, 1440, 1920 px). | behoben |
+| 29 | Footer | Farbiges Großlogo als einziger großer Farbfleck. | Großes Logo einfarbig im Textton, Form unverändert; darüber die Leitidee in der Display-Schrift. Farbiges Logo klein im Header. | behoben |
+| 30 | Alle Seiten | „Kurz gesagt“ direkt unter dem Seitenkopf bremste den Einstieg. | Als „Auf einen Blick“ ans Ende des Hauptinhalts vor den Abschluss, nur Haarlinie, Inhalt unverändert. | behoben |
+| 31 | Glanz-Momente | Keine. | Glanz-Stern aus dem Markenzeichen blitzt einmal kurz auf: am Ende des Hero-Videos auf den Tischen, neben jeder Lösung nach dem Durchstreichen, bei jedem abgehakten Prüfpunkt. Unter einer Sekunde, höchstens drei gleichzeitig, bei reduzierter Bewegung aus. | umgesetzt |
+| 32 | Startseite und Footer | Die Leitidee steht im Abschluss und im Footer kurz hintereinander. | Bewusst so gelassen, beides war gewünscht; zwischen beiden liegen die Footer-Spalten. | Entscheidung |

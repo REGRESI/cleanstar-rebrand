@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import hero from 'virtual:hero-frames'
 import { RevealText } from '@/components/ui/RevealText'
+import { Sparkle } from '@/components/ui/Sparkle'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { home } from '@/content/site'
 import { company } from '@/content/company'
@@ -10,6 +11,7 @@ import { cn } from '@/lib/cn'
 import { useHeroSequence } from './useHeroSequence'
 import { KeyOverlays } from './KeyOverlays'
 import { HeroMobileSequence } from './HeroMobileSequence'
+import { GLINTS } from './glints'
 
 /** Handy-Layout */
 const MOBILE = '(max-width: 767px)'
@@ -94,8 +96,9 @@ export function Hero() {
         copy.current.style.transform = `translate3d(0, ${-p * 160}px, 0)`
         copy.current.style.visibility = o === 0 ? 'hidden' : 'visible'
       }
-      // Dunkler Verlauf nur, solange der Text sichtbar ist; danach wirkt das Video hell und klar
-      if (shade.current) shade.current.style.opacity = String(Math.max(0, 1 - p / 0.14))
+      // Dunkler Verlauf bleibt voll, bis der Text ganz ausgeblendet ist (Kontrast auf jedem Frame mit Text),
+      // danach weicht er, und das Video wirkt hell und klar
+      if (shade.current) shade.current.style.opacity = String(Math.min(1, Math.max(0, 1 - (p - 0.1) / 0.06)))
       if (outro.current) outro.current.style.opacity = String(Math.max(0, (p - OUTRO) / (1 - OUTRO)))
       setStep(sp < 0.33 ? 0 : sp < 0.9 ? 1 : 2)
     },
@@ -154,14 +157,32 @@ export function Hero() {
                   className={cn('absolute inset-0 size-full object-cover transition-opacity duration-300', seq.drawn ? 'opacity-100' : 'opacity-0')}
                 />
                 {seq.load && <KeyOverlays activeKey={seq.activeKey} variant="d" />}
+                {/* Am Ende, wenn das Büro am Morgen makellos ist: drei kurze Glanzpunkte, einmalig.
+                    Die Ebene bildet object-cover nach, damit die Punkte auf den Tischen sitzen. */}
+                <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden [container-type:size]">
+                  <div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                    style={{ width: `max(100cqw, calc(100cqh * ${FRAME_W / FRAME_H}))`, height: `max(100cqh, calc(100cqw * ${FRAME_H / FRAME_W}))` }}
+                  >
+                    {GLINTS.map((g, i) => (
+                      <Sparkle
+                        key={i}
+                        play={step === 2}
+                        delay={g.delay}
+                        className="absolute -translate-x-1/2 -translate-y-1/2"
+                        style={{ left: `${g.x * 100}%`, top: `${g.y * 100}%`, width: g.size, height: g.size }}
+                      />
+                    ))}
+                  </div>
+                </div>
               </>
             )}
           </div>
 
-          {/* Lesbarkeit: ruhige Abdunklung, unten etwas stärker (dort steht der Text) */}
+          {/* Lesbarkeit: ruhige Abdunklung, dazu ein Verlauf von unten hinter dem gesamten Textblock */}
           <div ref={shade} aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute inset-0 bg-night/25" />
-            <div className="absolute inset-x-0 bottom-0 h-[90%] bg-gradient-to-t from-night/80 via-night/50 to-transparent sm:h-[70%] sm:from-night/75 sm:via-night/35" />
+            <div className="absolute inset-0 bg-night/20" />
+            <div className="absolute inset-x-0 bottom-0 h-[80%] bg-[linear-gradient(to_top,rgb(11_15_23/0.88)_0%,rgb(11_15_23/0.7)_35%,rgb(11_15_23/0.32)_68%,rgb(11_15_23/0)_100%)] lg:h-[72%]" />
           </div>
 
           {/* Text: H1 aus Keyword-Zeile (Monospace) und Leitidee (Display), unten im Raster */}
@@ -173,10 +194,14 @@ export function Hero() {
                 text={home.hero.headline}
                 immediate
                 kicker={
-                  <span className="t-label fade-up-now mb-5 block text-[0.875rem] text-paper lg:mb-8 lg:text-[0.9375rem]" style={{ ['--d' as string]: '0.05s' }}>
+                  <span
+                    className="fade-up-now mt-6 block font-mono text-[0.875rem] leading-[1.45] font-medium tracking-[0.03em] text-paper lg:mt-8 lg:text-[1rem]"
+                    style={{ ['--d' as string]: '0.45s' }}
+                  >
                     {home.hero.kicker}
                   </span>
                 }
+                kickerAfter
                 wordsClassName="t-display block text-paper"
               />
               <div className="fade-up-now mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8 lg:mt-12" style={{ ['--d' as string]: '0.6s' }}>

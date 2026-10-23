@@ -24,6 +24,16 @@
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+/* 500 nur für die Keyword-Zeile im Hero (bessere Lesbarkeit auf dem Foto) */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('../assets/fonts/ibm-plex-mono-latin-500.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 /* ==========================================================================
    DESIGN-TOKENS
@@ -770,4 +780,39 @@ html.lenis body {
 /* Zahlen mit Einheit und Preisspannen nie auseinanderreißen */
 .nowrap-num {
   white-space: nowrap;
+}
+
+/* Glanz-Stern aus dem Markenzeichen: einmaliges kurzes Funkeln, nie dauerhaft (siehe Sparkle.tsx) */
+@layer components {
+  .sparkle {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0);
+  }
+  .sparkle.is-on {
+    animation: sparkle 0.8s var(--ease-cs) var(--sd, 0s) 1 both;
+  }
+}
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-24deg);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(22deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sparkle {
+    display: none !important;
+  }
 }
