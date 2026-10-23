@@ -1,12 +1,15 @@
+import type { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/cn'
-import { Phone, Mail, MapPin, Clock } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
 import { HomeLink } from '@/components/ui/HomeLink'
-import { company, fullAddress } from '@/content/company'
+import { RevealText } from '@/components/ui/RevealText'
+import { company } from '@/content/company'
 import { services } from '@/content/services'
 import { places, shortName } from '@/content/places'
+import { brand } from '@/content/site'
 import { CallbackButton } from '@/features/callback/Callback'
+import { QuoteButton } from '@/features/configurator/QuoteLink'
 
 const knowledgeLinks = [
   { label: 'Ratgeber', to: '/ratgeber' },
@@ -33,126 +36,136 @@ const companyLinks = [
 ]
 
 /**
- * Link in der Fußzeile: sofortige Rückmeldung beim Tippen (Markenblau, leichte Fläche) und dauerhafte
- * Hervorhebung der aktuellen Seite (aria-current="page" setzt NavLink selbst).
+ * Link in der Fußzeile: Unterstrich beim Überfahren, sofortige Rückmeldung beim Tippen (Markenblau)
+ * und dauerhafte Hervorhebung der aktuellen Seite (aria-current="page" setzt NavLink selbst).
  */
-function FooterLink({ to, children, strong }: { to: string; children: React.ReactNode; strong?: boolean }) {
+function FooterLink({ to, children }: { to: string; children: ReactNode }) {
   return (
     <NavLink
       to={to}
       end
-      className={({ isActive }) =>
-        cn(
-          '-mx-2 inline-block rounded-lg px-2 py-0.5 transition-colors duration-150',
-          'hover:text-ink focus-visible:bg-blue-soft/60 focus-visible:text-blue-hover active:bg-blue-soft active:text-blue-hover',
-          isActive ? 'bg-blue-soft/50 font-semibold text-blue-hover' : strong ? 'text-ink' : 'text-muted',
-        )
-      }
+      className={({ isActive }) => cn('ulink py-0.5 transition-colors duration-150 active:text-blue', isActive ? 'text-ink' : 'text-muted hover:text-ink')}
     >
       {children}
     </NavLink>
   )
 }
 
+function Column({ title, children, className }: { title: ReactNode; children: ReactNode; className?: string }) {
+  return (
+    <nav aria-label={typeof title === 'string' ? title : undefined} className={cn('border-t border-line pt-5', className)}>
+      <h2 className="t-label">{title}</h2>
+      <ul className="mt-5 space-y-2.5 text-[0.9375rem]">{children}</ul>
+    </nav>
+  )
+}
+
 export function Footer() {
   const year = new Date().getFullYear()
   return (
-    <footer className="relative overflow-hidden border-t border-line bg-glacier pb-28 lg:pb-0">
-      <div className="container-site relative pt-16 sm:pt-20">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <HomeLink label={`${company.name}, zur Startseite`} className="inline-block">
-              <Logo className="w-[170px]" />
-            </HomeLink>
-            <p className="mt-6 max-w-sm text-muted">
-              Büroreinigung für Unternehmen im Ortenaukreis. Mit festem Ansprechpartner, eingespieltem Team und einer Garantie, die im Alltag gilt.
-            </p>
-            <ul className="mt-8 space-y-3 text-[0.9375rem]">
+    <footer className="relative border-t border-line bg-paper pb-24 lg:pb-0">
+      <div className="container-site">
+        {/* Schlusssatz: das Markenversprechen */}
+        <div className="grid-site gap-y-10 pt-24 pb-20 lg:pt-40 lg:pb-32">
+          <RevealText as="p" text={brand.promise} className="col-span-12 max-w-[15ch] text-[clamp(2.75rem,1rem+6.2vw,7.5rem)] leading-[0.98] font-medium tracking-[-0.045em] lg:col-span-10" />
+          <div className="col-span-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10" data-reveal>
+            <QuoteButton variant="link" className="text-lg">
+              Kostenlose Besichtigung anfragen
+            </QuoteButton>
+            <a href={company.phone.href} className="ulink self-start font-mono text-[0.9375rem] text-ink sm:self-auto">
+              {company.phone.display} · {company.availability}
+            </a>
+          </div>
+        </div>
+
+        <div className="grid-site gap-y-12">
+          <div className="col-span-12 border-t border-line pt-5 md:col-span-6 lg:col-span-4">
+            <h2 className="t-label">Kontakt</h2>
+            <ul className="mt-5 space-y-3">
               <li>
-                <a href={company.phone.href} className="inline-flex items-center gap-3 font-semibold text-ink hover:text-blue">
-                  <Phone aria-hidden className="size-4 text-blue" />
+                <a href={company.phone.href} className="ulink text-[1.375rem] font-medium tracking-[-0.02em] text-ink">
                   {company.phone.display}
                 </a>
-                <CallbackButton className="ml-7 min-h-9" />
               </li>
               <li>
-                <a href={`mailto:${company.email}`} className="inline-flex items-center gap-3 text-ink hover:text-blue">
-                  <Mail aria-hidden className="size-4 text-blue" />
+                <a href={`mailto:${company.email}`} className="ulink text-[0.9375rem] break-all text-ink">
                   {company.email}
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-ink">
-                <MapPin aria-hidden className="mt-1 size-4 shrink-0 text-blue" />
-                <address className="not-italic">{fullAddress()}</address>
-              </li>
-              <li className="flex items-start gap-3 text-ink">
-                <Clock aria-hidden className="mt-1 size-4 shrink-0 text-blue" />
-                <span>{company.availability}, telefonisch und per E-Mail</span>
+              <li>
+                <CallbackButton />
               </li>
             </ul>
+            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 font-mono text-[0.8125rem] text-muted">
+              <dt>Adresse</dt>
+              <dd>
+                <address className="not-italic">
+                  {company.address.street}
+                  <br />
+                  {company.address.zip} {company.address.city}
+                </address>
+              </dd>
+              <dt>Erreichbar</dt>
+              <dd>24/7, Telefon und E-Mail</dd>
+              {company.vatId && (
+                <>
+                  <dt>USt-ID</dt>
+                  <dd>{company.vatId}</dd>
+                </>
+              )}
+            </dl>
           </div>
 
-          <nav aria-label="Leistungen" className="lg:col-span-2">
-            <h2 className="text-sm font-semibold text-ink">Leistungen</h2>
-            <ul className="mt-4 space-y-2.5 text-[0.9375rem]">
-              {services.map((s) => (
-                <li key={s.slug}>
-                  <FooterLink to={`/leistungen/${s.slug}`}>{s.name}</FooterLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav aria-label="Unternehmen" className="lg:col-span-2">
-            <h2 className="text-sm font-semibold text-ink">Unternehmen</h2>
-            <ul className="mt-4 space-y-2.5 text-[0.9375rem]">
-              {companyLinks.map((l) => (
-                <li key={l.to}>
-                  <FooterLink to={l.to}>{l.label}</FooterLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav aria-label="Ratgeber und Werkzeuge" className="lg:col-span-2">
-            <h2 className="text-sm font-semibold text-ink">Wissen und Werkzeuge</h2>
-            <ul className="mt-4 space-y-2.5 text-[0.9375rem]">
-              {knowledgeLinks.map((l) => (
-                <li key={l.to}>
-                  <FooterLink to={l.to}>{l.label}</FooterLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav aria-label="Einzugsgebiet" className="lg:col-span-2">
-            <h2 className="text-sm font-semibold text-ink">
-              <FooterLink to="/einzugsgebiet" strong>
-                Einzugsgebiet
-              </FooterLink>
-            </h2>
-            <ul className="mt-4 space-y-2.5 text-[0.9375rem]">
-              {places
-                .filter((l) => l.major)
-                .map((l) => (
-                  <li key={l.slug}>
-                    {officeCitySlugs.includes(l.slug) ? (
-                      <FooterLink to={`/bueroreinigung/${l.slug}`}>Büroreinigung {shortName(l)}</FooterLink>
-                    ) : (
-                      <FooterLink to={`/einzugsgebiet/${l.slug}`}>Reinigungsfirma {shortName(l)}</FooterLink>
-                    )}
-                  </li>
-                ))}
-              <li>
-                <FooterLink to="/einzugsgebiet" strong>
-                  Alle {places.length} Orte
-                </FooterLink>
+          <Column title="Leistungen" className="col-span-6 md:col-span-3 lg:col-span-2">
+            {services.map((s) => (
+              <li key={s.slug}>
+                <FooterLink to={`/leistungen/${s.slug}`}>{s.name}</FooterLink>
               </li>
-            </ul>
-          </nav>
+            ))}
+          </Column>
+
+          <Column title="Unternehmen" className="col-span-6 md:col-span-3 lg:col-span-2">
+            {companyLinks.map((l) => (
+              <li key={l.to}>
+                <FooterLink to={l.to}>{l.label}</FooterLink>
+              </li>
+            ))}
+          </Column>
+
+          <Column title="Wissen und Werkzeuge" className="col-span-6 md:col-span-3 lg:col-span-2">
+            {knowledgeLinks.map((l) => (
+              <li key={l.to}>
+                <FooterLink to={l.to}>{l.label}</FooterLink>
+              </li>
+            ))}
+          </Column>
+
+          <Column title="Einzugsgebiet" className="col-span-6 md:col-span-3 lg:col-span-2">
+            {places
+              .filter((l) => l.major)
+              .map((l) => (
+                <li key={l.slug}>
+                  {officeCitySlugs.includes(l.slug) ? (
+                    <FooterLink to={`/bueroreinigung/${l.slug}`}>Büroreinigung {shortName(l)}</FooterLink>
+                  ) : (
+                    <FooterLink to={`/einzugsgebiet/${l.slug}`}>Reinigungsfirma {shortName(l)}</FooterLink>
+                  )}
+                </li>
+              ))}
+            <li>
+              <FooterLink to="/einzugsgebiet">Alle {places.length} Orte</FooterLink>
+            </li>
+          </Column>
         </div>
 
-        <div className="mt-16 flex flex-col gap-4 border-t border-line py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+        {/* Logo groß als Abschluss */}
+        <div className="mt-24 border-t border-line pt-10 lg:mt-32 lg:pt-14">
+          <HomeLink label={`${company.name}, zur Startseite`} className="block">
+            <Logo className="w-full max-w-[64rem]" />
+          </HomeLink>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-4 border-t border-line py-6 font-mono text-[0.8125rem] text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {company.legalName}, {company.seat}
           </p>
@@ -165,7 +178,7 @@ export function Footer() {
             </li>
             {!__PREVIEW__ && (
               <li>
-                <a href="/sitemap.xml" className="hover:text-ink">
+                <a href="/sitemap.xml" className="ulink py-0.5 hover:text-ink">
                   Sitemap
                 </a>
               </li>

@@ -1,64 +1,97 @@
 @import 'tailwindcss';
 
-/* Schrift lokal eingebunden (DSGVO: keine Verbindung zu Google Fonts) */
+/* ==========================================================================
+   SCHRIFTEN (lokal, DSGVO: keine Verbindung zu externen Schriftdiensten)
+   Instrument Sans: Grotesk für alles (SIL Open Font License 1.1)
+   IBM Plex Mono: Zahlen-Labels, Metadaten, Abschnittsnummern (SIL Open Font License 1.1)
+   Schrift tauschen: Datei in src/assets/fonts ablegen und hier sowie in --font-sans/--font-mono eintragen.
+   ========================================================================== */
 @font-face {
-  font-family: 'Inter Variable';
+  font-family: 'Instrument Sans';
   font-style: normal;
   font-display: swap;
-  font-weight: 100 900;
-  src: url('../assets/fonts/inter-latin-wght.woff2') format('woff2-variations');
+  font-weight: 400 700;
+  src: url('../assets/fonts/instrument-sans-latin-wght.woff2') format('woff2-variations');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('../assets/fonts/ibm-plex-mono-latin-400.woff2') format('woff2');
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* ==========================================================================
    DESIGN-TOKENS
-   Alle Markenfarben, Schriften und Radien an einer Stelle.
-   Farbe ändern = nur hier den Wert anpassen. Tailwind erzeugt daraus
-   automatisch Klassen wie bg-ink, text-blue, border-line usw.
+   Alle Farben, Schriften, Radien und Bewegungswerte an einer Stelle.
+   Tailwind erzeugt daraus Klassen wie bg-paper, text-ink, border-line, font-mono.
+   Übersicht aller Bausteine: /styleguide (nicht verlinkt, noindex)
    ========================================================================== */
 @theme {
-  /* Ink: Text und dunkle Sektionen */
-  --color-ink: #0a1628;
-  --color-ink-2: #13223b;
-  --color-ink-3: #1d2f4d;
+  /* Flächen: warmes Off-White statt Weiß, leicht abgesetzte Fläche, tiefes Schwarzblau für Schlüsselmomente */
+  --color-paper: #f3f1ec;
+  --color-surface: #e9e6df;
+  --color-night: #0b0f17;
+  --color-night-2: #151a24;
 
-  /* CleanStar Blue: Hauptfarbe, Buttons, Links */
-  --color-blue: #1f5eff;
-  --color-blue-hover: #1a4fe0;
-  --color-blue-soft: #dbe6ff;
-  --color-blue-on-dark: #7c98ff; /* Blau für Text auf dunklem Grund (Kontrast AA) */
+  /* Text */
+  --color-ink: #0e1013; /* 16,9 : 1 auf paper */
+  --color-ink-2: #2a2d31;
+  --color-muted: #54575c; /* 6,4 : 1 auf paper, 5,8 : 1 auf surface */
+  --color-muted-dark: #a2a6ad; /* 7,9 : 1 auf night */
 
-  /* Logo-Farben (nur für Akzente, das Logo selbst bleibt unverändert) */
+  /* Markenblau (aus dem Logo): nur primärer Button, Links im Fließtext, wenige Akzente */
+  --color-blue: #1a4fe0; /* 5,7 : 1 auf paper, auch als Grund für paper-Text */
+  --color-blue-hover: #143fb8;
+  --color-blue-on-dark: #8da6ff; /* 8,3 : 1 auf night */
+
+  /* Haarlinien */
+  --color-line: rgb(14 16 19 / 0.16);
+  --color-line-strong: rgb(14 16 19 / 0.4);
+  --color-line-dark: rgb(243 241 236 / 0.16);
+
+  /* Funktionale Zustände (nur Formulare und Rückmeldungen) */
+  --color-danger: #b42318;
+  --color-success: #1e6b43;
+
+  /* Logo-Farben: nur im Logo selbst */
   --color-logo-cyan: #00caf9;
   --color-logo-blue: #005df3;
 
-  /* Glacier: helle Flächen */
-  --color-glacier: #eef4fc;
-  --color-glacier-2: #e2ebf8;
+  /* Alte Namen, auf das neue System abgebildet (Sicherheitsnetz, wird schrittweise entfernt) */
+  --color-glacier: var(--color-surface);
+  --color-glacier-2: #dedad2;
+  --color-blue-soft: rgb(26 79 224 / 0.1);
+  --color-fresh: var(--color-blue-on-dark);
+  --color-fresh-ink: var(--color-blue);
+  --color-ink-3: var(--color-night-2);
 
-  /* Fresh: sparsamer Zweitakzent (Häkchen, Highlights) */
-  --color-fresh: #2dd4bf;
-  --color-fresh-ink: #0f766e; /* Fresh als Textfarbe auf Weiß (Kontrast AA) */
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
-  /* Neutrale Töne */
-  --color-muted: #5b6b82; /* Fließtext sekundär auf hell */
-  --color-muted-dark: #a9bcd8; /* Fließtext sekundär auf dunkel */
-  --color-line: rgb(10 22 40 / 0.09);
-  --color-line-dark: rgb(255 255 255 / 0.12);
+  /* Formen: rechteckig, höchstens 4 px */
+  --radius-card: 2px;
+  --radius-panel: 3px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 3px;
+  --radius-2xl: 4px;
+  --radius-3xl: 4px;
 
-  --color-danger: #c62f3f;
+  /* Bewegung: eine Kurve, Dauern 300 bis 900 ms */
+  --ease-out-expo: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-cs: cubic-bezier(0.2, 0.7, 0.1, 1);
 
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-
-  --radius-card: 1.25rem;
-  --radius-panel: 2rem;
-
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-
-  --shadow-soft: 0 1px 2px rgb(10 22 40 / 0.04), 0 8px 24px -8px rgb(10 22 40 / 0.12);
-  --shadow-lift: 0 2px 4px rgb(10 22 40 / 0.04), 0 24px 48px -16px rgb(10 22 40 / 0.22);
-  --shadow-glow: 0 10px 30px -10px rgb(31 94 255 / 0.55);
+  /* Keine dekorativen Schatten. Nur funktional (geöffnetes Menü, Dialog). */
+  --shadow-soft: 0 0 #0000;
+  --shadow-lift: 0 0 #0000;
+  --shadow-glow: 0 0 #0000;
+  --shadow-menu: 0 30px 80px -30px rgb(14 16 19 / 0.45);
 }
 
 /* ==========================================================================
@@ -69,26 +102,27 @@
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     scroll-padding-top: 6rem;
+    background: var(--color-paper);
+    /* nur manuelle Trennung: Wörter werden nie automatisch mit Bindestrich getrennt */
+    hyphens: manual;
   }
   body {
-    @apply bg-white font-sans text-ink antialiased;
-    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    @apply bg-paper font-sans text-ink antialiased;
+    font-size: 1.125rem;
+    line-height: 1.55;
+    font-kerning: normal;
   }
   ::selection {
-    background: var(--color-blue);
-    color: #fff;
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
   h1,
   h2,
   h3,
   h4 {
-    font-optical-sizing: auto;
+    font-weight: 500;
     text-wrap: balance;
     letter-spacing: -0.025em;
-  }
-  html {
-    /* nur manuelle Trennung: Wörter werden nie automatisch mit Bindestrich getrennt */
-    hyphens: manual;
   }
   p,
   li,
@@ -99,15 +133,14 @@
   :focus-visible {
     outline: 2px solid var(--color-blue);
     outline-offset: 3px;
-    border-radius: 6px;
+    border-radius: 0;
   }
   .on-dark :focus-visible {
-    outline-color: var(--color-fresh);
+    outline-color: var(--color-blue-on-dark);
   }
-  /* Sichtbare Rückmeldung beim Tippen auf Links und Buttons (Mobile) */
   a,
   button {
-    -webkit-tap-highlight-color: rgb(31 94 255 / 0.14);
+    -webkit-tap-highlight-color: rgb(14 16 19 / 0.08);
   }
   [hidden] {
     display: none !important;
@@ -127,78 +160,339 @@ html.lenis body {
 }
 
 @layer components {
+  /* Seitenrand und maximale Breite: 12-Spalten-Raster liegt innerhalb dieses Containers */
   .container-site {
-    @apply mx-auto w-full max-w-[84rem] px-5 sm:px-8 lg:px-12;
+    @apply mx-auto w-full max-w-[100rem] px-5 sm:px-8 lg:px-12 2xl:px-16;
   }
-  /* Kleine Dachzeile über Überschriften: ruhig, ohne Striche, auf dunklem Grund zurückhaltend hell */
-  .eyebrow {
-    @apply inline-flex items-center gap-2 text-[0.8125rem] font-semibold tracking-[0.12em] text-blue-hover uppercase;
+  .grid-site {
+    @apply grid grid-cols-12 gap-x-5 lg:gap-x-8;
   }
-  .on-dark .eyebrow {
-    @apply text-white/65;
+
+  /* Vertikaler Rhythmus: Abschnitte 96 bis 192 px */
+  .section {
+    padding-block: clamp(6rem, 3.5rem + 9vw, 12rem);
   }
+  .section-tight {
+    padding-block: clamp(4rem, 2.5rem + 5vw, 7.5rem);
+  }
+
+  /* Alte Klassennamen, auf das neue System abgebildet */
   .heading-display {
-    @apply text-[2.5rem] leading-[1.02] font-semibold sm:text-6xl lg:text-[clamp(3.5rem,min(5.6vw,9.2vh),5.25rem)];
-    letter-spacing: -0.035em;
+    @apply t-display;
   }
   .heading-1 {
-    @apply text-[clamp(1.625rem,8.4vw,2.25rem)] leading-[1.08] font-semibold sm:text-5xl lg:text-[4rem];
-    letter-spacing: -0.032em;
+    @apply t-h1;
   }
   .heading-2 {
-    @apply text-[clamp(1.5rem,7.8vw,1.875rem)] leading-[1.12] font-semibold sm:text-4xl lg:text-5xl;
-    letter-spacing: -0.03em;
+    @apply t-h2;
   }
   .heading-3 {
-    @apply text-xl leading-snug font-semibold sm:text-2xl;
+    @apply t-h3;
   }
   .lead {
-    @apply text-lg leading-relaxed text-muted sm:text-xl;
+    @apply t-lead text-ink;
   }
   .on-dark .lead {
-    @apply text-muted-dark;
+    @apply text-paper;
   }
+  .eyebrow {
+    @apply t-label inline-flex items-center gap-2;
+  }
+
+  /* ---- Links ---- */
+  .on-dark .link {
+    color: var(--color-blue-on-dark);
+  }
+  /* Textlink mit Pfeil: Unterstrich zieht sich beim Überfahren zurück und zeichnet sich neu */
+  .tlink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    font-weight: 500;
+    padding-bottom: 0.2em;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  }
+  .tlink:hover {
+    animation: underline-redraw 0.7s var(--ease-cs);
+  }
+  .tlink svg {
+    transition: transform 0.4s var(--ease-cs);
+  }
+  .tlink:hover svg {
+    transform: translateX(3px);
+  }
+  /* Unterstrich, der nur beim Überfahren erscheint (Navigation, Listen) */
+  .ulink {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.5s var(--ease-cs);
+  }
+  .ulink:hover,
+  .ulink[aria-current='page'] {
+    background-size: 100% 1px;
+  }
+
+  /* ---- Buttons: rechteckig ---- */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    font-size: 1rem;
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    text-align: center;
+    user-select: none;
+    transition:
+      background-color 0.3s var(--ease-cs),
+      color 0.3s var(--ease-cs),
+      box-shadow 0.3s var(--ease-cs);
+  }
+  .btn svg {
+    transition: transform 0.4s var(--ease-cs);
+  }
+  .btn:hover svg.btn-arrow {
+    transform: translateX(3px);
+  }
+  .btn:disabled {
+    pointer-events: none;
+    opacity: 0.45;
+  }
+  .btn-primary {
+    background: var(--color-blue);
+    color: var(--color-paper);
+  }
+  .btn-primary:hover {
+    background: var(--color-blue-hover);
+  }
+  .btn-outline {
+    box-shadow: inset 0 0 0 1px var(--color-line-strong);
+    color: var(--color-ink);
+  }
+  .btn-outline:hover {
+    box-shadow: inset 0 0 0 1px var(--color-ink);
+  }
+  .btn-light {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+  .btn-light:hover {
+    background: #fff;
+  }
+  .btn-outline-dark {
+    box-shadow: inset 0 0 0 1px rgb(243 241 236 / 0.35);
+    color: var(--color-paper);
+  }
+  .btn-outline-dark:hover {
+    box-shadow: inset 0 0 0 1px var(--color-paper);
+  }
+  .btn-sm {
+    min-height: 2.75rem;
+    padding: 0.5rem 1.125rem;
+    font-size: 0.9375rem;
+  }
+  .btn-lg {
+    min-height: 3.75rem;
+    padding: 0.875rem 1.75rem;
+    font-size: 1.0625rem;
+  }
+
+  /* ---- Haarlinien ---- */
+  .rule {
+    display: block;
+    height: 1px;
+    background: var(--color-line);
+    transform-origin: left center;
+  }
+  .on-dark .rule {
+    background: var(--color-line-dark);
+  }
+
+  /* ---- Formularfelder: Linie unten, große Labels ---- */
+  .field-label {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+  .field {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.75rem 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--color-line-strong);
+    border-radius: 0;
+    font-size: 1.125rem;
+    color: var(--color-ink);
+    transition: border-color 0.3s var(--ease-cs);
+  }
+  .field::placeholder {
+    color: #7d8085;
+  }
+  .field:hover {
+    border-bottom-color: var(--color-ink);
+  }
+  .field:focus {
+    outline: none;
+    border-bottom-color: var(--color-blue);
+    box-shadow: 0 1px 0 0 var(--color-blue);
+  }
+  .field[aria-invalid='true'] {
+    border-bottom-color: var(--color-danger);
+  }
+  /* Rechteckige Auswahlfläche statt Pille */
+  .choice {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: 2px;
+    box-shadow: inset 0 0 0 1px var(--color-line-strong);
+    font-weight: 500;
+    text-align: left;
+    transition:
+      box-shadow 0.3s var(--ease-cs),
+      background-color 0.3s var(--ease-cs),
+      color 0.3s var(--ease-cs);
+  }
+  .choice:hover {
+    box-shadow: inset 0 0 0 1px var(--color-ink);
+  }
+  .choice[aria-pressed='true'],
+  .choice[aria-checked='true'],
+  .choice:has(input:checked),
+  .choice.is-selected {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    box-shadow: inset 0 0 0 1px var(--color-ink);
+  }
+
+  /* ---- Bilder: einheitliche Farbbehandlung (leicht entsättigt, warm, gleicher Kontrast) ---- */
+  .photo img,
+  .photo canvas,
+  img.photo,
+  canvas.photo {
+    filter: saturate(0.82) contrast(0.97) sepia(0.06) brightness(1.01);
+  }
+  .caption {
+    @apply t-label mt-3;
+  }
+
   .prose-cs {
-    @apply max-w-3xl text-base leading-relaxed text-ink/85;
+    @apply measure text-lg leading-[1.6] text-ink;
   }
   .prose-cs h2 {
-    @apply mt-12 mb-4 text-2xl font-semibold text-ink;
+    @apply t-h3 mt-16 mb-5 text-ink;
   }
   .prose-cs h3 {
-    @apply mt-8 mb-3 text-lg font-semibold text-ink;
+    @apply t-h4 mt-10 mb-3 text-ink;
   }
   .prose-cs p,
   .prose-cs ul {
-    @apply mb-4;
+    @apply mb-5;
   }
   .prose-cs ul {
-    @apply list-disc pl-5;
+    @apply list-disc pl-5 marker:text-muted;
   }
   .prose-cs a {
-    @apply text-blue underline underline-offset-2;
+    @apply link;
   }
   .todo-flag {
-    @apply rounded bg-amber-100 px-1.5 py-0.5 font-mono text-[0.75em] text-amber-900;
+    @apply bg-amber-100 px-1.5 py-0.5 font-mono text-[0.75em] text-amber-900;
   }
+}
 
-  /* Feines Architektur-Raster als Hintergrund */
-  .bg-grid {
-    background-image: linear-gradient(to right, var(--color-line) 1px, transparent 1px), linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
-    background-size: 72px 72px;
+/* ---- Typografie (als Utilities, damit sie mit Breakpoints funktionieren: lg:t-h2) ---- */
+@utility t-display {
+  font-size: clamp(3rem, 1rem + 7.6vw, 9rem);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+
+@utility t-h1 {
+  font-size: clamp(2.5rem, 1rem + 5.4vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+
+@utility t-h2 {
+  font-size: clamp(2.125rem, 1rem + 3.7vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+@utility t-h3 {
+  font-size: clamp(1.5rem, 1rem + 1.5vw, 2.375rem);
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+  font-weight: 500;
+}
+
+@utility t-h4 {
+  font-size: 1.25rem;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+}
+
+@utility t-lead {
+  font-size: clamp(1.1875rem, 1rem + 0.6vw, 1.5rem);
+  line-height: 1.45;
+  letter-spacing: -0.012em;
+}
+
+@utility t-body {
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+
+@utility t-small {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+@utility t-label {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+@utility t-num {
+  font-size: clamp(3rem, 1.5rem + 4.4vw, 6.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility measure {
+  max-width: 65ch;
+}
+
+@utility link {
+  color: var(--color-blue);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color 0.3s var(--ease-cs);
+  &:hover {
+    color: var(--color-blue-hover);
   }
-  .bg-grid-dark {
-    background-image: linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
-    background-size: 72px 72px;
-  }
-  /* Glas-Effekt für feste Leisten: deckender Grund, schwacher Blur (wird bei jedem Scroll-Frame neu berechnet) */
-  .glass {
-    background: rgb(255 255 255 / 0.86);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .glass-dark {
-    background: rgb(19 34 59 / 0.82);
-  }
+}
+.on-dark .t-label {
+  color: var(--color-muted-dark);
 }
 
 @utility no-scrollbar {
@@ -208,15 +502,112 @@ html.lenis body {
   }
 }
 
-/* Reveal-Texte: Wörter starten unsichtbar nur, wenn JS aktiv ist und Bewegung erlaubt */
+@keyframes underline-redraw {
+  0% {
+    background-size: 100% 1px;
+    background-position: 100% 100%;
+  }
+  45% {
+    background-size: 0 1px;
+    background-position: 100% 100%;
+  }
+  46% {
+    background-size: 0 1px;
+    background-position: 0 100%;
+  }
+  100% {
+    background-size: 100% 1px;
+    background-position: 0 100%;
+  }
+}
+
+/* ==========================================================================
+   Bewegung: Text Zeile für Zeile, Bilder per clip-path aufdecken, Linien zeichnen.
+   Startzustände nur mit JavaScript und erlaubter Bewegung; [data-revealed] = einmal gelaufen.
+   ========================================================================== */
 .js-motion [data-reveal-word] {
   display: inline-block;
-  transform: translateY(105%);
-  opacity: 0;
+  transform: translateY(108%);
 }
 .js-motion [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(16px);
+}
+.js-motion [data-reveal-img] {
+  clip-path: inset(100% 0 0 0);
+}
+.js-motion [data-reveal-rule] {
+  transform: scaleX(0);
+}
+
+/* Sofort startender Reveal (Seitenkopf), rein per CSS, damit LCP nicht auf JavaScript wartet.
+   --l ist die Zeilennummer (gesetzt von einem kleinen Inline-Skript direkt nach der Überschrift). */
+@keyframes word-up {
+  to {
+    transform: translateY(0);
+  }
+}
+.js-motion .reveal-now [data-reveal-word] {
+  animation: word-up 0.9s var(--ease-cs) forwards;
+  animation-delay: calc(var(--l, 0) * 110ms + 60ms);
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.js-motion .fade-up-now {
+  opacity: 0;
+  animation: fade-up 0.8s var(--ease-cs) forwards;
+  animation-delay: var(--d, 0.4s);
+}
+/* Einleitung im Seitenkopf ist oft das größte Element (LCP): Text mit Deckkraft 0 zählt erst ab dem Einblenden,
+   daher startet sie fast unsichtbar statt unsichtbar. Optisch kaum ein Unterschied. */
+@keyframes fade-up-lcp {
+  from {
+    opacity: 0.1;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.js-motion .fade-up-now.fade-lcp {
+  opacity: 0.1;
+  transform: translateY(12px);
+  animation-name: fade-up-lcp;
+}
+/* Bild im Seitenkopf: deckt sich sofort von unten auf (kein Warten auf JavaScript) */
+@keyframes img-up {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.js-motion .img-up-now {
+  animation: img-up 1.1s var(--ease-cs) both;
+  animation-delay: var(--d, 0.15s);
+}
+/* Flag: einmal gelaufen = Endzustand, auch wenn das Element später neu eingehängt oder hydriert wird
+   (sonst würde eine CSS-Animation erneut starten). Gesetzt in Layout.tsx bzw. useScrollReveals.ts. */
+.js-motion [data-revealed] [data-reveal-word],
+.js-motion .fade-up-now[data-revealed],
+.js-motion .img-up-now[data-revealed],
+.js-motion [data-reveal][data-revealed],
+.js-motion [data-reveal-img][data-revealed],
+.js-motion [data-reveal-rule][data-revealed] {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  clip-path: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -229,9 +620,12 @@ html.lenis body {
     scroll-behavior: auto !important;
   }
   .js-motion [data-reveal-word],
-  .js-motion [data-reveal] {
+  .js-motion [data-reveal],
+  .js-motion [data-reveal-img],
+  .js-motion [data-reveal-rule] {
     transform: none !important;
     opacity: 1 !important;
+    clip-path: none !important;
   }
 }
 
@@ -243,113 +637,15 @@ html.lenis body {
   }
 }
 
-/* Sofort startender Reveal (z. B. Hero), rein per CSS, damit LCP nicht auf JS wartet */
-@keyframes word-up {
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-.js-motion .reveal-now [data-reveal-word] {
-  animation: word-up 0.9s var(--ease-out-expo) forwards;
-  animation-delay: calc(var(--i) * 45ms + 80ms);
-}
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.js-motion .fade-up-now {
-  opacity: 0;
-  animation: fade-up 0.9s var(--ease-out-expo) forwards;
-  animation-delay: var(--d, 0.5s);
-}
-/* Einleitung im Seitenkopf ist oft das größte Element (LCP): Text mit Deckkraft 0 zählt erst ab dem Einblenden,
-   daher startet sie fast unsichtbar statt unsichtbar. Optisch kaum ein Unterschied. */
-@keyframes fade-up-lcp {
-  from {
-    opacity: 0.1;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.js-motion .fade-up-now.fade-lcp {
-  opacity: 0.1;
-  transform: translateY(16px);
-  animation-name: fade-up-lcp;
-}
-/* Flag: einmal gelaufen = Endzustand, auch wenn das Element später neu eingehängt oder hydriert wird
-   (sonst würde eine CSS-Animation erneut starten). Gesetzt in Layout.tsx bzw. useScrollReveals.ts. */
-.js-motion [data-revealed] [data-reveal-word],
-.js-motion .fade-up-now[data-revealed],
-.js-motion [data-reveal][data-revealed] {
-  animation: none;
-  opacity: 1;
-  transform: none;
-}
-
-/* Problem-Karten: Endzustand ist der Standard (ohne JavaScript, reduzierte Bewegung).
-   Mit Bewegung startet die Karte grau; .is-solved spielt nacheinander ab:
-   Durchstreichen, Lösung einblenden, Haken zeichnen, Karte wird weiß mit feinem blauen Rand. */
-.ps-card {
-  background-color: #fff;
-  box-shadow:
-    inset 0 0 0 1px rgb(31 94 255 / 0.22),
-    0 10px 30px -18px rgb(15 23 42 / 0.25);
-  transition:
-    background-color 0.6s ease 0.85s,
-    box-shadow 0.6s ease 0.85s;
-}
-.ps-strike {
-  background: linear-gradient(currentColor, currentColor) no-repeat 0 58% / 100% 2px;
+/* Durchgestrichenes Problem: die Linie zeichnet sich, sobald die Zeile eingeblendet ist */
+.strike {
+  background: linear-gradient(currentColor, currentColor) 0 58% / 100% 1px no-repeat;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  color: var(--color-muted);
-  transition:
-    background-size 0.6s cubic-bezier(0.65, 0, 0.35, 1),
-    color 0.4s ease 0.35s;
+  transition: background-size 0.9s var(--ease-cs) 0.15s;
 }
-.ps-solution {
-  transition:
-    opacity 0.55s ease 0.5s,
-    transform 0.55s var(--ease-out-expo) 0.5s;
-}
-.ps-icon {
-  background-color: rgb(45 212 191 / 0.16);
-  transition: background-color 0.4s ease 0.7s;
-}
-.ps-check {
-  stroke-dasharray: 26;
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 0.5s ease-out 0.75s;
-}
-.js-motion .ps-card:not(.is-solved) {
-  background-color: #eef1f5;
-  box-shadow:
-    inset 0 0 0 1px transparent,
-    0 0 0 0 transparent;
-}
-.js-motion .ps-card:not(.is-solved) .ps-strike {
-  background-size: 0% 2px;
-  color: var(--color-ink);
-}
-.js-motion .ps-card:not(.is-solved) .ps-solution {
-  opacity: 0;
-  transform: translateY(8px);
-}
-.js-motion .ps-card:not(.is-solved) .ps-icon {
-  background-color: rgb(15 23 42 / 0.06);
-}
-.js-motion .ps-card:not(.is-solved) .ps-check {
-  stroke-dashoffset: 26;
+.js-motion [data-reveal]:not([data-revealed]) .strike {
+  background-size: 0 1px;
 }
 
 /* Hero-Bildfläche: höchstens native Framegröße (Desktop) */
@@ -359,32 +655,6 @@ html.lenis body {
   width: min(100%, var(--fw));
   height: min(100%, var(--fh));
   transform: translate(-50%, -50%);
-}
-/* Handy-Einstieg: weicher Verlauf von unten, oben bleibt das Gebäude frei */
-@media (max-width: 767px) {
-  .hero-shade {
-    background-image: linear-gradient(
-      to bottom,
-      rgb(10 22 40 / 0) 0%,
-      rgb(10 22 40 / 0) 30%,
-      rgb(10 22 40 / 0.35) 45%,
-      rgb(10 22 40 / 0.75) 62%,
-      rgb(10 22 40 / 0.92) 80%,
-      rgb(10 22 40 / 0.96) 100%
-    );
-  }
-}
-
-/* Reklamationsablauf: aktive Schritte leuchten auf (ohne Bewegung: alle aktiv) */
-.flow-step.is-on .flow-dot,
-:root:not(.js-motion) .flow-dot {
-  background: var(--color-blue);
-  color: #fff;
-  box-shadow: 0 0 0 6px rgb(31 94 255 / 0.18);
-}
-.flow-step.is-on .flow-body,
-:root:not(.js-motion) .flow-body {
-  background: rgb(255 255 255 / 0.08);
 }
 
 /* Button-Gruppen: auf dem Handy untereinander und volle Breite, ab Tablet nebeneinander */
@@ -403,62 +673,10 @@ html.lenis body {
 
 /* Keine automatische Silbentrennung und kein Umbrechen mitten im Wort. Lange Wörter, die auf 320 px nicht passen,
    werden über kleinere Schrift oder andere Formulierung gelöst (siehe Typografie-Check). */
-.heading-1 .inline-block,
-.heading-2 .inline-block {
+.t-h1 .inline-block,
+.t-h2 .inline-block,
+.t-display .inline-block {
   max-width: 100%;
-}
-
-/* Einheitliches Raster für Vorteile, Werte und Leistungsmerkmale (je 4 Punkte):
-   unter 360 px eine Spalte, darüber zwei, ab 1024 px vier */
-.feature-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-}
-@media (min-width: 360px) {
-  .feature-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (min-width: 640px) {
-  .feature-grid {
-    gap: 1.25rem;
-  }
-}
-@media (min-width: 1024px) {
-  .feature-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-.feature-card {
-  border-radius: var(--radius-card);
-  padding: 1rem;
-}
-@media (min-width: 640px) {
-  .feature-card {
-    padding: 1.5rem;
-  }
-}
-.feature-title {
-  font-size: 1rem;
-  line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  color: var(--color-ink);
-}
-.feature-text {
-  margin-top: 0.5rem;
-  font-size: 0.8125rem;
-  line-height: 1.55;
-  color: var(--color-muted);
-}
-@media (min-width: 640px) {
-  .feature-title {
-    font-size: 1.125rem;
-  }
-  .feature-text {
-    font-size: 0.9375rem;
-  }
 }
 
 /* Zahlen mit Einheit und Preisspannen nie auseinanderreißen */

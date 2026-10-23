@@ -1,11 +1,14 @@
 import type { ReactNode } from 'react'
 import { Breadcrumbs } from './Breadcrumbs'
 import { RevealText } from './RevealText'
-import { Picture } from './Picture'
+import { Picture, type PictureRatio } from './Picture'
 import type { ImageId } from '@/content/images'
 import { cn } from '@/lib/cn'
 
-/** Kopfbereich für Unterseiten: Brotkrumen, H1, Einleitung, optional Bild. */
+/**
+ * Kopfbereich für Unterseiten: Brotkrumen, große H1 über das Raster, Einleitung versetzt rechts,
+ * optional ein Bild über die volle Breite in festem Seitenverhältnis (deckt sich von unten auf).
+ */
 export function PageHero({
   trail,
   eyebrow,
@@ -13,6 +16,8 @@ export function PageHero({
   lead,
   actions,
   image,
+  imageRatio = '21:9',
+  caption,
   dark,
   children,
 }: {
@@ -22,47 +27,55 @@ export function PageHero({
   lead?: ReactNode
   actions?: ReactNode
   image?: ImageId
+  /** Seitenverhältnis des Bildes ab Tablet (Handy: 4:3) */
+  imageRatio?: PictureRatio
+  caption?: string
   dark?: boolean
   children?: ReactNode
 }) {
   return (
-    <section className={cn('relative overflow-hidden pt-32 pb-16 sm:pt-40 sm:pb-24', dark ? 'on-dark bg-ink text-white' : 'bg-glacier')}>
-      <div
-        aria-hidden
-        className={cn(
-          'absolute -top-40 -right-40 size-[40rem]',
-          dark ? '[background:radial-gradient(closest-side,rgb(31_94_255/0.48),transparent)]' : '[background:radial-gradient(closest-side,rgb(31_94_255/0.08),transparent)]',
-        )}
-      />
-      <div className="container-site relative">
+    <section className={cn('relative pt-28 sm:pt-36 lg:pt-44', image ? 'pb-0' : 'pb-20 sm:pb-28 lg:pb-36', dark ? 'on-dark bg-night text-paper' : 'bg-paper')}>
+      <div className="container-site">
         <Breadcrumbs trail={trail} dark={dark} />
-        <div className={cn('grid gap-12', image && 'lg:grid-cols-12 lg:items-center')}>
-          <div className={cn(image ? 'lg:col-span-6' : 'max-w-4xl')}>
+        <div className="grid-site gap-y-8 lg:gap-y-12">
+          <div className="col-span-12 lg:col-span-11">
             {eyebrow && (
-              <p className="eyebrow fade-up-now mb-5" style={{ ['--d' as string]: '0s' }}>
+              <p className="t-label fade-up-now mb-6 lg:mb-8" style={{ ['--d' as string]: '0s' }}>
                 {eyebrow}
               </p>
             )}
-            <RevealText as="h1" text={title} immediate className="heading-1" />
-            {lead && (
-              <div className="lead fade-up-now fade-lcp mt-6 max-w-2xl" style={{ ['--d' as string]: '0.4s' }}>
-                {lead}
-              </div>
-            )}
-            {actions && (
-              <div className="btn-row fade-up-now mt-8 flex flex-col gap-3 sm:flex-row" style={{ ['--d' as string]: '0.55s' }}>
-                {actions}
-              </div>
-            )}
-            {children}
+            <RevealText as="h1" text={title} immediate className="t-h1 max-w-[18ch]" />
           </div>
-          {image && (
-            <div className="lg:col-span-6">
-              <Picture id={image} priority sizes="(min-width:1024px) 50vw, 100vw" tone={dark ? 'dark' : 'light'} rounded="rounded-panel" />
+          {(lead || actions || children) && (
+            <div className="col-span-12 md:col-span-9 lg:col-span-6 lg:col-start-7 xl:col-span-5 xl:col-start-8">
+              {lead && (
+                <div className={cn('t-lead fade-up-now fade-lcp', dark ? 'text-paper' : 'text-ink')} style={{ ['--d' as string]: '0.35s' }}>
+                  {lead}
+                </div>
+              )}
+              {actions && (
+                <div className="btn-row fade-up-now mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6" style={{ ['--d' as string]: '0.5s' }}>
+                  {actions}
+                </div>
+              )}
+              {children}
             </div>
           )}
         </div>
       </div>
+      {image && (
+        <div className="container-site mt-16 sm:mt-20 lg:mt-28">
+          <Picture
+            id={image}
+            priority
+            reveal="now"
+            sizes="(min-width:1600px) 1472px, 100vw"
+            tone={dark ? 'dark' : 'light'}
+            aspect={cn('aspect-[4/3]', imageRatio === '21:9' ? 'sm:aspect-[21/9]' : imageRatio === '3:2' ? 'sm:aspect-[3/2]' : 'sm:aspect-[16/9]')}
+            caption={caption}
+          />
+        </div>
+      )}
     </section>
   )
 }

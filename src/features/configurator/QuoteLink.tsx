@@ -5,7 +5,7 @@ import { useQuote } from './QuoteContext'
 interface Props {
   children?: ReactNode
   size?: 'sm' | 'md' | 'lg'
-  variant?: 'primary' | 'secondary' | 'ghost' | 'light' | 'outline-dark'
+  variant?: 'primary' | 'secondary' | 'outline' | 'link' | 'ghost' | 'light' | 'outline-dark'
   className?: string
   arrow?: boolean
   full?: boolean

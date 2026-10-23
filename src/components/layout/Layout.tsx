@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import { Header } from './Header'
 import { Footer } from './Footer'
 import { MobileBar } from './MobileBar'
-import { Cursor } from './Cursor'
 import { Modal } from '@/components/ui/Modal'
 import { QuoteProvider, useQuote } from '@/features/configurator/QuoteContext'
 import { CallbackProvider } from '@/features/callback/Callback'
@@ -13,6 +12,7 @@ import { prefersReducedMotion } from '@/lib/env'
 import { jumpTo, scrollToElement, startSmoothScroll, stopSmoothScroll } from '@/lib/smooth-scroll'
 import { ScrollTrigger } from '@/lib/gsap'
 import { onIdle } from '@/lib/idle'
+import { EASE_CS_ARRAY } from '@/lib/ease'
 
 const Configurator = lazy(() => import('@/features/configurator/Configurator'))
 
@@ -45,7 +45,8 @@ function Shell() {
         const host = t.closest('.reveal-now')
         const words = host?.querySelectorAll('[data-reveal-word]')
         if (host && words && t === words[words.length - 1]) host.setAttribute('data-revealed', '')
-      } else if (e.animationName === 'fade-up' && t.classList.contains('fade-up-now')) t.setAttribute('data-revealed', '')
+      } else if ((e.animationName === 'fade-up' || e.animationName === 'fade-up-lcp') && t.classList.contains('fade-up-now')) t.setAttribute('data-revealed', '')
+      else if (e.animationName === 'img-up' && t.classList.contains('img-up-now')) t.setAttribute('data-revealed', '')
     }
     document.addEventListener('animationend', onAnimEnd)
     // iOS zeigt :active-Stile (Rückmeldung beim Tippen) nur, wenn ein touchstart-Listener existiert
@@ -165,7 +166,7 @@ function Shell() {
           e.preventDefault()
           document.getElementById('main')?.focus()
         }}
-        className="fixed top-3 left-3 z-[100] -translate-y-24 rounded-full bg-ink px-5 py-3 font-semibold text-white focus:translate-y-0"
+        className="fixed top-3 left-3 z-[100] -translate-y-24 bg-ink px-5 py-3 font-medium text-paper focus:translate-y-0"
       >
         Zum Inhalt springen
       </a>
@@ -173,9 +174,9 @@ function Shell() {
       <main id="main" tabIndex={-1} className="outline-none">
         <motion.div
           key={pathname}
-          initial={first.current || prefersReducedMotion() ? false : { opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          initial={first.current || prefersReducedMotion() ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: EASE_CS_ARRAY }}
         >
           <Outlet />
         </motion.div>
@@ -183,7 +184,6 @@ function Shell() {
       <Footer />
       <MobileBar />
       <QuoteModal />
-      <Cursor />
     </>
   )
 }

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { lockScroll } from '@/lib/smooth-scroll'
+import { EASE_CS_ARRAY } from '@/lib/ease'
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
@@ -52,26 +53,26 @@ export function Modal({ open, onClose, title, children, wide }: { open: boolean;
     <AnimatePresence>
       {open && (
         <motion.div className="fixed inset-0 z-[90] flex items-end justify-center sm:items-center sm:p-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <div className="absolute inset-0 bg-ink/55 backdrop-blur-sm" onClick={onClose} aria-hidden />
+          <div className="absolute inset-0 bg-night/60" onClick={onClose} aria-hidden />
           <motion.div
             ref={panel}
             role="dialog"
             aria-modal="true"
             aria-label={title}
             data-lenis-prevent
-            initial={{ y: 40, opacity: 0, scale: 0.98 }}
-            animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 30, opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className={`relative max-h-[92dvh] w-full overflow-y-auto overscroll-contain rounded-t-[1.75rem] bg-white shadow-lift sm:rounded-panel ${wide ? 'sm:max-w-4xl' : 'sm:max-w-xl'}`}
+            initial={{ y: 24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 16, opacity: 0 }}
+            transition={{ duration: 0.45, ease: EASE_CS_ARRAY }}
+            className={`relative max-h-[92dvh] w-full overflow-y-auto overscroll-contain bg-paper shadow-menu sm:rounded-sm ${wide ? 'sm:max-w-4xl' : 'sm:max-w-xl'}`}
           >
             <button
               type="button"
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 grid size-10 place-items-center rounded-full bg-glacier text-ink transition hover:bg-glacier-2"
+              className="absolute top-3 right-3 z-10 grid size-11 place-items-center text-ink transition hover:bg-surface"
               aria-label="Dialog schließen"
             >
-              <X className="size-5" />
+              <X className="size-5" strokeWidth={1.5} />
             </button>
             {children}
           </motion.div>

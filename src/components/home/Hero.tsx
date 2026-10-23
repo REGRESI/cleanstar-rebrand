@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowDown } from 'lucide-react'
 import hero from 'virtual:hero-frames'
 import { RevealText } from '@/components/ui/RevealText'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
@@ -123,9 +122,9 @@ export function Hero() {
   return (
     <section ref={section} aria-labelledby="hero-title" className="relative">
       <div ref={spacer}>
-        <div ref={pin} className="relative h-[100svh] min-h-[560px] overflow-hidden bg-ink">
-          {/* Bildfläche: Desktop höchstens in nativer Framegröße (keine Streckung über 100 %) */}
-          <div className="hero-stage absolute overflow-hidden" style={{ ['--fw' as string]: `${FRAME_W}px`, ['--fh' as string]: `${FRAME_H}px` }}>
+        <div ref={pin} className="relative h-[100svh] min-h-[560px] overflow-hidden bg-night">
+          {/* Bildfläche: Desktop höchstens in nativer Framegröße (keine Streckung über 100 %). Einheitliche Farbbehandlung. */}
+          <div className="photo hero-stage absolute overflow-hidden" style={{ ['--fw' as string]: `${FRAME_W}px`, ['--fh' as string]: `${FRAME_H}px` }}>
             {/* Erstes Frame bzw. Standbild als normales Bild (LCP). Handy: eigenes Hochformat-Foto des Gebäudes. */}
             <picture>
               {mode === 'static-first' ? null : (
@@ -159,63 +158,62 @@ export function Hero() {
             )}
           </div>
 
-          {/* Lesbarkeit. Desktop: Verlauf hinter dem Text. Handy: weicher Verlauf von unten, das Gebäude bleibt frei. */}
-          <div
-            ref={shade}
-            aria-hidden
-            className="hero-shade pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/45 to-ink/10 lg:bg-gradient-to-r lg:from-ink/85 lg:via-ink/45 lg:to-transparent"
-          />
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink/50 to-transparent" />
+          {/* Lesbarkeit: ruhige Abdunklung, unten etwas stärker (dort steht der Text) */}
+          <div ref={shade} aria-hidden className="pointer-events-none absolute inset-0">
+            <div className="absolute inset-0 bg-night/25" />
+            <div className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-night/75 via-night/35 to-transparent" />
+          </div>
 
-          {/* Text */}
-          <div className="on-dark container-site relative flex h-full flex-col pt-28 pb-10 text-white max-md:justify-end max-md:pt-0 max-md:pb-[max(2.5rem,env(safe-area-inset-bottom))] sm:pt-36 lg:justify-center lg:pt-32">
-            <div ref={copy} className="max-w-[40rem] will-change-transform">
-              <p className="eyebrow fade-up-now mb-5 max-md:mb-3" style={{ ['--d' as string]: '0.05s' }}>
-                {home.hero.eyebrow}
-              </p>
-              <RevealText as="h1" id="hero-title" text={home.hero.headline} immediate className="heading-display text-white [text-shadow:0_2px_24px_rgb(10_22_40/0.35)]" />
-              <p className="fade-up-now mt-6 max-w-xl text-lg leading-relaxed text-white/85 max-md:mt-4 sm:text-xl" style={{ ['--d' as string]: '0.55s' }}>
-                {home.hero.sub}
-              </p>
-              <div className="fade-up-now mt-8 max-md:mt-7" style={{ ['--d' as string]: '0.7s' }}>
+          {/* Text: H1 aus Keyword-Zeile (Monospace) und Leitidee (Display), unten im Raster */}
+          <div className="on-dark container-site relative flex h-full flex-col justify-end pt-24 pb-[max(2.5rem,env(safe-area-inset-bottom))] text-paper sm:pb-14 lg:pb-[9vh]">
+            <div ref={copy} className="will-change-transform">
+              <RevealText
+                as="h1"
+                id="hero-title"
+                text={home.hero.headline}
+                immediate
+                kicker={
+                  <span className="t-label fade-up-now mb-5 block text-paper/80 lg:mb-8" style={{ ['--d' as string]: '0.05s' }}>
+                    {home.hero.kicker}
+                  </span>
+                }
+                wordsClassName="t-display block max-w-[11.5ch] text-paper"
+              />
+              <div className="fade-up-now mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8 lg:mt-12" style={{ ['--d' as string]: '0.6s' }}>
                 <QuoteButton size="lg" arrow full={isMobile}>
                   {home.hero.cta}
                 </QuoteButton>
-              </div>
-              <p className="fade-up-now mt-5 text-sm text-white/75 max-md:text-center" style={{ ['--d' as string]: '0.85s' }}>
-                <a href={company.phone.href} className="underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white">
-                  oder anrufen: <span className="font-semibold text-white">{company.phone.display}</span>
+                <a href={company.phone.href} className="tlink self-center text-paper sm:self-auto">
+                  oder anrufen: {company.phone.display}
                 </a>
-              </p>
+              </div>
             </div>
           </div>
 
-          {/* Szenen-Untertitel und dezenter Ladefortschritt (Desktop) */}
+          {/* Szenen-Untertitel in Monospace mit dünner Fortschrittslinie (Desktop) */}
           {desktopVideo && (
-            <div aria-hidden className={cn('pointer-events-none absolute inset-x-0 bottom-24 justify-center lg:bottom-6', step === 0 ? 'hidden sm:flex' : 'flex')}>
-              <div className="glass relative flex items-center gap-3 overflow-hidden rounded-full px-4 py-2.5 text-sm font-medium text-ink shadow-soft ring-1 ring-line">
-                <span className="flex gap-1">
-                  {home.hero.sceneSteps.map((_, i) => (
-                    <span key={i} className={cn('h-1.5 rounded-full transition-all duration-500', i === step ? 'w-6 bg-blue' : 'w-1.5 bg-ink/20')} />
-                  ))}
-                </span>
-                <span className="min-w-[12.5rem]">{home.hero.sceneSteps[step]}</span>
-                {step === 0 && <ArrowDown className="size-4 animate-bounce text-blue" />}
-                {loadingVisible && (
-                  <span className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-blue/60 transition-transform duration-300" style={{ transform: `scaleX(${seq.progress})` }} />
-                )}
+            <div aria-hidden className={cn('pointer-events-none absolute right-0 bottom-0 left-0 transition-opacity duration-500', step === 0 ? 'opacity-0 lg:opacity-100' : 'opacity-100')}>
+              <div className="container-site flex justify-end pb-6 lg:pb-[9vh]">
+                <div className="w-64 text-paper">
+                  <p className="flex justify-between font-mono text-[0.75rem] text-paper/80">
+                    <span>{String(step + 1).padStart(2, '0')} / {String(home.hero.sceneSteps.length).padStart(2, '0')}</span>
+                    <span>{step === 0 ? 'Scrollen' : ''}</span>
+                  </p>
+                  <p className="mt-2 text-[0.9375rem]">{home.hero.sceneSteps[step]}</p>
+                  <span className="relative mt-3 block h-px bg-paper/25">
+                    <span className="absolute inset-0 origin-left bg-paper transition-transform duration-300" style={{ transform: `scaleX(${loadingVisible ? seq.progress : (step + 1) / home.hero.sceneSteps.length})` }} />
+                  </span>
+                </div>
               </div>
             </div>
           )}
 
-          {/* Weicher Übergang zur Vertrauensleiste (Desktop) */}
-          <div ref={outro} aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-white/40 to-white opacity-0" />
+          {/* Ruhiger Übergang zur nächsten Sektion (Desktop): blendet in Off-White */}
+          <div ref={outro} aria-hidden className="pointer-events-none absolute inset-0 bg-paper opacity-0" />
         </div>
       </div>
 
-      {/* Handy: Sequenz als Karte mit Überschrift und drei Schritten */}
-      {/* Handy: weicher Übergang vom dunklen Einstieg zur hellen Sequenz */}
-      {mobileVideo && <div aria-hidden className="h-28 bg-gradient-to-b from-ink via-ink/40 to-white md:hidden" />}
+      {/* Handy: Sequenz mit Überschrift und drei Schritten */}
       {mobileVideo && <HeroMobileSequence onFailed={() => setFailedMobile(true)} />}
     </section>
   )

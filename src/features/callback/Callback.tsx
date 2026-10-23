@@ -1,5 +1,5 @@
 import { createContext, lazy, Suspense, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
-import { PhoneIncoming } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Modal } from '@/components/ui/Modal'
 import { cn } from '@/lib/cn'
 
@@ -32,21 +32,17 @@ export function CallbackProvider({ children }: { children: ReactNode }) {
 
 export const useCallbackRequest = () => useContext(CallbackCtx)
 
-/** Link-Button „Rückruf anfordern“ */
+/** Textlink „Rückruf anfordern“ mit Pfeil */
 export function CallbackButton({ className, dark, label = 'Rückruf anfordern' }: { className?: string; dark?: boolean; label?: string }) {
   const { open } = useCallbackRequest()
   return (
     <button
       type="button"
       onClick={open}
-      className={cn(
-        'inline-flex min-h-11 items-center gap-2 rounded-full px-1 text-sm font-semibold underline-offset-4 transition hover:underline active:opacity-70',
-        dark ? 'text-white' : 'text-blue-hover',
-        className,
-      )}
+      className={cn('tlink text-[0.9375rem]', dark ? 'text-paper' : 'text-ink', className)}
     >
-      <PhoneIncoming aria-hidden className="size-4" />
       {label}
+      <ArrowRight aria-hidden className="size-4" strokeWidth={1.75} />
     </button>
   )
 }

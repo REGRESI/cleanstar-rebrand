@@ -8,9 +8,12 @@ import { cn } from '@/lib/cn'
 export function Answer({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <section aria-label="Kurz gesagt" className={cn('container-site', className)}>
-      <p data-answer className="max-w-3xl border-l-4 border-blue bg-white py-1 pl-5 text-lg leading-relaxed text-ink sm:text-xl">
-        {children}
-      </p>
+      <div className="grid-site gap-y-4 border-t border-line pt-6">
+        <p className="t-label col-span-12 lg:col-span-3">Kurz gesagt</p>
+        <p data-answer className="t-lead col-span-12 max-w-[46ch] text-ink lg:col-span-8">
+          {children}
+        </p>
+      </div>
     </section>
   )
 }

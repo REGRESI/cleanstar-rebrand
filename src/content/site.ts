@@ -4,6 +4,17 @@
  */
 import { company } from './company'
 
+/**
+ * Markenversprechen (Leitidee). Jede Zusage auf der Website ist der Beweis dafür:
+ * fester Ansprechpartner, Ersatz bei Ausfall, eigene Kontrollen, erster Monat kündbar.
+ */
+export const brand = {
+  promise: 'Sauber. Ohne dass Sie nachfragen müssen.',
+  /** Für große Satzspiegel: zwei Teile */
+  promiseLead: 'Sauber.',
+  promiseRest: 'Ohne dass Sie nachfragen müssen.',
+}
+
 export const navigation = [
   { label: 'Leistungen', to: '/leistungen' },
   { label: 'Qualitätsgarantie', to: '/qualitaetsgarantie' },
@@ -20,9 +31,10 @@ export const home = {
   seoTitle: 'Büroreinigung Offenburg & Ortenaukreis',
   seoDescription: 'Reinigungsfirma aus Offenburg für Büroreinigung im Ortenaukreis: festes Team, fester Ansprechpartner, Ersatz bei Ausfall und Angebot in 48 Stunden.',
   hero: {
-    eyebrow: 'Büroreinigung in Offenburg und der Ortenau',
-    headline: 'Büroreinigung, auf die Verlass ist.',
-    sub: 'Feste Teams. Fester Ansprechpartner. Ersatz bei Ausfall.',
+    /** Kleine Zeile in Monospace, Teil der H1 (Keyword für Google) */
+    kicker: 'Büroreinigung in Offenburg und im Ortenaukreis',
+    /** Große Zeile der H1: das Markenversprechen */
+    headline: 'Sauber. Ohne dass Sie nachfragen müssen.',
     cta: 'Kostenlose Besichtigung',
     /** Untertitel zum Scroll-Video: Flug ins Gebäude, Feierabend und Reinigung, Morgen */
     sceneSteps: ['Scrollen Sie, um durch das Büro zu gehen', 'Wir kommen, wenn Sie gehen', 'Am Morgen: makellos'],
@@ -36,10 +48,16 @@ export const home = {
       { title: 'Am Morgen makellos', text: 'Alles bereit, bevor der Erste kommt.' },
     ],
   },
+  /** Die drei Versprechen in einem Satz: der Beweis für die Leitidee */
+  promise: {
+    eyebrow: 'Das Versprechen',
+    statement: 'Ein festes Team, das Ihr Büro kennt. Ein Ansprechpartner, der erreichbar ist. Ersatz, wenn jemand ausfällt.',
+    lead: 'Darum müssen Sie bei uns nicht nachfragen, nicht kontrollieren und sich nicht beschweren. Und weil Sie das erst sehen sollen, bevor Sie sich binden, ist der erste Monat jederzeit kündbar.',
+  },
   problems: {
-    eyebrow: 'Was Sie nicht mehr erleben werden',
+    eyebrow: 'Das kennen Sie vielleicht',
     headline: 'Ihrer Reinigungsfirma hinterhertelefonieren? Das ist nicht Ihr Job.',
-    lead: 'Vier Ärgernisse, die fast jeder Geschäftsführer kennt. Bei uns sind sie von Anfang an geregelt, schriftlich und überprüfbar.',
+    lead: 'Vier Ärgernisse, die fast jeder Geschäftsführer kennt. Bei uns sind sie von Anfang an geregelt, schriftlich und überprüfbar. So müssen Sie nicht nachhaken.',
     items: [
       {
         problem: 'Die Reinigungskraft kommt, wann sie will.',
@@ -80,9 +98,33 @@ export const home = {
     lead: 'Derselbe Arbeitsplatz, abends nach Feierabend und morgens nach unserem Einsatz. So soll es bei Ihnen jeden Tag aussehen.',
   },
   about: {
-    eyebrow: 'Über uns',
+    eyebrow: 'Die Gründer',
     headline: 'Drei Gründer. Drei Gesichter, die Sie kennen.',
     text: 'Bei CleanStar sprechen Sie mit den Menschen, die entscheiden. Kein Callcenter, keine Zentrale in einer anderen Stadt. Jeder von uns hat seinen Bereich, und wer bei uns anruft, erreicht jemanden, der sein Wort hält.',
+    /** Ein Satz für die Startseite */
+    short: 'Bei CleanStar sprechen Sie mit den Menschen, die entscheiden. Kein Callcenter, keine Zentrale in einer anderen Stadt.',
+  },
+  area: {
+    eyebrow: 'Einzugsgebiet',
+    headline: 'Zuhause im Ortenaukreis. Schnell vor Ort.',
+  },
+  proof: {
+    eyebrow: 'Beweise',
+    headlineObjects: 'Objekte, die wir betreuen.',
+    headlineQuotes: 'Was Kunden sagen.',
+  },
+  /** Werkzeuge erscheinen auf der Startseite nur als eine Zeile mit Links */
+  tools: {
+    label: 'Werkzeuge für Ihre Entscheidung',
+    links: [
+      { label: 'Angebote vergleichen', to: '/angebote-vergleichen' },
+      { label: 'Wechsel-Rechner', to: '/wechsel-rechner' },
+      { label: 'Selbsttest', to: '/reinigungs-check' },
+      { label: 'Grundriss', to: '/leistungen/bueroreinigung#grundriss' },
+      { label: 'Jahresplan', to: '/leistungen/bueroreinigung#jahresplan' },
+      { label: 'Gründer-Rechner', to: '/reinigungsfirma-kalkulieren' },
+      { label: 'Ratgeber', to: '/ratgeber' },
+    ],
   },
   finalCta: {
     eyebrow: 'In 60 Sekunden zur Anfrage',
@@ -97,7 +139,6 @@ export const trustFacts = [
   { value: company.promises.offerHours, suffix: ' h', label: 'bis zum schriftlichen Angebot', countUp: true },
   ...(company.yearsOfExperience ? [{ prefix: 'über ', value: company.yearsOfExperience, suffix: '', label: 'Jahre Erfahrung in der Reinigung', countUp: true }] : []),
   { value: 1, suffix: '', label: 'fester Ansprechpartner für Ihr Objekt', countUp: true },
-  { text: 'Ortenau', label: 'Sitz in Offenburg, im ganzen Kreis vor Ort' },
 ] as { prefix?: string; value?: number; suffix?: string; text?: string; label: string; countUp?: boolean }[]
 
 export const processSteps = [
@@ -228,22 +269,3 @@ export const jobs = [
     todo: 'Stelle bestätigen oder auf enabled: false setzen.',
   },
 ]
-
-/**
- * Testimonials – nur echte Kundenstimmen mit Einverständnis eintragen.
- * Standardmäßig ausgeblendet (enabled: false).
- */
-export const testimonials = {
-  enabled: false,
-  items: [
-    { quote: '[PLATZHALTER: echtes Kundenzitat]', name: '[Name]', role: '[Funktion, Unternehmen, Ort]' },
-    { quote: '[PLATZHALTER: echtes Kundenzitat]', name: '[Name]', role: '[Funktion, Unternehmen, Ort]' },
-    { quote: '[PLATZHALTER: echtes Kundenzitat]', name: '[Name]', role: '[Funktion, Unternehmen, Ort]' },
-  ],
-}
-
-/** Kundenlogos – nur mit Freigabe der Kunden. Standardmäßig ausgeblendet. */
-export const clientLogos = {
-  enabled: false,
-  items: [] as { name: string; src: string }[],
-}

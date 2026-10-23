@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
-import { Mail, Phone } from 'lucide-react'
 import { Picture } from '@/components/ui/Picture'
 import { company } from '@/content/company'
 import type { ImageId } from '@/content/images'
@@ -9,76 +7,42 @@ import { CallbackButton } from '@/features/callback/Callback'
 /** Ansprechpartner für Neukunden (company.newClientContact) */
 export const newClientContact = () => company.founders[company.newClientContact] ?? company.founders[0]
 
-/** Grüner Punkt mit „Jetzt erreichbar · 24/7“ */
+/** Status „Jetzt erreichbar · 24/7“ in Monospace mit kleinem Punkt (funktionaler Zustand) */
 export function AvailableNow({ dark, className }: { dark?: boolean; className?: string }) {
-  // Pulsieren nur, solange der Punkt sichtbar ist (keine Dauer-Animation im Hintergrund)
-  const ref = useRef<HTMLSpanElement>(null)
-  const [inView, setInView] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el || typeof IntersectionObserver === 'undefined') return
-    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting))
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
   return (
-    <span ref={ref} className={cn('inline-flex items-center gap-2 text-xs font-medium', dark ? 'text-white/75' : 'text-muted', className)}>
-      <span aria-hidden className="relative flex size-2.5">
-        {inView && <span className="absolute inline-flex size-full animate-ping rounded-full bg-fresh opacity-60 motion-reduce:hidden" />}
-        <span className="relative inline-flex size-2.5 rounded-full bg-fresh" />
-      </span>
+    <span className={cn('inline-flex items-center gap-2 font-mono text-[0.75rem]', dark ? 'text-muted-dark' : 'text-muted', className)}>
+      <span aria-hidden className="size-1.5 rounded-full bg-success" />
       Jetzt erreichbar · 24/7
     </span>
   )
 }
 
 /**
- * Karte „Ihr Ansprechpartner“: Foto, Name, Rolle, direkte Nummer und 24/7-Status.
+ * „Ihr Ansprechpartner“: Porträt, Name, Rolle, direkte Nummer und 24/7-Status. Ohne Kasten.
  * Statt eines anonymen Formulars sieht der Kunde, mit wem er spricht.
  */
 export function ContactPerson({ dark, compact, className, title = 'Ihr Ansprechpartner' }: { dark?: boolean; compact?: boolean; className?: string; title?: string }) {
   const p = newClientContact()
   const role = p.role.replace('Gründer · ', 'Gründer, ')
   return (
-    <div className={cn('rounded-panel p-5 sm:p-6', dark ? 'bg-white/5 text-white ring-1 ring-white/10' : 'bg-white shadow-soft ring-1 ring-line', className)}>
-      <div className="flex items-center gap-4">
-        <span className="relative shrink-0">
-          <span className="block size-16 overflow-hidden rounded-full ring-2 ring-white sm:size-[4.5rem]">
-            <Picture id={p.image as ImageId} compact rounded="rounded-none" className="h-full w-full aspect-auto!" sizes="80px" />
-          </span>
-          <span aria-hidden className={cn('absolute right-0.5 bottom-0.5 size-3.5 rounded-full bg-fresh ring-2', dark ? 'ring-ink' : 'ring-white')} />
-        </span>
-        <span className="min-w-0">
-          <span className={cn('block text-xs font-semibold tracking-[0.12em] uppercase', dark ? 'text-white/60' : 'text-blue-hover')}>{title}</span>
-          <span className="mt-0.5 block text-lg font-semibold tracking-tight">{p.name}</span>
-          <span className={cn('block text-sm leading-snug', dark ? 'text-white/70' : 'text-muted')}>{role}</span>
-        </span>
-      </div>
-      <div className={cn('mt-5 flex flex-col gap-2', !compact && 'sm:flex-row')}>
-        <a
-          href={company.phone.href}
-          className={cn(
-            'flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full px-5 font-semibold transition',
-            dark ? 'bg-white text-ink hover:bg-glacier' : 'bg-blue text-white shadow-glow hover:bg-blue-hover',
-          )}
-        >
-          <Phone aria-hidden className="size-4" />
-          {company.phone.display}
-        </a>
-        {!compact && (
-          <a
-            href={`mailto:${company.email}`}
-            className={cn(
-              'flex min-h-12 items-center justify-center gap-2 rounded-full px-5 font-semibold ring-1 transition',
-              dark ? 'ring-white/20 hover:bg-white/10' : 'ring-line hover:ring-ink/25',
-            )}
-          >
-            <Mail aria-hidden className="size-4" />
-            E-Mail
+    <div className={cn('border-t pt-6', dark ? 'border-line-dark text-paper' : 'border-line text-ink', className)}>
+      <p className="t-label">{title}</p>
+      <div className="mt-5 flex items-start gap-5">
+        <Picture id={p.image as ImageId} compact ratio="4:5" className="w-20 shrink-0 sm:w-24" sizes="96px" />
+        <div className="min-w-0">
+          <p className="text-xl font-medium tracking-[-0.02em]">{p.name}</p>
+          <p className={cn('mt-1 text-[0.9375rem] leading-snug', dark ? 'text-muted-dark' : 'text-muted')}>{role}</p>
+          <a href={company.phone.href} className="ulink mt-4 inline-block text-[1.375rem] font-medium tracking-[-0.02em]">
+            {company.phone.display}
           </a>
-        )}
+          {!compact && (
+            <a href={`mailto:${company.email}`} className={cn('ulink mt-1 block text-[0.9375rem] break-all', dark ? 'text-muted-dark hover:text-paper' : 'text-ink-2 hover:text-ink')}>
+              {company.email}
+            </a>
+          )}
+        </div>
       </div>
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
         <AvailableNow dark={dark} />
         <CallbackButton dark={dark} />
       </div>

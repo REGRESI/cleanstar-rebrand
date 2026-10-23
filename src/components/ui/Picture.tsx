@@ -1,4 +1,3 @@
-import { ImageIcon } from 'lucide-react'
 import previewImages from 'virtual:preview-images'
 import { images, IMAGE_WIDTHS, type ImageId } from '@/content/images'
 import { cn } from '@/lib/cn'
@@ -13,43 +12,53 @@ const ratioClass: Record<string, string> = {
   '21:9': 'aspect-[21/9]',
 }
 
+export type PictureRatio = keyof typeof ratioClass
+
 interface Props {
   id: ImageId
   className?: string
-  /** Seitenverhältnis überschreiben (z. B. Kartenausschnitt) */
-  ratio?: keyof typeof ratioClass
+  /** Seitenverhältnis des Slots (überschreibt das Verhältnis aus images.ts) */
+  ratio?: PictureRatio
+  /** Responsive Seitenverhältnis-Klassen, z. B. 'aspect-[4/3] sm:aspect-[21/9]' (überschreibt ratio) */
+  aspect?: string
   sizes?: string
   priority?: boolean
-  /** Platzhalter-Beschriftung ausblenden (z. B. in kleinen Karten) */
+  /** Platzhalter-Beschriftung ausblenden (z. B. in kleinen Slots) */
   compact?: boolean
   tone?: 'light' | 'dark'
+  /** Rundung: Standard keine; höchstens 4 px */
   rounded?: string
+  /** Aufdecken beim Scrollen (clip-path von unten) */
+  reveal?: boolean | 'now'
+  /** Bildunterschrift in Monospace unter dem Bild */
+  caption?: string
 }
 
 /**
- * Responsives Bild (AVIF/WebP, lazy) oder, solange kein Foto vorliegt,
- * ein Platzhalter mit festem Seitenverhältnis und Beschriftung.
+ * Bild-Slot mit festem Seitenverhältnis: responsives Foto (AVIF/WebP, lazy) mit einheitlicher Farbbehandlung,
+ * oder, solange kein Foto vorliegt, ein schlichter Platzhalter. Ein echtes Foto wird nur ausgetauscht (siehe BILDER.md).
  */
-export function Picture({ id, className, ratio, sizes = '100vw', priority, compact, tone = 'light', rounded = 'rounded-card' }: Props) {
+export function Picture({ id, className, ratio, aspect: aspectOverride, sizes = '100vw', priority, compact, tone = 'light', rounded = 'rounded-none', reveal, caption }: Props) {
   const spec = images[id]
-  const aspect = ratioClass[ratio ?? spec.ratio]
-
+  const aspect = aspectOverride ?? ratioClass[ratio ?? spec.ratio]
   const objectPosition = spec.position ?? '50% 50%'
+  // 'now': deckt sich sofort per CSS auf (Seitenkopf, LCP); true: beim Scrollen
+  const revealCls = reveal === 'now' ? 'img-up-now' : undefined
+  const dataAttrs = reveal === true ? { 'data-reveal-img': '' } : {}
 
+  let media
   // Vorschau-Datei: eingebettete, stark komprimierte WebP-Version
   const inlineSrc = __PREVIEW__ && spec.available ? previewImages[spec.file] : undefined
   if (inlineSrc) {
-    return (
-      <div className={cn('block overflow-hidden', aspect, rounded, className)}>
+    media = (
+      <div className={cn('photo block overflow-hidden', aspect, rounded, revealCls, className)} {...dataAttrs}>
         <img src={inlineSrc} alt={spec.alt} loading={priority ? 'eager' : 'lazy'} decoding="async" className="size-full object-cover" style={{ objectPosition }} />
       </div>
     )
-  }
-
-  if (spec.available && !__PREVIEW__) {
+  } else if (spec.available && !__PREVIEW__) {
     const set = (ext: string) => IMAGE_WIDTHS.map((w) => `${import.meta.env.BASE_URL}images/${spec.file}-${w}.${ext} ${w}w`).join(', ')
-    return (
-      <picture className={cn('block overflow-hidden', aspect, rounded, className)}>
+    media = (
+      <picture className={cn('photo block overflow-hidden bg-surface', aspect, rounded, revealCls, className)} {...dataAttrs}>
         <source type="image/avif" srcSet={set('avif')} sizes={sizes} />
         <source type="image/webp" srcSet={set('webp')} sizes={sizes} />
         <img
@@ -63,42 +72,30 @@ export function Picture({ id, className, ratio, sizes = '100vw', priority, compa
         />
       </picture>
     )
-  }
-
-  const dark = tone === 'dark'
-  return (
-    <div
-      role="img"
-      aria-label={`Platzhalter: ${spec.alt}`}
-      className={cn(
-        'relative isolate overflow-hidden',
-        aspect,
-        rounded,
-        dark ? 'bg-ink-2 text-muted-dark ring-1 ring-white/10' : 'bg-glacier text-muted ring-1 ring-line',
-        className,
-      )}
-    >
-      <div aria-hidden className={cn('absolute inset-0 -z-10', dark ? 'bg-grid-dark' : 'bg-grid')} style={{ backgroundSize: '40px 40px' }} />
+  } else {
+    const dark = tone === 'dark'
+    media = (
       <div
-        aria-hidden
-        className="absolute inset-0 -z-10"
-        style={{
-          background: dark
-            ? 'radial-gradient(120% 80% at 80% 0%, rgb(31 94 255 / .25), transparent 60%), radial-gradient(80% 60% at 0% 100%, rgb(45 212 191 / .12), transparent 60%)'
-            : 'radial-gradient(120% 80% at 85% 0%, rgb(31 94 255 / .14), transparent 60%), radial-gradient(80% 60% at 0% 100%, rgb(45 212 191 / .14), transparent 60%)',
-        }}
-      />
-      <div aria-hidden className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center">
-        <ImageIcon className="size-6 opacity-60" strokeWidth={1.5} />
+        role="img"
+        aria-label={`Platzhalter: ${spec.alt}`}
+        className={cn('relative overflow-hidden', aspect, rounded, dark ? 'bg-night-2 text-muted-dark' : 'bg-surface text-muted', revealCls, className)}
+        {...dataAttrs}
+      >
         {!compact && (
-          <p className="max-w-md font-mono text-[0.6875rem] leading-snug sm:text-xs">
-            [BILD: {spec.label}]
-            <br />
-            <span className="opacity-70">{spec.file}</span>
+          <p aria-hidden className="absolute inset-x-0 bottom-0 p-4 font-mono text-[0.6875rem] leading-snug sm:text-xs">
+            Bild: {spec.label}
           </p>
         )}
       </div>
-    </div>
+    )
+  }
+
+  if (!caption) return media
+  return (
+    <figure>
+      {media}
+      <figcaption className="caption">{caption}</figcaption>
+    </figure>
   )
 }
 

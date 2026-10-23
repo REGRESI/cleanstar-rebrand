@@ -1,115 +1,102 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ArrowUpRight, Check } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
+import { Button } from '@/components/ui/Button'
 import { services } from '@/content/services'
 import { home } from '@/content/site'
-import type { ImageId } from '@/content/images'
 import { cn } from '@/lib/cn'
 
-/** Bild füllt die Fläche des Elternelements (überschreibt das feste Seitenverhältnis des Platzhalters) */
-const FILL = 'h-full w-full aspect-auto! transition-transform duration-700 ease-out group-hover:scale-[1.04]'
+const featuredAreas = ['Arbeitsplätze und Besprechung', 'Teeküche und Sanitär', 'Böden und Papierkörbe']
 
 /**
- * Leistungen: Büroreinigung als große Bildkarte, die übrigen Leistungen mit Bild.
- * Handy: große Karte für die Büroreinigung, darunter eine kompakte Liste zum schnellen Überblick.
+ * Leistungen als editoriale Liste.
+ * Büroreinigung als großer Abschnitt mit randlosem Foto, die übrigen Leistungen als Zeilen mit Nummer,
+ * großem Titel und Kurztext. Desktop: Beim Überfahren einer Zeile erscheint das passende Foto an fester Position.
  */
-export function ServicesGrid({ heading = true }: { heading?: boolean }) {
+export function ServicesGrid({ heading = true, index }: { heading?: boolean; index?: string }) {
   const Title = heading ? 'h3' : 'h2'
   const featured = services.find((s) => s.featured) ?? services[0]
   const rest = services.filter((s) => s !== featured)
+  const [active, setActive] = useState(0)
 
   return (
-    <section className="relative bg-glacier py-24 sm:py-32" aria-labelledby={heading ? 'services-title' : undefined}>
-      <div className="container-site relative">
-        {heading && (
-          <div className="mb-12 flex flex-col justify-between gap-6 sm:mb-14 lg:flex-row lg:items-end">
-            <SectionHeading eyebrow={home.services.eyebrow} title={home.services.headline} text={home.services.lead} id="services-title" />
-            <Link to="/leistungen" className="group inline-flex shrink-0 items-center gap-2 font-semibold text-blue" data-reveal>
-              Alle Leistungen
-              <ArrowUpRight aria-hidden className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
-          </div>
-        )}
+    <section className="section" aria-labelledby={heading ? 'services-title' : undefined} aria-label={heading ? undefined : 'Leistungen'}>
+      <div className="container-site">
+        {heading && <SectionHeading layout="rail" index={index} eyebrow={home.services.eyebrow} title={home.services.headline} text={home.services.lead} id="services-title" />}
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[auto_auto_auto]">
-          {/* Kernleistung: Foto oben frei (Person und Hände nie verdeckt), Text darunter auf dunklem Grund */}
-          <Link
-            to={`/leistungen/${featured.slug}`}
-            className="group relative isolate flex flex-col overflow-hidden rounded-panel bg-ink text-white shadow-lift sm:col-span-2 lg:row-span-2"
-            data-reveal
-          >
-            <div className="relative aspect-[4/3] overflow-hidden sm:aspect-auto sm:min-h-[19rem] lg:min-h-0 lg:flex-1">
-              <Picture id={featured.image as ImageId} tone="dark" rounded="rounded-none" className={cn(FILL, 'sm:absolute sm:inset-0')} sizes="(min-width:1024px) 66vw, 100vw" />
-              <span className="absolute top-4 right-4 inline-flex rounded-full bg-ink/70 px-3 py-1 text-xs font-semibold tracking-wide text-white backdrop-blur sm:top-6 sm:right-6">
-                Unsere Kernleistung
-              </span>
-            </div>
-            <div className="p-6 sm:p-9">
-              <Title className="text-3xl font-semibold tracking-tight sm:text-4xl">{featured.name}</Title>
-              <p className="mt-3 max-w-lg text-white/80 sm:text-lg">{featured.short}</p>
-              <ul className="mt-5 flex flex-wrap gap-2 text-sm">
-                {['Arbeitsplätze und Besprechung', 'Teeküche und Sanitär', 'Böden und Papierkörbe'].map((t) => (
-                  <li key={t} className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 ring-1 ring-white/15">
-                    <Check aria-hidden className="size-3.5 text-fresh" strokeWidth={3} />
-                    {t}
-                  </li>
-                ))}
-              </ul>
-              <span className="mt-7 inline-flex items-center gap-2 font-semibold">
-                Leistungsverzeichnis ansehen
-                <ArrowRight aria-hidden className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </span>
-            </div>
+        {/* Kernleistung: großer Abschnitt mit randlosem Foto */}
+        <div className={cn('grid-site gap-y-8', heading && 'mt-16 lg:mt-24')}>
+          <Link to={`/leistungen/${featured.slug}`} className="group col-span-12 block" aria-label={`${featured.name}: Leistungsverzeichnis ansehen`}>
+            <Picture
+              id={featured.image}
+              reveal
+              aspect="aspect-[4/5] sm:aspect-[3/2] lg:aspect-[21/9]"
+              sizes="(min-width:1600px) 1472px, 100vw"
+              caption="01 / Unsere Kernleistung"
+              className="[&_img]:transition-transform [&_img]:duration-[1200ms] [&_img]:ease-cs group-hover:[&_img]:scale-[1.02]"
+            />
           </Link>
-
-          {/* Handy: übrige Leistungen als Wisch-Slider, die nächste Karte ist angeschnitten */}
-          <div className="-mx-5 sm:hidden" data-reveal>
-            <ul
-              className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              aria-label="Weitere Leistungen"
-            >
-              {rest.map((s) => (
-                <li key={s.slug} className="w-[76%] shrink-0 snap-start">
-                  <Link to={`/leistungen/${s.slug}`} className="flex h-full flex-col overflow-hidden rounded-card bg-white ring-1 ring-line active:ring-blue/40">
-                    <span className="block aspect-[4/3] overflow-hidden">
-                      <Picture id={s.image as ImageId} compact rounded="rounded-none" className="h-full w-full aspect-auto!" sizes="76vw" />
-                    </span>
-                    <span className="flex flex-1 flex-col p-4">
-                      <span className="font-semibold text-ink">{s.name}</span>
-                      <span className="mt-1 line-clamp-3 flex-1 text-sm leading-snug text-muted">{s.short}</span>
-                      <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-blue">
-                        Mehr erfahren <ArrowRight aria-hidden className="size-4" />
-                      </span>
-                    </span>
-                  </Link>
+          <div className="col-span-12 lg:col-span-6">
+            <Title className="t-h2">
+              <Link to={`/leistungen/${featured.slug}`} className="ulink">
+                {featured.name}
+              </Link>
+            </Title>
+          </div>
+          <div className="col-span-12 lg:col-span-5 lg:col-start-8" data-reveal>
+            <p className="t-lead text-ink">{featured.short}</p>
+            <ul className="mt-8 border-t border-line">
+              {featuredAreas.map((t) => (
+                <li key={t} className="border-b border-line py-3 text-ink-2">
+                  {t}
                 </li>
               ))}
             </ul>
-            <p className="mt-2 px-5 text-xs text-muted">Wischen für weitere Leistungen</p>
+            <div className="mt-8">
+              <Button to={`/leistungen/${featured.slug}`} variant="link">
+                Leistungsverzeichnis ansehen
+              </Button>
+            </div>
           </div>
+        </div>
 
-          {/* Ab Tablet: Karten mit Bild */}
-          {rest.map((s) => (
-            <Link
-              key={s.slug}
-              to={`/leistungen/${s.slug}`}
-              className="group hidden flex-col overflow-hidden rounded-card bg-white ring-1 ring-line transition-shadow duration-500 hover:shadow-lift sm:flex"
-              data-reveal
-            >
-              <div className="aspect-[16/10] overflow-hidden">
-                <Picture id={s.image as ImageId} compact rounded="rounded-none" className={FILL} sizes="(min-width:1024px) 33vw, 50vw" />
+        {/* Weitere Leistungen als Zeilen; Foto erscheint beim Überfahren (Desktop) */}
+        <div className="grid-site mt-24 lg:mt-36">
+          <ol className="col-span-12 border-b border-line lg:col-span-7" aria-label="Weitere Leistungen">
+            {rest.map((s, i) => (
+              <li key={s.slug} className="relative">
+                <span aria-hidden data-reveal-rule className="rule absolute inset-x-0 top-0" />
+                <Link
+                  to={`/leistungen/${s.slug}`}
+                  onMouseEnter={() => setActive(i)}
+                  onFocus={() => setActive(i)}
+                  className="group grid grid-cols-[2.75rem_1fr_auto] items-baseline gap-x-4 py-7 sm:grid-cols-[4rem_1fr_auto] sm:py-9"
+                  data-reveal
+                >
+                  <span className="t-label">{String(i + 2).padStart(2, '0')}</span>
+                  <span className="min-w-0">
+                    <Title className={cn('t-h3 transition-colors duration-300', active === i ? 'lg:text-ink' : 'lg:text-ink/55', 'group-hover:text-ink')}>{s.name}</Title>
+                    <span className="mt-2 block max-w-[46ch] text-ink-2">{s.short}</span>
+                  </span>
+                  <ArrowUpRight aria-hidden className="size-5 self-center text-ink transition-transform duration-500 ease-cs group-hover:translate-x-1 group-hover:-translate-y-1" strokeWidth={1.5} />
+                </Link>
+              </li>
+            ))}
+          </ol>
+          <div className="hidden lg:col-span-4 lg:col-start-9 lg:block">
+            <div className="sticky top-28">
+              <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+                {rest.map((s, i) => (
+                  <div key={s.slug} aria-hidden className={cn('absolute inset-0 transition-opacity duration-700 ease-cs', active === i ? 'opacity-100' : 'opacity-0')}>
+                    <Picture id={s.image} compact aspect="h-full w-full" sizes="33vw" />
+                  </div>
+                ))}
               </div>
-              <div className="flex flex-1 flex-col p-6">
-                <Title className="text-xl font-semibold tracking-tight">{s.name}</Title>
-                <p className="mt-2 flex-1 leading-relaxed text-muted">{s.short}</p>
-                <span className={cn('mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue')}>
-                  Mehr erfahren
-                  <ArrowRight aria-hidden className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </div>
-            </Link>
-          ))}
+              <p className="caption">{rest[active]?.name}</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
