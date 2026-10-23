@@ -90,6 +90,13 @@ fs.mkdirSync('site-check', { recursive: true })
   const llms = await fetch(B + '/llms.txt')
   ok(llms.ok && (await llms.text()).startsWith('# CleanStar'), 'llms.txt erreichbar')
   ok((await fetch(B + '/llms-full.txt')).ok, 'llms-full.txt erreichbar')
+  // Favicon für Google: /favicon.ico im Root, ICO-Format, nicht per robots.txt gesperrt
+  const fav = await fetch(B + '/favicon.ico')
+  const favBuf = Buffer.from(await fav.arrayBuffer())
+  ok(fav.ok && favBuf.readUInt16LE(2) === 1 && favBuf.readUInt16LE(4) >= 3, `favicon.ico erreichbar (${fav.status}, ${favBuf.readUInt16LE(4)} Größen)`)
+  ok(!/Disallow:\s*\/favicon/i.test(robots), 'favicon.ico in robots.txt nicht gesperrt')
+  for (const f of ['/favicon.svg', '/favicon-48.png', '/favicon-96.png', '/favicon-192.png', '/favicon-512.png', '/apple-touch-icon.png', '/site.webmanifest'])
+    ok((await fetch(B + f)).ok, `${f} erreichbar`)
   for (const path of ['/ratgeber/', '/ratgeber/bueroreinigung-kosten/', '/bueroreinigung/offenburg/', '/einzugsgebiet/wolfach/', '/fakten/', '/angebote-vergleichen/', '/wechsel-rechner/', '/reinigungsfirma-kalkulieren/']) {
     const html = await (await fetch(B + path)).text()
     ok(/<h1[\s>]/.test(html) && /application\/ld\+json/.test(html) && /<meta[^>]*name="description"/.test(html), `Vorgerendert mit H1, Description und JSON-LD: ${path}`)

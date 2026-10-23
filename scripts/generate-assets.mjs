@@ -1,18 +1,12 @@
 // Einmalig bzw. bei Logo-Änderung ausführen: node scripts/generate-assets.mjs
-// Erzeugt OG-Bild, Favicons, Logo-PNG und die Checkliste als PDF.
+// Erzeugt OG-Bild, Logo-PNG und die Checkliste als PDF.
 import sharp from 'sharp'
 import PDFDocument from 'pdfkit'
 import { readFileSync, createWriteStream } from 'node:fs'
 
 const logoSvg = readFileSync('src/assets/brand/logo.svg', 'utf8')
-const favSvg = readFileSync('public/favicon.svg')
 
-// Favicons
-await sharp(favSvg, { density: 600 }).resize(32, 32).png().toFile('public/favicon-32.png')
-await sharp({ create: { width: 180, height: 180, channels: 4, background: '#ffffff' } })
-  .composite([{ input: await sharp(favSvg, { density: 600 }).resize(140, 140).png().toBuffer(), top: 20, left: 20 }])
-  .png()
-  .toFile('public/apple-touch-icon.png')
+// Favicons: node scripts/generate-favicons.mjs
 
 // Logo-PNG (für strukturierte Daten)
 const logoPng = await sharp(Buffer.from(logoSvg), { density: 300 }).resize(830).png().toBuffer()

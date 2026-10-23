@@ -17,6 +17,7 @@
     "docs:bilder": "node scripts/gen-bilder-md.mjs",
     "docs:leistungsverzeichnis": "node scripts/leistungsverzeichnis.mjs",
     "og": "node scripts/generate-og.mjs",
+    "favicons": "node scripts/generate-favicons.mjs",
     "test:navigation": "node scripts/test-navigation.mjs"
   },
   "dependencies": {

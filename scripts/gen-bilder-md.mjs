@@ -61,7 +61,7 @@ md += `
 ## Bereits vorhanden (automatisch erzeugt)
 
 - \`public/og-image.png\` (1200 × 630, Vorschaubild für Social Media, aus Logo erzeugt; kann durch ein Foto ersetzt werden)
-- \`public/favicon.svg\`, \`public/favicon-32.png\`, \`public/apple-touch-icon.png\`, \`public/logo.png\` (aus dem Logo erzeugt mit \`node scripts/generate-assets.mjs\`)
+- \`public/favicon.svg\`, \`public/favicon.ico\`, \`public/favicon-48/96/192/512.png\`, \`public/apple-touch-icon.png\` (erzeugt mit \`node scripts/generate-favicons.mjs\`), \`public/logo.png\` (erzeugt mit \`node scripts/generate-assets.mjs\`)
 
 Gründerporträts bitte als echte Fotos der Gründer verwenden, nicht generieren.
 `
