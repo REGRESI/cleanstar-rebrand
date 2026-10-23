@@ -55,7 +55,7 @@ export default function GuideArticle() {
           <div className="grid-site gap-y-10">
             <div className="col-span-12 lg:col-span-10">
               <p className="t-label mb-6">{g.category === 'gruender' ? 'Ratgeber für Gründer' : 'Ratgeber für Unternehmen'}</p>
-              <h1 className="t-h1 max-w-[22ch] text-[clamp(2.125rem,1rem+4vw,4.75rem)]">{noOrphan(g.title, 22)}</h1>
+              <h1 className="t-h1 max-w-[22ch] text-[clamp(1.75rem,0.75rem+4.4vw,4.75rem)]">{noOrphan(g.title, 14)}</h1>
             </div>
             <div className="col-span-12 border-t border-line pt-6">
               <GuideMeta g={g} author={author} />

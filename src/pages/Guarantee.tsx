@@ -122,7 +122,12 @@ export default function Guarantee() {
                       {pad(i + 1)} / {pad(guaranteePoints.length)}
                     </span>
                     <div className="min-w-0">
-                      <h3 className={cn('text-[1.5rem] leading-[1.2] font-medium tracking-[-0.02em] transition-colors duration-500 sm:text-[1.75rem]', on ? 'text-ink' : 'text-ink/55')}>
+                      <h3
+                        className={cn(
+                          'text-[1.25rem] leading-[1.2] font-medium tracking-[-0.02em] transition-colors duration-500 min-[400px]:text-[1.5rem] sm:text-[1.75rem]',
+                          on ? 'text-ink' : 'text-ink/55',
+                        )}
+                      >
                         {noOrphan(p.title, 16)}
                       </h3>
                       <p className="measure mt-3 text-ink-2">
@@ -189,7 +194,8 @@ export default function Guarantee() {
             <p className="t-label mb-6">Qualitätskontrolle</p>
             <RevealText as="h2" text="Wir kontrollieren selbst. Bevor Sie es müssen." id="qc-title" className="t-h2" />
             <p className="t-lead measure mt-8" data-reveal>
-              Wir prüfen regelmäßig vor Ort, anhand einer Checkliste, die auf Ihr Leistungsverzeichnis abgestimmt ist. Auffälligkeiten besprechen wir direkt mit dem Team und, wenn nötig, mit Ihnen.
+              Wir prüfen regelmäßig vor Ort, anhand einer Checkliste, die auf Ihr Leistungsverzeichnis abgestimmt ist. Auffälligkeiten besprechen wir direkt mit dem Team und, wenn
+              nötig, mit Ihnen.
             </p>
             <p className="mt-6 text-ink-2" data-reveal>
               Die Kontrollen führt {company.founders[1]?.name ?? 'Ihr Ansprechpartner'} persönlich durch. Den Rhythmus legen wir gemeinsam mit Ihnen im Angebot fest.

@@ -299,17 +299,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                   <legend className="field-label mb-3">Art des Objekts</legend>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {objectTypes.map((o) => {
-                      return (
-                        <ChoiceCard
-                          key={o.id}
-                          type="radio"
-                          value={o.id}
-                          label={o.label}
-                          description={o.description}
-    
-                          {...register('objectType')}
-                        />
-                      )
+                      return <ChoiceCard key={o.id} type="radio" value={o.id} label={o.label} description={o.description} {...register('objectType')} />
                     })}
                   </div>
                   {errors.objectType && (
@@ -338,19 +328,11 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                     <ChoiceCard
                       type="radio"
                       value="A"
-
                       label="Ja, ich kenne die aktuellen Zeiten"
                       description="Dann rechnen wir Ihnen gleich eine Richtpreis-Spanne aus."
                       {...register('path')}
                     />
-                    <ChoiceCard
-                      type="radio"
-                      value="B"
-
-                      label="Nein, bzw. neues Objekt"
-                      description="Dann sehen wir uns Ihre Räume kostenlos an."
-                      {...register('path')}
-                    />
+                    <ChoiceCard type="radio" value="B" label="Nein, bzw. neues Objekt" description="Dann sehen wir uns Ihre Räume kostenlos an." {...register('path')} />
                   </div>
                   {errors.path && (
                     <p role="alert" className="mt-2 text-[0.875rem] text-danger">
@@ -402,7 +384,8 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                       render={({ field }) => (
                         <div>
                           <label htmlFor="cfg-area" className="field-label mb-2 flex items-baseline justify-between">
-                            Fläche ungefähr <span className="text-[1.375rem] font-medium tracking-[-0.02em] tabular-nums">{field.value >= 5000 ? 'über 5.000' : formatNumber(field.value)} m²</span>
+                            Fläche ungefähr{' '}
+                            <span className="text-[1.375rem] font-medium tracking-[-0.02em] tabular-nums">{field.value >= 5000 ? 'über 5.000' : formatNumber(field.value)} m²</span>
                           </label>
                           <input
                             id="cfg-area"
@@ -502,11 +485,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                     <label htmlFor="cfg-vt" className="field-label mb-1">
                       Tageszeit <span className="font-mono text-[0.75rem] font-normal text-muted">optional</span>
                     </label>
-                    <select
-                      id="cfg-vt"
-                      className="field block"
-                      {...register('visitTime')}
-                    >
+                    <select id="cfg-vt" className="field block" {...register('visitTime')}>
                       <option value="">Egal</option>
                       <option>Vormittags</option>
                       <option>Mittags</option>
@@ -537,20 +516,12 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
             <span className="font-mono text-[0.75rem] text-muted">Kostenlos und unverbindlich</span>
           )}
           {step < stepTitles.length - 1 ? (
-            <button
-              type="button"
-              onClick={() => go(step + 1)}
-              className="btn btn-primary"
-            >
+            <button type="button" onClick={() => go(step + 1)} className="btn btn-primary">
               Weiter
               <ArrowRight aria-hidden className="btn-arrow size-4" strokeWidth={1.75} />
             </button>
           ) : (
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn btn-primary"
-            >
+            <button type="submit" disabled={isSubmitting} className="btn btn-primary">
               {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : null}
               Anfrage senden
             </button>
@@ -604,12 +575,7 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
   ]
   return (
     <div className={cn(isModal ? 'p-6 sm:p-10' : 'pt-8')} role="status">
-      <motion.div
-        initial={{ scale: 0.6, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-        className="t-label"
-      >
+      <motion.div initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 18 }} className="t-label">
         Gesendet
       </motion.div>
       <h2 className="t-h3 mt-5">Vielen Dank. Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</h2>
@@ -630,7 +596,9 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
         ))}
       </dl>
       {r && (
-        <p className="mt-3 font-mono text-[0.75rem] text-muted">Unverbindliche Orientierung. Das finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.</p>
+        <p className="mt-3 font-mono text-[0.75rem] text-muted">
+          Unverbindliche Orientierung. Das finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.
+        </p>
       )}
       <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2">
         <RiskFreeSeal variant="card" className="sm:col-span-2" />

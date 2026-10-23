@@ -79,11 +79,7 @@ export function ApplicationForm() {
             *
           </span>
         </label>
-        <select
-          id="app-job"
-          className="field block"
-          {...register('job')}
-        >
+        <select id="app-job" className="field block" {...register('job')}>
           {open.map((j) => (
             <option key={j.title}>{j.title}</option>
           ))}
@@ -135,11 +131,7 @@ export function ApplicationForm() {
           {error}
         </p>
       )}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="btn btn-primary btn-lg w-full"
-      >
+      <button type="submit" disabled={isSubmitting} className="btn btn-primary btn-lg w-full">
         {isSubmitting && <Loader2 aria-hidden className="size-4 animate-spin" />}
         Bewerbung abschicken
       </button>

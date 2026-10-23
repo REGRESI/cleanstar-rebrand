@@ -34,7 +34,7 @@ export function PageHero({
   children?: ReactNode
 }) {
   return (
-    <section className={cn('relative pt-28 sm:pt-36 lg:pt-44', image ? 'pb-0' : 'pb-20 sm:pb-28 lg:pb-36', dark ? 'on-dark bg-night text-paper' : 'bg-paper')}>
+    <section className={cn('relative pt-28 sm:pt-36 lg:pt-44', image ? 'pb-0' : 'pb-4 sm:pb-6 lg:pb-8', dark ? 'on-dark bg-night text-paper' : 'bg-paper')}>
       <div className="container-site">
         <Breadcrumbs trail={trail} dark={dark} />
         <div className="grid-site gap-y-8 lg:gap-y-12">

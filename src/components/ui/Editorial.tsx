@@ -89,7 +89,17 @@ export function Stat({ value, label, className }: { value: ReactNode; label: Rea
  * Merkmale in Spalten (z. B. die 4 Punkte einer Leistung, Werte, Vorteile): Haarlinie oben, Nummer, Titel, Text.
  * Einheitlich auf allen Seiten: Handy 1 Spalte, ab 640 px 2, ab 1024 px so viele wie Punkte (höchstens 4).
  */
-export function FeatureColumns({ items, dark, className, titleAs: Title = 'h3' }: { items: { title: ReactNode; text: ReactNode }[]; dark?: boolean; className?: string; titleAs?: 'h2' | 'h3' }) {
+export function FeatureColumns({
+  items,
+  dark,
+  className,
+  titleAs: Title = 'h3',
+}: {
+  items: { title: ReactNode; text: ReactNode }[]
+  dark?: boolean
+  className?: string
+  titleAs?: 'h2' | 'h3'
+}) {
   const cols = items.length >= 4 ? 'lg:grid-cols-4' : items.length === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
   return (
     <ul className={cn('grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:gap-x-8', cols, className)}>
@@ -128,7 +138,11 @@ export function LinkRows({
               <span className="ulink">{it.label}</span>
               {it.meta && <span className="t-label ml-3">{it.meta}</span>}
             </span>
-            <ArrowUpRight aria-hidden className="size-4 shrink-0 self-center transition-transform duration-500 ease-cs group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.5} />
+            <ArrowUpRight
+              aria-hidden
+              className="size-4 shrink-0 self-center transition-transform duration-500 ease-cs group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              strokeWidth={1.5}
+            />
           </Link>
         </li>
       ))}

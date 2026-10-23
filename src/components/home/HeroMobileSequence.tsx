@@ -50,7 +50,11 @@ export function HeroMobileSequence({ onFailed }: { onFailed: () => void }) {
           <canvas ref={canvas} aria-hidden className={cn('absolute inset-0 size-full object-cover transition-opacity duration-300', seq.drawn ? 'opacity-100' : 'opacity-0')} />
           {seq.load && <KeyOverlays activeKey={seq.activeKey} variant="m" />}
           {seq.load && seq.progress < 1 && (
-            <span aria-hidden className="absolute inset-x-0 bottom-0 h-px origin-left bg-paper transition-transform duration-300" style={{ transform: `scaleX(${seq.progress})` }} />
+            <span
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 h-px origin-left bg-paper transition-transform duration-300"
+              style={{ transform: `scaleX(${seq.progress})` }}
+            />
           )}
         </div>
 

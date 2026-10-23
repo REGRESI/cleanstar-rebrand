@@ -41,11 +41,7 @@ const companyLinks = [
  */
 function FooterLink({ to, children }: { to: string; children: ReactNode }) {
   return (
-    <NavLink
-      to={to}
-      end
-      className={({ isActive }) => cn('ulink py-0.5 transition-colors duration-150 active:text-blue', isActive ? 'text-ink' : 'text-muted hover:text-ink')}
-    >
+    <NavLink to={to} end className={({ isActive }) => cn('ulink py-0.5 transition-colors duration-150 active:text-blue', isActive ? 'text-ink' : 'text-muted hover:text-ink')}>
       {children}
     </NavLink>
   )
@@ -67,7 +63,11 @@ export function Footer() {
       <div className="container-site">
         {/* Schlusssatz: das Markenversprechen */}
         <div className="grid-site gap-y-10 pt-24 pb-20 lg:pt-40 lg:pb-32">
-          <RevealText as="p" text={brand.promiseSet} className="col-span-12 text-[clamp(2.75rem,1rem+6.2vw,7.5rem)] leading-[0.98] font-medium tracking-[-0.045em] lg:col-span-10" />
+          <RevealText
+            as="p"
+            text={brand.promiseSet}
+            className="col-span-12 text-[clamp(2.75rem,1rem+6.2vw,7.5rem)] leading-[0.98] font-medium tracking-[-0.045em] lg:col-span-10"
+          />
           <div className="col-span-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10" data-reveal>
             <QuoteButton variant="link" className="text-lg">
               Kostenlose Besichtigung anfragen
@@ -116,7 +116,7 @@ export function Footer() {
             </dl>
           </div>
 
-          <Column title="Leistungen" className="col-span-6 md:col-span-3 lg:col-span-2">
+          <Column title="Leistungen" className="col-span-12 min-[400px]:col-span-6 md:col-span-3 lg:col-span-2">
             {services.map((s) => (
               <li key={s.slug}>
                 <FooterLink to={`/leistungen/${s.slug}`}>{s.name}</FooterLink>
@@ -124,7 +124,7 @@ export function Footer() {
             ))}
           </Column>
 
-          <Column title="Unternehmen" className="col-span-6 md:col-span-3 lg:col-span-2">
+          <Column title="Unternehmen" className="col-span-12 min-[400px]:col-span-6 md:col-span-3 lg:col-span-2">
             {companyLinks.map((l) => (
               <li key={l.to}>
                 <FooterLink to={l.to}>{l.label}</FooterLink>
@@ -132,7 +132,7 @@ export function Footer() {
             ))}
           </Column>
 
-          <Column title="Wissen und Werkzeuge" className="col-span-6 md:col-span-3 lg:col-span-2">
+          <Column title={'Wissen und\u00A0Werkzeuge'} className="col-span-12 min-[400px]:col-span-6 md:col-span-3 lg:col-span-2">
             {knowledgeLinks.map((l) => (
               <li key={l.to}>
                 <FooterLink to={l.to}>{l.label}</FooterLink>
@@ -140,7 +140,7 @@ export function Footer() {
             ))}
           </Column>
 
-          <Column title="Einzugsgebiet" className="col-span-6 md:col-span-3 lg:col-span-2">
+          <Column title="Einzugsgebiet" className="col-span-12 min-[400px]:col-span-6 md:col-span-3 lg:col-span-2">
             {places
               .filter((l) => l.major)
               .map((l) => (

@@ -54,10 +54,13 @@ ${locations.map((l) => `- [Reinigungsfirma ${shortName(l)}](${U(`/einzugsgebiet/
 ## Ratgeber
 
 ${guideCategories
-  .map((c) => `### ${c.label}\n\n${guides
-    .filter((g) => g.category === c.id)
-    .map((g) => `- [${g.title}](${U(`/ratgeber/${g.slug}`)}): ${g.answer}`)
-    .join('\n')}`)
+  .map(
+    (c) =>
+      `### ${c.label}\n\n${guides
+        .filter((g) => g.category === c.id)
+        .map((g) => `- [${g.title}](${U(`/ratgeber/${g.slug}`)}): ${g.answer}`)
+        .join('\n')}`,
+  )
   .join('\n\n')}
 
 ## Werkzeuge
@@ -153,11 +156,7 @@ Artikel: ${U(`/ratgeber/${g.slug}`)}`,
 // Sitemap: Ratgeber-Artikel mit ihrem eigenen Änderungsdatum
 const sm = readFileSync('dist/sitemap.xml', 'utf8')
 let patched = sm
-for (const g of guides)
-  patched = patched.replace(
-    new RegExp(`(<loc>${U(`/ratgeber/${g.slug}`).replace(/[.]/g, '\\.')}</loc><lastmod>)[^<]+`),
-    `$1${g.modified}`,
-  )
+for (const g of guides) patched = patched.replace(new RegExp(`(<loc>${U(`/ratgeber/${g.slug}`).replace(/[.]/g, '\\.')}</loc><lastmod>)[^<]+`), `$1${g.modified}`)
 if (patched !== sm) writeFileSync('dist/sitemap.xml', patched)
 
 writeFileSync('dist/llms.txt', llms)

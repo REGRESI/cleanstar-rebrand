@@ -115,7 +115,7 @@ export default function Facts() {
           ))}
           <nav aria-labelledby="f-links">
             <h2 id="f-links" className="t-label">
-              Mehr erfahren
+              Weiterführende Seiten
             </h2>
             <InlineLinks
               className="mt-5"

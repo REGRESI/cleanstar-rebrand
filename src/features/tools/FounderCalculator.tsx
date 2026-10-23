@@ -117,11 +117,7 @@ export function FounderCalculator() {
           </div>
           <Toggle label="Kleinunternehmerregelung (ohne Umsatzsteuer)" checked={v.smallBusiness} onChange={(x) => set({ smallBusiness: x })} />
         </fieldset>
-        <button
-          type="button"
-          onClick={() => setV(initial)}
-          className="ulink py-1 text-[0.9375rem] text-muted hover:text-ink"
-        >
+        <button type="button" onClick={() => setV(initial)} className="ulink py-1 text-[0.9375rem] text-muted hover:text-ink">
           Zurücksetzen
         </button>
       </div>
@@ -136,7 +132,9 @@ export function FounderCalculator() {
             netto{r.rateGross !== null && !v.smallBusiness ? `, ${formatEuro2(r.rateGross)} brutto` : v.smallBusiness ? ', ohne Umsatzsteuer' : ''}
           </p>
           {missing && (
-            <p className="mt-6 border-l border-paper/40 pl-4 text-[0.9375rem] text-paper">Tragen Sie die verkauften Stunden pro Monat ein, um Fixkosten und Stundensatz zu berechnen.</p>
+            <p className="mt-6 border-l border-paper/40 pl-4 text-[0.9375rem] text-paper">
+              Tragen Sie die verkauften Stunden pro Monat ein, um Fixkosten und Stundensatz zu berechnen.
+            </p>
           )}
           <dl className="mt-8 border-t border-line-dark text-[0.9375rem]">
             {lines.map(([k, val, strong]) => (
@@ -162,8 +160,8 @@ export function FounderCalculator() {
         </section>
         <p className="border-t border-line pt-5 text-[0.9375rem] leading-relaxed text-ink-2">
           <span>
-            <strong className="font-medium text-ink">Beispielrechnung, keine Prognose.</strong> Das Ergebnis hängt allein von Ihren Eingaben ab. Es ist keine Zusage von Umsatz, Gewinn oder Einkommen und ersetzt
-            keine Steuer- oder Unternehmensberatung.
+            <strong className="font-medium text-ink">Beispielrechnung, keine Prognose.</strong> Das Ergebnis hängt allein von Ihren Eingaben ab. Es ist keine Zusage von Umsatz,
+            Gewinn oder Einkommen und ersetzt keine Steuer- oder Unternehmensberatung.
           </span>
         </p>
         <div className="border-t border-line pt-5">

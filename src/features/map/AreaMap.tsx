@@ -183,11 +183,15 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
         {/* Tooltip */}
         <div aria-live="polite" className="pointer-events-none absolute top-4 left-4 sm:top-6 sm:left-6">
           {active && (
-            <motion.div key={active.slug} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: EASE_CS_ARRAY }} className="border-l border-ink bg-paper py-1 pl-3">
+            <motion.div
+              key={active.slug}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: EASE_CS_ARRAY }}
+              className="border-l border-ink bg-paper py-1 pl-3"
+            >
               <p className="text-[1.125rem] font-medium text-ink">{active.name}</p>
-              <p className="mt-0.5 font-mono text-[0.75rem] text-muted">
-                {active.minutes === 0 ? 'Unser Sitz' : `ca. ${active.minutes} Min. von Offenburg`}
-              </p>
+              <p className="mt-0.5 font-mono text-[0.75rem] text-muted">{active.minutes === 0 ? 'Unser Sitz' : `ca. ${active.minutes} Min. von Offenburg`}</p>
             </motion.div>
           )}
         </div>

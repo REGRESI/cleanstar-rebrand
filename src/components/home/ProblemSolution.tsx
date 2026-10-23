@@ -15,7 +15,14 @@ interface Props {
  * Probleme und Lösungen als nummerierte Zeilen mit Haarlinien: das Problem durchgestrichen (die Linie zeichnet sich,
  * sobald die Zeile im Bild ist), die Lösung darunter. Ohne Karten, ohne Icons. Ohne Bewegung: Endzustand sofort.
  */
-export function ProblemSolution({ eyebrow = home.problems.eyebrow, index, headline = home.problems.headline, lead = home.problems.lead, items = home.problems.items, id = 'problems-title' }: Props) {
+export function ProblemSolution({
+  eyebrow = home.problems.eyebrow,
+  index,
+  headline = home.problems.headline,
+  lead = home.problems.lead,
+  items = home.problems.items,
+  id = 'problems-title',
+}: Props) {
   return (
     <section className="section" aria-labelledby={id}>
       <div className="container-site">

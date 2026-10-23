@@ -36,7 +36,12 @@ export function RiskFreeSeal({ variant = 'badge', dark, className }: { variant?:
 
   const trigger =
     variant === 'badge' ? (
-      <button type="button" onClick={() => setOpen(true)} className={cn('group inline-flex items-center gap-4 text-left', dark ? 'text-paper' : 'text-ink', className)} aria-haspopup="dialog">
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className={cn('group inline-flex items-center gap-4 text-left', dark ? 'text-paper' : 'text-ink', className)}
+        aria-haspopup="dialog"
+      >
         <SealMark dark={dark} className="size-16 shrink-0 transition-transform duration-[1200ms] ease-cs group-hover:rotate-[20deg]" />
         <span className="leading-tight">
           <span className="block font-medium">{c.riskFree}</span>
@@ -47,7 +52,11 @@ export function RiskFreeSeal({ variant = 'badge', dark, className }: { variant?:
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={cn('group flex w-full flex-col items-start gap-6 border-t py-8 text-left sm:flex-row sm:items-center sm:gap-10', dark ? 'border-line-dark text-paper' : 'border-line text-ink', className)}
+        className={cn(
+          'group flex w-full flex-col items-start gap-6 border-t py-8 text-left sm:flex-row sm:items-center sm:gap-10',
+          dark ? 'border-line-dark text-paper' : 'border-line text-ink',
+          className,
+        )}
         aria-haspopup="dialog"
       >
         <SealMark dark={dark} className="size-28 shrink-0 transition-transform duration-[1200ms] ease-cs group-hover:rotate-[20deg] sm:size-36" />

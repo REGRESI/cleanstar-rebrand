@@ -121,6 +121,7 @@ export default function Careers() {
               eyebrow="Kurzbewerbung"
               title="In 2 Minuten beworben."
               id="apply-title"
+              size="h3"
               text="Name, Telefonnummer, wann Sie können. Mehr brauchen wir nicht für den ersten Schritt. Wir rufen Sie zurück."
             />
             <p className="mt-8 text-muted-dark" data-reveal>

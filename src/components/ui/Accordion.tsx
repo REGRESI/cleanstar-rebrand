@@ -42,7 +42,10 @@ export function Accordion({
                 aria-expanded={isOpen}
                 aria-controls={pid}
                 onClick={() => setOpen(isOpen ? -1 : i)}
-                className={cn('group flex w-full items-start justify-between gap-6 py-6 text-left text-lg leading-snug font-medium tracking-[-0.015em] sm:text-xl', dark ? 'text-paper' : 'text-ink')}
+                className={cn(
+                  'group flex w-full items-start justify-between gap-6 py-6 text-left text-lg leading-snug font-medium tracking-[-0.015em] sm:text-xl',
+                  dark ? 'text-paper' : 'text-ink',
+                )}
               >
                 <span className="min-w-0">{typeof it.title === 'string' ? noOrphan(it.title, 22) : it.title}</span>
                 {/* Plus aus zwei Haarlinien, wird beim Öffnen zum Minus */}

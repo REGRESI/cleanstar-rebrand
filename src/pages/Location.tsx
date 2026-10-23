@@ -178,7 +178,9 @@ export default function Location() {
             </h2>
             <InlineLinks
               className="col-span-12 lg:col-span-8"
-              items={nearby.map((n) => ({ to: `/einzugsgebiet/${n!.slug}`, label: `Reinigungsfirma ${shortName(n!)}` })).concat([{ to: '/einzugsgebiet', label: `Alle ${locations.length} Orte` }])}
+              items={nearby
+                .map((n) => ({ to: `/einzugsgebiet/${n!.slug}`, label: `Reinigungsfirma ${shortName(n!)}` }))
+                .concat([{ to: '/einzugsgebiet', label: `Alle ${locations.length} Orte` }])}
             />
           </div>
         </nav>

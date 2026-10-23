@@ -36,7 +36,10 @@ export function ContactPerson({ dark, compact, className, title = 'Ihr Ansprechp
             {company.phone.display}
           </a>
           {!compact && (
-            <a href={`mailto:${company.email}`} className={cn('ulink mt-1 block text-[0.9375rem] break-all', dark ? 'text-muted-dark hover:text-paper' : 'text-ink-2 hover:text-ink')}>
+            <a
+              href={`mailto:${company.email}`}
+              className={cn('ulink mt-1 block text-[0.9375rem] break-all', dark ? 'text-muted-dark hover:text-paper' : 'text-ink-2 hover:text-ink')}
+            >
               {company.email}
             </a>
           )}

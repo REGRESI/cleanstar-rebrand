@@ -69,11 +69,7 @@ export function CleaningCheck() {
               {String(step + 1).padStart(2, '0')} / {String(checkQuestions.length).padStart(2, '0')}
             </span>
             {step > 0 && (
-              <button
-                type="button"
-                onClick={back}
-                className="inline-flex min-h-10 items-center gap-2 text-[0.9375rem] text-muted transition-colors hover:text-ink"
-              >
+              <button type="button" onClick={back} className="inline-flex min-h-10 items-center gap-2 text-[0.9375rem] text-muted transition-colors hover:text-ink">
                 <ArrowLeft aria-hidden className="size-4" strokeWidth={1.75} />
                 Zurück
               </button>
@@ -114,14 +110,7 @@ export function CleaningCheck() {
             </div>
           </motion.fieldset>
         ) : (
-          <motion.div
-            key="result"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="py-10 sm:py-14"
-            role="status"
-          >
+          <motion.div key="result" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="py-10 sm:py-14" role="status">
             <div className="flex flex-col items-start gap-10 sm:flex-row sm:items-end sm:gap-16">
               <Score percent={percent} />
               <div>

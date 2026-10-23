@@ -65,5 +65,35 @@ md += `
 
 Gründerporträts bitte als echte Fotos der Gründer verwenden, nicht generieren.
 `
+md += `
+## Shot-Liste für das Fotoshooting
+
+Das neue Design zeigt jedes Bild in einem festen Rahmen mit festem Seitenverhältnis. Das Bild wird mittig beschnitten, deshalb gehört das Wichtige in die Bildmitte, mit Luft an allen Rändern. Alle Fotos bekommen auf der Website dieselbe leichte Farbbehandlung (etwas weniger Sättigung, minimal wärmer). Bitte neutral belichten und nicht stark nachbearbeiten.
+
+### Allgemein
+
+- Echte Räume, echte Menschen aus dem Team, keine gestellten Lächelmotive.
+- Arbeitskleidung mit CleanStar-Logo, saubere Hände und Handschuhe.
+- Natürliches Tageslicht oder ruhiges Abendlicht, keine Blitzreflexe auf Glas.
+- Keine erkennbaren Kundendaten, Bildschirme oder Firmennamen Dritter im Bild.
+- Pro Motiv bitte quer und hoch fotografieren, damit Desktop und Handy aus einer Aufnahme bedient werden können.
+
+### Rahmen und Motive
+
+| Rahmen | Seitenverhältnis | Wo | Motiv | Hinweis zum Beschnitt |
+|---|---|---|---|---|
+| Seitenkopf Unterseite | 21:9 ab Tablet, 4:3 auf dem Handy | Leistungen, Leistungsseiten, Qualitätsgarantie, Ablauf, Kontakt, Karriere, Partner | Eine Szene pro Seite: Reinigung im Büro, Fensterfront, Treppenhaus, Halle, Sanitär, Besichtigung mit Kunde, Kontrollgang mit Checkliste | Person oder Handlung im mittleren Drittel, oben und unten je ein Viertel Luft |
+| Kernleistung Startseite | 21:9 Desktop, 3:2 Tablet, 4:5 Handy | Startseite, Leistungen | Büroreinigung am frühen Morgen, ein Teammitglied an einem Arbeitsplatz | Motiv genau mittig, weil von 21:9 bis 4:5 beschnitten wird |
+| Leistungsliste Vorschau | frei im Rahmen, Hochformat | Startseite, Leistungen (beim Überfahren) | Je Leistung ein ruhiges Detailbild | Hochformat, Motiv mittig |
+| Porträt | 4:5 | Über uns, Startseite, Kontakt, Ratgeber-Autor | Gründer einzeln vor ruhigem, hellem Hintergrund, Brusthöhe, Blick in die Kamera | Kopf im oberen Drittel, Schultern vollständig |
+| Detail hoch | 4:5 | Büroreinigung, Qualitätsgarantie, Ablauf, Einzugsgebiet, Karriere, Partner | Detail einer Handlung: Tuch auf Tischfläche, Checkliste, Schlüsselübergabe, Teambesprechung, Gebäude in der Region | Hochformat, Hände oder Gegenstand mittig |
+| Team breit | 3:2 | Über uns | Zwei bis drei Personen bei der Arbeit im Flur oder Büro | Personen im mittleren Bereich, Boden sichtbar |
+| Vorher und Nachher | 16:9 | Büroreinigung | Derselbe Arbeitsplatz vorher und nachher, Stativ, gleiche Position und gleiches Licht | Kamera darf sich zwischen den Aufnahmen nicht bewegen |
+
+### Zusätzlich gewünscht (sobald Freigaben vorliegen)
+
+- Gebäude von Kunden, die einer Nennung zugestimmt haben, für den Bereich Belege (\`src/content/proof.ts\`).
+- Ein Foto vom Sitz in der Prinz-Eugen-Straße für die Kontaktseite.
+`
 writeFileSync('BILDER.md', md)
 console.log('✓ BILDER.md erzeugt')

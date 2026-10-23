@@ -33,14 +33,16 @@ export default function Quote() {
                 Ein paar Angaben zu Ihrem Objekt. Kennen Sie Ihre aktuellen Reinigungszeiten, zeigen wir Ihnen sofort eine Richtpreis-Spanne.
               </p>
               <ol className="fade-up-now mt-10 border-t border-line" style={{ ['--d' as string]: '0.55s' }}>
-                {[`Antwort innerhalb von ${company.promises.responseHours} Stunden`, `Angebot innerhalb von ${company.promises.offerHours} Stunden`, 'Kostenlos und unverbindlich'].map(
-                  (t, i) => (
-                    <li key={t} className="flex gap-5 border-b border-line py-3.5">
-                      <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
-                      {t}
-                    </li>
-                  ),
-                )}
+                {[
+                  `Antwort innerhalb von ${company.promises.responseHours}\u00A0Stunden`,
+                  `Angebot innerhalb von ${company.promises.offerHours}\u00A0Stunden`,
+                  'Kostenlos und unverbindlich',
+                ].map((t, i) => (
+                  <li key={t} className="flex gap-5 border-b border-line py-3.5">
+                    <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
+                    {t}
+                  </li>
+                ))}
               </ol>
               <div className="mt-10 space-y-2">
                 <a href={company.phone.href} className="ulink block w-fit text-ink">

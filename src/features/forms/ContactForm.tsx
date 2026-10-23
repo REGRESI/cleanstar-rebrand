@@ -79,11 +79,7 @@ export function ContactForm() {
           {error}
         </p>
       )}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="btn btn-primary"
-      >
+      <button type="submit" disabled={isSubmitting} className="btn btn-primary">
         Nachricht senden
         {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <ArrowRight aria-hidden className="btn-arrow size-4" strokeWidth={1.75} />}
       </button>

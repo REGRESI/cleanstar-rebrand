@@ -153,7 +153,9 @@ Mit freundlichen Grüßen
             ]}
           />
         )}
-        <p className="text-[0.8125rem] leading-relaxed text-muted">Die Angaben finden Sie in Ihrem Vertrag. Maßgeblich ist immer, was dort steht. Ihre Eingaben bleiben in Ihrem Browser.</p>
+        <p className="text-[0.8125rem] leading-relaxed text-muted">
+          Die Angaben finden Sie in Ihrem Vertrag. Maßgeblich ist immer, was dort steht. Ihre Eingaben bleiben in Ihrem Browser.
+        </p>
       </div>
 
       <div className="space-y-14 lg:col-span-6 lg:col-start-7">
@@ -183,7 +185,7 @@ Mit freundlichen Grüßen
                     <span className="t-label pt-1">{String(i + 1).padStart(2, '0')}</span>
                     <span className="min-w-0">
                       <span className="block text-[0.9375rem] text-muted-dark">{st.title}</span>
-                      <span className={cn('block text-[1.375rem] font-medium tracking-[-0.02em]', i === 2 && 'text-blue-on-dark')}>{fmt(st.date)}</span>
+                      <span className={cn('block text-[1.125rem] font-medium min-[400px]:text-[1.375rem] tracking-[-0.02em]', i === 2 && 'text-blue-on-dark')}>{fmt(st.date)}</span>
                       <span className="block text-[0.9375rem] text-muted-dark">{st.text}</span>
                     </span>
                   </li>

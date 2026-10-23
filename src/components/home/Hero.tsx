@@ -161,7 +161,7 @@ export function Hero() {
           {/* Lesbarkeit: ruhige Abdunklung, unten etwas stärker (dort steht der Text) */}
           <div ref={shade} aria-hidden className="pointer-events-none absolute inset-0">
             <div className="absolute inset-0 bg-night/25" />
-            <div className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-night/75 via-night/35 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-[90%] bg-gradient-to-t from-night/80 via-night/50 to-transparent sm:h-[70%] sm:from-night/75 sm:via-night/35" />
           </div>
 
           {/* Text: H1 aus Keyword-Zeile (Monospace) und Leitidee (Display), unten im Raster */}
@@ -173,7 +173,7 @@ export function Hero() {
                 text={home.hero.headline}
                 immediate
                 kicker={
-                  <span className="t-label fade-up-now mb-5 block text-paper/80 lg:mb-8" style={{ ['--d' as string]: '0.05s' }}>
+                  <span className="t-label fade-up-now mb-5 block text-[0.875rem] text-paper lg:mb-8 lg:text-[0.9375rem]" style={{ ['--d' as string]: '0.05s' }}>
                     {home.hero.kicker}
                   </span>
                 }
@@ -192,16 +192,24 @@ export function Hero() {
 
           {/* Szenen-Untertitel in Monospace mit dünner Fortschrittslinie (Desktop) */}
           {desktopVideo && (
-            <div aria-hidden className={cn('pointer-events-none absolute right-0 bottom-0 left-0 transition-opacity duration-500', step === 0 ? 'opacity-0 lg:opacity-100' : 'opacity-100')}>
+            <div
+              aria-hidden
+              className={cn('pointer-events-none absolute right-0 bottom-0 left-0 transition-opacity duration-500', step === 0 ? 'opacity-0 lg:opacity-100' : 'opacity-100')}
+            >
               <div className="container-site flex justify-end pb-6 lg:pb-[9vh]">
                 <div className="w-64 text-paper">
                   <p className="flex justify-between font-mono text-[0.75rem] text-paper/80">
-                    <span>{String(step + 1).padStart(2, '0')} / {String(home.hero.sceneSteps.length).padStart(2, '0')}</span>
+                    <span>
+                      {String(step + 1).padStart(2, '0')} / {String(home.hero.sceneSteps.length).padStart(2, '0')}
+                    </span>
                     <span>{step === 0 ? 'Scrollen' : ''}</span>
                   </p>
                   <p className="mt-2 text-[0.9375rem]">{home.hero.sceneSteps[step]}</p>
                   <span className="relative mt-3 block h-px bg-paper/25">
-                    <span className="absolute inset-0 origin-left bg-paper transition-transform duration-300" style={{ transform: `scaleX(${loadingVisible ? seq.progress : (step + 1) / home.hero.sceneSteps.length})` }} />
+                    <span
+                      className="absolute inset-0 origin-left bg-paper transition-transform duration-300"
+                      style={{ transform: `scaleX(${loadingVisible ? seq.progress : (step + 1) / home.hero.sceneSteps.length})` }}
+                    />
                   </span>
                 </div>
               </div>

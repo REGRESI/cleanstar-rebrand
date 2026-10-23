@@ -19,9 +19,7 @@ export default function Contact() {
   const cards = [
     { label: 'Telefon', value: company.phone.display, href: company.phone.href, note: `Direkt anrufen, ${company.availability}` },
     { label: 'E-Mail', value: company.email, href: `mailto:${company.email}`, note: `Antwort innerhalb von ${company.promises.responseHours} Stunden` },
-    ...(company.whatsapp.enabled
-      ? [{ label: 'WhatsApp', value: 'Nachricht schreiben', href: `https://wa.me/${company.whatsapp.number}`, note: 'Öffnet WhatsApp' }]
-      : []),
+    ...(company.whatsapp.enabled ? [{ label: 'WhatsApp', value: 'Nachricht schreiben', href: `https://wa.me/${company.whatsapp.number}`, note: 'Öffnet WhatsApp' }] : []),
   ]
 
   return (

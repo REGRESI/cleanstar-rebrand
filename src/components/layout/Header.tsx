@@ -65,12 +65,7 @@ export function Header() {
   }, [menu])
 
   return (
-    <header
-      className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-cs focus-within:translate-y-0',
-        hidden && !menu && '-translate-y-full',
-      )}
-    >
+    <header className={cn('fixed inset-x-0 top-0 z-50 transition-transform duration-500 ease-cs focus-within:translate-y-0', hidden && !menu && '-translate-y-full')}>
       <div className="relative z-10 border-b border-line bg-paper">
         <div className="container-site flex h-16 items-center justify-between gap-6 lg:h-[4.75rem]">
           <HomeLink label={`${company.name}, zur Startseite`} className="shrink-0" onNavigate={() => setMenu(false)}>
@@ -131,11 +126,7 @@ export function Header() {
               <ul className="border-t border-line">
                 {mobileNav.map((item, i) => (
                   <li key={item.to} className="overflow-hidden border-b border-line">
-                    <motion.div
-                      initial={{ y: '100%' }}
-                      animate={{ y: 0 }}
-                      transition={{ duration: 0.6, ease: EASE_CS_ARRAY, delay: 0.04 * i + 0.05 }}
-                    >
+                    <motion.div initial={{ y: '100%' }} animate={{ y: 0 }} transition={{ duration: 0.6, ease: EASE_CS_ARRAY, delay: 0.04 * i + 0.05 }}>
                       <NavLink to={item.to} end={item.to === '/'} className="group flex items-baseline gap-4 py-3.5">
                         {({ isActive }) => (
                           <>

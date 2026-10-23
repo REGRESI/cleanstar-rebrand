@@ -242,20 +242,8 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
               <fieldset>
                 <legend className="sr-only">Ihr Weg</legend>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <ChoiceCard
-                    type="radio"
-                    value="bestand"
-                    label={partnerWays.bestand.label}
-                    description="Sie führen bereits einen Reinigungsbetrieb."
-                    {...register('way')}
-                  />
-                  <ChoiceCard
-                    type="radio"
-                    value="gruendung"
-                    label={partnerWays.gruendung.label}
-                    description="Sie möchten sich selbstständig machen."
-                    {...register('way')}
-                  />
+                  <ChoiceCard type="radio" value="bestand" label={partnerWays.bestand.label} description="Sie führen bereits einen Reinigungsbetrieb." {...register('way')} />
+                  <ChoiceCard type="radio" value="gruendung" label={partnerWays.gruendung.label} description="Sie möchten sich selbstständig machen." {...register('way')} />
                 </div>
                 <Err msg={errors.way?.message} />
               </fieldset>
@@ -370,11 +358,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                     <label htmlFor="pf-cb" className="field-label mb-1">
                       Rückruf am besten <span className="font-normal text-muted">(optional)</span>
                     </label>
-                    <select
-                      id="pf-cb"
-                      className="field block"
-                      {...register('callback')}
-                    >
+                    <select id="pf-cb" className="field block" {...register('callback')}>
                       <option value="">Bitte wählen</option>
                       {opt.callback.map((o) => (
                         <option key={o}>{o}</option>
@@ -405,20 +389,12 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
             <span className="font-mono text-[0.75rem] text-muted">Unverbindlich, ca. 2 Minuten</span>
           )}
           {step < STEPS.length - 1 ? (
-            <button
-              type="button"
-              onClick={() => go(step + 1)}
-              className="btn btn-primary"
-            >
+            <button type="button" onClick={() => go(step + 1)} className="btn btn-primary">
               {step === 4 && !v.investment ? 'Überspringen' : 'Weiter'}
               <ArrowRight aria-hidden className="size-4" />
             </button>
           ) : (
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn btn-primary"
-            >
+            <button type="submit" disabled={isSubmitting} className="btn btn-primary">
               {isSubmitting && <Loader2 aria-hidden className="size-4 animate-spin" />}
               Anfrage senden
             </button>

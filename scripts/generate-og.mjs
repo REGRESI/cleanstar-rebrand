@@ -32,6 +32,9 @@ for (const [type, [title, sub, pill]] of Object.entries(types)) {
   <rect x="80" y="460" width="${pillW}" height="64" rx="32" fill="#1f5eff"/>
   <text x="${80 + pillW / 2}" y="501" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#ffffff">${esc(pill)}</text>
 </svg>`
-  await sharp(Buffer.from(svg)).composite([{ input: logo, top: 90, left: 72 }]).png({ compressionLevel: 9, palette: true }).toFile(`public/og/${type}.png`)
+  await sharp(Buffer.from(svg))
+    .composite([{ input: logo, top: 90, left: 72 }])
+    .png({ compressionLevel: 9, palette: true })
+    .toFile(`public/og/${type}.png`)
 }
 console.log('✓ Open-Graph-Bilder:', Object.keys(types).join(', '))

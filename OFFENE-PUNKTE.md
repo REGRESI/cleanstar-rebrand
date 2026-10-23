@@ -64,3 +64,10 @@ neutralen Text oder blendet die Stelle aus.
 
 - **Formular-Test:** Der Web3Forms-Key ist eingetragen und die Formulare senden echt. Bitte nach dem Livegang einmal eine Testanfrage (Betreff „TEST Website“) über das Kontaktformular senden und prüfen, ob sie im Postfach ankommt. Bei Web3Forms ggf. die Domain www.cleanstar-dienstleistungen.de als erlaubte Absender-Domain eintragen.
 - **Sicherheitsupdate React Router:** `npm audit` meldet zwei mittlere Schwachstellen in react-router 6. Die Behebung erfordert ein Update auf Version 7 (größere Umstellung, separat einplanen).
+
+## Redesign
+
+- **Schrift:** Die Wunschschrift Switzer (Fontshare) war aus der Arbeitsumgebung nicht abrufbar. Eingesetzt sind Instrument Sans und IBM Plex Mono, beide unter SIL Open Font License, lokal eingebunden. Wenn Switzer gewünscht ist, die WOFF2-Datei unter `src/assets/fonts/` ablegen und in `src/styles/index.css` (`@font-face` und `--font-sans`) tauschen. Die Lizenz von Fontshare bitte vorher prüfen.
+- **Belege (`src/content/proof.ts`):** Der Bereich „Beweise“ auf der Startseite ist ausgeblendet (`enabled: false`), weil es noch keine freigegebenen Kundenstimmen, Objekte oder Logos gibt. Einträge nur mit schriftlicher Zustimmung des Kunden eintragen, dann `enabled: true` setzen.
+- **Fotoshooting:** Die Shot-Liste steht in `BILDER.md` (Abschnitt „Shot-Liste für das Fotoshooting“). Die aktuellen Bilder funktionieren, ein einheitliches Shooting würde das Design deutlich stärken.
+- **Styleguide:** `/styleguide` ist intern, nicht verlinkt, `noindex` und nicht in der Sitemap.

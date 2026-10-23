@@ -77,10 +77,18 @@ export function ServicesGrid({ heading = true, index }: { heading?: boolean; ind
                 >
                   <span className="t-label">{String(i + 2).padStart(2, '0')}</span>
                   <span className="min-w-0">
-                    <Title className={cn('t-h3 transition-colors duration-300', active === i ? 'lg:text-ink' : 'lg:text-ink/55', 'group-hover:text-ink')}>{s.name}</Title>
+                    <Title
+                      className={cn('t-h3 max-[400px]:text-[1.125rem] transition-colors duration-300', active === i ? 'lg:text-ink' : 'lg:text-ink/55', 'group-hover:text-ink')}
+                    >
+                      {s.name}
+                    </Title>
                     <span className="mt-2 block max-w-[46ch] text-ink-2">{s.short}</span>
                   </span>
-                  <ArrowUpRight aria-hidden className="size-5 self-center text-ink transition-transform duration-500 ease-cs group-hover:translate-x-1 group-hover:-translate-y-1" strokeWidth={1.5} />
+                  <ArrowUpRight
+                    aria-hidden
+                    className="size-5 self-center text-ink transition-transform duration-500 ease-cs group-hover:translate-x-1 group-hover:-translate-y-1"
+                    strokeWidth={1.5}
+                  />
                 </Link>
               </li>
             ))}

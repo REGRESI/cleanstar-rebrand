@@ -180,9 +180,7 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
             <>
               <p className="t-label">{view === 'de' ? 'Bundesland' : active.type}</p>
               <p className="t-h3 mt-3">{active.name}</p>
-              <p className={cn('mt-2 font-medium', active.status === 'stammgebiet' ? 'text-blue' : active.status === 'vergeben' ? 'text-muted' : 'text-ink')}>
-                {status(active)}
-              </p>
+              <p className={cn('mt-2 font-medium', active.status === 'stammgebiet' ? 'text-blue' : active.status === 'vergeben' ? 'text-muted' : 'text-ink')}>{status(active)}</p>
               {selectable(active) && <p className="mt-4 text-[0.9375rem] text-ink-2">Klicken oder Enter drücken, um direkt für diese Region anzufragen.</p>}
             </>
           ) : (
@@ -196,11 +194,7 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
         </div>
         <label className="mt-10 block">
           <span className="field-label mb-1">Oder aus der Liste wählen</span>
-          <select
-            className="field block"
-            defaultValue=""
-            onChange={(e) => e.target.value && onSelect(e.target.value)}
-          >
+          <select className="field block" defaultValue="" onChange={(e) => e.target.value && onSelect(e.target.value)}>
             <option value="">Region auswählen …</option>
             {[...bwRegions]
               .filter((x) => x.status === 'gesucht')

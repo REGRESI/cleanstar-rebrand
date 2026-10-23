@@ -50,7 +50,14 @@ export default function Guides() {
       {guideCategories.map((c, ci) => (
         <section key={c.id} id={c.id} aria-labelledby={`cat-${c.id}`} className="section scroll-mt-24 pt-0!">
           <div className="container-site">
-            <SectionHeading layout="rail" index={String(ci + 1).padStart(2, '0')} eyebrow={c.id === 'gruender' ? 'Für Gründer' : 'Für Unternehmen'} title={c.label} text={c.text} id={`cat-${c.id}`} />
+            <SectionHeading
+              layout="rail"
+              index={String(ci + 1).padStart(2, '0')}
+              eyebrow={c.id === 'gruender' ? 'Für Gründer' : 'Für Unternehmen'}
+              title={c.label}
+              text={c.text}
+              id={`cat-${c.id}`}
+            />
             <ul className="mt-14 grid grid-cols-1 gap-x-8 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3">
               {guides
                 .filter((g) => g.category === c.id)
@@ -66,7 +73,14 @@ export default function Guides() {
 
       <section aria-labelledby="tools-title" className="on-dark section bg-night text-paper">
         <div className="container-site">
-          <SectionHeading layout="rail" index={String(guideCategories.length + 1).padStart(2, '0')} eyebrow="Werkzeuge" title={'Rechner und\u00A0Werkzeuge'} text="Kostenlos, ohne Anmeldung. Ihre Eingaben bleiben in Ihrem Browser." id="tools-title" />
+          <SectionHeading
+            layout="rail"
+            index={String(guideCategories.length + 1).padStart(2, '0')}
+            eyebrow="Werkzeuge"
+            title={'Rechner und\u00A0Werkzeuge'}
+            text="Kostenlos, ohne Anmeldung. Ihre Eingaben bleiben in Ihrem Browser."
+            id="tools-title"
+          />
           <ul className="mt-14 border-b border-line-dark lg:mt-20">
             {tools.map((t, i) => (
               <li key={t.to} className="border-t border-line-dark">
@@ -76,7 +90,11 @@ export default function Guides() {
                     <span className="ulink text-[1.5rem] font-medium tracking-[-0.02em]">{t.title}</span>
                     <span className="mt-1 block text-muted-dark">{t.text}</span>
                   </span>
-                  <ArrowUpRight aria-hidden className="size-5 self-center transition-transform duration-500 ease-cs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 lg:col-span-1 lg:justify-self-end" strokeWidth={1.5} />
+                  <ArrowUpRight
+                    aria-hidden
+                    className="size-5 self-center transition-transform duration-500 ease-cs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 lg:col-span-1 lg:justify-self-end"
+                    strokeWidth={1.5}
+                  />
                 </Link>
               </li>
             ))}

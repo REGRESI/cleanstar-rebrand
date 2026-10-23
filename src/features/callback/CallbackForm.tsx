@@ -115,14 +115,7 @@ export default function CallbackForm({ onDone }: { onDone?: () => void }) {
           <label htmlFor={timeId} className="field-label mb-1">
             Uhrzeit ({w === 'heute' ? 'heute' : fmtDay(1)})
           </label>
-          <input
-            id={timeId}
-            type="time"
-            step={900}
-            aria-invalid={!!errors.time}
-            className="field block sm:max-w-48"
-            {...register('time')}
-          />
+          <input id={timeId} type="time" step={900} aria-invalid={!!errors.time} className="field block sm:max-w-48" {...register('time')} />
           {errors.time && (
             <p role="alert" className="mt-2 text-[0.875rem] text-danger">
               {errors.time.message}
@@ -137,11 +130,7 @@ export default function CallbackForm({ onDone }: { onDone?: () => void }) {
           {error}
         </p>
       )}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="btn btn-primary w-full sm:w-auto"
-      >
+      <button type="submit" disabled={isSubmitting} className="btn btn-primary w-full sm:w-auto">
         Rückruf anfordern
         {isSubmitting && <Loader2 aria-hidden className="size-4 animate-spin" />}
       </button>

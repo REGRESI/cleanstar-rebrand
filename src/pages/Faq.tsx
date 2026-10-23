@@ -34,7 +34,7 @@ export default function Faq() {
         title="Was Geschäftsführer uns vorher fragen."
         lead="Alles, was Sie vor der Zusammenarbeit wissen möchten. Ihre Frage ist nicht dabei? Rufen Sie uns an oder schreiben Sie uns."
       />
-      <section className="pb-24 lg:pb-40">
+      <section className="pt-12 pb-24 lg:pt-16 lg:pb-40">
         <div className="container-site grid-site gap-y-12">
           <aside className="col-span-12 lg:col-span-3">
             <div className="space-y-10 lg:sticky lg:top-28">

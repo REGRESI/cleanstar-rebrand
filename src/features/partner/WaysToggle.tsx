@@ -21,7 +21,12 @@ export function WaysToggle({ way, onChange, onApply }: { way: PartnerWay; onChan
   }
   return (
     <div>
-      <div role="tablist" aria-label="Ihr Weg zum Partner" className="grid grid-cols-1 shadow-[inset_0_0_0_1px_var(--color-line-strong)] sm:inline-grid sm:grid-cols-2" onKeyDown={onKey}>
+      <div
+        role="tablist"
+        aria-label="Ihr Weg zum Partner"
+        className="grid grid-cols-1 shadow-[inset_0_0_0_1px_var(--color-line-strong)] sm:inline-grid sm:grid-cols-2"
+        onKeyDown={onKey}
+      >
         {ORDER.map((id, i) => {
           const on = id === way
           return (
@@ -34,7 +39,10 @@ export function WaysToggle({ way, onChange, onApply }: { way: PartnerWay; onChan
               aria-controls={`${uid}-panel`}
               tabIndex={on ? 0 : -1}
               onClick={() => onChange(id)}
-              className={cn('flex items-baseline gap-4 px-5 py-4 text-left text-[1.0625rem] transition-colors duration-300', on ? 'bg-ink text-paper' : 'text-ink hover:bg-surface')}
+              className={cn(
+                'flex items-baseline gap-4 px-5 py-4 text-left text-[1.0625rem] transition-colors duration-300',
+                on ? 'bg-ink text-paper' : 'text-ink hover:bg-surface',
+              )}
             >
               <span className={cn('font-mono text-[0.75rem]', on ? 'text-paper/70' : 'text-muted')}>{String(i + 1).padStart(2, '0')}</span>
               {partnerWays[id].label}

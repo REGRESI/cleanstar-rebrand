@@ -158,22 +158,30 @@ export function FloorPlan() {
       <div className="lg:col-span-5">
         <div className="lg:sticky lg:top-28" aria-live="polite">
           <AnimatePresence mode="wait" initial={false}>
-            <motion.div key={zone.id + interval} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.3, ease: EASE_CS_ARRAY }}>
+            <motion.div
+              key={zone.id + interval}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3, ease: EASE_CS_ARRAY }}
+            >
               <p className="t-label">Leistungen im Bereich</p>
               <h3 className="t-h3 mt-3">{zone.name}</h3>
               <ul className="mt-6 border-t border-line">
                 {zone.tasks.map((t) => (
                   <li key={t.task} className="grid grid-cols-1 gap-x-4 gap-y-1 border-b border-line py-3 min-[400px]:grid-cols-[minmax(0,1fr)_auto]">
                     <span className="text-ink">{t.task}</span>
-                    <span className={cn('font-mono text-[0.8125rem] whitespace-nowrap min-[400px]:pt-0.5 min-[400px]:text-right', freqCls[t.freq])}>{freqLabel(t.freq, interval)}</span>
+                    <span className={cn('font-mono text-[0.8125rem] whitespace-nowrap min-[400px]:pt-0.5 min-[400px]:text-right', freqCls[t.freq])}>
+                      {freqLabel(t.freq, interval)}
+                    </span>
                   </li>
                 ))}
               </ul>
             </motion.div>
           </AnimatePresence>
           <p className="mt-8 text-[0.9375rem] text-ink-2">
-            <span className="font-medium text-ink">Dieses Leistungsverzeichnis bekommen Sie für Ihr Objekt schriftlich.</span> Das hier ist unser Standard. Nach der Besichtigung passen wir es
-            Raum für Raum an.
+            <span className="font-medium text-ink">Dieses Leistungsverzeichnis bekommen Sie für Ihr Objekt schriftlich.</span> Das hier ist unser Standard. Nach der Besichtigung
+            passen wir es Raum für Raum an.
           </p>
         </div>
       </div>

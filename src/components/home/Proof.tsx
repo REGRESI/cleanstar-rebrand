@@ -12,7 +12,13 @@ export function Proof({ index }: { index?: string }) {
   return (
     <section className="section" aria-labelledby="proof-title">
       <div className="container-site">
-        <SectionHeading layout="rail" index={index} eyebrow={home.proof.eyebrow} title={proof.objects.length ? home.proof.headlineObjects : home.proof.headlineQuotes} id="proof-title" />
+        <SectionHeading
+          layout="rail"
+          index={index}
+          eyebrow={home.proof.eyebrow}
+          title={proof.objects.length ? home.proof.headlineObjects : home.proof.headlineQuotes}
+          id="proof-title"
+        />
 
         {proof.objects.length > 0 && (
           <div className="mt-16 lg:mt-24">

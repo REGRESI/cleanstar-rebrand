@@ -36,11 +36,7 @@ export const useCallbackRequest = () => useContext(CallbackCtx)
 export function CallbackButton({ className, dark, label = 'Rückruf anfordern' }: { className?: string; dark?: boolean; label?: string }) {
   const { open } = useCallbackRequest()
   return (
-    <button
-      type="button"
-      onClick={open}
-      className={cn('tlink text-[0.9375rem]', dark ? 'text-paper' : 'text-ink', className)}
-    >
+    <button type="button" onClick={open} className={cn('tlink text-[0.9375rem]', dark ? 'text-paper' : 'text-ink', className)}>
       {label}
       <ArrowRight aria-hidden className="size-4" strokeWidth={1.75} />
     </button>

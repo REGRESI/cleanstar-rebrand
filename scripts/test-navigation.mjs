@@ -134,7 +134,9 @@ async function runDevice(browser, label, opts) {
         // Logo auf der Startseite selbst scrollt bewusst weich nach oben: dort zählt nur die Endposition
         const smooth = norm(l.href) === norm(src)
         if (!okUrl || (!smooth && y1 > TOL) || y2 > TOL) {
-          failures.push(`${label}: ${src} → [${l.area}] „${l.text}“ (${l.href}) | vorher ${Math.round(from)} px, danach ${Math.round(y1)} / ${Math.round(y2)} px${okUrl ? '' : ', gelandet auf ' + at}`)
+          failures.push(
+            `${label}: ${src} → [${l.area}] „${l.text}“ (${l.href}) | vorher ${Math.round(from)} px, danach ${Math.round(y1)} / ${Math.round(y2)} px${okUrl ? '' : ', gelandet auf ' + at}`,
+          )
         }
       }
     }
@@ -168,7 +170,9 @@ async function runDevice(browser, label, opts) {
     tests++
     const back = Math.abs(b2 - before) <= 40 && Math.abs(b1 - before) <= 40
     if (t1 > TOL || !back || f1 > TOL || f2 > TOL) {
-      failures.push(`${label}: Zurück/Vor ${a} ↔ ${href} | Position vorher ${Math.round(before)}, nach Klick ${Math.round(t1)}, nach Zurück ${Math.round(b1)}/${Math.round(b2)}, nach Vor ${Math.round(f1)}/${Math.round(f2)}`)
+      failures.push(
+        `${label}: Zurück/Vor ${a} ↔ ${href} | Position vorher ${Math.round(before)}, nach Klick ${Math.round(t1)}, nach Zurück ${Math.round(b1)}/${Math.round(b2)}, nach Vor ${Math.round(f1)}/${Math.round(f2)}`,
+      )
     }
   }
   await ctx.close()

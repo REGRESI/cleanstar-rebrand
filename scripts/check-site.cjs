@@ -97,7 +97,16 @@ fs.mkdirSync('site-check', { recursive: true })
   ok(!/Disallow:\s*\/favicon/i.test(robots), 'favicon.ico in robots.txt nicht gesperrt')
   for (const f of ['/favicon.svg', '/favicon-48.png', '/favicon-96.png', '/favicon-192.png', '/favicon-512.png', '/apple-touch-icon.png', '/site.webmanifest'])
     ok((await fetch(B + f)).ok, `${f} erreichbar`)
-  for (const path of ['/ratgeber/', '/ratgeber/bueroreinigung-kosten/', '/bueroreinigung/offenburg/', '/einzugsgebiet/wolfach/', '/fakten/', '/angebote-vergleichen/', '/wechsel-rechner/', '/reinigungsfirma-kalkulieren/']) {
+  for (const path of [
+    '/ratgeber/',
+    '/ratgeber/bueroreinigung-kosten/',
+    '/bueroreinigung/offenburg/',
+    '/einzugsgebiet/wolfach/',
+    '/fakten/',
+    '/angebote-vergleichen/',
+    '/wechsel-rechner/',
+    '/reinigungsfirma-kalkulieren/',
+  ]) {
     const html = await (await fetch(B + path)).text()
     ok(/<h1[\s>]/.test(html) && /application\/ld\+json/.test(html) && /<meta[^>]*name="description"/.test(html), `Vorgerendert mit H1, Description und JSON-LD: ${path}`)
   }
@@ -108,7 +117,9 @@ fs.mkdirSync('site-check', { recursive: true })
       try {
         const r = await fetch(apex, { redirect: 'manual' })
         const loc = r.headers.get('location') || ''
-        console.log(`${r.status >= 300 && r.status < 400 && loc.startsWith('https://www.cleanstar-dienstleistungen.de') ? 'PASS' : 'HINWEIS'} Weiterleitung ${apex} → ${r.status} ${loc}`)
+        console.log(
+          `${r.status >= 300 && r.status < 400 && loc.startsWith('https://www.cleanstar-dienstleistungen.de') ? 'PASS' : 'HINWEIS'} Weiterleitung ${apex} → ${r.status} ${loc}`,
+        )
       } catch (e) {
         console.log(`HINWEIS Weiterleitung ${apex} nicht erreichbar: ${e.cause?.code || e.message}`)
       }

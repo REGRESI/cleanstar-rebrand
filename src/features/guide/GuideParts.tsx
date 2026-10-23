@@ -25,7 +25,8 @@ export function GuideMeta({ g, author }: { g: Guide; author: Person }) {
         </span>
       </span>
       <span className="t-label">
-        <time dateTime={g.modified}>{formatDate(g.modified)}</time> · {readingMinutes(g)}{'\u00A0'}Min. Lesezeit
+        <time dateTime={g.modified}>{formatDate(g.modified)}</time> · {readingMinutes(g)}
+        {'\u00A0'}Min. Lesezeit
       </span>
     </div>
   )
@@ -151,12 +152,17 @@ export function GuideCard({ g }: { g: Guide }) {
   return (
     <Link to={`/ratgeber/${g.slug}`} className="group grid h-full grid-cols-[1fr_auto] gap-x-6 border-t border-line pt-6 pb-8">
       <span className="t-label col-span-2">
-        {g.category === 'gruender' ? 'Für Gründer' : 'Für Unternehmen'} · {readingMinutes(g)}{'\u00A0'}Min.
+        {g.category === 'gruender' ? 'Für Gründer' : 'Für Unternehmen'} · {readingMinutes(g)}
+        {'\u00A0'}Min.
       </span>
       <span className="mt-4 text-[1.375rem] leading-[1.2] font-medium tracking-[-0.02em] text-ink sm:text-[1.5rem]">
         <span className="ulink">{g.title}</span>
       </span>
-      <ArrowUpRight aria-hidden className="mt-5 size-5 shrink-0 transition-transform duration-500 ease-cs group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.5} />
+      <ArrowUpRight
+        aria-hidden
+        className="mt-5 size-5 shrink-0 transition-transform duration-500 ease-cs group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+        strokeWidth={1.5}
+      />
       <span className="col-span-2 mt-3 line-clamp-3 text-ink-2">{g.answer}</span>
     </Link>
   )

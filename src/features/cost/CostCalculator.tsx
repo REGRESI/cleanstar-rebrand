@@ -143,7 +143,13 @@ export function CostCalculator() {
           </button>
           <AnimatePresence initial={false}>
             {showAssumptions && (
-              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.45, ease: EASE_CS_ARRAY }} className="overflow-hidden">
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.45, ease: EASE_CS_ARRAY }}
+                className="overflow-hidden"
+              >
                 <div className="grid grid-cols-1 gap-x-5 gap-y-6 pt-6 min-[400px]:grid-cols-2">
                   <Num label="Abgaben Minijob" value={a.employerChargesMinijob} onChange={set('employerChargesMinijob')} unit="%" max={60} />
                   <Num label="Arbeitgeberanteil SV" value={a.employerChargesRegular} onChange={set('employerChargesRegular')} unit="%" max={60} />
@@ -197,8 +203,18 @@ export function CostCalculator() {
                 </span>
               </div>
               <div className="relative mt-3 h-1.5 bg-surface">
-                <motion.div className="absolute inset-y-0 left-0 bg-blue/30" initial={false} animate={{ width: `${(calc.csMax / scale) * 100}%` }} transition={{ duration: 0.6, ease: EASE_CS_ARRAY }} />
-                <motion.div className="absolute inset-y-0 left-0 bg-blue" initial={false} animate={{ width: `${(calc.csMin / scale) * 100}%` }} transition={{ duration: 0.6, ease: EASE_CS_ARRAY }} />
+                <motion.div
+                  className="absolute inset-y-0 left-0 bg-blue/30"
+                  initial={false}
+                  animate={{ width: `${(calc.csMax / scale) * 100}%` }}
+                  transition={{ duration: 0.6, ease: EASE_CS_ARRAY }}
+                />
+                <motion.div
+                  className="absolute inset-y-0 left-0 bg-blue"
+                  initial={false}
+                  animate={{ width: `${(calc.csMin / scale) * 100}%` }}
+                  transition={{ duration: 0.6, ease: EASE_CS_ARRAY }}
+                />
               </div>
               <p className="mt-2 font-mono text-[0.75rem] text-muted">
                 {pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Mitarbeiterstunde (

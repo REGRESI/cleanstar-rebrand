@@ -129,7 +129,13 @@ export default function Styleguide() {
         </Block>
 
         <Block n="05" title="Abschnittsüberschrift">
-          <SectionHeading layout="split" index="01" eyebrow="Leistungen" title="Wir reinigen Büros. Und zwar richtig." text="Label in Monospace, Überschrift über 7 Spalten, Text versetzt rechts." />
+          <SectionHeading
+            layout="split"
+            index="01"
+            eyebrow="Leistungen"
+            title="Wir reinigen Büros. Und zwar richtig."
+            text="Label in Monospace, Überschrift über 7 Spalten, Text versetzt rechts."
+          />
         </Block>
 
         <Block n="06" title="Editoriale Zeilen statt Karten">
