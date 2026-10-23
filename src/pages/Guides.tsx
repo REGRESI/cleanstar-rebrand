@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, Calculator, ClipboardCheck, Scale, CalendarClock } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
+import { SectionHeading } from '@/components/ui/SectionHeading'
 import { guideCategories, guides } from '@/content/ratgeber'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
@@ -14,10 +15,10 @@ const trail = [
 ]
 
 const tools = [
-  { to: '/angebote-vergleichen', icon: Scale, title: 'Angebots-Vergleich', text: 'Bis zu drei Angebote auf einheitliche Werte umrechnen.' },
-  { to: '/wechsel-rechner', icon: CalendarClock, title: 'Wechsel-Rechner', text: 'Kündigungstermin und frühesten Wechsel berechnen.' },
-  { to: '/reinigungsfirma-kalkulieren', icon: Calculator, title: 'Kalkulationsrechner für Gründer', text: 'Nötigen Stundensatz und Deckungsbeitrag berechnen.' },
-  { to: '/reinigungs-check', icon: ClipboardCheck, title: 'Reinigungs-Check', text: 'Wie gut ist Ihre aktuelle Reinigung? Zwei Minuten.' },
+  { to: '/angebote-vergleichen', title: 'Angebots-Vergleich', text: 'Bis zu drei Angebote auf einheitliche Werte umrechnen.' },
+  { to: '/wechsel-rechner', title: 'Wechsel-Rechner', text: 'Kündigungstermin und frühesten Wechsel berechnen.' },
+  { to: '/reinigungsfirma-kalkulieren', title: 'Kalkulationsrechner für Gründer', text: 'Nötigen Stundensatz und Deckungsbeitrag berechnen.' },
+  { to: '/reinigungs-check', title: 'Reinigungs-Check', text: 'Wie gut ist Ihre aktuelle Reinigung? Zwei Minuten.' },
 ]
 
 export default function Guides() {
@@ -46,20 +47,15 @@ export default function Guides() {
         lead="Was kostet Büroreinigung, was gehört ins Leistungsverzeichnis, wie wechseln Sie ohne Lücke, und wie gründen Sie eine Reinigungsfirma? Unsere Artikel geben klare Antworten, mit Rechenwegen und Quellen."
       />
 
-      {guideCategories.map((c) => (
-        <section key={c.id} id={c.id} aria-labelledby={`cat-${c.id}`} className="scroll-mt-24 py-16 sm:py-20">
+      {guideCategories.map((c, ci) => (
+        <section key={c.id} id={c.id} aria-labelledby={`cat-${c.id}`} className="section scroll-mt-24 pt-0!">
           <div className="container-site">
-            <div className="max-w-3xl">
-              <h2 id={`cat-${c.id}`} className="heading-2">
-                {c.label}
-              </h2>
-              <p className="lead mt-4">{c.text}</p>
-            </div>
-            <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <SectionHeading layout="rail" index={String(ci + 1).padStart(2, '0')} eyebrow={c.id === 'gruender' ? 'Für Gründer' : 'Für Unternehmen'} title={c.label} text={c.text} id={`cat-${c.id}`} />
+            <ul className="mt-14 grid grid-cols-1 gap-x-8 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3">
               {guides
                 .filter((g) => g.category === c.id)
                 .map((g) => (
-                  <li key={g.slug}>
+                  <li key={g.slug} data-reveal>
                     <GuideCard g={g} />
                   </li>
                 ))}
@@ -68,22 +64,19 @@ export default function Guides() {
         </section>
       ))}
 
-      <section aria-labelledby="tools-title" className="bg-glacier py-20 sm:py-24">
+      <section aria-labelledby="tools-title" className="on-dark section bg-night text-paper">
         <div className="container-site">
-          <h2 id="tools-title" className="heading-2">
-            Rechner und{'\u00A0'}Werkzeuge
-          </h2>
-          <p className="lead mt-4 max-w-2xl">Kostenlos, ohne Anmeldung. Ihre Eingaben bleiben in Ihrem Browser.</p>
-          <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {tools.map((t) => (
-              <li key={t.to}>
-                <Link to={t.to} className="group flex h-full flex-col rounded-card bg-white p-6 ring-1 ring-line transition hover:shadow-soft hover:ring-blue/30 active:ring-blue">
-                  <span className="grid size-11 place-items-center rounded-xl bg-glacier text-blue">
-                    <t.icon aria-hidden className="size-5" />
+          <SectionHeading layout="rail" index={String(guideCategories.length + 1).padStart(2, '0')} eyebrow="Werkzeuge" title={'Rechner und\u00A0Werkzeuge'} text="Kostenlos, ohne Anmeldung. Ihre Eingaben bleiben in Ihrem Browser." id="tools-title" />
+          <ul className="mt-14 border-b border-line-dark lg:mt-20">
+            {tools.map((t, i) => (
+              <li key={t.to} className="border-t border-line-dark">
+                <Link to={t.to} className="group grid grid-cols-[2.75rem_1fr_auto] items-baseline gap-x-4 py-6 lg:grid-cols-12 lg:gap-x-8" data-reveal>
+                  <span className="t-label lg:col-span-3">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="min-w-0 lg:col-span-8">
+                    <span className="ulink text-[1.5rem] font-medium tracking-[-0.02em]">{t.title}</span>
+                    <span className="mt-1 block text-muted-dark">{t.text}</span>
                   </span>
-                  <span className="mt-4 font-semibold tracking-tight text-ink">{t.title}</span>
-                  <span className="mt-1 flex-1 text-sm text-muted">{t.text}</span>
-                  <ArrowUpRight aria-hidden className="mt-4 size-4 text-blue" />
+                  <ArrowUpRight aria-hidden className="size-5 self-center transition-transform duration-500 ease-cs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 lg:col-span-1 lg:justify-self-end" strokeWidth={1.5} />
                 </Link>
               </li>
             ))}

@@ -1,6 +1,5 @@
 import { Fragment, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { Lightbulb } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { noOrphan } from '@/lib/format'
 
@@ -41,13 +40,13 @@ function inline(text: string): ReactNode[] {
     if (m.index > last) out.push(text.slice(last, m.index))
     if (m[1])
       out.push(
-        <strong key={i++} className="font-semibold text-ink">
+        <strong key={i++} className="font-medium text-ink">
           {m[1]}
         </strong>,
       )
     else {
       const href = m[3]
-      const cls = 'font-medium text-blue-hover underline decoration-blue/30 underline-offset-4 hover:decoration-blue'
+      const cls = 'link'
       out.push(
         href.startsWith('/') ? (
           <Link key={i++} to={href} className={cls}>
@@ -76,24 +75,24 @@ export function Markdown({ source }: { source: string }) {
         if (b.startsWith('## ')) {
           const t = b.slice(3).trim()
           return (
-            <h2 key={bi} id={slugify(t)} className="mt-14 scroll-mt-28 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+            <h2 key={bi} id={slugify(t)} className="t-h3 mt-16 scroll-mt-28 text-ink">
               {noOrphan(t, 20)}
             </h2>
           )
         }
         if (b.startsWith('### ')) {
           return (
-            <h3 key={bi} className="mt-10 text-xl font-semibold tracking-tight text-ink">
+            <h3 key={bi} className="t-h4 mt-10 text-ink">
               {noOrphan(b.slice(4).trim(), 24)}
             </h3>
           )
         }
         if (lines.every((l) => l.startsWith('- '))) {
           return (
-            <ul key={bi} className="mt-5 space-y-2.5 pl-1">
+            <ul key={bi} className="mt-5 space-y-2.5">
               {lines.map((l, i) => (
                 <li key={i} className="flex gap-3">
-                  <span aria-hidden className="mt-[0.7em] size-1.5 shrink-0 rounded-full bg-blue" />
+                  <span aria-hidden className="mt-[0.7em] size-1 shrink-0 bg-ink" />
                   <span className="min-w-0">{inline(l.slice(2))}</span>
                 </li>
               ))}
@@ -102,13 +101,13 @@ export function Markdown({ source }: { source: string }) {
         }
         if (lines.every((l) => /^\d+\. /.test(l))) {
           return (
-            <ol key={bi} className="mt-5 space-y-3">
+            <ol key={bi} className="mt-5 border-t border-line">
               {lines.map((l, i) => (
-                <li key={i} className="flex gap-3">
-                  <span aria-hidden className="grid size-7 shrink-0 place-items-center rounded-full bg-glacier text-sm font-semibold text-blue-hover tabular-nums">
+                <li key={i} className="flex gap-4 border-b border-line py-3">
+                  <span aria-hidden className="w-6 shrink-0 pt-1 font-mono text-[0.75rem] text-muted tabular-nums">
                     {i + 1}
                   </span>
-                  <span className="min-w-0 pt-0.5">{inline(l.replace(/^\d+\. /, ''))}</span>
+                  <span className="min-w-0">{inline(l.replace(/^\d+\. /, ''))}</span>
                 </li>
               ))}
             </ol>
@@ -125,22 +124,22 @@ export function Markdown({ source }: { source: string }) {
           return (
             <Fragment key={bi}>
               {/* Ab 640 px: Tabelle */}
-              <div className="mt-6 hidden overflow-x-auto rounded-2xl ring-1 ring-line sm:block" tabIndex={0} role="region" aria-label={head.filter(Boolean).join(', ')}>
+              <div className="mt-8 hidden overflow-x-auto border-y border-line sm:block" tabIndex={0} role="region" aria-label={head.filter(Boolean).join(', ')}>
                 <table className="w-full text-left text-[0.9375rem]">
-                  <thead className="bg-glacier">
+                  <thead className="border-b border-line">
                     <tr>
                       {head.map((c, i) => (
-                        <th key={i} scope="col" className="px-4 py-3 font-semibold text-ink">
+                        <th key={i} scope="col" className="py-3 pr-4 font-mono text-[0.75rem] font-normal text-muted">
                           {inline(c)}
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-line bg-white">
+                  <tbody className="divide-y divide-line">
                     {body.map((r, ri) => (
                       <tr key={ri}>
                         {r.map((c, ci) => (
-                          <td key={ci} className={cn('px-4 py-3 align-top', ci > 0 && numeric(c) && 'whitespace-nowrap')}>
+                          <td key={ci} className={cn('py-3 pr-4 align-top', ci > 0 && numeric(c) && 'whitespace-nowrap tabular-nums')}>
                             {inline(c)}
                           </td>
                         ))}
@@ -150,16 +149,16 @@ export function Markdown({ source }: { source: string }) {
                 </table>
               </div>
               {/* Unter 640 px: jede Zeile als Karte, Beschriftung links, Wert rechts */}
-              <ul className="mt-6 space-y-3 sm:hidden">
+              <ul className="mt-6 border-t border-line sm:hidden">
                 {body.map((r, ri) => (
-                  <li key={ri} className="rounded-2xl bg-white p-4 ring-1 ring-line">
-                    <p className="font-semibold text-ink">{inline(r[0])}</p>
+                  <li key={ri} className="border-b border-line py-4">
+                    <p className="font-medium text-ink">{inline(r[0])}</p>
                     <dl className="mt-2 divide-y divide-line text-[0.9375rem]">
                       {r.slice(1).map((c, ci) =>
                         c ? (
                           <div key={ci} className="flex items-baseline justify-between gap-4 py-2">
-                            <dt className="text-muted">{inline(head[ci + 1] || '')}</dt>
-                            <dd className={cn('text-right font-medium text-ink', numeric(c) && 'whitespace-nowrap')}>{inline(c)}</dd>
+                            <dt className="font-mono text-[0.75rem] text-muted">{inline(head[ci + 1] || '')}</dt>
+                            <dd className={cn('text-right text-ink', numeric(c) && 'whitespace-nowrap tabular-nums')}>{inline(c)}</dd>
                           </div>
                         ) : null,
                       )}
@@ -172,9 +171,9 @@ export function Markdown({ source }: { source: string }) {
         }
         if (lines.every((l) => l.startsWith('>'))) {
           return (
-            <aside key={bi} className="mt-6 flex gap-3 rounded-2xl bg-blue-soft/40 p-5 ring-1 ring-blue/15">
-              <Lightbulb aria-hidden className="mt-0.5 size-5 shrink-0 text-blue-hover" />
-              <p>{inline(lines.map((l) => l.replace(/^>\s?/, '')).join(' '))}</p>
+            <aside key={bi} className="mt-8 border-y border-line py-5">
+              <p className="t-label">Hinweis</p>
+              <p className="mt-2 text-[1.1875rem] leading-[1.5] tracking-[-0.01em]">{inline(lines.map((l) => l.replace(/^>\s?/, '')).join(' '))}</p>
             </aside>
           )
         }

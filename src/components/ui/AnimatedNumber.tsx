@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { animate } from 'framer-motion'
 import { prefersReducedMotion } from '@/lib/env'
+import { EASE_CS_ARRAY } from '@/lib/ease'
 
 /** Zahl, die weich zum neuen Wert animiert (z. B. Preisspanne). */
 export function AnimatedNumber({ value, format }: { value: number; format: (v: number) => string }) {
@@ -16,7 +17,7 @@ export function AnimatedNumber({ value, format }: { value: number; format: (v: n
     }
     const controls = animate(prev.current, value, {
       duration: 0.6,
-      ease: [0.16, 1, 0.3, 1],
+      ease: EASE_CS_ARRAY,
       onUpdate: (v) => (el.textContent = format(v)),
     })
     prev.current = value

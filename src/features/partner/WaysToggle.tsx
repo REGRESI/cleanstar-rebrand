@@ -1,14 +1,14 @@
 import { useId, type KeyboardEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, Building2, Check, Rocket } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { partnerWays, type PartnerWay } from '@/content/partner'
 import { Picture } from '@/components/ui/Picture'
 import { cn } from '@/lib/cn'
+import { EASE_CS_ARRAY } from '@/lib/ease'
 
 const ORDER: PartnerWay[] = ['bestand', 'gruendung']
-const ICON = { bestand: Building2, gruendung: Rocket }
 
-/** Umschalter zwischen den zwei Wegen. Die Auswahl wird an das Bewerbungsformular weitergegeben. */
+/** Umschalter zwischen den zwei Wegen (rechteckige Segmente). Die Auswahl wird an das Bewerbungsformular weitergegeben. */
 export function WaysToggle({ way, onChange, onApply }: { way: PartnerWay; onChange: (w: PartnerWay) => void; onApply: () => void }) {
   const uid = useId()
   const w = partnerWays[way]
@@ -21,9 +21,8 @@ export function WaysToggle({ way, onChange, onApply }: { way: PartnerWay; onChan
   }
   return (
     <div>
-      <div role="tablist" aria-label="Ihr Weg zum Partner" className="grid grid-cols-1 gap-2 rounded-[1.75rem] bg-glacier p-1.5 sm:inline-grid sm:grid-cols-2" onKeyDown={onKey}>
-        {ORDER.map((id) => {
-          const I = ICON[id]
+      <div role="tablist" aria-label="Ihr Weg zum Partner" className="grid grid-cols-1 shadow-[inset_0_0_0_1px_var(--color-line-strong)] sm:inline-grid sm:grid-cols-2" onKeyDown={onKey}>
+        {ORDER.map((id, i) => {
           const on = id === way
           return (
             <button
@@ -35,52 +34,42 @@ export function WaysToggle({ way, onChange, onApply }: { way: PartnerWay; onChan
               aria-controls={`${uid}-panel`}
               tabIndex={on ? 0 : -1}
               onClick={() => onChange(id)}
-              className={cn(
-                'relative flex items-center gap-3 rounded-[1.4rem] px-5 py-4 text-left text-[0.9375rem] font-semibold transition-colors',
-                on ? 'text-white' : 'text-ink hover:bg-white/70',
-              )}
+              className={cn('flex items-baseline gap-4 px-5 py-4 text-left text-[1.0625rem] transition-colors duration-300', on ? 'bg-ink text-paper' : 'text-ink hover:bg-surface')}
             >
-              {on && (
-                <motion.span layoutId={`${uid}-pill`} className="absolute inset-0 -z-0 rounded-[1.4rem] bg-ink" transition={{ type: 'spring', stiffness: 380, damping: 34 }} />
-              )}
-              <I aria-hidden className={cn('relative size-5', on ? 'text-fresh' : 'text-blue')} />
-              <span className="relative">{partnerWays[id].label}</span>
+              <span className={cn('font-mono text-[0.75rem]', on ? 'text-paper/70' : 'text-muted')}>{String(i + 1).padStart(2, '0')}</span>
+              {partnerWays[id].label}
             </button>
           )
         })}
       </div>
 
-      <div id={`${uid}-panel`} role="tabpanel" aria-labelledby={`${uid}-tab-${way}`} className="mt-10">
+      <div id={`${uid}-panel`} role="tabpanel" aria-labelledby={`${uid}-tab-${way}`} className="mt-12">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={way}
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.45, ease: EASE_CS_ARRAY }}
+            className="grid-site gap-y-10 lg:items-end"
           >
-            <Picture id={w.image} sizes="(min-width:1024px) 45vw, 100vw" />
-            <div>
-              <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">{w.headline}</h3>
-              <p className="mt-4 text-lg leading-relaxed text-muted">{w.text}</p>
-              <ul className="mt-6 space-y-3">
-                {w.benefits.map((b) => (
-                  <li key={b} className="flex items-start gap-3">
-                    <span aria-hidden className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-fresh/15 text-fresh-ink">
-                      <Check className="size-3.5" strokeWidth={3} />
-                    </span>
-                    <span className="font-medium">{b}</span>
+            <div className="col-span-12 lg:col-span-5">
+              <Picture id={w.image} ratio="4:5" sizes="(min-width:1024px) 40vw, 100vw" />
+            </div>
+            <div className="col-span-12 lg:col-span-6 lg:col-start-7">
+              <h3 className="t-h3">{w.headline}</h3>
+              <p className="t-lead mt-5">{w.text}</p>
+              <ol className="mt-8 border-t border-line">
+                {w.benefits.map((b, i) => (
+                  <li key={b} className="flex gap-5 border-b border-line py-3.5">
+                    <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
+                    {b}
                   </li>
                 ))}
-              </ul>
-              <button
-                type="button"
-                onClick={onApply}
-                className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-blue px-6 font-semibold text-white shadow-glow transition hover:bg-blue-hover"
-              >
+              </ol>
+              <button type="button" onClick={onApply} className="btn btn-primary mt-10">
                 Als „{w.short}“ anfragen
-                <ArrowRight aria-hidden className="size-4" />
+                <ArrowRight aria-hidden className="btn-arrow size-4" strokeWidth={1.75} />
               </button>
             </div>
           </motion.div>

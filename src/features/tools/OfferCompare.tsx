@@ -208,14 +208,14 @@ export function OfferCompare() {
               {SERVICES.map((s) => {
                 const on = o.services.includes(s)
                 return (
-                  <label key={s} className="choice cursor-pointer">
+                  <label key={s} className="block cursor-pointer">
                     <input
                       type="checkbox"
                       checked={on}
                       onChange={() => set({ services: on ? o.services.filter((x) => x !== s) : [...o.services, s] })}
-                      className="size-4 shrink-0 accent-paper"
+                      className="peer sr-only"
                     />
-                    <span className="text-[0.9375rem] leading-snug font-normal">{s}</span>
+                    <span className="choice h-full text-[0.9375rem] leading-snug font-normal">{s}</span>
                   </label>
                 )
               })}

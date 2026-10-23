@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom'
-import { BookOpen } from 'lucide-react'
 import { company } from '@/content/company'
 import { getGuide, guides } from '@/content/ratgeber'
 import { Seo } from '@/components/ui/Seo'
@@ -50,93 +49,100 @@ export default function GuideArticle() {
           ...(g.howTo ? [howToSchema({ name: g.howTo.name, description: g.description, path, steps: g.howTo.steps })] : []),
         ]}
       />
-      <header className="bg-glacier pt-32 pb-12 sm:pt-40 sm:pb-16">
-        <div className="container-site max-w-4xl">
+      <header className="bg-paper pt-28 pb-14 sm:pt-36 lg:pt-44 lg:pb-20">
+        <div className="container-site">
           <Breadcrumbs trail={trail} />
-          <p className="eyebrow mb-5">{g.category === 'gruender' ? 'Ratgeber für Gründer' : 'Ratgeber für Unternehmen'}</p>
-          <h1 className="text-[clamp(1.5rem,7.2vw,2.25rem)] leading-[1.12] font-semibold tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]">{noOrphan(g.title, 22)}</h1>
-          <div className="mt-8">
-            <GuideMeta g={g} author={author} />
+          <div className="grid-site gap-y-10">
+            <div className="col-span-12 lg:col-span-10">
+              <p className="t-label mb-6">{g.category === 'gruender' ? 'Ratgeber für Gründer' : 'Ratgeber für Unternehmen'}</p>
+              <h1 className="t-h1 max-w-[22ch] text-[clamp(2.125rem,1rem+4vw,4.75rem)]">{noOrphan(g.title, 22)}</h1>
+            </div>
+            <div className="col-span-12 border-t border-line pt-6">
+              <GuideMeta g={g} author={author} />
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container-site max-w-4xl py-12 sm:py-16">
-        <p data-answer className="border-l-4 border-blue pl-5 text-lg leading-relaxed font-medium text-ink sm:text-xl">
-          {g.answer}
-        </p>
-
-        <nav aria-labelledby="toc-title" className="mt-10 rounded-card bg-white p-6 ring-1 ring-line sm:p-7">
-          <h2 id="toc-title" className="flex items-center gap-2 text-sm font-semibold tracking-[0.12em] text-muted uppercase">
-            <BookOpen aria-hidden className="size-4" />
-            Inhalt
-          </h2>
-          <ol className="mt-4 grid gap-x-8 gap-y-2 sm:grid-cols-2">
-            {[...toc, { id: 'fragen', text: 'Häufige Fragen' }, { id: 'quellen', text: 'Quellen' }].map((h, i) => (
-              <li key={h.id} className="flex gap-2 text-[0.9375rem]">
-                <span className="w-7 shrink-0 text-right text-muted tabular-nums">{i + 1}.</span>
-                <a href={`#${h.id}`} className="text-ink underline-offset-4 hover:text-blue-hover hover:underline">
-                  {h.text}
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-
-        <article className="text-[1.0625rem] leading-relaxed text-ink/85">
-          <Markdown source={g.body} />
-        </article>
-
-        {g.download && <GuideDownload id={g.download} />}
-
-        <section aria-labelledby="fragen" className="mt-16">
-          <h2 id="fragen" className="scroll-mt-28 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Häufige Fragen
-          </h2>
-          <div className="mt-6">
-            <Accordion items={g.faqs.map((f) => ({ title: f.q, content: f.a }))} />
-          </div>
-        </section>
-
-        <section aria-labelledby="quellen" className="mt-16">
-          <h2 id="quellen" className="scroll-mt-28 text-xl font-semibold tracking-tight">
-            Quellen
-          </h2>
-          <ol className="mt-4 space-y-3 text-sm text-muted">
-            {g.sources.map((s, i) => (
-              <li key={s.url} className="flex gap-3">
-                <span className="w-7 shrink-0 text-right tabular-nums">{i + 1}.</span>
-                <span className="min-w-0 [overflow-wrap:anywhere]">
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="font-medium text-ink underline decoration-line underline-offset-4 hover:text-blue-hover">
-                    {s.title}
+      <div className="container-site grid-site pb-24 lg:pb-36">
+        <aside className="col-span-12 lg:col-span-3">
+          <nav aria-labelledby="toc-title" className="border-t border-line pt-5 lg:sticky lg:top-28">
+            <h2 id="toc-title" className="t-label">
+              Inhalt
+            </h2>
+            <ol className="mt-4 space-y-2 text-[0.9375rem]">
+              {[...toc, { id: 'fragen', text: 'Häufige Fragen' }, { id: 'quellen', text: 'Quellen' }].map((h, i) => (
+                <li key={h.id} className="flex gap-3">
+                  <span className="w-7 shrink-0 font-mono text-[0.75rem] leading-[1.6rem] text-muted tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                  <a href={`#${h.id}`} className="ulink text-ink-2 hover:text-ink">
+                    {h.text}
                   </a>
-                  , {s.publisher}. Stand: {s.stand}.
-                </span>
-              </li>
-            ))}
-          </ol>
-          <p className="mt-6 text-xs leading-relaxed text-muted">
-            Veröffentlicht am {formatDate(g.published)}, zuletzt geprüft am {formatDate(g.modified)}. Dieser Artikel dient der allgemeinen Information und ersetzt keine Rechts-
-            oder Steuerberatung.
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </aside>
+
+        <div className="col-span-12 mt-14 lg:col-span-7 lg:col-start-5 lg:mt-0">
+          <p data-answer className="t-lead measure">
+            {g.answer}
           </p>
-        </section>
 
-        <div className="mt-12 border-t border-line pt-8">
-          <ShareButtons title={g.title} url={url} />
-        </div>
+          <article className="measure mt-4 text-[1.125rem] leading-[1.65] text-ink">
+            <Markdown source={g.body} />
+          </article>
 
-        <div className="mt-14">
-          <GuideCtaBox type={g.cta} />
+          {g.download && <GuideDownload id={g.download} />}
+
+          <section aria-labelledby="fragen" className="mt-20">
+            <h2 id="fragen" className="t-h3 scroll-mt-28">
+              Häufige Fragen
+            </h2>
+            <div className="mt-8">
+              <Accordion items={g.faqs.map((f) => ({ title: f.q, content: f.a }))} />
+            </div>
+          </section>
+
+          <section aria-labelledby="quellen" className="mt-20">
+            <h2 id="quellen" className="t-label scroll-mt-28">
+              Quellen
+            </h2>
+            <ol className="mt-4 border-t border-line text-[0.9375rem]">
+              {g.sources.map((s, i) => (
+                <li key={s.url} className="flex gap-4 border-b border-line py-3">
+                  <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="min-w-0 text-ink-2 [overflow-wrap:anywhere]">
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="link">
+                      {s.title}
+                    </a>
+                    , {s.publisher}. Stand: {s.stand}.
+                  </span>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-6 font-mono text-[0.75rem] leading-relaxed text-muted">
+              Veröffentlicht am {formatDate(g.published)}, zuletzt geprüft am {formatDate(g.modified)}. Dieser Artikel dient der allgemeinen Information und ersetzt keine Rechts-
+              oder Steuerberatung.
+            </p>
+          </section>
+
+          <div className="mt-12 border-t border-line pt-6">
+            <ShareButtons title={g.title} url={url} />
+          </div>
+
+          <div className="mt-16">
+            <GuideCtaBox type={g.cta} />
+          </div>
         </div>
       </div>
 
       {related.length > 0 && (
-        <section aria-labelledby="related-title" className="bg-glacier py-20 sm:py-24">
+        <section aria-labelledby="related-title" className="pb-24 lg:pb-36">
           <div className="container-site">
-            <h2 id="related-title" className="heading-3">
+            <h2 id="related-title" className="t-label">
               Weiterlesen
             </h2>
-            <ul className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <ul className="mt-6 grid grid-cols-1 gap-x-8 md:grid-cols-3">
               {related.map((r) => (
                 <li key={r.slug}>
                   <GuideCard g={r} />

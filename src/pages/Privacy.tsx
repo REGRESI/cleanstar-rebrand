@@ -26,11 +26,11 @@ export default function Privacy() {
         title="Datenschutzerklärung"
         lead="Wir verarbeiten so wenige Daten wie möglich. Diese Website setzt keine Tracking- oder Marketing-Cookies, bindet keine Google Fonts ein und lädt externe Dienste erst nach Ihrer Zustimmung."
       />
-      <section className="py-16 sm:py-24">
-        <div className="container-site">
-          <div className="prose-cs">
+      <section className="pb-24 lg:pb-40">
+        <div className="container-site grid-site">
+          <div className="prose-cs col-span-12 border-t border-line pt-2 lg:col-span-7 lg:col-start-5">
             {company.showTodoMarkers && (
-              <p className="rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200">
+              <p className="todo-flag block p-4">
                 Hinweis für den Betreiber: Diese Datenschutzerklärung ist ein sorgfältig erstellter Entwurf, ersetzt aber keine Rechtsberatung. Gelb markierte Stellen bitte vor dem
                 Livegang prüfen lassen.
               </p>
@@ -138,7 +138,7 @@ export default function Privacy() {
             <h2>11. SSL-/TLS-Verschlüsselung</h2>
             <p>Diese Website nutzt aus Sicherheitsgründen eine TLS-Verschlüsselung. Sie erkennen sie an „https://“ in der Adresszeile.</p>
 
-            <p className="text-sm text-muted">Stand: Oktober 2026</p>
+            <p className="t-label mt-10">Stand: Oktober 2026</p>
           </div>
         </div>
       </section>

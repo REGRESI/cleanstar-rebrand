@@ -65,14 +65,16 @@ export const ChoiceCard = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLI
   ref,
 ) {
   return (
-    <label className={cn('choice cursor-pointer items-start has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blue', className)}>
+    <label className={cn('block cursor-pointer', className)}>
       <input ref={ref} type={type} className="peer sr-only" {...rest} />
-      <span className="min-w-0 flex-1">
-        <span className="block">{label}</span>
-        {description && <span className="mt-0.5 block text-[0.875rem] font-normal opacity-70">{description}</span>}
-      </span>
-      <span aria-hidden className={cn('mt-1 grid size-4 shrink-0 place-items-center border border-current text-transparent peer-checked:text-current', type === 'radio' && 'rounded-full')}>
-        <Check className="size-3" strokeWidth={3} />
+      <span className="choice h-full items-start">
+        <span className="min-w-0 flex-1">
+          <span className="block">{label}</span>
+          {description && <span className="mt-0.5 block text-[0.875rem] font-normal opacity-70">{description}</span>}
+        </span>
+        <span aria-hidden className={cn('mt-1 grid size-4 shrink-0 place-items-center border border-current', type === 'radio' && 'rounded-full')}>
+          <Check className="size-3 opacity-0 [:checked+.choice_&]:opacity-100" strokeWidth={3} />
+        </span>
       </span>
     </label>
   )

@@ -1,10 +1,10 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { Check, MessagesSquare, Phone, FileDown } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { Accordion } from '@/components/ui/Accordion'
+import { FaqBlock } from '@/components/ui/FaqBlock'
+import { NumberedRows } from '@/components/ui/Editorial'
 import { Button } from '@/components/ui/Button'
 import { RevealText } from '@/components/ui/RevealText'
 import { Fact, Todo } from '@/components/ui/Todo'
@@ -56,89 +56,81 @@ export default function Partner() {
         image="partner-hero"
         actions={
           <>
-            <Button href="#bewerbung" size="lg" arrow icon={<MessagesSquare aria-hidden className="size-5" />} onClick={(e) => (e.preventDefault(), toForm())}>
+            <Button href="#bewerbung" size="lg" arrow onClick={(e) => (e.preventDefault(), toForm())}>
               Unverbindliches Erstgespräch
             </Button>
-            <Button href="#infomappe" size="lg" variant="secondary" icon={<FileDown aria-hidden className="size-5 text-blue" />} onClick={(e) => (e.preventDefault(), toInfo())}>
+            <Button href="#infomappe" variant="link" onClick={(e) => (e.preventDefault(), toInfo())}>
               Partner-Infomappe anfordern
             </Button>
           </>
         }
       >
-        <p className="fade-up-now mt-6 text-sm text-muted" style={{ ['--d' as string]: '0.7s' }}>
+        <p className="t-label fade-up-now mt-8" style={{ ['--d' as string]: '0.7s' }}>
           {page.hero.note}
         </p>
       </PageHero>
-      <Answer className="pt-12 sm:pt-16">
+      <Answer className="pt-20 sm:pt-28">
         Das CleanStar-Partnerprogramm richtet sich an Reinigungsfirmen und Gründer in ganz Deutschland, die mit erprobten Abläufen, Vorlagen und Werkzeugen aus unserem Betrieb in
         Offenburg arbeiten möchten. Konditionen klären wir im persönlichen Gespräch.
       </Answer>
 
       <Chunk>
-        <ProblemSolution id="partner-problems" eyebrow={page.problems.eyebrow} headline={page.problems.headline} lead={page.problems.lead} items={page.problems.items} />
+        <ProblemSolution id="partner-problems" index="01" eyebrow={page.problems.eyebrow} headline={page.problems.headline} lead={page.problems.lead} items={page.problems.items} />
       </Chunk>
       <Chunk>
-        <section className="bg-glacier py-24 sm:py-32" aria-labelledby="ways-title">
+        <section className="section pt-0!" aria-labelledby="ways-title">
           <div className="container-site">
             <SectionHeading
+              layout="split"
+              index="02"
               eyebrow="Zwei Wege"
               title="Wo stehen Sie gerade?"
               id="ways-title"
               text="Das Partnerprogramm passt zu zwei Ausgangslagen. Wählen Sie Ihre, wir übernehmen die Auswahl in Ihre Anfrage."
             />
-            <div className="mt-12">
+            <div className="mt-14 lg:mt-20">
               <WaysToggle way={way} onChange={setWay} onApply={toForm} />
             </div>
           </div>
         </section>
       </Chunk>
       <Chunk>
-        <section className="py-24 sm:py-32" aria-labelledby="modules-title">
+        <section className="section pt-0!" aria-labelledby="modules-title">
           <div className="container-site">
             <SectionHeading
+              layout="split"
+              index="03"
               eyebrow="Was Partner bekommen"
               title="Ein Baukasten aus dem, was in Offenburg täglich funktioniert."
               id="modules-title"
               text="Diese Module bilden den Leistungsumfang des Partnerprogramms. Klicken Sie auf ein Modul, um die Inhalte zu sehen. Was genau Sie erhalten, regelt der Partnervertrag."
             />
-            <div className="mt-12">
+            <div className="mt-14 lg:mt-20">
               <ModuleGrid />
             </div>
           </div>
         </section>
       </Chunk>
       <Chunk>
-        <section className="bg-glacier py-24 sm:py-32" aria-labelledby="expect-title">
-          <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-5">
-              <SectionHeading eyebrow={page.expectations.eyebrow} title={page.expectations.headline} id="expect-title" text={page.expectations.lead} />
-            </div>
-            <ul className="grid grid-cols-1 gap-3 lg:col-span-7">
-              {page.expectations.items.map((e) => (
-                <li key={e.title} className="flex gap-4 rounded-card bg-white p-5 ring-1 ring-line sm:p-6" data-reveal>
-                  <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-full bg-ink text-white">
-                    <Check className="size-4" strokeWidth={3} />
-                  </span>
-                  <span>
-                    <span className="block font-semibold">{e.title}</span>
-                    <span className="mt-1 block text-muted">{e.text}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
+        <section className="on-dark section bg-night text-paper" aria-labelledby="expect-title">
+          <div className="container-site">
+            <SectionHeading layout="split" index="04" eyebrow={page.expectations.eyebrow} title={page.expectations.headline} id="expect-title" text={page.expectations.lead} />
+            <NumberedRows className="mt-14 lg:mt-20" dark items={page.expectations.items.map((e) => ({ title: e.title, text: e.text, key: e.title }))} />
           </div>
         </section>
       </Chunk>
       <Chunk>
-        <section className="py-24 sm:py-32" aria-labelledby="regions-title">
+        <section className="section" aria-labelledby="regions-title">
           <div className="container-site">
             <SectionHeading
+              layout="split"
+              index="05"
               eyebrow="Regionen"
               title="Wo wir Partner suchen."
               id="regions-title"
               text="Jede Wabe steht für einen Stadt- oder Landkreis in Baden-Württemberg. Wählen Sie Ihre Region, sie wird direkt in Ihre Anfrage übernommen."
             />
-            <div className="mt-12">
+            <div className="mt-14 lg:mt-20">
               {mounted ? (
                 <Suspense fallback={<div className="min-h-[36rem]" />}>
                   <RegionMap
@@ -156,28 +148,30 @@ export default function Partner() {
         </section>
       </Chunk>
       <Chunk>
-        <ProcessTimeline eyebrow="Ablauf" title="In sieben Schritten zum Partner." steps={partnerSteps} id="partner-process-title" />
+        <ProcessTimeline index="06" eyebrow="Ablauf" title="In sieben Schritten zum Partner." steps={partnerSteps} id="partner-process-title" />
       </Chunk>
       <Chunk>
-        <section className="bg-glacier py-20 sm:py-24" aria-labelledby="conditions-title">
-          <div className="container-site grid grid-cols-1 gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-5">
-              <SectionHeading eyebrow="Konditionen" title="Klare Zahlen. Im Gespräch, nicht im Kleingedruckten." id="conditions-title" />
+        <section className="section pt-0!" aria-labelledby="conditions-title">
+          <div className="container-site grid-site gap-y-10">
+            <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+            <div className="col-span-12 lg:col-span-4">
+              <p className="t-label mb-6">07 / Konditionen</p>
+              <RevealText as="h2" text="Klare Zahlen. Im Gespräch, nicht im Kleingedruckten." id="conditions-title" className="t-h3" />
             </div>
-            <div className="lg:col-span-7" data-reveal>
+            <div className="col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
               {partnerFlags.showConditions ? (
-                <dl className="divide-y divide-line rounded-card bg-white px-6 ring-1 ring-line">
+                <dl className="border-t border-line">
                   {partnerConditions.map((c) => (
-                    <div key={c.label} className="flex items-baseline justify-between gap-6 py-4">
-                      <dt className="text-muted">{c.label}</dt>
-                      <dd className="text-right font-semibold">
+                    <div key={c.label} className="flex items-baseline justify-between gap-6 border-b border-line py-4">
+                      <dt className="text-ink-2">{c.label}</dt>
+                      <dd className="text-right font-medium">
                         <Fact value={c.value} fallback="im Gespräch" todo={`${c.label} in partner.ts eintragen`} />
                       </dd>
                     </div>
                   ))}
                 </dl>
               ) : (
-                <p className="text-lg leading-relaxed text-ink/85">
+                <p className="t-lead">
                   {page.conditionsFallback} Bevor Sie sich entscheiden, erhalten Sie alle Kosten, die Laufzeit und die Regelungen zu Ihrem Gebiet schriftlich und mit ausreichend
                   Zeit zur Prüfung.
                 </p>
@@ -187,55 +181,54 @@ export default function Partner() {
         </section>
       </Chunk>
       <Chunk>
-        <section id="bewerbung" className="scroll-mt-24 py-24 sm:py-32" aria-labelledby="apply-title">
-          <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-4">
+        <section id="bewerbung" className="section scroll-mt-24 pt-0!" aria-labelledby="apply-title">
+          <div className="container-site grid-site gap-y-14">
+            <span aria-hidden data-reveal-rule className="rule col-span-12" />
+            <div className="col-span-12 lg:col-span-4">
               <SectionHeading
+                index="08"
                 eyebrow="Partneranfrage"
                 title="Unverbindlich anfragen."
                 id="apply-title"
+                size="h3"
                 text="Ein paar Angaben zu Ihnen und Ihrer Region. Wir melden uns persönlich und vereinbaren ein Erstgespräch."
               />
-              <ul className="mt-8 space-y-3 text-sm" data-reveal>
-                {['Unverbindlich und kostenlos', 'Persönliche Rückmeldung', 'Verbindlich ist erst ein schriftlicher Partnervertrag'].map((t) => (
-                  <li key={t} className="flex items-center gap-3 font-medium">
-                    <span aria-hidden className="grid size-6 place-items-center rounded-full bg-fresh/15 text-fresh-ink">
-                      <Check className="size-3.5" strokeWidth={3} />
-                    </span>
+              <ol className="mt-10 border-t border-line" data-reveal>
+                {['Unverbindlich und kostenlos', 'Persönliche Rückmeldung', 'Verbindlich ist erst ein schriftlicher Partnervertrag'].map((t, i) => (
+                  <li key={t} className="flex gap-5 border-b border-line py-3.5">
+                    <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
                     {t}
                   </li>
                 ))}
-              </ul>
-              <a href={company.phone.href} className="mt-8 inline-flex items-center gap-3 text-sm text-muted" data-reveal>
-                <Phone aria-hidden className="size-4 text-blue" />
-                Lieber direkt sprechen? <span className="font-semibold text-ink">{company.phone.display}</span>
+              </ol>
+              <a href={company.phone.href} className="ulink mt-8 inline-block text-ink" data-reveal>
+                Lieber direkt sprechen? {company.phone.display}
               </a>
             </div>
-            <div className="lg:col-span-8">
-              <div className="overflow-hidden rounded-panel bg-white shadow-lift ring-1 ring-line">
-                <PartnerForm way={way} region={region} />
-              </div>
+            <div className="col-span-12 lg:col-span-7 lg:col-start-6">
+              <PartnerForm way={way} region={region} />
             </div>
           </div>
         </section>
       </Chunk>
       <Chunk>
-        <section id="infomappe" className="scroll-mt-24 pb-24 sm:pb-32" aria-label="Partner-Infomappe">
+        <section id="infomappe" className="scroll-mt-24 pb-24 lg:pb-40" aria-label="Partner-Infomappe">
           <div className="container-site">
             <InfoPackForm region={region} />
           </div>
         </section>
 
         {partnerFlags.showTestimonials && (
-          <section className="bg-glacier py-24" aria-labelledby="pt-title">
+          <section className="section pt-0!" aria-labelledby="pt-title">
             <div className="container-site">
-              <SectionHeading eyebrow="Partnerstimmen" title="Was Partner sagen." id="pt-title" />
-              <ul className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
+              <SectionHeading layout="rail" eyebrow="Partnerstimmen" title="Was Partner sagen." id="pt-title" />
+              <ul className="mt-14 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
                 {partnerTestimonials.map((t, i) => (
-                  <li key={i} className="rounded-card bg-white p-8 ring-1 ring-line">
-                    <blockquote className="text-lg">„{t.quote}“</blockquote>
-                    <p className="mt-6 text-sm font-semibold">{t.name}</p>
-                    <p className="text-sm text-muted">{t.role}</p>
+                  <li key={i} className="border-t border-line pt-6">
+                    <blockquote className="t-h4">„{t.quote}“</blockquote>
+                    <p className="t-label mt-6">
+                      {t.name}, {t.role}
+                    </p>
                   </li>
                 ))}
               </ul>
@@ -244,57 +237,49 @@ export default function Partner() {
         )}
       </Chunk>
       <Chunk>
-        <section className="bg-glacier py-24 sm:py-32" aria-labelledby="pfaq-title">
-          <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-4">
-              <SectionHeading eyebrow="Partner-FAQ" title="Ehrliche Antworten auf die wichtigsten Fragen." id="pfaq-title" />
-            </div>
-            <div className="lg:col-span-8" data-reveal>
-              <Accordion
-                items={partnerFaqs.map((f) => ({
-                  title: f.q,
-                  content: (
-                    <>
-                      {f.a}
-                      {f.todo && <Todo title={f.todo}>{f.todo}</Todo>}
-                    </>
-                  ),
-                }))}
-              />
-            </div>
-          </div>
-        </section>
+        <FaqBlock
+          className="section pt-0!"
+          label="Partner-FAQ"
+          title="Ehrliche Antworten auf die wichtigsten Fragen."
+          id="pfaq-title"
+          items={partnerFaqs.map((f) => ({
+            title: f.q,
+            content: (
+              <>
+                {f.a}
+                {f.todo && <Todo title={f.todo}>{f.todo}</Todo>}
+              </>
+            ),
+          }))}
+        />
       </Chunk>
       <Chunk>
-        <section className="on-dark relative overflow-hidden bg-ink py-24 text-white sm:py-32" aria-labelledby="pcta-title">
-          <div aria-hidden className="absolute -bottom-40 -left-20 size-[36rem] [background:radial-gradient(closest-side,rgb(31_94_255/0.48),transparent)]" />
-          <div className="container-site relative grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-7">
-              <p className="eyebrow mb-5" data-reveal>
+        <section className="on-dark section bg-night text-paper" aria-labelledby="pcta-title">
+          <div className="container-site grid-site gap-y-10 lg:items-end">
+            <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+            <div className="col-span-12 lg:col-span-8">
+              <p className="t-label mb-6" data-reveal>
                 {page.closing.eyebrow}
               </p>
-              <RevealText as="h2" id="pcta-title" text={page.closing.headline} className="heading-1" />
-              <p className="lead mt-6 max-w-xl" data-reveal>
+              <RevealText as="h2" id="pcta-title" text={page.closing.headline} className="t-h1" />
+              <p className="t-lead measure mt-8" data-reveal>
                 {page.closing.text}
               </p>
             </div>
-            <div className="flex flex-col gap-4 lg:col-span-5 lg:items-end" data-reveal>
-              <Button href="#bewerbung" size="lg" variant="light" arrow onClick={(e) => (e.preventDefault(), toForm())}>
+            <div className="col-span-12 flex flex-col gap-6 lg:col-span-4 lg:items-end" data-reveal>
+              <Button href="#bewerbung" size="lg" arrow onClick={(e) => (e.preventDefault(), toForm())}>
                 Zur Partneranfrage
               </Button>
-              <a href={company.phone.href} className="inline-flex items-center gap-3 text-white">
-                <span className="grid size-12 place-items-center rounded-full bg-white/10 ring-1 ring-white/15">
-                  <Phone aria-hidden className="size-5 text-fresh" />
-                </span>
-                <span className="text-2xl font-semibold tracking-tight">{company.phone.display}</span>
+              <a href={company.phone.href} className="ulink text-[1.75rem] font-medium tracking-[-0.03em] text-paper">
+                {company.phone.display}
               </a>
             </div>
           </div>
         </section>
       </Chunk>
       <Chunk>
-        <section aria-label="Rechtlicher Hinweis" className="py-10">
-          <p className="container-site max-w-4xl text-xs leading-relaxed text-muted">
+        <section aria-label="Rechtlicher Hinweis" className="py-12">
+          <p className="container-site measure font-mono text-[0.75rem] leading-relaxed text-muted">
             {page.legalNote}
             <Todo title="Rechtlichen Hinweis anwaltlich prüfen lassen">anwaltlich prüfen</Todo>
           </p>

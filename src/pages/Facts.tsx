@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { InlineLinks } from '@/components/ui/Editorial'
 import { company, fullAddress } from '@/content/company'
 import { locations, shortName } from '@/content/locations'
 import { services } from '@/content/services'
@@ -93,50 +93,45 @@ export default function Facts() {
         title="CleanStar auf einen Blick."
         lead="Alle wichtigen Angaben zu unserem Unternehmen in klaren Sätzen: wer wir sind, was wir machen, wo wir arbeiten, was es kostet und wie Sie uns erreichen."
       />
-      <div className="container-site max-w-4xl py-16 sm:py-20">
-        <p className="text-sm text-muted">
+      <div className="container-site grid-site gap-y-16 pb-24 lg:pb-40">
+        <p className="t-label col-span-12 lg:col-span-3">
           Stand: {new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })}. Diese Seite wird aus denselben Daten erzeugt wie Impressum und Angebote.
         </p>
-        {groups.map((g) => (
-          <section key={g.title} aria-labelledby={`f-${g.title}`} className="mt-12">
-            <h2 id={`f-${g.title}`} className="text-2xl font-semibold tracking-tight">
-              {noOrphan(g.title, 20)}
+        <div className="col-span-12 space-y-16 lg:col-span-8 lg:col-start-5">
+          {groups.map((g, gi) => (
+            <section key={g.title} aria-labelledby={`f-${g.title}`}>
+              <p className="t-label">{String(gi + 1).padStart(2, '0')}</p>
+              <h2 id={`f-${g.title}`} className="t-h3 mt-3">
+                {noOrphan(g.title, 20)}
+              </h2>
+              <ul className="mt-6 border-t border-line">
+                {g.facts.map((f) => (
+                  <li key={f} className="border-b border-line py-4 text-ink">
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+          <nav aria-labelledby="f-links">
+            <h2 id="f-links" className="t-label">
+              Mehr erfahren
             </h2>
-            <ul className="mt-5 divide-y divide-line rounded-card bg-white ring-1 ring-line">
-              {g.facts.map((f) => (
-                <li key={f} className="px-5 py-4 leading-relaxed text-ink sm:px-6">
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
-        <section aria-labelledby="f-links" className="mt-12">
-          <h2 id="f-links" className="text-2xl font-semibold tracking-tight">
-            Mehr erfahren
-          </h2>
-          <ul className="mt-5 flex flex-wrap gap-2.5">
-            {[
-              ['/leistungen', 'Alle Leistungen'],
-              ['/einzugsgebiet', 'Einzugsgebiet mit Karte'],
-              ['/ueber-uns', 'Über uns und die Gründer'],
-              ['/qualitaetsgarantie', 'Qualitätsgarantie'],
-              ['/ablauf', 'Ablauf der Zusammenarbeit'],
-              ['/ratgeber', 'Ratgeber'],
-              ['/kontakt', 'Kontakt'],
-              ['/impressum', 'Impressum'],
-            ].map(([to, label]) => (
-              <li key={to}>
-                <Link
-                  to={to}
-                  className="inline-flex min-h-10 items-center rounded-full bg-white px-4 text-sm font-medium ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft"
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
+            <InlineLinks
+              className="mt-5"
+              items={[
+                ['/leistungen', 'Alle Leistungen'],
+                ['/einzugsgebiet', 'Einzugsgebiet mit Karte'],
+                ['/ueber-uns', 'Über uns und die Gründer'],
+                ['/qualitaetsgarantie', 'Qualitätsgarantie'],
+                ['/ablauf', 'Ablauf der Zusammenarbeit'],
+                ['/ratgeber', 'Ratgeber'],
+                ['/kontakt', 'Kontakt'],
+                ['/impressum', 'Impressum'],
+              ].map(([to, label]) => ({ to, label }))}
+            />
+          </nav>
+        </div>
       </div>
     </>
   )

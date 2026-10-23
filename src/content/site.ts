@@ -129,7 +129,7 @@ export const home = {
     ],
   },
   finalCta: {
-    eyebrow: 'In 60 Sekunden zur Anfrage',
+    eyebrow: 'Der erste Schritt',
     headline: 'Ein Gespräch. Eine Besichtigung. Ein klares Angebot.',
     text: 'Sagen Sie uns kurz, was gereinigt werden soll. Wir melden uns innerhalb von 24 Stunden, sehen uns Ihre Räume kostenlos an und schicken Ihnen in 48 Stunden ein schriftliches Angebot. Und im ersten Monat können Sie jederzeit kündigen.',
   },

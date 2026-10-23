@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Search } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Accordion } from '@/components/ui/Accordion'
@@ -35,33 +34,24 @@ export default function Faq() {
         title="Was Geschäftsführer uns vorher fragen."
         lead="Alles, was Sie vor der Zusammenarbeit wissen möchten. Ihre Frage ist nicht dabei? Rufen Sie uns an oder schreiben Sie uns."
       />
-      <section className="py-20 sm:py-28">
-        <div className="container-site grid grid-cols-1 gap-10 lg:grid-cols-12">
-          <aside className="lg:col-span-3">
-            <div className="space-y-6 lg:sticky lg:top-32">
-              <label className="relative block">
-                <span className="sr-only">Fragen durchsuchen</span>
-                <Search aria-hidden className="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" />
-                <input
-                  type="search"
-                  value={q}
-                  onChange={(e) => setQ(e.target.value)}
-                  placeholder="Suchen …"
-                  className="w-full rounded-full bg-white py-3 pr-4 pl-11 ring-1 ring-line focus:ring-2 focus:ring-blue focus:outline-none"
-                />
+      <section className="pb-24 lg:pb-40">
+        <div className="container-site grid-site gap-y-12">
+          <aside className="col-span-12 lg:col-span-3">
+            <div className="space-y-10 lg:sticky lg:top-28">
+              <label className="block">
+                <span className="t-label mb-1 block">Fragen durchsuchen</span>
+                <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Suchbegriff" className="field" />
               </label>
               <nav aria-label="Kategorien">
-                <ul className="flex flex-wrap gap-2 lg:flex-col">
+                <p className="t-label mb-3">Kategorien</p>
+                <ul className="flex flex-wrap gap-x-6 gap-y-1 lg:flex-col">
                   {(['Alle', ...categories] as const).map((c) => (
                     <li key={c}>
                       <button
                         type="button"
                         aria-pressed={cat === c}
                         onClick={() => setCat(c)}
-                        className={cn(
-                          'rounded-full px-4 py-2 text-sm font-medium transition lg:w-full lg:text-left',
-                          cat === c ? 'bg-ink text-white' : 'bg-glacier text-ink hover:bg-glacier-2',
-                        )}
+                        className={cn('ulink py-1.5 text-left text-[1rem] transition-colors', cat === c ? 'bg-[length:100%_1px] text-ink' : 'text-muted hover:text-ink')}
                       >
                         {c}
                       </button>
@@ -71,9 +61,9 @@ export default function Faq() {
               </nav>
             </div>
           </aside>
-          <div className="lg:col-span-9">
+          <div className="col-span-12 lg:col-span-8 lg:col-start-5">
             {list.length === 0 ? (
-              <p className="text-muted">Keine passende Frage gefunden. Rufen Sie uns gern an.</p>
+              <p className="border-t border-line pt-6 text-ink-2">Keine passende Frage gefunden. Rufen Sie uns gern an.</p>
             ) : (
               <Accordion
                 headingLevel="h2"

@@ -3,7 +3,7 @@ import { useForm, Controller, type Path } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Building, Briefcase, Store, Shapes, ClipboardCheck, Calculator, Eye, Minus, Plus, CheckCircle2, FileDown, Info, Loader2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Minus, Plus, Loader2 } from 'lucide-react'
 import { quoteSchema, defaultQuote, stepFields, stepTitles, objectTypes, specialAreas, intervals, timeSlots, extras, type QuoteData } from './schema'
 import { useQuote } from './QuoteContext'
 import { monthlyRange, perEmployeeDay, pricing, hourlyRateNetMin, hourlyRateNetMax } from '@/content/pricing'
@@ -16,9 +16,9 @@ import { AnimatedNumber } from '@/components/ui/AnimatedNumber'
 import { ChoiceCard, TextField, TextArea, PrivacyCheckbox, Honeypot } from '@/features/forms/fields'
 import { submitForm } from '@/features/forms/submit'
 import { cn } from '@/lib/cn'
+import { EASE_CS_ARRAY } from '@/lib/ease'
 
 const STORAGE = 'cleanstar-angebot'
-const icons = { buero: Building, praxis: Briefcase, gewerbe: Store, sonstiges: Shapes }
 
 function load(): QuoteData {
   try {
@@ -53,18 +53,18 @@ function Stepper({
   const clamp = (v: number) => Math.min(max, Math.max(min, Math.round(v / step) * step))
   return (
     <div>
-      <label htmlFor={id} className="mb-2 block text-sm font-medium text-ink">
+      <label htmlFor={id} className="field-label mb-2">
         {label}
       </label>
-      <div className="flex items-center gap-2 rounded-2xl bg-white p-1.5 ring-1 ring-line">
+      <div className="flex items-center shadow-[inset_0_0_0_1px_var(--color-line-strong)]">
         <button
           type="button"
           aria-label={`${label} verringern`}
           onClick={() => onChange(clamp(value - step))}
-          className="grid size-11 place-items-center rounded-xl bg-glacier text-ink transition hover:bg-glacier-2 disabled:opacity-40"
+          className="grid size-12 place-items-center border-r border-line-strong text-ink transition-colors hover:bg-surface disabled:opacity-40"
           disabled={value <= min}
         >
-          <Minus className="size-4" />
+          <Minus className="size-4" strokeWidth={1.5} />
         </button>
         <div className="flex flex-1 items-baseline justify-center gap-1">
           <input
@@ -76,18 +76,18 @@ function Stepper({
             step={step}
             value={value}
             onChange={(e) => onChange(clamp(Number(e.target.value) || min))}
-            className="w-16 bg-transparent text-center text-xl font-semibold text-ink tabular-nums focus:outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-16 bg-transparent text-center text-[1.375rem] font-medium tracking-[-0.02em] text-ink tabular-nums focus:outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
           />
-          {unit && <span className="text-sm text-muted">{unit}</span>}
+          {unit && <span className="font-mono text-[0.75rem] text-muted">{unit}</span>}
         </div>
         <button
           type="button"
           aria-label={`${label} erhöhen`}
           onClick={() => onChange(clamp(value + step))}
-          className="grid size-11 place-items-center rounded-xl bg-glacier text-ink transition hover:bg-glacier-2 disabled:opacity-40"
+          className="grid size-12 place-items-center border-l border-line-strong text-ink transition-colors hover:bg-surface disabled:opacity-40"
           disabled={value >= max}
         >
-          <Plus className="size-4" />
+          <Plus className="size-4" strokeWidth={1.5} />
         </button>
       </div>
     </div>
@@ -98,16 +98,20 @@ export function PriceRange({ staff, hours, visits, dark }: { staff: number; hour
   const r = monthlyRange(staff, hours, visits)
   const fmt = useMemo(() => (v: number) => formatEuro(v), [])
   return (
-    <div className={cn('rounded-2xl p-5 sm:p-6', dark ? 'bg-ink text-white' : 'bg-glacier text-ink')}>
-      <p className={cn('text-xs font-semibold tracking-[0.12em] uppercase', dark ? 'text-fresh' : 'text-blue')}>Unverbindliche Richtpreis-Spanne pro Monat</p>
-      <p className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" aria-live="polite">
-        <AnimatedNumber value={r.netMin} format={fmt} /> – <AnimatedNumber value={r.netMax} format={fmt} />
-        <span className={cn('ml-2 text-base font-medium', dark ? 'text-muted-dark' : 'text-muted')}>netto</span>
+    <div className={cn('p-6 sm:p-8', dark ? 'on-dark bg-night text-paper' : 'border-t border-line px-0! text-ink')}>
+      <p className="t-label">Unverbindliche Richtpreis-Spanne pro Monat</p>
+      <p className="mt-4 text-[clamp(1.875rem,1.4rem+1.6vw,2.75rem)] leading-none font-medium tracking-[-0.04em] tabular-nums" aria-live="polite">
+        <span className="whitespace-nowrap">
+          <AnimatedNumber value={r.netMin} format={fmt} />
+          {'\u00A0'}bis{'\u00A0'}
+          <AnimatedNumber value={r.netMax} format={fmt} />
+        </span>
+        <span className={cn('ml-3 text-[1rem] font-normal tracking-normal', dark ? 'text-muted-dark' : 'text-muted')}>netto</span>
       </p>
-      <p className={cn('mt-1 text-sm', dark ? 'text-muted-dark' : 'text-muted')}>
+      <p className={cn('mt-2 text-[0.9375rem]', dark ? 'text-muted-dark' : 'text-ink-2')}>
         {formatEuroRange(r.grossMin, r.grossMax)} brutto inkl. {Math.round(pricing.vatRate * 100)} % MwSt.
       </p>
-      <p className={cn('mt-4 border-t pt-4 text-xs leading-relaxed', dark ? 'border-white/10 text-muted-dark' : 'border-line text-muted')}>
+      <p className={cn('mt-5 border-t pt-4 font-mono text-[0.75rem] leading-relaxed', dark ? 'border-line-dark text-muted-dark' : 'border-line text-muted')}>
         Grundlage: {staff} {staff === 1 ? 'Reinigungskraft' : 'Reinigungskräfte'} × {formatNumber(hours)} Std. × {visits} Einsätze pro Woche × {formatNumber(pricing.weeksPerMonth)}{' '}
         Wochen = rund {formatNumber(r.hours)} Stunden im Monat, zu {formatEuro2Range(hourlyRateNetMin(), hourlyRateNetMax())} netto pro Stunde. Unverbindliche Orientierung. Das
         finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.
@@ -222,7 +226,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
   })
 
   const isModal = variant === 'modal'
-  const pad = isModal ? 'p-6 sm:p-10' : 'p-6 sm:p-10 lg:p-12'
+  const pad = isModal ? 'p-6 sm:p-10' : 'pt-8'
 
   if (result)
     return (
@@ -242,13 +246,13 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
     <div ref={top} className={cn('relative', pad)}>
       {/* Kopf + Fortschritt */}
       <div className="pr-12">
-        <p className="eyebrow">Angebot in 48 Stunden</p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+        <p className="t-label">Angebot in 48 Stunden</p>
+        <h2 className="t-h3 mt-3">
           {['Was sollen wir reinigen?', 'Wie ist Ihre Reinigung heute aufgestellt?', 'Wie oft und wann?', 'Darf es noch etwas sein?', 'Wohin dürfen wir uns melden?'][step]}
         </h2>
       </div>
       <div className="mt-6" aria-label={`Schritt ${step + 1} von ${stepTitles.length}`}>
-        <div className="flex gap-1.5">
+        <div className="flex gap-1">
           {stepTitles.map((t, i) => (
             <button
               key={t}
@@ -259,21 +263,21 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
               aria-label={`Schritt ${i + 1}: ${t}${i < step ? ' (zurück zu diesem Schritt)' : ''}`}
               className="group flex-1 text-left disabled:cursor-default"
             >
-              <span className="block h-1.5 overflow-hidden rounded-full bg-glacier-2">
+              <span className="block h-px bg-line">
                 <motion.span
-                  className="block h-full rounded-full bg-blue"
+                  className="block h-px bg-ink"
                   initial={false}
                   animate={{ width: i < step ? '100%' : i === step ? '50%' : '0%' }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.5, ease: EASE_CS_ARRAY }}
                 />
               </span>
-              <span className={cn('mt-2 hidden text-xs font-medium sm:block', i <= step ? 'text-ink' : 'text-muted')}>
+              <span className={cn('mt-2 hidden font-mono text-[0.75rem] sm:block', i <= step ? 'text-ink' : 'text-muted')}>
                 {i + 1}. {t}
               </span>
             </button>
           ))}
         </div>
-        <p className="mt-2 text-xs text-muted sm:hidden">
+        <p className="mt-2 font-mono text-[0.75rem] text-muted sm:hidden">
           Schritt {step + 1} von {stepTitles.length}: {stepTitles[step]}
         </p>
       </div>
@@ -287,15 +291,14 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
             initial={{ opacity: 0, x: dir * 28 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: dir * -28 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.35, ease: EASE_CS_ARRAY }}
           >
             {step === 0 && (
               <div className="space-y-8">
                 <fieldset>
-                  <legend className="mb-3 text-sm font-medium text-ink">Art des Objekts</legend>
+                  <legend className="field-label mb-3">Art des Objekts</legend>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {objectTypes.map((o) => {
-                      const Icon = icons[o.id]
                       return (
                         <ChoiceCard
                           key={o.id}
@@ -303,24 +306,24 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                           value={o.id}
                           label={o.label}
                           description={o.description}
-                          icon={<Icon className="size-5" />}
+    
                           {...register('objectType')}
                         />
                       )
                     })}
                   </div>
                   {errors.objectType && (
-                    <p role="alert" className="mt-2 text-sm text-danger">
+                    <p role="alert" className="mt-2 text-[0.875rem] text-danger">
                       {errors.objectType.message}
                     </p>
                   )}
                 </fieldset>
                 <fieldset>
-                  <legend className="mb-1 text-sm font-medium text-ink">Besondere Bereiche</legend>
-                  <p className="mb-3 text-sm text-muted">Mehrfachauswahl. Diese Bereiche beeinflussen den Aufwand am stärksten.</p>
+                  <legend className="field-label mb-1">Besondere Bereiche</legend>
+                  <p className="mb-3 text-[0.9375rem] text-ink-2">Mehrfachauswahl. Diese Bereiche beeinflussen den Aufwand am stärksten.</p>
                   <div className="grid grid-cols-1 gap-2.5 min-[440px]:grid-cols-2 sm:grid-cols-3">
                     {specialAreas.map((a) => (
-                      <ChoiceCard key={a} value={a} label={a} className="p-3.5" {...register('areas')} />
+                      <ChoiceCard key={a} value={a} label={a} {...register('areas')} />
                     ))}
                   </div>
                 </fieldset>
@@ -335,7 +338,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                     <ChoiceCard
                       type="radio"
                       value="A"
-                      icon={<Calculator className="size-5" />}
+
                       label="Ja, ich kenne die aktuellen Zeiten"
                       description="Dann rechnen wir Ihnen gleich eine Richtpreis-Spanne aus."
                       {...register('path')}
@@ -343,14 +346,14 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                     <ChoiceCard
                       type="radio"
                       value="B"
-                      icon={<Eye className="size-5" />}
+
                       label="Nein, bzw. neues Objekt"
                       description="Dann sehen wir uns Ihre Räume kostenlos an."
                       {...register('path')}
                     />
                   </div>
                   {errors.path && (
-                    <p role="alert" className="mt-2 text-sm text-danger">
+                    <p role="alert" className="mt-2 text-[0.875rem] text-danger">
                       {errors.path.message}
                     </p>
                   )}
@@ -358,7 +361,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
 
                 {v.path === 'A' && (
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-x-5 gap-y-6 sm:grid-cols-3">
                       <Controller
                         control={control}
                         name="staff"
@@ -398,8 +401,8 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                       name="area"
                       render={({ field }) => (
                         <div>
-                          <label htmlFor="cfg-area" className="mb-2 flex items-baseline justify-between text-sm font-medium text-ink">
-                            Fläche ungefähr <span className="text-lg font-semibold tabular-nums">{field.value >= 5000 ? 'über 5.000' : formatNumber(field.value)} m²</span>
+                          <label htmlFor="cfg-area" className="field-label mb-2 flex items-baseline justify-between">
+                            Fläche ungefähr <span className="text-[1.375rem] font-medium tracking-[-0.02em] tabular-nums">{field.value >= 5000 ? 'über 5.000' : formatNumber(field.value)} m²</span>
                           </label>
                           <input
                             id="cfg-area"
@@ -410,9 +413,9 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                             value={field.value}
                             onChange={(e) => field.onChange(Number(e.target.value))}
                             aria-valuetext={`${field.value} Quadratmeter`}
-                            className="w-full accent-blue"
+                            className="range"
                           />
-                          <div className="mt-1 flex justify-between text-xs text-muted">
+                          <div className="mt-1 flex justify-between font-mono text-[0.75rem] text-muted">
                             <span>50 m²</span>
                             <span>5.000 m²+</span>
                           </div>
@@ -424,11 +427,10 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                       name="floors"
                       render={({ field }) => <Stepper id="cfg-floors" label="Etagen" value={field.value} onChange={field.onChange} min={1} max={30} />}
                     />
-                    <div className="flex gap-4 rounded-2xl bg-glacier p-5">
-                      <ClipboardCheck aria-hidden className="mt-0.5 size-6 shrink-0 text-blue" />
+                    <div className="border-t border-line pt-5">
                       <div>
-                        <p className="font-semibold text-ink">Ein ehrliches Angebot statt einer geschätzten Zahl.</p>
-                        <p className="mt-1 text-sm leading-relaxed text-muted">
+                        <p className="font-medium text-ink">Ein ehrliches Angebot statt einer geschätzten Zahl.</p>
+                        <p className="mt-1 text-[0.9375rem] leading-relaxed text-ink-2">
                           Jedes Objekt ist anders. Damit Sie ein ehrliches Angebot bekommen statt einer geschätzten Zahl, die später nicht stimmt, schauen wir uns Ihre Räume
                           kostenlos an. Danach haben Sie das Angebot innerhalb von 48 Stunden.
                         </p>
@@ -442,14 +444,14 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
             {step === 2 && (
               <div className="space-y-8">
                 <fieldset>
-                  <legend className="mb-3 text-sm font-medium text-ink">Gewünschtes Intervall</legend>
+                  <legend className="field-label mb-3">Gewünschtes Intervall</legend>
                   <div className="grid grid-cols-1 gap-2.5 min-[440px]:grid-cols-2 sm:grid-cols-3">
                     {intervals.map((i) => (
-                      <ChoiceCard key={i.id} type="radio" value={i.id} label={i.label} className="p-3.5" {...register('interval')} />
+                      <ChoiceCard key={i.id} type="radio" value={i.id} label={i.label} {...register('interval')} />
                     ))}
                   </div>
                   {errors.interval && (
-                    <p role="alert" className="mt-2 text-sm text-danger">
+                    <p role="alert" className="mt-2 text-[0.875rem] text-danger">
                       {errors.interval.message}
                     </p>
                   )}
@@ -458,10 +460,10 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                   )}
                 </fieldset>
                 <fieldset>
-                  <legend className="mb-3 text-sm font-medium text-ink">Wunschzeiten</legend>
+                  <legend className="field-label mb-3">Wunschzeiten</legend>
                   <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                     {timeSlots.map((t) => (
-                      <ChoiceCard key={t} value={t} label={t} className="p-3.5" {...register('times')} />
+                      <ChoiceCard key={t} value={t} label={t} {...register('times')} />
                     ))}
                   </div>
                 </fieldset>
@@ -470,7 +472,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
 
             {step === 3 && (
               <fieldset>
-                <legend className="mb-3 text-sm font-medium text-ink">Zusatzleistungen (optional)</legend>
+                <legend className="field-label mb-3">Zusatzleistungen (optional)</legend>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {extras.map((x) => (
                     <ChoiceCard key={x.id} value={x.id} label={x.id} description={x.description} {...register('extras')} />
@@ -498,11 +500,11 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                   <TextField label="Wunschtermin für die kostenlose Besichtigung" type="date" optional min={new Date().toISOString().slice(0, 10)} {...register('visitDate')} />
                   <div>
                     <label htmlFor="cfg-vt" className="field-label mb-1">
-                      Tageszeit <span className="font-normal text-muted">(optional)</span>
+                      Tageszeit <span className="font-mono text-[0.75rem] font-normal text-muted">optional</span>
                     </label>
                     <select
                       id="cfg-vt"
-                      className="block w-full rounded-xl border-0 bg-white px-4 py-3.5 text-base text-ink shadow-[inset_0_0_0_1px_var(--color-line)] focus:shadow-[inset_0_0_0_2px_var(--color-blue)] focus:outline-none"
+                      className="field block"
                       {...register('visitTime')}
                     >
                       <option value="">Egal</option>
@@ -527,21 +529,21 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
         {/* Navigation */}
         <div className="mt-10 flex items-center justify-between gap-3 border-t border-line pt-6">
           {step > 0 ? (
-            <button type="button" onClick={() => go(step - 1)} className="inline-flex h-12 items-center gap-2 rounded-full px-4 font-semibold text-ink transition hover:bg-ink/5">
-              <ArrowLeft aria-hidden className="size-4" />
+            <button type="button" onClick={() => go(step - 1)} className="inline-flex h-12 items-center gap-2 font-medium text-ink transition-colors hover:text-blue">
+              <ArrowLeft aria-hidden className="size-4" strokeWidth={1.75} />
               Zurück
             </button>
           ) : (
-            <span className="text-xs text-muted">Kostenlos und unverbindlich</span>
+            <span className="font-mono text-[0.75rem] text-muted">Kostenlos und unverbindlich</span>
           )}
           {step < stepTitles.length - 1 ? (
             <button
               type="button"
               onClick={() => go(step + 1)}
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-blue px-6 font-semibold text-white shadow-glow transition hover:bg-blue-hover"
+              className="btn btn-primary"
             >
               Weiter
-              <ArrowRight aria-hidden className="size-4" />
+              <ArrowRight aria-hidden className="btn-arrow size-4" strokeWidth={1.75} />
             </button>
           ) : (
             <button
@@ -560,9 +562,9 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
           </div>
         )}
         {isModal && step === 0 && (
-          <p className="mt-4 text-center text-xs text-muted">
+          <p className="mt-4 text-center font-mono text-[0.75rem] text-muted">
             Lieber in Ruhe?{' '}
-            <Link to="/angebot" onClick={onDone} className="font-medium text-blue underline underline-offset-2">
+            <Link to="/angebot" onClick={onDone} className="link">
               Konfigurator als eigene Seite öffnen
             </Link>
           </p>
@@ -601,37 +603,36 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
     ['Besichtigung', [d.visitDate, d.visitTime].filter(Boolean).join(', ') || 'nach Absprache'],
   ]
   return (
-    <div className={cn('p-6 sm:p-10', !isModal && 'lg:p-12')} role="status">
+    <div className={cn(isModal ? 'p-6 sm:p-10' : 'pt-8')} role="status">
       <motion.div
         initial={{ scale: 0.6, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 18 }}
-        className="grid size-16 place-items-center rounded-full bg-fresh/15 text-fresh-ink"
+        className="t-label"
       >
-        <CheckCircle2 aria-hidden className="size-9" />
+        Gesendet
       </motion.div>
-      <h2 className="mt-6 text-3xl font-semibold tracking-tight">Vielen Dank. Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</h2>
-      <p className="mt-3 text-muted">Hier ist die Zusammenfassung Ihrer Angaben.{company.forms.confirmationEmail && <> Eine Kopie erhalten Sie per E-Mail an {d.email}.</>}</p>
+      <h2 className="t-h3 mt-5">Vielen Dank. Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</h2>
+      <p className="mt-3 text-ink-2">Hier ist die Zusammenfassung Ihrer Angaben.{company.forms.confirmationEmail && <> Eine Kopie erhalten Sie per E-Mail an {d.email}.</>}</p>
       {result.preview && (
         <p className="mt-6 flex gap-3 border-l border-ink pl-4 text-[0.9375rem] text-ink-2">
-          <Info aria-hidden className="size-5 shrink-0" />
           <span>
             <strong>Vorschau-Modus:</strong> Es ist noch kein Formular-Endpunkt eingetragen (src/content/company.ts → forms). Die Anfrage wurde nicht gesendet.
           </span>
         </p>
       )}
-      <dl className="mt-8 divide-y divide-line rounded-2xl bg-glacier px-5 text-sm">
+      <dl className="mt-8 border-t border-line">
         {rows.map(([k, val]) => (
-          <div key={k} className="grid grid-cols-1 gap-0.5 py-3 min-[400px]:grid-cols-[9rem_1fr] min-[400px]:gap-3 sm:grid-cols-[12rem_1fr]">
-            <dt className="text-muted">{k}</dt>
-            <dd className="font-medium text-ink">{val}</dd>
+          <div key={k} className="grid grid-cols-1 gap-0.5 border-b border-line py-3 min-[400px]:grid-cols-[9rem_1fr] min-[400px]:gap-3 sm:grid-cols-[12rem_1fr]">
+            <dt className="font-mono text-[0.8125rem] text-muted min-[400px]:pt-0.5">{k}</dt>
+            <dd className="text-ink">{val}</dd>
           </div>
         ))}
       </dl>
       {r && (
-        <p className="mt-3 text-xs text-muted">Unverbindliche Orientierung. Das finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.</p>
+        <p className="mt-3 font-mono text-[0.75rem] text-muted">Unverbindliche Orientierung. Das finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.</p>
       )}
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-2">
         <RiskFreeSeal variant="card" className="sm:col-span-2" />
         <ContactPerson compact title="Ihr Ansprechpartner" className="sm:col-span-2" />
       </div>
@@ -658,21 +659,21 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
               setPdfBusy(false)
             }
           }}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-ink px-6 font-semibold text-white transition hover:bg-ink-2 disabled:opacity-70"
+          className="btn btn-outline"
         >
-          {pdfBusy ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <FileDown aria-hidden className="size-4" />}
+          {pdfBusy && <Loader2 aria-hidden className="size-4 animate-spin" />}
           Zusammenfassung als PDF herunterladen
         </button>
         {isModal ? (
-          <button type="button" onClick={onDone} className="inline-flex min-h-12 items-center justify-center rounded-full bg-blue px-6 font-semibold text-white">
+          <button type="button" onClick={onDone} className="btn btn-primary">
             Schließen
           </button>
         ) : (
-          <Link to="/" className="inline-flex min-h-12 items-center justify-center rounded-full bg-blue px-6 font-semibold text-white">
+          <Link to="/" className="btn btn-primary">
             Zur Startseite
           </Link>
         )}
-        <button type="button" onClick={onRestart} className="inline-flex min-h-12 items-center justify-center rounded-full px-5 font-semibold text-ink ring-1 ring-line">
+        <button type="button" onClick={onRestart} className="ulink self-center font-medium text-ink">
           Neue Anfrage
         </button>
       </div>

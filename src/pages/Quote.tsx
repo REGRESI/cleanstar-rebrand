@@ -1,4 +1,3 @@
-import { Check, Clock, ShieldCheck, Phone } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs'
 import { RevealText } from '@/components/ui/RevealText'
@@ -21,41 +20,39 @@ export default function Quote() {
         path="/angebot"
         schema={[breadcrumbSchema(trail)]}
       />
-      <section className="relative overflow-hidden bg-glacier pt-32 pb-24 sm:pt-40">
-        <div className="container-site relative grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <Breadcrumbs trail={trail} />
-            <p className="eyebrow mb-4">Angebot anfragen</p>
-            <RevealText as="h1" text="In 60 Sekunden zum Angebot." immediate className="heading-1" />
-            <p className="lead fade-up-now fade-lcp mt-6" style={{ ['--d' as string]: '0.4s' }}>
-              Ein paar Angaben zu Ihrem Objekt. Kennen Sie Ihre aktuellen Reinigungszeiten, zeigen wir Ihnen sofort eine Richtpreis-Spanne.
-            </p>
-            <ul className="fade-up-now mt-8 space-y-3" style={{ ['--d' as string]: '0.55s' }}>
-              {[
-                [Clock, `Antwort innerhalb von ${company.promises.responseHours} Stunden`],
-                [Check, `Angebot innerhalb von ${company.promises.offerHours} Stunden`],
-                [ShieldCheck, 'Kostenlos und unverbindlich'],
-              ].map(([I, t], i) => {
-                const Icon = I as typeof Clock
-                return (
-                  <li key={i} className="flex items-center gap-3 font-medium">
-                    <span className="grid size-8 place-items-center rounded-full bg-white text-blue ring-1 ring-line">
-                      <Icon aria-hidden className="size-4" />
-                    </span>
-                    {t as string}
-                  </li>
-                )
-              })}
-            </ul>
-            <a href={company.phone.href} className="mt-10 inline-flex items-center gap-3 text-sm text-muted">
-              <Phone aria-hidden className="size-4 text-blue" />
-              Lieber telefonisch? <span className="font-semibold text-ink">{company.phone.display}</span>
-            </a>
-            <CallbackButton className="mt-2 flex" />
-          </div>
-          <div className="lg:col-span-8">
-            <div className="overflow-hidden rounded-panel bg-white shadow-lift ring-1 ring-line">
-              <Configurator variant="page" />
+      <section className="bg-paper pt-28 pb-24 sm:pt-36 lg:pt-44 lg:pb-40">
+        <div className="container-site">
+          <Breadcrumbs trail={trail} />
+          <div className="grid-site gap-y-14">
+            <div className="col-span-12 lg:col-span-4">
+              <p className="t-label fade-up-now mb-6" style={{ ['--d' as string]: '0s' }}>
+                Angebot anfragen
+              </p>
+              <RevealText as="h1" text="In 60 Sekunden zum Angebot." immediate className="t-h1 max-w-[12ch] lg:text-[4.5rem]" />
+              <p className="t-lead fade-up-now fade-lcp mt-8" style={{ ['--d' as string]: '0.4s' }}>
+                Ein paar Angaben zu Ihrem Objekt. Kennen Sie Ihre aktuellen Reinigungszeiten, zeigen wir Ihnen sofort eine Richtpreis-Spanne.
+              </p>
+              <ol className="fade-up-now mt-10 border-t border-line" style={{ ['--d' as string]: '0.55s' }}>
+                {[`Antwort innerhalb von ${company.promises.responseHours} Stunden`, `Angebot innerhalb von ${company.promises.offerHours} Stunden`, 'Kostenlos und unverbindlich'].map(
+                  (t, i) => (
+                    <li key={t} className="flex gap-5 border-b border-line py-3.5">
+                      <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
+                      {t}
+                    </li>
+                  ),
+                )}
+              </ol>
+              <div className="mt-10 space-y-2">
+                <a href={company.phone.href} className="ulink block w-fit text-ink">
+                  Lieber telefonisch? {company.phone.display}
+                </a>
+                <CallbackButton />
+              </div>
+            </div>
+            <div className="col-span-12 lg:col-span-7 lg:col-start-6">
+              <div className="border-t border-line">
+                <Configurator variant="page" />
+              </div>
             </div>
           </div>
         </div>

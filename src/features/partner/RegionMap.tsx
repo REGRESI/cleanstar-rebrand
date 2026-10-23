@@ -1,8 +1,9 @@
 import { useMemo, useState, type KeyboardEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, MapPin } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { bwRegions, germanyRegions, partnerFlags, regionStatusLabel, type Region } from '@/content/partner'
 import { cn } from '@/lib/cn'
+import { EASE_CS_ARRAY } from '@/lib/ease'
 
 /**
  * Schematische Wabenkarte (eigene SVG, keine externen Kartendienste).
@@ -53,10 +54,10 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
   }
 
   return (
-    <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
+    <div className="grid grid-cols-1 gap-x-8 gap-y-12 lg:grid-cols-12 lg:items-center">
       <div className="relative lg:col-span-7">
         {partnerFlags.showGermany && (
-          <div role="tablist" aria-label="Kartenansicht" className="mb-6 inline-flex rounded-full bg-glacier p-1">
+          <div role="tablist" aria-label="Kartenansicht" className="mb-6 inline-flex shadow-[inset_0_0_0_1px_var(--color-line-strong)]">
             {(
               [
                 ['bw', 'Baden-Württemberg'],
@@ -72,7 +73,7 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
                   setView(id)
                   setActive(null)
                 }}
-                className={cn('rounded-full px-4 py-2 text-sm font-medium transition', view === id ? 'bg-white text-ink shadow-soft' : 'text-muted hover:text-ink')}
+                className={cn('px-4 py-2.5 text-[0.9375rem] transition-colors', view === id ? 'bg-ink text-paper' : 'text-ink-2 hover:text-ink')}
               >
                 {l}
               </button>
@@ -89,11 +90,11 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
             initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.97 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: 0.4, ease: EASE_CS_ARRAY }}
           >
             <defs>
               <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <line x1="0" y1="0" x2="0" y2="6" stroke="#5b6b82" strokeOpacity="0.35" strokeWidth="2" />
+                <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-ink)" strokeOpacity="0.3" strokeWidth="1.5" />
               </pattern>
             </defs>
             {layout.pos.map(({ reg, x, y }) => {
@@ -118,17 +119,17 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
                 >
                   <path
                     d={hexPath(x, y, R - 2)}
-                    fill={home || partly ? '#1f5eff' : taken ? 'url(#hatch)' : on ? '#2dd4bf' : '#ffffff'}
-                    fillOpacity={home ? 1 : partly ? (on ? 0.4 : 0.22) : taken ? 1 : on ? 0.3 : 1}
-                    stroke={home ? '#1f5eff' : on ? '#0f766e' : '#1f5eff'}
-                    strokeOpacity={home || partly || on ? 1 : 0.28}
-                    strokeWidth={on ? 2.5 : 1.5}
+                    fill={home || partly ? 'var(--color-blue)' : taken ? 'url(#hatch)' : on ? 'var(--color-ink)' : 'var(--color-paper)'}
+                    fillOpacity={home ? 1 : partly ? (on ? 0.4 : 0.22) : taken ? 1 : on ? 1 : 1}
+                    stroke={home ? 'var(--color-blue)' : 'var(--color-ink)'}
+                    strokeOpacity={home || partly || on ? 1 : 0.3}
+                    strokeWidth={1}
                     style={{ transition: 'fill .2s, stroke .2s' }}
                   />
                   {home ? (
                     <path
                       d={`M${x} ${y - 11} C${x + 1.5} ${y - 3} ${x + 3} ${y - 1.5} ${x + 11} ${y} C${x + 3} ${y + 1.5} ${x + 1.5} ${y + 3} ${x} ${y + 11} C${x - 1.5} ${y + 3} ${x - 3} ${y + 1.5} ${x - 11} ${y} C${x - 3} ${y - 1.5} ${x - 1.5} ${y - 3} ${x} ${y - 11}Z`}
-                      fill="#fff"
+                      fill="var(--color-paper)"
                     />
                   ) : (
                     <text
@@ -136,67 +137,64 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
                       y={y + 4}
                       textAnchor="middle"
                       fontSize={reg.short.length > 3 ? 9.5 : 11}
-                      fontWeight={600}
-                      fill={home ? '#fff' : '#0a1628'}
+                      fontWeight={500}
+                      fill={on ? 'var(--color-paper)' : 'var(--color-ink)'}
                       fillOpacity={taken ? 0.5 : 0.8}
                       style={{ pointerEvents: 'none' }}
                     >
                       {reg.short}
                     </text>
                   )}
-                  {reg.type === 'Stadtkreis' && view === 'bw' && <circle cx={x} cy={y - 13} r="2" fill="#1f5eff" fillOpacity="0.5" />}
+                  {reg.type === 'Stadtkreis' && view === 'bw' && <circle cx={x} cy={y - 13} r="2" fill={on ? 'var(--color-paper)' : 'var(--color-ink)'} fillOpacity="0.6" />}
                 </g>
               )
             })}
           </motion.svg>
         </AnimatePresence>
-        <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-muted" aria-label="Legende">
+        <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[0.75rem] text-muted" aria-label="Legende">
           <li className="flex items-center gap-2">
-            <span aria-hidden className="size-3 rounded-sm bg-blue" />
+            <span aria-hidden className="size-3 bg-blue" />
             CleanStar-Stammgebiet
           </li>
           <li className="flex items-center gap-2">
-            <span aria-hidden className="size-3 rounded-sm bg-white ring-1 ring-blue/40" />
+            <span aria-hidden className="size-3 bg-paper ring-1 ring-ink/40" />
             Partner gesucht
           </li>
           <li className="flex items-center gap-2">
-            <span aria-hidden className="size-3 rounded-sm bg-[repeating-linear-gradient(45deg,#c3cbd6_0_2px,transparent_2px_5px)] ring-1 ring-line" />
+            <span aria-hidden className="size-3 bg-[repeating-linear-gradient(45deg,rgb(14_16_19/0.3)_0_1.5px,transparent_1.5px_5px)] ring-1 ring-ink/40" />
             Bereits vergeben
           </li>
           {view === 'bw' && (
             <li className="flex items-center gap-2">
-              <span aria-hidden className="size-1.5 rounded-full bg-blue/60" />
+              <span aria-hidden className="size-1.5 rounded-full bg-ink/60" />
               Stadtkreis
             </li>
           )}
         </ul>
-        <p className="mt-3 text-center text-xs text-muted">Schematische Darstellung, Waben grob nach Lage angeordnet.</p>
+        <p className="caption">Schematische Darstellung, Waben grob nach Lage angeordnet.</p>
       </div>
 
-      <div className="lg:col-span-5">
-        <div className="min-h-44 rounded-card bg-glacier p-6 sm:p-8" aria-live="polite">
+      <div className="lg:col-span-4 lg:col-start-9">
+        <div className="min-h-48 border-t border-line pt-6" aria-live="polite">
           {active ? (
             <>
-              <p className="flex items-center gap-2 text-sm text-muted">
-                <MapPin aria-hidden className="size-4 text-blue" />
-                {view === 'de' ? 'Bundesland' : active.type}
-              </p>
-              <p className="t-h3 mt-2">{active.name}</p>
-              <p className={cn('mt-2 font-medium', active.status === 'stammgebiet' ? 'text-blue' : active.status === 'vergeben' ? 'text-muted' : 'text-fresh-ink')}>
+              <p className="t-label">{view === 'de' ? 'Bundesland' : active.type}</p>
+              <p className="t-h3 mt-3">{active.name}</p>
+              <p className={cn('mt-2 font-medium', active.status === 'stammgebiet' ? 'text-blue' : active.status === 'vergeben' ? 'text-muted' : 'text-ink')}>
                 {status(active)}
               </p>
-              {selectable(active) && <p className="mt-4 text-sm text-muted">Klicken oder Enter drücken, um direkt für diese Region anzufragen.</p>}
+              {selectable(active) && <p className="mt-4 text-[0.9375rem] text-ink-2">Klicken oder Enter drücken, um direkt für diese Region anzufragen.</p>}
             </>
           ) : (
             <>
-              <p className="text-2xl font-semibold tracking-tight">Wählen Sie Ihre Region.</p>
-              <p className="mt-3 text-muted">
+              <p className="t-h3">Wählen Sie Ihre Region.</p>
+              <p className="mt-3 text-ink-2">
                 Der Ortenaukreis ist unser Stammgebiet. Für alle anderen Kreise suchen wir Partner. Ein Klick auf Ihre Region übernimmt sie direkt in die Anfrage.
               </p>
             </>
           )}
         </div>
-        <label className="mt-5 block">
+        <label className="mt-10 block">
           <span className="field-label mb-1">Oder aus der Liste wählen</span>
           <select
             className="field block"
@@ -215,9 +213,9 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
             <option value="Außerhalb von Baden-Württemberg">Außerhalb von Baden-Württemberg</option>
           </select>
         </label>
-        <button type="button" onClick={() => onSelect('')} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue">
+        <button type="button" onClick={() => onSelect('')} className="tlink mt-8 text-[0.9375rem]">
           Region später angeben
-          <ArrowRight aria-hidden className="size-4" />
+          <ArrowRight aria-hidden className="size-4" strokeWidth={1.75} />
         </button>
       </div>
     </div>

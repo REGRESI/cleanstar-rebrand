@@ -3,12 +3,13 @@ import { useForm, type Path } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowLeft, ArrowRight, Building2, CheckCircle2, Info, Loader2, Rocket } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react'
 import { bwRegions, partnerFormOptions as opt, partnerWays, type PartnerWay } from '@/content/partner'
 import { company } from '@/content/company'
 import { ChoiceCard, Honeypot, PrivacyCheckbox, TextArea, TextField } from '@/features/forms/fields'
 import { submitForm } from '@/features/forms/submit'
 import { cn } from '@/lib/cn'
+import { EASE_CS_ARRAY } from '@/lib/ease'
 
 const schema = z
   .object({
@@ -74,7 +75,7 @@ const FIELDS: (keyof Data)[][] = [
 
 function Err({ msg }: { msg?: string }) {
   return msg ? (
-    <p role="alert" className="mt-2 text-sm text-danger">
+    <p role="alert" className="mt-2 text-[0.875rem] text-danger">
       {msg}
     </p>
   ) : null
@@ -183,15 +184,12 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
 
   if (done)
     return (
-      <div role="status" className="p-6 sm:p-10">
-        <motion.div initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="grid size-16 place-items-center rounded-full bg-fresh/15 text-fresh-ink">
-          <CheckCircle2 aria-hidden className="size-9" />
-        </motion.div>
-        <h3 className="mt-6 text-3xl font-semibold tracking-tight">Vielen Dank für Ihr Interesse.</h3>
-        <p className="mt-3 text-muted">Wir melden uns persönlich bei Ihnen, um ein unverbindliches Erstgespräch zu vereinbaren.</p>
+      <div role="status" className="border-t border-line pt-8">
+        <p className="t-label">Gesendet</p>
+        <h3 className="t-h3 mt-4">Vielen Dank für Ihr Interesse.</h3>
+        <p className="mt-3 text-ink-2">Wir melden uns persönlich bei Ihnen, um ein unverbindliches Erstgespräch zu vereinbaren.</p>
         {done.preview && (
           <p className="mt-6 flex gap-3 border-l border-ink pl-4 text-[0.9375rem] text-ink-2">
-            <Info aria-hidden className="size-5 shrink-0" />
             <span>
               <strong>Vorschau-Modus:</strong> Es ist noch kein Formular-Endpunkt eingetragen (src/content/company.ts → forms). Die Anfrage wurde nicht gesendet.
             </span>
@@ -203,10 +201,10 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
   const choice = 'grid grid-cols-1 gap-2.5 sm:grid-cols-2'
 
   return (
-    <div ref={top} className="scroll-mt-28 p-6 sm:p-10">
-      <p className="eyebrow">Unverbindliche Partneranfrage</p>
-      <h3 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{TITLES[step]}</h3>
-      <div className="mt-6 flex gap-1.5" aria-label={`Schritt ${step + 1} von ${STEPS.length}`}>
+    <div ref={top} className="scroll-mt-28 border-t border-line pt-8">
+      <p className="t-label">Unverbindliche Partneranfrage</p>
+      <h3 className="t-h3 mt-3">{TITLES[step]}</h3>
+      <div className="mt-8 flex gap-1" aria-label={`Schritt ${step + 1} von ${STEPS.length}`}>
         {STEPS.map((t, i) => (
           <button
             key={t}
@@ -217,16 +215,16 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
             aria-current={i === step ? 'step' : undefined}
             className="flex-1 text-left disabled:cursor-default"
           >
-            <span className="block h-1.5 overflow-hidden rounded-full bg-glacier-2">
-              <motion.span className="block h-full rounded-full bg-blue" initial={false} animate={{ width: i < step ? '100%' : i === step ? '50%' : '0%' }} />
+            <span className="block h-px bg-line">
+              <motion.span className="block h-px bg-ink" initial={false} animate={{ width: i < step ? '100%' : i === step ? '50%' : '0%' }} />
             </span>
-            <span className={cn('mt-2 hidden text-xs font-medium md:block', i <= step ? 'text-ink' : 'text-muted')}>
-              {i + 1}. {t}
+            <span className={cn('mt-2 hidden font-mono text-[0.75rem] md:block', i <= step ? 'text-ink' : 'text-muted')}>
+              {String(i + 1).padStart(2, '0')} {t}
             </span>
           </button>
         ))}
       </div>
-      <p className="mt-2 text-xs text-muted md:hidden">
+      <p className="mt-2 font-mono text-[0.75rem] text-muted md:hidden">
         Schritt {step + 1} von {STEPS.length}: {STEPS[step]}
       </p>
 
@@ -238,7 +236,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
             initial={{ opacity: 0, x: dir * 28 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: dir * -28 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.35, ease: EASE_CS_ARRAY }}
           >
             {step === 0 && (
               <fieldset>
@@ -247,7 +245,6 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                   <ChoiceCard
                     type="radio"
                     value="bestand"
-                    icon={<Building2 className="size-5" />}
                     label={partnerWays.bestand.label}
                     description="Sie führen bereits einen Reinigungsbetrieb."
                     {...register('way')}
@@ -255,7 +252,6 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                   <ChoiceCard
                     type="radio"
                     value="gruendung"
-                    icon={<Rocket className="size-5" />}
                     label={partnerWays.gruendung.label}
                     description="Sie möchten sich selbstständig machen."
                     {...register('way')}
@@ -275,7 +271,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                   <legend className="field-label mb-3">Anzahl Mitarbeitende</legend>
                   <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                     {opt.employees.map((o) => (
-                      <ChoiceCard key={o} type="radio" value={o} label={o} className="p-3" {...register('employees')} />
+                      <ChoiceCard key={o} type="radio" value={o} label={o} {...register('employees')} />
                     ))}
                   </div>
                   <Err msg={errors.employees?.message} />
@@ -284,7 +280,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                   <legend className="field-label mb-3">Anteil Geschäftskunden am Umsatz</legend>
                   <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                     {opt.businessShare.map((o) => (
-                      <ChoiceCard key={o} type="radio" value={o} label={o} className="p-3" {...register('businessShare')} />
+                      <ChoiceCard key={o} type="radio" value={o} label={o} {...register('businessShare')} />
                     ))}
                   </div>
                   <Err msg={errors.businessShare?.message} />
@@ -298,8 +294,8 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                 <fieldset>
                   <legend className="field-label mb-3">Haben Sie Erfahrung in der Reinigung oder in Führung?</legend>
                   <div className={choice}>
-                    <ChoiceCard type="radio" value="ja" label="Ja" className="p-3" {...register('experience')} />
-                    <ChoiceCard type="radio" value="nein" label="Nein" className="p-3" {...register('experience')} />
+                    <ChoiceCard type="radio" value="ja" label="Ja" {...register('experience')} />
+                    <ChoiceCard type="radio" value="nein" label="Nein" {...register('experience')} />
                   </div>
                   <Err msg={errors.experience?.message} />
                 </fieldset>
@@ -333,7 +329,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                   <legend className="field-label mb-3">Gewünschter Start</legend>
                   <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                     {opt.start.map((o) => (
-                      <ChoiceCard key={o} type="radio" value={o} label={o} className="p-3" {...register('start')} />
+                      <ChoiceCard key={o} type="radio" value={o} label={o} {...register('start')} />
                     ))}
                   </div>
                   <Err msg={errors.start?.message} />
@@ -342,7 +338,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                   <legend className="field-label mb-3">Haupt- oder nebenberuflich?</legend>
                   <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
                     {opt.mode.map((o) => (
-                      <ChoiceCard key={o} type="radio" value={o} label={o} className="p-3" {...register('mode')} />
+                      <ChoiceCard key={o} type="radio" value={o} label={o} {...register('mode')} />
                     ))}
                   </div>
                   <Err msg={errors.mode?.message} />
@@ -352,13 +348,13 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
 
             {step === 4 && (
               <fieldset>
-                <legend className="mb-1 text-sm font-medium text-ink">Geplanter Investitionsrahmen (optional)</legend>
-                <p className="mb-3 text-sm text-muted">
+                <legend className="field-label mb-1">Geplanter Investitionsrahmen (optional)</legend>
+                <p className="mb-3 text-[0.9375rem] text-ink-2">
                   Nur eine grobe Selbsteinschätzung, damit wir das Gespräch gut vorbereiten können. Sie können den Schritt auch überspringen.
                 </p>
                 <div className={choice}>
                   {opt.investment.map((o) => (
-                    <ChoiceCard key={o} type="radio" value={o} label={o} className="p-3" {...register('investment')} />
+                    <ChoiceCard key={o} type="radio" value={o} label={o} {...register('investment')} />
                   ))}
                 </div>
               </fieldset>
@@ -388,7 +384,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                 </div>
                 <TextArea label="Nachricht" optional placeholder="Fragen, Ideen, Ihre Situation …" {...register('message')} />
                 <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
-                <p className="text-xs text-muted">Ihre Anfrage ist unverbindlich. Verbindlich ist erst ein schriftlicher Partnervertrag.</p>
+                <p className="font-mono text-[0.75rem] text-muted">Ihre Anfrage ist unverbindlich. Verbindlich ist erst ein schriftlicher Partnervertrag.</p>
                 {error && (
                   <p role="alert" className="border-l border-danger pl-4 text-[0.9375rem] text-danger">
                     {error}
@@ -401,18 +397,18 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
 
         <div className="mt-10 flex items-center justify-between gap-3 border-t border-line pt-6">
           {step > 0 ? (
-            <button type="button" onClick={() => go(step - 1)} className="inline-flex h-12 items-center gap-2 rounded-full px-4 font-semibold text-ink transition hover:bg-ink/5">
+            <button type="button" onClick={() => go(step - 1)} className="inline-flex h-12 items-center gap-2 font-medium text-ink transition-colors hover:text-blue">
               <ArrowLeft aria-hidden className="size-4" />
               Zurück
             </button>
           ) : (
-            <span className="text-xs text-muted">Unverbindlich, ca. 2 Minuten</span>
+            <span className="font-mono text-[0.75rem] text-muted">Unverbindlich, ca. 2 Minuten</span>
           )}
           {step < STEPS.length - 1 ? (
             <button
               type="button"
               onClick={() => go(step + 1)}
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-blue px-6 font-semibold text-white shadow-glow transition hover:bg-blue-hover"
+              className="btn btn-primary"
             >
               {step === 4 && !v.investment ? 'Überspringen' : 'Weiter'}
               <ArrowRight aria-hidden className="size-4" />

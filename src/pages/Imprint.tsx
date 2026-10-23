@@ -16,9 +16,9 @@ export default function Imprint() {
         path="/impressum"
       />
       <PageHero trail={trail} title="Impressum" />
-      <section className="py-16 sm:py-24">
-        <div className="container-site">
-          <div className="prose-cs">
+      <section className="pb-24 lg:pb-40">
+        <div className="container-site grid-site">
+          <div className="prose-cs col-span-12 border-t border-line pt-2 lg:col-span-7 lg:col-start-5">
             <h2>Angaben gemäß § 5 DDG</h2>
             <p>
               {company.legalName}

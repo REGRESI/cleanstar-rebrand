@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Download, FileText, Info, Loader2 } from 'lucide-react'
+import { ArrowDown, Loader2 } from 'lucide-react'
 import downloads from 'virtual:downloads'
 import { TextField, PrivacyCheckbox, Honeypot } from '@/features/forms/fields'
 import { submitForm } from '@/features/forms/submit'
@@ -50,67 +50,49 @@ export function InfoPackForm({ region }: { region: string }) {
   })
 
   return (
-    <div className="relative overflow-hidden rounded-panel bg-white shadow-soft ring-1 ring-line">
-      <div className="grid grid-cols-1 lg:grid-cols-12">
-        <div className="relative bg-glacier p-6 sm:p-10 lg:col-span-5">
-          <div aria-hidden className="absolute -top-16 -right-16 size-56 [background:radial-gradient(closest-side,rgb(31_94_255/0.24),transparent)]" />
-          <div aria-hidden className="relative h-44 w-36 rotate-[-4deg] rounded-lg bg-white p-4 shadow-lift ring-1 ring-line">
-            <FileText className="size-6 text-blue" />
-            <p className="mt-2 text-[0.625rem] font-semibold tracking-wide text-ink uppercase">Partner-Infomappe</p>
-            <div className="mt-3 space-y-1.5">
-              {[85, 60, 75, 50, 70].map((w, i) => (
-                <span key={i} className="block h-1.5 rounded-full bg-ink/15" style={{ width: `${w}%` }} />
-              ))}
-            </div>
+    <div className="grid-site gap-y-10 border-y border-line py-10 lg:py-14">
+      <div className="col-span-12 lg:col-span-5">
+        <p className="t-label">Partner-Infomappe · PDF</p>
+        <h3 className="t-h3 mt-4">Partner-Infomappe anfordern</h3>
+        <p className="mt-4 text-ink-2">Das Partnerprogramm auf einen Blick: die zwei Wege, die Module, der Ablauf. Zum Lesen in Ruhe und zum Weitergeben an Ihre Steuerberatung.</p>
+      </div>
+      <div className="col-span-12 lg:col-span-6 lg:col-start-7">
+        {state ? (
+          <div role="status">
+            <p className="t-h4">Danke. Hier ist Ihre Infomappe.</p>
+            <a href={d.href} download={d.file} className="btn btn-outline mt-6">
+              Infomappe herunterladen (PDF)
+              <ArrowDown aria-hidden className="size-4" strokeWidth={1.75} />
+            </a>
+            {state.preview && (
+              <p className="mt-6 flex gap-3 border-l border-ink pl-4 text-[0.9375rem] text-ink-2">
+                <span>
+                  <strong>Vorschau-Modus:</strong> Die Anfrage wurde nicht gesendet, weil noch kein Formular-Endpunkt eingetragen ist.
+                </span>
+              </p>
+            )}
           </div>
-          <h3 className="relative mt-8 text-2xl font-semibold tracking-tight">Partner-Infomappe anfordern</h3>
-          <p className="relative mt-3 text-muted">
-            Das Partnerprogramm auf einen Blick: die zwei Wege, die Module, der Ablauf. Zum Lesen in Ruhe und zum Weitergeben an Ihre Steuerberatung.
-          </p>
-        </div>
-        <div className="p-6 sm:p-10 lg:col-span-7">
-          {state ? (
-            <div role="status">
-              <p className="text-xl font-semibold">Danke. Hier ist Ihre Infomappe.</p>
-              <a href={d.href} download={d.file} className="btn btn-outline mt-6">
-                <Download aria-hidden className="size-4" />
-                Infomappe herunterladen (PDF)
-              </a>
-              {state.preview && (
-                <p className="mt-6 flex gap-3 border-l border-ink pl-4 text-[0.9375rem] text-ink-2">
-                  <Info aria-hidden className="size-5 shrink-0" />
-                  <span>
-                    <strong>Vorschau-Modus:</strong> Die Anfrage wurde nicht gesendet, weil noch kein Formular-Endpunkt eingetragen ist.
-                  </span>
-                </p>
-              )}
+        ) : (
+          <form onSubmit={onSubmit} noValidate className="relative space-y-8">
+            <Honeypot {...register('botcheck')} />
+            <div className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2">
+              <TextField label="Name" autoComplete="name" error={errors.name?.message} {...register('name')} />
+              <TextField label="E-Mail" type="email" autoComplete="email" error={errors.email?.message} {...register('email')} />
             </div>
-          ) : (
-            <form onSubmit={onSubmit} noValidate className="relative space-y-4">
-              <Honeypot {...register('botcheck')} />
-              <div className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2">
-                <TextField label="Name" autoComplete="name" error={errors.name?.message} {...register('name')} />
-                <TextField label="E-Mail" type="email" autoComplete="email" error={errors.email?.message} {...register('email')} />
-              </div>
-              <TextField label="Ihre Region" placeholder="Landkreis oder PLZ" error={errors.region?.message} {...register('region')} />
-              <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
-              {error && (
-                <p role="alert" className="border-l border-danger pl-4 text-[0.9375rem] text-danger">
-                  {error}
-                </p>
-              )}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="btn btn-primary"
-              >
-                {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <Download aria-hidden className="size-4" />}
-                Infomappe anfordern
-              </button>
-              <p className="text-xs text-muted">Kostenlos und unverbindlich. Der Download startet direkt nach dem Absenden.</p>
-            </form>
-          )}
-        </div>
+            <TextField label="Ihre Region" placeholder="Landkreis oder PLZ" error={errors.region?.message} {...register('region')} />
+            <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
+            {error && (
+              <p role="alert" className="border-l border-danger pl-4 text-[0.9375rem] text-danger">
+                {error}
+              </p>
+            )}
+            <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+              Infomappe anfordern
+              {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <ArrowDown aria-hidden className="size-4" strokeWidth={1.75} />}
+            </button>
+            <p className="font-mono text-[0.75rem] text-muted">Kostenlos und unverbindlich. Der Download startet direkt nach dem Absenden.</p>
+          </form>
+        )}
       </div>
     </div>
   )
