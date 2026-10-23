@@ -7,7 +7,6 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { Button } from '@/components/ui/Button'
 import { breadcrumbSchema } from '@/lib/schema'
-import { Check } from 'lucide-react'
 
 const trail = [
   { name: 'Startseite', path: '/' },
@@ -43,37 +42,34 @@ export default function Services() {
         actions={
           <>
             <QuoteButton size="lg" arrow />
-            <Button to="/ablauf" variant="secondary" size="lg">
+            <Button to="/ablauf" variant="link">
               So läuft es ab
             </Button>
           </>
         }
       />
-      <Answer className="pt-12 sm:pt-16">
+      <Answer className="pt-20 sm:pt-28">
         CleanStar bietet Unternehmen im Ortenaukreis Büroreinigung, Unterhaltsreinigung, Fensterreinigung, Treppenhausreinigung, Hallenreinigung und Hygienereinigung aus einer
         Hand, mit einem festen Ansprechpartner für alle Leistungen.
       </Answer>
       <ServicesGrid heading={false} />
-      <section className="py-24 sm:py-32" aria-labelledby="incl-title">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <SectionHeading
-              eyebrow="Bei jeder Leistung"
-              title="Das ist immer dabei."
-              id="incl-title"
-              text="Egal, welche Leistung Sie buchen: Diese Punkte sind kein Extra, sondern Standard."
-            />
-          </div>
-          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:col-span-7">
-            {included.map((i) => (
-              <li key={i} className="flex items-center gap-3 rounded-2xl bg-white p-4 ring-1 ring-line" data-reveal>
-                <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-full bg-fresh/15 text-fresh-ink">
-                  <Check className="size-4" strokeWidth={3} />
-                </span>
-                <span className="font-medium">{i}</span>
+      <section className="section pt-0!" aria-labelledby="incl-title">
+        <div className="container-site">
+          <SectionHeading
+            layout="split"
+            eyebrow="Bei jeder Leistung"
+            title="Das ist immer dabei."
+            id="incl-title"
+            text="Egal, welche Leistung Sie buchen: Diese Punkte sind kein Extra, sondern Standard. Damit Sie nicht nachfragen müssen."
+          />
+          <ol className="mt-14 grid gap-x-8 sm:grid-cols-2 lg:mt-20">
+            {included.map((t, i) => (
+              <li key={t} className="flex items-baseline gap-5 border-b border-line py-5 first:border-t sm:[&:nth-child(2)]:border-t" data-reveal>
+                <span className="t-label w-7 shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                <span className="text-[1.25rem] tracking-[-0.015em]">{t}</span>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </section>
       <FinalCta />

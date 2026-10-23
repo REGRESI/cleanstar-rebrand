@@ -72,12 +72,12 @@ export function InfoPackForm({ region }: { region: string }) {
           {state ? (
             <div role="status">
               <p className="text-xl font-semibold">Danke. Hier ist Ihre Infomappe.</p>
-              <a href={d.href} download={d.file} className="mt-5 inline-flex h-12 items-center gap-2 rounded-full bg-ink px-6 font-semibold text-white transition hover:bg-ink-3">
+              <a href={d.href} download={d.file} className="btn btn-outline mt-6">
                 <Download aria-hidden className="size-4" />
                 Infomappe herunterladen (PDF)
               </a>
               {state.preview && (
-                <p className="mt-5 flex gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200">
+                <p className="mt-6 flex gap-3 border-l border-ink pl-4 text-[0.9375rem] text-ink-2">
                   <Info aria-hidden className="size-5 shrink-0" />
                   <span>
                     <strong>Vorschau-Modus:</strong> Die Anfrage wurde nicht gesendet, weil noch kein Formular-Endpunkt eingetragen ist.
@@ -88,21 +88,21 @@ export function InfoPackForm({ region }: { region: string }) {
           ) : (
             <form onSubmit={onSubmit} noValidate className="relative space-y-4">
               <Honeypot {...register('botcheck')} />
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2">
                 <TextField label="Name" autoComplete="name" error={errors.name?.message} {...register('name')} />
                 <TextField label="E-Mail" type="email" autoComplete="email" error={errors.email?.message} {...register('email')} />
               </div>
               <TextField label="Ihre Region" placeholder="Landkreis oder PLZ" error={errors.region?.message} {...register('region')} />
               <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
               {error && (
-                <p role="alert" className="rounded-xl bg-danger/10 p-4 text-sm text-danger">
+                <p role="alert" className="border-l border-danger pl-4 text-[0.9375rem] text-danger">
                   {error}
                 </p>
               )}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex h-12 items-center gap-2 rounded-full bg-blue px-6 font-semibold text-white shadow-glow transition hover:bg-blue-hover disabled:opacity-70"
+                className="btn btn-primary"
               >
                 {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <Download aria-hidden className="size-4" />}
                 Infomappe anfordern

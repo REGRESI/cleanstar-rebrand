@@ -44,8 +44,10 @@ export function RevealText({
   wordsClassName?: string
 }) {
   const ref = useRef<HTMLElement>(null)
-  // h1 ist auf dem Handy größer gesetzt, daher dort eine kürzere Grenze
-  const words = noOrphan(text, as === 'h1' ? 18 : 20).split(' ')
+  // Fester Umbruch mit \n (z. B. nach „Sauber.“). Dann keine Bindung der letzten Wörter: Die Zeilen sind gesetzt.
+  // Sonst: h1 ist auf dem Handy größer gesetzt, daher dort eine kürzere Grenze
+  const lines = text.split('\n')
+  const words = lines.length > 1 ? lines.flatMap((l, i) => l.split(' ').map((w, j) => (i > 0 && j === 0 ? '\n' + w : w))) : noOrphan(text, as === 'h1' ? 18 : 20).split(' ')
 
   // Bei Seitenwechseln im Browser (kein vorgerendertes HTML) die Zeilen vor dem ersten Zeichnen bestimmen
   useLayoutEffect(() => {
@@ -54,9 +56,10 @@ export function RevealText({
 
   const wordEls = words.map((w, i) => (
     <Fragment key={i}>
+      {w.startsWith('\n') && <br />}
       <span className="inline-block overflow-hidden pb-[0.14em] align-bottom" style={{ marginBottom: '-0.14em' }}>
         <span data-reveal-word="" suppressHydrationWarning>
-          {w}
+          {w.replace('\n', '')}
         </span>
       </span>
       {i < words.length - 1 ? ' ' : null}

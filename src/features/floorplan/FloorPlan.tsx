@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, FileText } from 'lucide-react'
 import { zones, planIntervals, freqLabel, type PlanInterval, type Freq } from '@/content/floorplan'
 import { cn } from '@/lib/cn'
+import { EASE_CS_ARRAY } from '@/lib/ease'
+import { Segments } from '@/features/tools/ui'
 
 const LINE = 'var(--color-line)'
-const INK = 'rgb(15 23 42 / 0.22)'
+const INK = 'rgb(14 16 19 / 0.24)'
 
 /** Möbel und Einbauten als dezente Linien (rein dekorativ) */
 function Furniture() {
@@ -52,11 +53,12 @@ function Furniture() {
   )
 }
 
-const badge: Record<Freq, string> = {
-  visit: 'bg-blue text-white',
-  weekly: 'bg-blue/10 text-blue-hover',
-  monthly: 'bg-glacier-2 text-ink',
-  request: 'bg-white text-muted ring-1 ring-line',
+/** Häufigkeit in Monospace: häufig = dunkel, selten = gedämpft (keine farbigen Pillen) */
+const freqCls: Record<Freq, string> = {
+  visit: 'text-ink',
+  weekly: 'text-ink',
+  monthly: 'text-muted',
+  request: 'text-muted',
 }
 
 /**
@@ -71,25 +73,12 @@ export function FloorPlan() {
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
       <div className="lg:col-span-7">
-        <div role="radiogroup" aria-label="Reinigungsintervall" className="inline-flex w-full rounded-full bg-glacier p-1 sm:w-auto">
-          {planIntervals.map((i) => (
-            <button
-              key={i.id}
-              type="button"
-              role="radio"
-              aria-checked={interval === i.id}
-              onClick={() => setPlanInterval(i.id)}
-              className={cn(
-                'min-h-10 flex-1 rounded-full px-4 text-sm font-semibold transition sm:flex-none',
-                interval === i.id ? 'bg-white text-ink shadow-soft' : 'text-muted hover:text-ink',
-              )}
-            >
-              {i.label}
-            </button>
-          ))}
-        </div>
+        <fieldset>
+          <legend className="t-label mb-3">Reinigungsintervall</legend>
+          <Segments name="plan-interval" value={interval} onChange={setPlanInterval} options={planIntervals} className="sm:max-w-md" />
+        </fieldset>
 
-        <div className="mt-4 overflow-hidden rounded-panel bg-white p-3 ring-1 ring-line sm:p-5">
+        <div className="mt-6 border-y border-line py-4 sm:py-6">
           <svg viewBox="0 0 800 500" className="h-auto w-full" role="group" aria-label="Grundriss eines Büros. Wählen Sie einen Bereich.">
             {zones.map((z) => {
               const [x, y, w, h] = z.rect
@@ -115,17 +104,17 @@ export function FloorPlan() {
                     y={y}
                     width={w}
                     height={h}
-                    fill={on ? 'rgb(31 94 255 / 0.12)' : '#fff'}
+                    fill={on ? 'rgb(26 79 224 / 0.1)' : 'var(--color-paper)'}
                     stroke={on ? 'var(--color-blue)' : LINE}
-                    strokeWidth={on ? 3 : 2}
-                    className="transition-[fill] duration-300 group-hover:fill-[rgb(31_94_255/0.06)] group-focus-visible:stroke-[var(--color-blue)]"
+                    strokeWidth={on ? 2.5 : 1.5}
+                    className="transition-[fill] duration-300 group-hover:fill-[rgb(14_16_19/0.04)] group-focus-visible:stroke-[var(--color-blue)]"
                   />
                 </g>
               )
             })}
             <Furniture />
             {/* Außenwand */}
-            <rect x="20" y="20" width="760" height="460" fill="none" stroke="var(--color-ink)" strokeWidth="4" pointerEvents="none" />
+            <rect x="20" y="20" width="760" height="460" fill="none" stroke="var(--color-ink)" strokeWidth="3" pointerEvents="none" />
             {/* Beschriftung */}
             {zones.map((z) => {
               const [x, y, w, h] = z.rect
@@ -137,8 +126,8 @@ export function FloorPlan() {
                   x={label.x}
                   y={label.y}
                   textAnchor={z.id === 'flur' ? 'middle' : 'start'}
-                  fontSize="17"
-                  fontWeight="600"
+                  fontSize="16"
+                  fontWeight="500"
                   fill={on ? 'var(--color-blue)' : 'var(--color-ink)'}
                   pointerEvents="none"
                 >
@@ -149,18 +138,15 @@ export function FloorPlan() {
           </svg>
         </div>
 
-        {/* Bereiche als Chips (zusätzlich zum Grundriss, gut zu treffen auf dem Handy) */}
-        <ul className="mt-4 flex flex-wrap gap-2" aria-label="Bereiche">
+        {/* Bereiche als Textauswahl (zusätzlich zum Grundriss, gut zu treffen auf dem Handy) */}
+        <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-1" aria-label="Bereiche">
           {zones.map((z) => (
             <li key={z.id}>
               <button
                 type="button"
                 onClick={() => setActive(z.id)}
                 aria-pressed={z.id === active}
-                className={cn(
-                  'min-h-10 rounded-full px-4 text-sm font-medium ring-1 transition',
-                  z.id === active ? 'bg-ink text-white ring-ink' : 'bg-white text-ink ring-line hover:ring-ink/25',
-                )}
+                className={cn('ulink min-h-10 text-[0.9375rem] transition-colors', z.id === active ? 'bg-[length:100%_1px] text-ink' : 'text-muted hover:text-ink')}
               >
                 {z.name}
               </button>
@@ -170,32 +156,24 @@ export function FloorPlan() {
       </div>
 
       <div className="lg:col-span-5">
-        <div className="rounded-panel bg-white p-6 shadow-soft ring-1 ring-line sm:p-8 lg:sticky lg:top-28" aria-live="polite">
+        <div className="lg:sticky lg:top-28" aria-live="polite">
           <AnimatePresence mode="wait" initial={false}>
-            <motion.div key={zone.id + interval} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.25 }}>
-              <p className="text-xs font-semibold tracking-[0.12em] text-blue-hover uppercase">Leistungen im Bereich</p>
-              <h3 className="mt-1.5 text-2xl font-semibold tracking-tight">{zone.name}</h3>
-              <ul className="mt-6 space-y-3.5">
+            <motion.div key={zone.id + interval} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.3, ease: EASE_CS_ARRAY }}>
+              <p className="t-label">Leistungen im Bereich</p>
+              <h3 className="t-h3 mt-3">{zone.name}</h3>
+              <ul className="mt-6 border-t border-line">
                 {zone.tasks.map((t) => (
-                  <li key={t.task} className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-1 min-[400px]:grid-cols-[auto_minmax(0,1fr)_auto]">
-                    <Check aria-hidden className="mt-1 size-4 shrink-0 text-fresh-ink" strokeWidth={3} />
-                    <span className="text-ink/90">{t.task}</span>
-                    <span
-                      className={cn('col-start-2 justify-self-start rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap min-[400px]:col-start-auto', badge[t.freq])}
-                    >
-                      {freqLabel(t.freq, interval)}
-                    </span>
+                  <li key={t.task} className="grid grid-cols-1 gap-x-4 gap-y-1 border-b border-line py-3 min-[400px]:grid-cols-[minmax(0,1fr)_auto]">
+                    <span className="text-ink">{t.task}</span>
+                    <span className={cn('font-mono text-[0.8125rem] whitespace-nowrap min-[400px]:pt-0.5 min-[400px]:text-right', freqCls[t.freq])}>{freqLabel(t.freq, interval)}</span>
                   </li>
                 ))}
               </ul>
             </motion.div>
           </AnimatePresence>
-          <p className="mt-8 flex gap-3 border-t border-line pt-5 text-sm text-ink">
-            <FileText aria-hidden className="mt-0.5 size-5 shrink-0 text-blue" />
-            <span>
-              <strong className="font-semibold">Dieses Leistungsverzeichnis bekommen Sie für Ihr Objekt schriftlich.</strong>{' '}
-              <span className="text-muted">Das hier ist unser Standard. Nach der Besichtigung passen wir es Raum für Raum an.</span>
-            </span>
+          <p className="mt-8 text-[0.9375rem] text-ink-2">
+            <span className="font-medium text-ink">Dieses Leistungsverzeichnis bekommen Sie für Ihr Objekt schriftlich.</span> Das hier ist unser Standard. Nach der Besichtigung passen wir es
+            Raum für Raum an.
           </p>
         </div>
       </div>

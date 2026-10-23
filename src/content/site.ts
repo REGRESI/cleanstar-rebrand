@@ -10,6 +10,8 @@ import { company } from './company'
  */
 export const brand = {
   promise: 'Sauber. Ohne dass Sie nachfragen müssen.',
+  /** Mit festem Umbruch nach „Sauber.“ für große Satzspiegel */
+  promiseSet: 'Sauber.\nOhne dass Sie nachfragen müssen.',
   /** Für große Satzspiegel: zwei Teile */
   promiseLead: 'Sauber.',
   promiseRest: 'Ohne dass Sie nachfragen müssen.',
@@ -34,7 +36,7 @@ export const home = {
     /** Kleine Zeile in Monospace, Teil der H1 (Keyword für Google) */
     kicker: 'Büroreinigung in Offenburg und im Ortenaukreis',
     /** Große Zeile der H1: das Markenversprechen */
-    headline: 'Sauber. Ohne dass Sie nachfragen müssen.',
+    headline: 'Sauber.\nOhne dass Sie nachfragen müssen.',
     cta: 'Kostenlose Besichtigung',
     /** Untertitel zum Scroll-Video: Flug ins Gebäude, Feierabend und Reinigung, Morgen */
     sceneSteps: ['Scrollen Sie, um durch das Büro zu gehen', 'Wir kommen, wenn Sie gehen', 'Am Morgen: makellos'],

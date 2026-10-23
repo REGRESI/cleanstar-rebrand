@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { CalendarCheck, Check, Phone, ShieldCheck } from 'lucide-react'
 import { company } from '@/content/company'
 import { Picture } from '@/components/ui/Picture'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
@@ -23,69 +22,66 @@ export function BookingEmbed() {
   if (consent && url) {
     const src = `${url}${url.includes('?') ? '&' : '?'}embed=true&theme=light&layout=month_view`
     return (
-      <div className="overflow-hidden rounded-panel bg-white ring-1 ring-line">
+      <div className="overflow-hidden border-y border-line bg-paper">
         <iframe src={src} title="Objektbesichtigung online buchen (Cal.com)" className="h-[720px] w-full" loading="lazy" />
       </div>
     )
   }
 
   return (
-    <div className="grid grid-cols-1 overflow-hidden rounded-panel bg-white shadow-soft ring-1 ring-line lg:grid-cols-2">
-      <div className="p-6 sm:p-10">
-        <div className="flex -space-x-3">
+    <div className="grid-site gap-y-14">
+      <div className="col-span-12 lg:col-span-6">
+        <ul className="grid max-w-sm grid-cols-3 gap-3">
           {company.founders.map((f) => (
-            <span key={f.image} className="block size-14 overflow-hidden rounded-full ring-4 ring-white">
-              <Picture id={f.image as ImageId} compact rounded="rounded-none" className="h-full w-full aspect-auto!" sizes="56px" />
-            </span>
+            <li key={f.image}>
+              <Picture id={f.image as ImageId} compact ratio="4:5" sizes="120px" />
+              <p className="mt-2 font-mono text-[0.75rem] text-muted">{f.name?.split(' ')[0]}</p>
+            </li>
           ))}
-        </div>
-        <p className="mt-5 text-xl font-semibold tracking-tight">Sie sprechen direkt mit einem von uns.</p>
-        <p className="mt-2 text-muted">
+        </ul>
+        <p className="t-h4 mt-8">Sie sprechen direkt mit einem von uns.</p>
+        <p className="mt-2 text-ink-2">
           {company.founders
             .map((f) => f.name?.split(' ')[0])
             .join(', ')
             .replace(/, ([^,]*)$/, ' oder $1')}
           . Kein Vertreter, kein Callcenter.
         </p>
-        <ul className="mt-6 space-y-3">
-          {points.map((p) => (
-            <li key={p} className="flex items-start gap-3 text-ink">
-              <Check aria-hidden className="mt-1 size-4 shrink-0 text-fresh-ink" strokeWidth={3} />
+        <ol className="mt-8 border-t border-line">
+          {points.map((p, i) => (
+            <li key={p} className="flex gap-5 border-b border-line py-3.5">
+              <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
               {p}
             </li>
           ))}
-        </ul>
+        </ol>
       </div>
-      <div className="flex flex-col justify-center border-t border-line bg-glacier p-6 sm:p-10 lg:border-t-0 lg:border-l">
-        <span aria-hidden className="grid size-12 place-items-center rounded-2xl bg-white text-blue shadow-soft">
-          <CalendarCheck className="size-6" />
-        </span>
-        <h3 className="mt-5 text-2xl font-semibold tracking-tight">Termin im Kalender wählen</h3>
-        {url ? (
-          <>
-            <p className="mt-2 text-muted">Freie Termine sehen und direkt buchen. Dauert eine Minute.</p>
-            <button
-              type="button"
-              onClick={() => setConsent(true)}
-              className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 self-start rounded-full bg-blue px-6 font-semibold text-white shadow-glow transition hover:bg-blue-hover max-sm:w-full"
-            >
-              Kalender laden
-            </button>
-            <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted">
-              <ShieldCheck aria-hidden className="mt-0.5 size-4 shrink-0" />
-              Mit dem Klick wird der Buchungskalender von Cal.com geladen. Dabei werden Daten (z. B. Ihre IP-Adresse) an Cal.com übertragen. Details in der Datenschutzerklärung.
-            </p>
-          </>
-        ) : (
-          <div className="btn-row mt-6 flex flex-wrap gap-3">
-            <QuoteButton arrow>Termin anfragen</QuoteButton>
+      <div className="col-span-12 lg:col-span-5 lg:col-start-8">
+        <div className="on-dark bg-night p-6 text-paper sm:p-10">
+          <p className="t-label">Online buchen</p>
+          <h3 className="t-h3 mt-4">Termin im Kalender wählen</h3>
+          {url ? (
+            <>
+              <p className="mt-3 text-muted-dark">Freie Termine sehen und direkt buchen. Dauert eine Minute.</p>
+              <button type="button" onClick={() => setConsent(true)} className="btn btn-primary mt-8 max-sm:w-full">
+                Kalender laden
+              </button>
+              <p className="mt-5 font-mono text-[0.75rem] leading-relaxed text-muted-dark">
+                Mit dem Klick wird der Buchungskalender von Cal.com geladen. Dabei werden Daten (z. B. Ihre IP-Adresse) an Cal.com übertragen. Details in der Datenschutzerklärung.
+              </p>
+            </>
+          ) : (
+            <div className="btn-row mt-8 flex flex-wrap gap-3">
+              <QuoteButton arrow>Termin anfragen</QuoteButton>
+            </div>
+          )}
+          <div className="mt-8 flex flex-col gap-2 border-t border-line-dark pt-6">
+            <a href={company.phone.href} className="ulink self-start text-paper">
+              Lieber telefonisch: {company.phone.display}
+            </a>
+            <CallbackButton dark className="self-start" />
           </div>
-        )}
-        <a href={company.phone.href} className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-ink hover:text-blue">
-          <Phone aria-hidden className="size-4 text-blue" />
-          Lieber telefonisch: {company.phone.display}
-        </a>
-        <CallbackButton className="mt-1 flex" />
+        </div>
       </div>
     </div>
   )

@@ -1,4 +1,3 @@
-import { ClipboardList, KeyRound, MessagesSquare, FileText } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -9,6 +8,8 @@ import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { Button } from '@/components/ui/Button'
 import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
 import { breadcrumbSchema } from '@/lib/schema'
+import { SwitchCalculator } from '@/features/tools/SwitchCalculator'
+import { RevealText } from '@/components/ui/RevealText'
 
 const trail = [
   { name: 'Startseite', path: '/' },
@@ -17,7 +18,6 @@ const trail = [
 
 const details = [
   {
-    icon: ClipboardList,
     title: 'Bei der Besichtigung',
     items: [
       'Rundgang durch alle Räume, die gereinigt werden sollen',
@@ -27,7 +27,6 @@ const details = [
     ],
   },
   {
-    icon: FileText,
     title: 'Im Angebot',
     items: [
       'Leistungsverzeichnis Raum für Raum',
@@ -37,12 +36,10 @@ const details = [
     ],
   },
   {
-    icon: KeyRound,
     title: 'Zum Start',
     items: ['Schlüsselübergabe mit Protokoll', 'Einweisung des festen Teams vor Ort', 'Notfall- und Vertretungsregel', 'Direkte Telefonnummer Ihres Ansprechpartners'],
   },
   {
-    icon: MessagesSquare,
     title: 'Im laufenden Betrieb',
     items: ['Regelmäßige Qualitätskontrollen', 'Kurze Abstimmung mit Ihnen nach Bedarf', 'Änderungen schriftlich bestätigt', 'Kostenlose Nachreinigung bei Reklamation'],
   },
@@ -63,30 +60,30 @@ export default function Process() {
         title="So arbeiten wir zusammen."
         lead="Sechs klare Schritte, ohne Überraschungen. Ihr Aufwand: ein Termin für die Besichtigung. Den Rest organisieren wir, und im ersten Monat können Sie jederzeit kündigen."
         image="inspection"
+        caption="Objektbesichtigung"
         actions={
           <>
             <QuoteButton size="lg" arrow>
               Jetzt anfragen
             </QuoteButton>
-            <Button to="/kontakt#besichtigung" variant="secondary" size="lg">
+            <Button to="/kontakt#besichtigung" variant="link">
               Besichtigung buchen
             </Button>
           </>
         }
       />
-      <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" />
-      <section className="bg-glacier py-24 sm:py-32" aria-labelledby="details-title">
+      <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" index="01" />
+      <section className="section pt-0!" aria-labelledby="details-title">
         <div className="container-site">
-          <SectionHeading eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />
-          <ul className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2">
+          <SectionHeading layout="rail" index="02" eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />
+          <ul className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4">
             {details.map((d) => (
-              <li key={d.title} className="rounded-card bg-white p-6 ring-1 ring-line sm:p-8" data-reveal>
-                <d.icon aria-hidden className="size-7 text-blue" strokeWidth={1.6} />
-                <h3 className="mt-5 text-xl font-semibold tracking-tight">{d.title}</h3>
-                <ul className="mt-4 space-y-2 text-muted">
+              <li key={d.title} className="relative pt-6" data-reveal>
+                <span aria-hidden data-reveal-rule className="rule absolute inset-x-0 top-0" />
+                <h3 className="text-[1.375rem] leading-[1.2] font-medium tracking-[-0.02em]">{d.title}</h3>
+                <ul className="mt-5 border-t border-line">
                   {d.items.map((i) => (
-                    <li key={i} className="flex gap-3">
-                      <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-fresh" />
+                    <li key={i} className="border-b border-line py-3 text-[1rem] text-ink-2">
                       {i}
                     </li>
                   ))}
@@ -96,21 +93,36 @@ export default function Process() {
           </ul>
         </div>
       </section>
-      <section className="py-24 sm:py-32" aria-labelledby="trial-title">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
-          <div>
-            <SectionHeading
-              eyebrow="Erster Monat"
-              title="Erst überzeugen, dann binden."
-              id="trial-title"
-              text="Im ersten Monat können Sie jederzeit kündigen, ohne Frist. Sie sehen jeden Morgen, wie Ihr Büro aussieht, und entscheiden dann. Eine einzelne Probereinigung vor dem Start ist auf Wunsch nach Absprache möglich."
-            />
-            <div className="mt-8" data-reveal>
-              <RiskFreeSeal variant="card" />
+      <section className="on-dark section bg-night text-paper" aria-labelledby="trial-title">
+        <div className="container-site grid-site gap-y-12 lg:items-end">
+          <div className="col-span-12 lg:col-span-6">
+            <p className="t-label mb-6">03 / Erster Monat</p>
+            <RevealText as="h2" text="Erst überzeugen, dann binden." id="trial-title" className="t-h1" />
+            <p className="t-lead measure mt-8" data-reveal>
+              Im ersten Monat können Sie jederzeit kündigen, ohne Frist. Sie sehen jeden Morgen, wie Ihr Büro aussieht, und entscheiden dann. Eine einzelne Probereinigung vor dem
+              Start ist auf Wunsch nach Absprache möglich.
+            </p>
+            <div className="mt-10" data-reveal>
+              <RiskFreeSeal variant="card" dark />
             </div>
           </div>
-          <div data-reveal>
-            <Picture id="trial-clean" sizes="(min-width:1024px) 50vw, 100vw" />
+          <div className="col-span-12 lg:col-span-5 lg:col-start-8">
+            <Picture id="trial-clean" ratio="4:5" reveal tone="dark" sizes="(min-width:1024px) 40vw, 100vw" />
+          </div>
+        </div>
+      </section>
+      <section id="wechsel" className="section scroll-mt-24" aria-labelledby="switch-title">
+        <div className="container-site">
+          <SectionHeading
+            layout="split"
+            index="04"
+            eyebrow="Wechsel-Rechner"
+            title="Wann können Sie wechseln?"
+            id="switch-title"
+            text="Geben Sie Ihre aktuelle Kündigungsfrist ein. Sie sehen, bis wann Sie kündigen müssen und ab wann wir starten können."
+          />
+          <div className="mt-14 lg:mt-20" data-reveal>
+            <SwitchCalculator />
           </div>
         </div>
       </section>

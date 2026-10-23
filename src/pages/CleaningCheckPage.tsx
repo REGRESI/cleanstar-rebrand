@@ -24,9 +24,11 @@ export default function CleaningCheckPage() {
         title="Wie gut ist Ihre aktuelle Reinigung?"
         lead={`${checkQuestions.length} kurze Fragen, zwei Minuten. Sie bekommen eine ehrliche Auswertung und drei konkrete Hinweise. Ohne Anmeldung, nichts wird gespeichert.`}
       />
-      <section className="pb-24 sm:pb-32" aria-label="Fragen">
-        <div className="container-site max-w-3xl">
-          <CleaningCheck />
+      <section className="pb-24 lg:pb-40" aria-label="Fragen">
+        <div className="container-site grid-site">
+          <div className="col-span-12 lg:col-span-8 lg:col-start-4">
+            <CleaningCheck />
+          </div>
         </div>
       </section>
     </>

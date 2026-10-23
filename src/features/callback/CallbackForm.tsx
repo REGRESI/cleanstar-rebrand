@@ -2,11 +2,10 @@ import { useId, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { CheckCircle2, Info, Loader2, PhoneIncoming } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { Honeypot, PrivacyCheckbox, TextField } from '@/features/forms/fields'
 import { submitForm } from '@/features/forms/submit'
 import { company } from '@/content/company'
-import { cn } from '@/lib/cn'
 
 const when = [
   { id: 'sofort', label: 'So schnell wie möglich' },
@@ -69,51 +68,42 @@ export default function CallbackForm({ onDone }: { onDone?: () => void }) {
 
   if (sent)
     return (
-      <div role="status" className="p-6 sm:p-8">
-        <CheckCircle2 aria-hidden className="size-10 text-fresh-ink" />
-        <h2 className="mt-4 text-2xl font-semibold tracking-tight">Wir rufen Sie zur gewünschten Zeit an.</h2>
-        <p className="mt-2 text-muted">Ihre Wunschzeit: {sent.when}.</p>
+      <div role="status" className="p-7 sm:p-10">
+        <p className="t-label">Gesendet</p>
+        <h2 className="t-h3 mt-4">Wir rufen Sie zur gewünschten Zeit an.</h2>
+        <p className="mt-3 text-ink-2">Ihre Wunschzeit: {sent.when}.</p>
         {sent.preview && (
-          <p className="mt-5 flex gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200">
-            <Info aria-hidden className="size-5 shrink-0" />
+          <p className="mt-6 flex gap-3 border-l border-ink pl-4 text-[0.9375rem] text-ink-2">
             <span>
               <strong>Vorschau-Modus:</strong> Es ist kein Formular-Endpunkt eingetragen. Die Anfrage wurde nicht gesendet.
             </span>
           </p>
         )}
-        <button type="button" onClick={onDone} className="mt-6 inline-flex min-h-11 items-center rounded-full bg-ink px-5 font-semibold text-white">
+        <button type="button" onClick={onDone} className="btn btn-outline mt-6">
           Schließen
         </button>
       </div>
     )
 
   return (
-    <form onSubmit={onSubmit} noValidate className="relative space-y-5 p-6 sm:p-8">
+    <form onSubmit={onSubmit} noValidate className="relative space-y-8 p-7 sm:p-10">
       <div className="pr-10">
-        <p className="flex items-center gap-2 text-sm font-semibold text-blue-hover">
-          <PhoneIncoming aria-hidden className="size-4" />
-          {company.availability}
-        </p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight">Rückruf anfordern</h2>
-        <p className="mt-1 text-muted">Sagen Sie uns, wann es Ihnen passt. Wir rufen Sie an.</p>
+        <p className="t-label">{company.availability}</p>
+        <h2 className="t-h3 mt-3">Rückruf anfordern</h2>
+        <p className="mt-2 text-ink-2">Sagen Sie uns, wann es Ihnen passt. Wir rufen Sie an.</p>
       </div>
       <Honeypot {...register('botcheck')} />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2">
         <TextField label="Name" autoComplete="name" data-autofocus error={errors.name?.message} {...register('name')} />
         <TextField label="Telefonnummer" type="tel" inputMode="tel" autoComplete="tel" error={errors.phone?.message} {...register('phone')} />
       </div>
       <fieldset>
-        <legend className="mb-2 text-sm font-medium text-ink">Wunschzeit</legend>
+        <legend className="field-label mb-3">Wunschzeit</legend>
         <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-3">
           {when.map((o) => (
             <label key={o.id} className="relative">
               <input type="radio" value={o.id} className="peer sr-only" {...register('when')} />
-              <span
-                className={cn(
-                  'flex min-h-12 cursor-pointer items-center justify-center rounded-xl bg-white px-3 text-center text-sm leading-tight font-medium ring-1 ring-line transition',
-                  'peer-checked:bg-blue-soft/50 peer-checked:text-blue-hover peer-checked:ring-2 peer-checked:ring-blue peer-focus-visible:ring-2 peer-focus-visible:ring-blue',
-                )}
-              >
+              <span className="choice cursor-pointer justify-center text-center text-[0.9375rem] font-normal peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-blue">
                 {o.label}
               </span>
             </label>
@@ -122,7 +112,7 @@ export default function CallbackForm({ onDone }: { onDone?: () => void }) {
       </fieldset>
       {w !== 'sofort' && (
         <div>
-          <label htmlFor={timeId} className="mb-1.5 block text-sm font-medium text-ink">
+          <label htmlFor={timeId} className="field-label mb-1">
             Uhrzeit ({w === 'heute' ? 'heute' : fmtDay(1)})
           </label>
           <input
@@ -130,11 +120,11 @@ export default function CallbackForm({ onDone }: { onDone?: () => void }) {
             type="time"
             step={900}
             aria-invalid={!!errors.time}
-            className="block w-full rounded-xl border-0 bg-white px-4 py-3.5 text-base text-ink shadow-[inset_0_0_0_1px_var(--color-line)] focus:shadow-[inset_0_0_0_2px_var(--color-blue)] focus:outline-none sm:max-w-48"
+            className="field block sm:max-w-48"
             {...register('time')}
           />
           {errors.time && (
-            <p role="alert" className="mt-1.5 text-sm text-danger">
+            <p role="alert" className="mt-2 text-[0.875rem] text-danger">
               {errors.time.message}
             </p>
           )}
@@ -143,17 +133,17 @@ export default function CallbackForm({ onDone }: { onDone?: () => void }) {
       <TextField label="Worum geht es?" optional placeholder="z. B. Büroreinigung, ca. 300 m²" {...register('topic')} />
       <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
       {error && (
-        <p role="alert" className="rounded-xl bg-danger/10 p-4 text-sm text-danger">
+        <p role="alert" className="border-l border-danger pl-4 text-[0.9375rem] text-danger">
           {error}
         </p>
       )}
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-blue px-6 font-semibold text-white shadow-glow transition hover:bg-blue-hover active:bg-blue-hover disabled:opacity-70 sm:w-auto"
+        className="btn btn-primary w-full sm:w-auto"
       >
-        {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <PhoneIncoming aria-hidden className="size-4" />}
         Rückruf anfordern
+        {isSubmitting && <Loader2 aria-hidden className="size-4 animate-spin" />}
       </button>
     </form>
   )

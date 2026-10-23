@@ -1,5 +1,4 @@
 import { Link, useParams } from 'react-router-dom'
-import { ArrowUpRight, Clock, MapPin, Phone } from 'lucide-react'
 import { getLocation, locations, shortName } from '@/content/locations'
 import { officeCities } from '@/content/officeCities'
 import { services, getService } from '@/content/services'
@@ -8,8 +7,9 @@ import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { Accordion } from '@/components/ui/Accordion'
-import { ServiceIcon } from '@/components/ui/ServiceIcon'
+import { FaqBlock } from '@/components/ui/FaqBlock'
+import { InlineLinks, LinkRows, NumberedRows } from '@/components/ui/Editorial'
+import { RevealText } from '@/components/ui/RevealText'
 import { FinalCta } from '@/components/home/FinalCta'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { Button } from '@/components/ui/Button'
@@ -78,47 +78,48 @@ export default function Location() {
         actions={
           <>
             <QuoteButton size="lg" arrow />
-            <Button href={company.phone.href} variant="secondary" size="lg" icon={<Phone aria-hidden className="size-4 text-blue" />}>
+            <Button href={company.phone.href} variant="link">
               {company.phone.display}
             </Button>
           </>
         }
       >
-        <div className="fade-up-now mt-4" style={{ ['--d' as string]: '0.65s' }}>
+        <div className="fade-up-now mt-5" style={{ ['--d' as string]: '0.65s' }}>
           <CallbackButton />
         </div>
-        <ul className="fade-up-now mt-8 flex flex-wrap gap-3 text-sm" style={{ ['--d' as string]: '0.7s' }}>
-          <li className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-line">
-            <Clock aria-hidden className="size-4 text-blue" />
-            {hq ? 'Unser Sitz' : `ca. ${l.minutes} Min. von Offenburg`}
-          </li>
-          <li className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-line">
-            <MapPin aria-hidden className="size-4 text-blue" />
-            Ortenaukreis
-          </li>
-        </ul>
+        <p className="t-label fade-up-now mt-10 border-t border-line pt-4" style={{ ['--d' as string]: '0.7s' }}>
+          {hq ? 'Unser Sitz' : `ca.\u00A0${l.minutes}\u00A0Min. von Offenburg`} · {company.serviceArea}
+        </p>
       </PageHero>
-      <Answer className="pt-12 sm:pt-16">
+      <Answer className="pt-4">
         {hq
           ? `CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg und reinigt Büros, Praxen und Gewerbeflächen in der ganzen Stadt, mit festem Team und festem Ansprechpartner.`
           : `CleanStar ist eine Reinigungsfirma aus Offenburg und reinigt Büros, Praxen und Gewerbeflächen in ${short}, rund ${l.minutes} Minuten von unserem Sitz entfernt, mit festem Team und festem Ansprechpartner.`}
       </Answer>
 
-      <section className="py-24 sm:py-32" aria-labelledby="loc-detail">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <SectionHeading eyebrow={`Für Unternehmen in ${short}`} title="So arbeiten wir bei Ihnen." id="loc-detail" />
+      <section className="section" aria-labelledby="loc-detail">
+        <div className="container-site grid-site gap-y-10">
+          <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+          <div className="col-span-12 lg:col-span-4">
+            <p className="t-label mb-6">Für Unternehmen in {short}</p>
+            <RevealText as="h2" text="So arbeiten wir bei Ihnen." id="loc-detail" className="t-h3" />
           </div>
-          <div className="lg:col-span-7" data-reveal>
-            <p className="text-lg leading-relaxed text-ink/85">{l.detail}</p>
-            <h3 className="mt-10 text-lg font-semibold tracking-tight">Lage und Anfahrt</h3>
-            <p className="mt-2 leading-relaxed text-ink/85">{l.route}</p>
-            <h3 className="mt-8 text-lg font-semibold tracking-tight">Betriebe in {short}</h3>
-            <p className="mt-2 leading-relaxed text-ink/85">{l.economy}</p>
-            <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {['Fester Ansprechpartner', 'Festes, eingewiesenes Team', 'Ersatzkraft bei Ausfall', 'Kostenlose Nachreinigung'].map((t) => (
-                <li key={t} className="flex items-center gap-3 rounded-2xl bg-glacier px-4 py-3 font-medium">
-                  <span aria-hidden className="size-2 rounded-full bg-fresh" />
+          <div className="col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
+            <p className="t-lead">{l.detail}</p>
+            <div className="mt-12 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2">
+              <div className="border-t border-line pt-5">
+                <h3 className="t-label">Lage und Anfahrt</h3>
+                <p className="mt-3 text-ink-2">{l.route}</p>
+              </div>
+              <div className="border-t border-line pt-5">
+                <h3 className="t-label">Betriebe in {short}</h3>
+                <p className="mt-3 text-ink-2">{l.economy}</p>
+              </div>
+            </div>
+            <ul className="mt-12 border-t border-line">
+              {['Fester Ansprechpartner', 'Festes, eingewiesenes Team', 'Ersatzkraft bei Ausfall', 'Kostenlose Nachreinigung'].map((t, i) => (
+                <li key={t} className="flex gap-5 border-b border-line py-3.5">
+                  <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
                   {t}
                 </li>
               ))}
@@ -127,106 +128,60 @@ export default function Location() {
         </div>
       </section>
 
-      <section className="pb-24 sm:pb-32" aria-labelledby="loc-focus">
+      <section className="section pt-0!" aria-labelledby="loc-focus">
         <div className="container-site">
-          <SectionHeading eyebrow={`Gefragt in ${short}`} title={`Was Unternehmen in ${short} bei uns buchen.`} id="loc-focus" />
-          <ul className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
-            {l.focus.map((f) => {
+          <SectionHeading layout="rail" eyebrow={`Gefragt in ${short}`} title={`Was Unternehmen in ${short} bei uns buchen.`} id="loc-focus" />
+          <NumberedRows
+            className="mt-14 lg:mt-20"
+            items={l.focus.map((f) => {
               const sv = getService(f.service)!
-              return (
-                <li key={f.service} data-reveal>
-                  <Link
-                    to={`/leistungen/${sv.slug}`}
-                    className="group flex h-full flex-col rounded-card bg-white p-6 shadow-soft ring-1 ring-line transition hover:ring-blue/30 active:ring-blue"
-                  >
-                    <span className="grid size-11 place-items-center rounded-xl bg-glacier text-blue">
-                      <ServiceIcon icon={sv.icon} className="size-5" />
-                    </span>
-                    <span className="mt-4 text-lg font-semibold tracking-tight">
-                      {sv.name} in {short}
-                    </span>
-                    <span className="mt-2 flex-1 text-muted">{f.why}</span>
-                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-blue">
-                      Zur Leistung <ArrowUpRight aria-hidden className="size-4" />
-                    </span>
+              return {
+                key: f.service,
+                title: (
+                  <Link to={`/leistungen/${sv.slug}`} className="ulink">
+                    {sv.name} in {short}
                   </Link>
-                </li>
-              )
+                ),
+                text: f.why,
+              }
             })}
-          </ul>
+          />
           {city && (
-            <p className="mt-8">
-              <Link to={`/bueroreinigung/${city.slug}`} className="inline-flex items-center gap-2 font-semibold text-blue underline-offset-4 hover:underline">
-                Alles zur Büroreinigung in {short}: Ablauf, Preise und Beispiele <ArrowUpRight aria-hidden className="size-4" />
-              </Link>
+            <p className="mt-10">
+              <Button to={`/bueroreinigung/${city.slug}`} variant="link">
+                Alles zur Büroreinigung in {short}: Ablauf, Preise und Beispiele
+              </Button>
             </p>
           )}
         </div>
       </section>
 
-      <section className="bg-glacier py-24 sm:py-32" aria-labelledby="loc-services">
-        <div className="container-site">
-          <SectionHeading eyebrow="Leistungen" title={`Unsere Leistungen in ${short}.`} id="loc-services" />
-          <ul className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((s) => (
-              <li key={s.slug} data-reveal>
-                <Link
-                  to={`/leistungen/${s.slug}`}
-                  className="group flex h-full items-start gap-4 rounded-card bg-white p-5 ring-1 ring-line transition hover:shadow-soft hover:ring-blue/30"
-                >
-                  <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-glacier text-blue">
-                    <ServiceIcon icon={s.icon} className="size-5" />
-                  </span>
-                  <span className="flex-1">
-                    <span className="block font-semibold">
-                      {s.name} {short}
-                    </span>
-                    <span className="mt-1 block text-sm text-muted">{s.short}</span>
-                  </span>
-                  <ArrowUpRight aria-hidden className="size-4 text-muted transition group-hover:text-blue" />
-                </Link>
-              </li>
-            ))}
-          </ul>
+      <section className="section pt-0!" aria-labelledby="loc-services">
+        <div className="container-site grid-site gap-y-10">
+          <div className="col-span-12 lg:col-span-4">
+            <p className="t-label mb-6">Leistungen</p>
+            <RevealText as="h2" text={`Unsere Leistungen in ${short}.`} id="loc-services" className="t-h3" />
+          </div>
+          <div className="col-span-12 lg:col-span-8">
+            <LinkRows items={services.map((s) => ({ to: `/leistungen/${s.slug}`, label: `${s.name} ${short}` }))} numbered />
+          </div>
         </div>
       </section>
 
-      <section className="py-24 sm:py-32" aria-labelledby="loc-faq">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <SectionHeading eyebrow="Fragen" title={`Reinigung in ${short}: kurz beantwortet.`} id="loc-faq" />
-          </div>
-          <div className="lg:col-span-8" data-reveal>
-            <Accordion items={faqs.map((f) => ({ title: f.q, content: f.a }))} />
-          </div>
-        </div>
-      </section>
+      <FaqBlock className="section pt-0!" title={`Reinigung in ${short}: kurz beantwortet.`} id="loc-faq" items={faqs.map((f) => ({ title: f.q, content: f.a }))} />
 
       {nearby.length > 0 && (
-        <section className="pb-24 sm:pb-32" aria-labelledby="loc-near">
-          <div className="container-site">
-            <h2 id="loc-near" className="text-xl font-semibold tracking-tight">
+        <nav className="container-site pb-24 lg:pb-36" aria-labelledby="loc-near">
+          <div className="grid-site gap-y-5 border-t border-line pt-6">
+            <h2 id="loc-near" className="t-label col-span-12 lg:col-span-4">
               Auch in der Nähe
             </h2>
-            <ul className="mt-6 flex flex-wrap gap-2.5">
-              {nearby.map((n) => (
-                <li key={n!.slug}>
-                  <Link
-                    to={`/einzugsgebiet/${n!.slug}`}
-                    className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium ring-1 ring-line transition hover:ring-blue/40"
-                  >
-                    Reinigungsfirma {shortName(n!)}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link to="/einzugsgebiet" className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-blue">
-                  Alle {locations.length} Orte
-                </Link>
-              </li>
-            </ul>
+            <InlineLinks
+              className="col-span-12 lg:col-span-8"
+              items={nearby.map((n) => ({ to: `/einzugsgebiet/${n!.slug}`, label: `Reinigungsfirma ${shortName(n!)}` })).concat([{ to: '/einzugsgebiet', label: `Alle ${locations.length} Orte` }])}
+            />
           </div>
-        </section>
+        </nav>
       )}
       <FinalCta headline={`Ihr Büro in ${short}. Sauber, ohne dass Sie sich kümmern müssen.`} />
     </>

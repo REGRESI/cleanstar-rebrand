@@ -67,7 +67,7 @@ export function Footer() {
       <div className="container-site">
         {/* Schlusssatz: das Markenversprechen */}
         <div className="grid-site gap-y-10 pt-24 pb-20 lg:pt-40 lg:pb-32">
-          <RevealText as="p" text={brand.promise} className="col-span-12 max-w-[15ch] text-[clamp(2.75rem,1rem+6.2vw,7.5rem)] leading-[0.98] font-medium tracking-[-0.045em] lg:col-span-10" />
+          <RevealText as="p" text={brand.promiseSet} className="col-span-12 text-[clamp(2.75rem,1rem+6.2vw,7.5rem)] leading-[0.98] font-medium tracking-[-0.045em] lg:col-span-10" />
           <div className="col-span-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10" data-reveal>
             <QuoteButton variant="link" className="text-lg">
               Kostenlose Besichtigung anfragen

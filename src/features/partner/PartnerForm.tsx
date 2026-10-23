@@ -190,7 +190,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
         <h3 className="mt-6 text-3xl font-semibold tracking-tight">Vielen Dank für Ihr Interesse.</h3>
         <p className="mt-3 text-muted">Wir melden uns persönlich bei Ihnen, um ein unverbindliches Erstgespräch zu vereinbaren.</p>
         {done.preview && (
-          <p className="mt-5 flex gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200">
+          <p className="mt-6 flex gap-3 border-l border-ink pl-4 text-[0.9375rem] text-ink-2">
             <Info aria-hidden className="size-5 shrink-0" />
             <span>
               <strong>Vorschau-Modus:</strong> Es ist noch kein Formular-Endpunkt eingetragen (src/content/company.ts → forms). Die Anfrage wurde nicht gesendet.
@@ -267,12 +267,12 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
 
             {step === 1 && v.way === 'bestand' && (
               <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2">
                   <TextField label="Firmenname" autoComplete="organization" error={errors.companyName?.message} {...register('companyName')} />
                   <TextField label="Seit wann gibt es die Firma?" placeholder="z. B. 2015" inputMode="numeric" error={errors.since?.message} {...register('since')} />
                 </div>
                 <fieldset>
-                  <legend className="mb-2 text-sm font-medium text-ink">Anzahl Mitarbeitende</legend>
+                  <legend className="field-label mb-3">Anzahl Mitarbeitende</legend>
                   <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                     {opt.employees.map((o) => (
                       <ChoiceCard key={o} type="radio" value={o} label={o} className="p-3" {...register('employees')} />
@@ -281,7 +281,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                   <Err msg={errors.employees?.message} />
                 </fieldset>
                 <fieldset>
-                  <legend className="mb-2 text-sm font-medium text-ink">Anteil Geschäftskunden am Umsatz</legend>
+                  <legend className="field-label mb-3">Anteil Geschäftskunden am Umsatz</legend>
                   <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                     {opt.businessShare.map((o) => (
                       <ChoiceCard key={o} type="radio" value={o} label={o} className="p-3" {...register('businessShare')} />
@@ -296,7 +296,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
               <div className="space-y-6">
                 <TextField label="Was machen Sie aktuell beruflich?" error={errors.currentJob?.message} {...register('currentJob')} />
                 <fieldset>
-                  <legend className="mb-2 text-sm font-medium text-ink">Haben Sie Erfahrung in der Reinigung oder in Führung?</legend>
+                  <legend className="field-label mb-3">Haben Sie Erfahrung in der Reinigung oder in Führung?</legend>
                   <div className={choice}>
                     <ChoiceCard type="radio" value="ja" label="Ja" className="p-3" {...register('experience')} />
                     <ChoiceCard type="radio" value="nein" label="Nein" className="p-3" {...register('experience')} />
@@ -330,7 +330,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
             {step === 3 && (
               <div className="space-y-6">
                 <fieldset>
-                  <legend className="mb-2 text-sm font-medium text-ink">Gewünschter Start</legend>
+                  <legend className="field-label mb-3">Gewünschter Start</legend>
                   <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                     {opt.start.map((o) => (
                       <ChoiceCard key={o} type="radio" value={o} label={o} className="p-3" {...register('start')} />
@@ -339,7 +339,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                   <Err msg={errors.start?.message} />
                 </fieldset>
                 <fieldset>
-                  <legend className="mb-2 text-sm font-medium text-ink">Haupt- oder nebenberuflich?</legend>
+                  <legend className="field-label mb-3">Haupt- oder nebenberuflich?</legend>
                   <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
                     {opt.mode.map((o) => (
                       <ChoiceCard key={o} type="radio" value={o} label={o} className="p-3" {...register('mode')} />
@@ -366,17 +366,17 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
 
             {step === 5 && (
               <div className="space-y-5">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2">
                   <TextField label="Vor- und Nachname" autoComplete="name" error={errors.name?.message} {...register('name')} />
                   <TextField label="E-Mail" type="email" autoComplete="email" error={errors.email?.message} {...register('email')} />
                   <TextField label="Telefon" type="tel" autoComplete="tel" error={errors.phone?.message} {...register('phone')} />
                   <div>
-                    <label htmlFor="pf-cb" className="mb-1.5 block text-sm font-medium text-ink">
+                    <label htmlFor="pf-cb" className="field-label mb-1">
                       Rückruf am besten <span className="font-normal text-muted">(optional)</span>
                     </label>
                     <select
                       id="pf-cb"
-                      className="block w-full rounded-xl border-0 bg-white px-4 py-3.5 text-base shadow-[inset_0_0_0_1px_var(--color-line)] focus:shadow-[inset_0_0_0_2px_var(--color-blue)] focus:outline-none"
+                      className="field block"
                       {...register('callback')}
                     >
                       <option value="">Bitte wählen</option>
@@ -390,7 +390,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                 <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
                 <p className="text-xs text-muted">Ihre Anfrage ist unverbindlich. Verbindlich ist erst ein schriftlicher Partnervertrag.</p>
                 {error && (
-                  <p role="alert" className="rounded-xl bg-danger/10 p-4 text-sm text-danger">
+                  <p role="alert" className="border-l border-danger pl-4 text-[0.9375rem] text-danger">
                     {error}
                   </p>
                 )}
@@ -421,7 +421,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-blue px-6 font-semibold text-white shadow-glow transition hover:bg-blue-hover disabled:opacity-70"
+              className="btn btn-primary"
             >
               {isSubmitting && <Loader2 aria-hidden className="size-4 animate-spin" />}
               Anfrage senden

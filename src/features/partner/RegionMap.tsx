@@ -181,7 +181,7 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
                 <MapPin aria-hidden className="size-4 text-blue" />
                 {view === 'de' ? 'Bundesland' : active.type}
               </p>
-              <p className="mt-2 text-2xl font-semibold tracking-tight">{active.name}</p>
+              <p className="t-h3 mt-2">{active.name}</p>
               <p className={cn('mt-2 font-medium', active.status === 'stammgebiet' ? 'text-blue' : active.status === 'vergeben' ? 'text-muted' : 'text-fresh-ink')}>
                 {status(active)}
               </p>
@@ -197,9 +197,9 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
           )}
         </div>
         <label className="mt-5 block">
-          <span className="mb-1.5 block text-sm font-medium text-ink">Oder aus der Liste wählen</span>
+          <span className="field-label mb-1">Oder aus der Liste wählen</span>
           <select
-            className="block w-full rounded-xl border-0 bg-white px-4 py-3.5 text-base shadow-[inset_0_0_0_1px_var(--color-line)] focus:shadow-[inset_0_0_0_2px_var(--color-blue)] focus:outline-none"
+            className="field block"
             defaultValue=""
             onChange={(e) => e.target.value && onSelect(e.target.value)}
           >

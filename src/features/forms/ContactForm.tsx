@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { CheckCircle2, Info, Loader2, Send } from 'lucide-react'
+import { ArrowRight, Loader2 } from 'lucide-react'
 import { TextField, TextArea, PrivacyCheckbox, Honeypot } from './fields'
 import { submitForm } from './submit'
 import { company } from '@/content/company'
@@ -46,28 +46,27 @@ export function ContactForm() {
 
   if (state)
     return (
-      <div role="status" className="rounded-panel bg-white p-8 ring-1 ring-line">
-        <CheckCircle2 aria-hidden className="size-10 text-fresh-ink" />
-        <h3 className="mt-4 text-2xl font-semibold tracking-tight">Danke für Ihre Nachricht.</h3>
-        <p className="mt-2 text-muted">Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</p>
+      <div role="status" className="border-t border-line pt-8">
+        <p className="t-label">Gesendet</p>
+        <h3 className="t-h3 mt-4">Danke für Ihre Nachricht.</h3>
+        <p className="mt-3 text-ink-2">Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</p>
         {state.preview && (
-          <p className="mt-5 flex gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200">
-            <Info aria-hidden className="size-5 shrink-0" />
+          <p className="mt-6 flex gap-3 border-l border-ink pl-4 text-[0.9375rem] text-ink-2">
             <span>
               <strong>Vorschau-Modus:</strong> Es ist noch kein Formular-Endpunkt eingetragen. Die Nachricht wurde nicht gesendet.
             </span>
           </p>
         )}
-        <button type="button" onClick={() => setState(null)} className="mt-6 font-semibold text-blue">
+        <button type="button" onClick={() => setState(null)} className="ulink mt-6 font-medium text-ink">
           Weitere Nachricht schreiben
         </button>
       </div>
     )
 
   return (
-    <form onSubmit={onSubmit} noValidate className="relative space-y-5 rounded-panel bg-white p-6 ring-1 ring-line sm:p-8">
+    <form onSubmit={onSubmit} noValidate className="relative space-y-8">
       <Honeypot {...register('botcheck')} />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2">
         <TextField label="Name" autoComplete="name" error={errors.name?.message} {...register('name')} />
         <TextField label="Unternehmen" optional autoComplete="organization" {...register('company')} />
         <TextField label="E-Mail" type="email" autoComplete="email" error={errors.email?.message} {...register('email')} />
@@ -76,17 +75,17 @@ export function ContactForm() {
       <TextArea label="Ihre Nachricht" error={errors.message?.message} {...register('message')} />
       <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
       {error && (
-        <p role="alert" className="rounded-xl bg-danger/10 p-4 text-sm text-danger">
+        <p role="alert" className="border-l border-danger pl-4 text-[0.9375rem] text-danger">
           {error}
         </p>
       )}
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex h-12 items-center gap-2 rounded-full bg-blue px-6 font-semibold text-white shadow-glow transition hover:bg-blue-hover disabled:opacity-70"
+        className="btn btn-primary"
       >
-        {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <Send aria-hidden className="size-4" />}
         Nachricht senden
+        {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <ArrowRight aria-hidden className="btn-arrow size-4" strokeWidth={1.75} />}
       </button>
     </form>
   )

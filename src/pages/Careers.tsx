@@ -1,4 +1,3 @@
-import { Briefcase, Clock, MapPin } from 'lucide-react'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -6,6 +5,7 @@ import { Picture } from '@/components/ui/Picture'
 import { Todo } from '@/components/ui/Todo'
 import { Accordion } from '@/components/ui/Accordion'
 import { Button } from '@/components/ui/Button'
+import { FeatureColumns } from '@/components/ui/Editorial'
 import { ApplicationForm } from '@/features/forms/ApplicationForm'
 import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
 import { careers, jobs } from '@/content/site'
@@ -42,73 +42,62 @@ export default function Careers() {
           </Button>
         }
       />
-      <section className="py-24 sm:py-32" aria-labelledby="why-title">
+      <section className="section" aria-labelledby="why-title">
         <div className="container-site">
-          <SectionHeading eyebrow="Warum CleanStar" title="Was Sie bei uns erwartet." id="why-title" />
-          <ul className="feature-grid mt-14">
-            {careers.benefits.map((b) => (
-              <li key={b.title} className="feature-card bg-glacier" data-reveal>
-                <h3 className="feature-title">{b.title}</h3>
-                <p className="feature-text">{b.text}</p>
-              </li>
-            ))}
-          </ul>
+          <SectionHeading layout="rail" index="01" eyebrow="Warum CleanStar" title="Was Sie bei uns erwartet." id="why-title" />
+          <FeatureColumns className="mt-14 lg:mt-20" items={careers.benefits} />
           <p className="mt-6 text-sm text-muted">
             <Todo title={careers.benefitsTodo}>{careers.benefitsTodo}</Todo>
           </p>
         </div>
       </section>
-      <section className="bg-glacier py-24 sm:py-32" aria-labelledby="jobs-title">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
+      <section className="section pt-0!" aria-labelledby="jobs-title">
+        <div className="container-site grid-site gap-y-12">
+          <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+          <div className="col-span-12 lg:col-span-4">
             <SectionHeading
+              index="02"
               eyebrow="Offene Stellen"
               title={`${open.length} ${open.length === 1 ? 'offene Stelle' : 'offene Stellen'}`}
               id="jobs-title"
+              size="h3"
               text="Keine passende Stelle dabei? Bewerben Sie sich trotzdem, wir freuen uns über gute Leute."
             />
-            <div className="mt-8 hidden lg:block" data-reveal>
-              <Picture id="team-work" sizes="40vw" />
+            <div className="mt-10 hidden lg:block">
+              <Picture id="team-work" ratio="4:5" reveal sizes="30vw" />
             </div>
           </div>
-          <div className="lg:col-span-7" data-reveal>
+          <div className="col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
             <Accordion
               defaultOpen={0}
               items={open.map((j) => ({
                 title: (
                   <span>
                     <span className="block">{j.title}</span>
-                    <span className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm font-normal text-muted">
-                      <span className="inline-flex items-center gap-1.5">
-                        <Briefcase aria-hidden className="size-3.5" />
-                        {j.type}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5">
-                        <MapPin aria-hidden className="size-3.5" />
-                        {j.location}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5">
-                        <Clock aria-hidden className="size-3.5" />
-                        {j.times}
-                      </span>
+                    <span className="mt-2 block font-mono text-[0.75rem] font-normal tracking-normal text-muted">
+                      {j.type} · {j.location} · {j.times}
                     </span>
                   </span>
                 ),
                 content: (
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                     <div>
-                      <p className="mb-2 font-semibold text-ink">Ihre Aufgaben</p>
-                      <ul className="list-disc space-y-1 pl-5">
+                      <p className="t-label mb-3">Ihre Aufgaben</p>
+                      <ul className="border-t border-line">
                         {j.tasks.map((t) => (
-                          <li key={t}>{t}</li>
+                          <li key={t} className="border-b border-line py-2.5">
+                            {t}
+                          </li>
                         ))}
                       </ul>
                     </div>
                     <div>
-                      <p className="mb-2 font-semibold text-ink">Was Sie mitbringen</p>
-                      <ul className="list-disc space-y-1 pl-5">
+                      <p className="t-label mb-3">Was Sie mitbringen</p>
+                      <ul className="border-t border-line">
                         {j.profile.map((t) => (
-                          <li key={t}>{t}</li>
+                          <li key={t} className="border-b border-line py-2.5">
+                            {t}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -124,28 +113,31 @@ export default function Careers() {
           </div>
         </div>
       </section>
-      <section id="bewerbung" className="scroll-mt-24 py-24 sm:py-32" aria-labelledby="apply-title">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
+      <section id="bewerbung" className="on-dark section scroll-mt-24 bg-night text-paper" aria-labelledby="apply-title">
+        <div className="container-site grid-site gap-y-12">
+          <div className="col-span-12 lg:col-span-4">
             <SectionHeading
+              index="03"
               eyebrow="Kurzbewerbung"
               title="In 2 Minuten beworben."
               id="apply-title"
               text="Name, Telefonnummer, wann Sie können. Mehr brauchen wir nicht für den ersten Schritt. Wir rufen Sie zurück."
             />
-            <p className="mt-6 text-sm text-muted" data-reveal>
+            <p className="mt-8 text-muted-dark" data-reveal>
               Oder rufen Sie direkt an:{' '}
-              <a href={company.phone.href} className="font-semibold text-ink underline underline-offset-4">
+              <a href={company.phone.href} className="ulink font-medium text-paper">
                 {company.phone.display}
               </a>
             </p>
           </div>
-          <div className="lg:col-span-7">
+          <div className="col-span-12 lg:col-span-7 lg:col-start-6">
             <ApplicationForm />
           </div>
         </div>
       </section>
-      <PartnerTeaser />
+      <div className="pt-24 lg:pt-36">
+        <PartnerTeaser />
+      </div>
     </>
   )
 }

@@ -1,5 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
-import { ArrowUpRight, Calculator, Check, MapPin, Phone } from 'lucide-react'
+import { useParams } from 'react-router-dom'
 import { getOfficeCity } from '@/content/officeCities'
 import { getLocation, shortName } from '@/content/locations'
 import { getService } from '@/content/services'
@@ -9,8 +8,8 @@ import { formatNumber, formatEuroRange } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
-import { SectionHeading } from '@/components/ui/SectionHeading'
-import { Accordion } from '@/components/ui/Accordion'
+import { FaqBlock } from '@/components/ui/FaqBlock'
+import { InlineLinks } from '@/components/ui/Editorial'
 import { Button } from '@/components/ui/Button'
 import { FinalCta } from '@/components/home/FinalCta'
 import { ContactPerson } from '@/components/ui/ContactPerson'
@@ -52,7 +51,7 @@ export default function OfficeCity() {
         actions={
           <>
             <QuoteButton size="lg" arrow />
-            <Button href={company.phone.href} variant="secondary" size="lg" icon={<Phone aria-hidden className="size-4 text-blue" />}>
+            <Button href={company.phone.href} variant="link">
               {company.phone.display}
             </Button>
           </>
@@ -63,25 +62,25 @@ export default function OfficeCity() {
         </div>
       </PageHero>
 
-      <Answer className="pt-14 sm:pt-20">{c.answer}</Answer>
+      <Answer className="pt-4">{c.answer}</Answer>
 
-      <section className="py-16 sm:py-24" aria-label={`Büroreinigung in ${c.name} im Detail`}>
-        <div className="container-site grid grid-cols-1 gap-14 lg:grid-cols-12">
-          <div className="space-y-12 lg:col-span-7">
-            {c.sections.map((s) => (
-              <article key={s.title} data-reveal>
-                <h2 className="heading-3">{s.title}</h2>
+      <section className="section" aria-label={`Büroreinigung in ${c.name} im Detail`}>
+        <div className="container-site grid-site gap-y-16">
+          <div className="col-span-12 space-y-16 lg:col-span-7">
+            {c.sections.map((s, i) => (
+              <article key={s.title} className="border-t border-line pt-6" data-reveal>
+                <p className="t-label">{String(i + 1).padStart(2, '0')}</p>
+                <h2 className="t-h3 mt-5">{s.title}</h2>
                 {s.paragraphs.map((p) => (
-                  <p key={p.slice(0, 24)} className="mt-4 text-lg leading-relaxed text-ink/85">
+                  <p key={p.slice(0, 24)} className="measure mt-5 text-ink-2">
                     {p}
                   </p>
                 ))}
                 {s.list && (
-                  <ul className="mt-5 space-y-3">
+                  <ul className="mt-6 border-t border-line">
                     {s.list.map((i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <Check aria-hidden className="mt-1 size-4 shrink-0 text-fresh-ink" strokeWidth={3} />
-                        <span>{i}</span>
+                      <li key={i} className="border-b border-line py-3">
+                        {i}
                       </li>
                     ))}
                   </ul>
@@ -89,78 +88,51 @@ export default function OfficeCity() {
               </article>
             ))}
           </div>
-          <aside className="space-y-6 lg:col-span-5">
-            <div className="rounded-panel bg-ink p-6 text-white sm:p-8" data-reveal>
-              <p className="flex items-center gap-2 text-sm font-semibold text-white/70">
-                <Calculator aria-hidden className="size-4" />
-                Beispielrechnung {c.name}
-              </p>
-              <p className="mt-3 text-lg font-semibold">{c.example.label}</p>
-              <p className="mt-1 text-sm text-white/70">Annahme: {c.example.note}.</p>
-              <p className="mt-6 text-2xl font-semibold tracking-tight whitespace-nowrap tabular-nums min-[360px]:text-3xl">{formatEuroRange(ex.grossMin, ex.grossMax)}</p>
-              <p className="mt-1 text-sm text-white/70">
-                pro Monat brutto, bei rund {formatNumber(Math.round(ex.hours))} Stunden ({pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Stunde). Netto{' '}
-                {formatEuroRange(ex.netMin, ex.netMax)}.
-              </p>
-              <p className="mt-4 text-xs leading-relaxed text-white/60">
-                Unverbindliches Rechenbeispiel. Ihren tatsächlichen Stundenbedarf ermitteln wir bei der kostenlosen Besichtigung.
-              </p>
-              <Link to="/ratgeber/bueroreinigung-kosten" className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-fresh hover:underline">
-                Wie sich die Kosten zusammensetzen <ArrowUpRight aria-hidden className="size-4" />
-              </Link>
+          <aside className="col-span-12 space-y-16 lg:col-span-4 lg:col-start-9">
+            <div className="lg:sticky lg:top-28" data-reveal>
+              <div className="on-dark bg-night p-6 text-paper sm:p-8">
+                <p className="t-label">Beispielrechnung {c.name}</p>
+                <p className="mt-4 text-[1.25rem] font-medium tracking-[-0.015em]">{c.example.label}</p>
+                <p className="mt-1 text-[0.9375rem] text-muted-dark">Annahme: {c.example.note}.</p>
+                <p className="mt-8 text-[clamp(1.875rem,1.5rem+1.4vw,2.75rem)] leading-none font-medium tracking-[-0.04em] whitespace-nowrap tabular-nums">
+                  {formatEuroRange(ex.grossMin, ex.grossMax)}
+                </p>
+                <p className="mt-3 text-[0.9375rem] text-muted-dark">
+                  pro Monat brutto, bei rund {formatNumber(Math.round(ex.hours))} Stunden ({pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Stunde). Netto{' '}
+                  {formatEuroRange(ex.netMin, ex.netMax)}.
+                </p>
+                <p className="mt-5 font-mono text-[0.75rem] leading-relaxed text-muted-dark">
+                  Unverbindliches Rechenbeispiel. Ihren tatsächlichen Stundenbedarf ermitteln wir bei der kostenlosen Besichtigung.
+                </p>
+                <div className="mt-6">
+                  <Button to="/ratgeber/bueroreinigung-kosten" variant="link" className="text-paper">
+                    Wie sich die Kosten zusammensetzen
+                  </Button>
+                </div>
+              </div>
+              <ContactPerson className="mt-12" />
             </div>
-            <ContactPerson />
           </aside>
         </div>
       </section>
 
-      <section className="bg-glacier py-24 sm:py-32" aria-labelledby="oc-faq">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <SectionHeading eyebrow="Fragen" title={`Büroreinigung ${c.name}: Ihre Fragen.`} id="oc-faq" />
-          </div>
-          <div className="lg:col-span-8" data-reveal>
-            <Accordion items={c.faqs.map((f) => ({ title: f.q, content: f.a }))} />
-          </div>
-        </div>
-      </section>
+      <FaqBlock className="section pt-0!" title={`Büroreinigung ${c.name}: Ihre Fragen.`} id="oc-faq" items={c.faqs.map((f) => ({ title: f.q, content: f.a }))} />
 
-      <section className="py-20 sm:py-24" aria-labelledby="oc-more">
-        <div className="container-site">
-          <h2 id="oc-more" className="text-xl font-semibold tracking-tight">
+      <nav className="container-site pb-24 lg:pb-36" aria-labelledby="oc-more">
+        <div className="grid-site gap-y-5 border-t border-line pt-6">
+          <h2 id="oc-more" className="t-label col-span-12 lg:col-span-4">
             Mehr zu {c.name} und Umgebung
           </h2>
-          <ul className="mt-6 flex flex-wrap gap-2.5">
-            <li>
-              <Link
-                to={`/einzugsgebiet/${loc.slug}`}
-                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft"
-              >
-                <MapPin aria-hidden className="size-4 text-blue" />
-                Alle Leistungen in {c.name}
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/leistungen/bueroreinigung"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft"
-              >
-                Leistungsverzeichnis Büroreinigung
-              </Link>
-            </li>
-            {nearby.map((n) => (
-              <li key={n.slug}>
-                <Link
-                  to={`/einzugsgebiet/${n.slug}`}
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft"
-                >
-                  Reinigungsfirma {shortName(n)}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <InlineLinks
+            className="col-span-12 lg:col-span-8"
+            items={[
+              { to: `/einzugsgebiet/${loc.slug}`, label: `Alle Leistungen in ${c.name}` },
+              { to: '/leistungen/bueroreinigung', label: 'Leistungsverzeichnis Büroreinigung' },
+              ...nearby.map((n) => ({ to: `/einzugsgebiet/${n.slug}`, label: `Reinigungsfirma ${shortName(n)}` })),
+            ]}
+          />
         </div>
-      </section>
+      </nav>
       <FinalCta headline={`Büroreinigung in ${c.name}: Lernen wir uns kennen.`} />
     </>
   )

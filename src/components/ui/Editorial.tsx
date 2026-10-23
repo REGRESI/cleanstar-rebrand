@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+import { ArrowUpRight } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
@@ -80,5 +82,71 @@ export function Stat({ value, label, className }: { value: ReactNode; label: Rea
       <p className="t-num">{value}</p>
       <p className="t-label mt-4 max-w-[22ch]">{label}</p>
     </div>
+  )
+}
+
+/**
+ * Merkmale in Spalten (z. B. die 4 Punkte einer Leistung, Werte, Vorteile): Haarlinie oben, Nummer, Titel, Text.
+ * Einheitlich auf allen Seiten: Handy 1 Spalte, ab 640 px 2, ab 1024 px so viele wie Punkte (höchstens 4).
+ */
+export function FeatureColumns({ items, dark, className, titleAs: Title = 'h3' }: { items: { title: ReactNode; text: ReactNode }[]; dark?: boolean; className?: string; titleAs?: 'h2' | 'h3' }) {
+  const cols = items.length >= 4 ? 'lg:grid-cols-4' : items.length === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
+  return (
+    <ul className={cn('grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:gap-x-8', cols, className)}>
+      {items.map((it, i) => (
+        <li key={i} className="relative pt-6" data-reveal>
+          <span aria-hidden data-reveal-rule className={cn('rule absolute inset-x-0 top-0', dark && 'bg-line-dark')} />
+          <p className="t-label">{String(i + 1).padStart(2, '0')}</p>
+          <Title className="mt-6 text-[1.375rem] leading-[1.2] font-medium tracking-[-0.02em]">{it.title}</Title>
+          <p className={cn('mt-3', dark ? 'text-muted-dark' : 'text-ink-2')}>{it.text}</p>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+/** Linkliste als Zeilen mit Haarlinien und Pfeil (statt Kacheln oder Pillen) */
+export function LinkRows({
+  items,
+  numbered,
+  className,
+  columns = 1,
+}: {
+  items: { to: string; label: ReactNode; meta?: ReactNode }[]
+  numbered?: boolean
+  className?: string
+  /** Ab Tablet in zwei Spalten */
+  columns?: 1 | 2
+}) {
+  return (
+    <ul className={cn(columns === 2 && 'grid gap-x-8 sm:grid-cols-2', className)}>
+      {items.map((it, i) => (
+        <li key={it.to} className={cn('border-b border-line first:border-t', columns === 2 && 'sm:[&:nth-child(2)]:border-t')}>
+          <Link to={it.to} className="group flex items-baseline gap-4 py-4 text-ink">
+            {numbered && <span className="t-label w-7 shrink-0">{String(i + 1).padStart(2, '0')}</span>}
+            <span className="min-w-0 flex-1">
+              <span className="ulink">{it.label}</span>
+              {it.meta && <span className="t-label ml-3">{it.meta}</span>}
+            </span>
+            <ArrowUpRight aria-hidden className="size-4 shrink-0 self-center transition-transform duration-500 ease-cs group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.5} />
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+/** Fließende Textlinks, getrennt durch Abstand (statt Pillen-Chips) */
+export function InlineLinks({ items, className }: { items: { to: string; label: ReactNode }[]; className?: string }) {
+  return (
+    <ul className={cn('flex flex-wrap gap-x-7 gap-y-3', className)}>
+      {items.map((it) => (
+        <li key={it.to}>
+          <Link to={it.to} className="ulink py-0.5 text-ink">
+            {it.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
   )
 }

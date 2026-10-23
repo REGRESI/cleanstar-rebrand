@@ -53,7 +53,7 @@ export function SectionHeading({
         <div className={cn('col-span-12', label ? 'lg:col-span-9' : 'lg:col-span-10')}>
           <RevealText as={as} text={title} className={cn(titleCls, 'max-w-[22ch]')} id={id} />
           {text && (
-            <div className="t-lead measure mt-6 text-ink lg:mt-8" data-reveal>
+            <div className="t-lead measure mt-6 lg:mt-8" data-reveal>
               {text}
             </div>
           )}
@@ -75,7 +75,7 @@ export function SectionHeading({
           <RevealText as={as} text={title} className={titleCls} id={id} />
         </div>
         {text && (
-          <div className="t-lead col-span-12 text-ink lg:col-span-4 lg:col-start-9" data-reveal>
+          <div className="t-lead col-span-12 lg:col-span-4 lg:col-start-9" data-reveal>
             {text}
           </div>
         )}
@@ -93,7 +93,7 @@ export function SectionHeading({
       )}
       <RevealText as={as} text={title} className={titleCls} id={id} />
       {text && (
-        <div className={cn('t-lead measure mt-6 text-ink', align === 'center' && 'mx-auto')} data-reveal>
+        <div className={cn('t-lead measure mt-6', align === 'center' && 'mx-auto')} data-reveal>
           {text}
         </div>
       )}

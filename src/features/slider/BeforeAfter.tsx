@@ -44,19 +44,19 @@ export function BeforeAfter({ before, after, className, label = 'Vorher-Nachher-
     <figure className={cn('relative', className)}>
       <div
         ref={box}
-        className="relative cursor-ew-resize touch-pan-y overflow-hidden rounded-panel select-none"
+        className="relative cursor-ew-resize touch-pan-y overflow-hidden select-none"
         onPointerDown={onDown}
         onPointerMove={onMove}
         onPointerUp={onUp}
         onPointerCancel={onUp}
       >
-        <Picture id={after} rounded="rounded-none" />
+        <Picture id={after} ratio="16:9" />
         <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-          <Picture id={before} rounded="rounded-none" className="h-full" />
+          <Picture id={before} ratio="16:9" className="h-full" />
         </div>
-        <span className="pointer-events-none absolute top-4 left-4 rounded-full bg-ink/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur">Vorher</span>
-        <span className="pointer-events-none absolute top-4 right-4 rounded-full bg-blue px-3 py-1 text-xs font-semibold text-white">Nachher</span>
-        <div aria-hidden className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-white shadow-[0_0_20px_rgba(0,0,0,.25)]" style={{ left: `${pos}%` }} />
+        <span className="pointer-events-none absolute top-0 left-0 bg-night px-3 py-1.5 font-mono text-[0.75rem] text-paper">Vorher</span>
+        <span className="pointer-events-none absolute top-0 right-0 bg-paper px-3 py-1.5 font-mono text-[0.75rem] text-ink">Nachher</span>
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 w-px -translate-x-1/2 bg-paper" style={{ left: `${pos}%` }} />
         <div
           role="slider"
           tabIndex={0}
@@ -66,13 +66,13 @@ export function BeforeAfter({ before, after, className, label = 'Vorher-Nachher-
           aria-valuenow={Math.round(pos)}
           aria-valuetext={`${Math.round(pos)} % Vorher sichtbar`}
           onKeyDown={onKey}
-          className="absolute top-1/2 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white text-ink shadow-lift ring-1 ring-line transition-transform hover:scale-105 focus-visible:scale-110"
+          className="absolute top-1/2 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center bg-paper text-ink"
           style={{ left: `${pos}%` }}
         >
-          <MoveHorizontal aria-hidden className="size-6" />
+          <MoveHorizontal aria-hidden className="size-5" strokeWidth={1.5} />
         </div>
       </div>
-      <figcaption className="mt-3 text-sm text-muted">Ziehen Sie den Regler oder nutzen Sie die Pfeiltasten.</figcaption>
+      <figcaption className="caption">Ziehen Sie den Regler oder nutzen Sie die Pfeiltasten.</figcaption>
     </figure>
   )
 }

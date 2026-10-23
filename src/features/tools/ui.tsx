@@ -1,8 +1,9 @@
 import { useEffect, useId, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
-const field =
-  'block w-full min-w-0 rounded-xl border-0 bg-white px-3.5 py-3 text-base text-ink shadow-[inset_0_0_0_1px_var(--color-line)] transition focus:shadow-[inset_0_0_0_2px_var(--color-blue)] focus:outline-none'
+/** Eingabefeld mit Linie unten (siehe .field in index.css) */
+const field = 'field block min-w-0'
+const labelCls = 'field-label mb-1'
 
 /** Zahlenfeld mit Einheit. Leeres Feld = null (bewusst keine erfundenen Startwerte). */
 export function NumberInput({
@@ -34,7 +35,7 @@ export function NumberInput({
   }, [value])
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-ink">
+      <label htmlFor={id} className={labelCls}>
         {label}
       </label>
       <div className="relative">
@@ -54,10 +55,10 @@ export function NumberInput({
           className={cn(field, unit && 'pr-14')}
           aria-describedby={hint ? `${id}-h` : undefined}
         />
-        {unit && <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-sm text-muted">{unit}</span>}
+        {unit && <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center font-mono text-[0.8125rem] text-muted">{unit}</span>}
       </div>
       {hint && (
-        <p id={`${id}-h`} className="mt-1.5 text-xs leading-relaxed text-muted">
+        <p id={`${id}-h`} className="mt-2 text-[0.8125rem] leading-relaxed text-muted">
           {hint}
         </p>
       )}
@@ -81,7 +82,7 @@ export function TextInput({
   const id = useId()
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-ink">
+      <label htmlFor={id} className={labelCls}>
         {label}
       </label>
       <input id={id} value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} className={field} />
@@ -105,10 +106,10 @@ export function SelectInput<T extends string>({
   const id = useId()
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-ink">
+      <label htmlFor={id} className={labelCls}>
         {label}
       </label>
-      <select id={id} value={value} onChange={(e) => onChange(e.target.value as T)} className={cn(field, 'appearance-none bg-[length:1rem] pr-10')}>
+      <select id={id} value={value} onChange={(e) => onChange(e.target.value as T)} className={cn(field, 'pr-8')}>
         {options.map((o) => (
           <option key={o.id} value={o.id}>
             {o.label}
@@ -123,10 +124,38 @@ export function DateInput({ label, value, onChange, className }: { label: string
   const id = useId()
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-ink">
+      <label htmlFor={id} className={labelCls}>
         {label}
       </label>
       <input id={id} type="date" value={value} onChange={(e) => onChange(e.target.value)} className={field} />
+    </div>
+  )
+}
+
+/** Rechteckige Segmente ohne eigenes Label (Radio-Gruppe): 1-px-Rahmen, gewählt = dunkel gefüllt */
+export function Segments<T extends string>({
+  name,
+  value,
+  onChange,
+  options,
+  className,
+}: {
+  name: string
+  value: T
+  onChange: (v: T) => void
+  options: { id: T; label: string }[]
+  className?: string
+}) {
+  return (
+    <div className={cn('flex flex-wrap shadow-[inset_0_0_0_1px_var(--color-line-strong)]', className)}>
+      {options.map((o) => (
+        <label key={o.id} className="flex-auto">
+          <input type="radio" name={name} value={o.id} checked={value === o.id} onChange={() => onChange(o.id)} className="peer sr-only" />
+          <span className="flex min-h-11 cursor-pointer items-center justify-center px-3 text-center text-[0.9375rem] leading-tight text-ink-2 transition-colors duration-300 peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-blue hover:text-ink">
+            {o.label}
+          </span>
+        </label>
+      ))}
     </div>
   )
 }
@@ -148,17 +177,8 @@ export function Segmented<T extends string>({
   const name = useId()
   return (
     <fieldset className={className}>
-      <legend className="mb-1.5 block text-sm font-medium text-ink">{label}</legend>
-      <div className="flex flex-wrap gap-1.5 rounded-2xl bg-glacier p-1.5">
-        {options.map((o) => (
-          <label key={o.id} className="flex-auto">
-            <input type="radio" name={name} value={o.id} checked={value === o.id} onChange={() => onChange(o.id)} className="peer sr-only" />
-            <span className="flex min-h-10 cursor-pointer items-center justify-center rounded-xl px-3 text-center text-sm leading-tight font-medium text-ink/75 transition peer-checked:bg-white peer-checked:text-blue-hover peer-checked:shadow-soft peer-focus-visible:ring-2 peer-focus-visible:ring-blue">
-              {o.label}
-            </span>
-          </label>
-        ))}
-      </div>
+      <legend className="field-label mb-3">{label}</legend>
+      <Segments name={name} value={value} onChange={onChange} options={options} />
     </fieldset>
   )
 }
@@ -166,12 +186,12 @@ export function Segmented<T extends string>({
 /** Ja/Nein-Schalter */
 export function Toggle({ label, checked, onChange }: { label: ReactNode; checked: boolean; onChange: (v: boolean) => void }) {
   return (
-    <label className="flex min-h-11 cursor-pointer items-center justify-between gap-4 rounded-xl bg-white px-3.5 py-2 ring-1 ring-line">
-      <span className="text-sm font-medium text-ink">{label}</span>
+    <label className="flex min-h-12 cursor-pointer items-center justify-between gap-4 border-b border-line py-2">
+      <span className="text-[1rem] text-ink">{label}</span>
       <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="peer sr-only" role="switch" />
       <span
         aria-hidden
-        className="relative h-6 w-11 shrink-0 rounded-full bg-ink/15 transition peer-checked:bg-blue peer-focus-visible:ring-2 peer-focus-visible:ring-blue peer-focus-visible:ring-offset-2 after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:shadow after:transition peer-checked:after:translate-x-5"
+        className="relative h-6 w-11 shrink-0 shadow-[inset_0_0_0_1px_var(--color-line-strong)] transition-colors duration-300 peer-checked:bg-ink peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-blue after:absolute after:top-1 after:left-1 after:size-4 after:bg-ink after:transition-transform after:duration-300 peer-checked:after:translate-x-5 peer-checked:after:bg-paper"
       />
     </label>
   )

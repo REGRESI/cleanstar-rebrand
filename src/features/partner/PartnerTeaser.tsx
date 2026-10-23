@@ -1,26 +1,20 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Handshake } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
-/** Schmaler Hinweis auf das Partnerprogramm (Über uns, Karriere). */
+/** Schmaler Hinweis auf das Partnerprogramm (Über uns, Karriere): eine Zeile mit Haarlinien, kein Kasten. */
 export function PartnerTeaser() {
   return (
-    <section aria-label="Partnerprogramm" className="pb-20 sm:pb-24">
+    <section aria-label="Partnerprogramm" className="pb-24 lg:pb-36">
       <div className="container-site">
-        <Link
-          to="/partner"
-          className="group flex flex-col gap-4 rounded-card bg-white p-5 ring-1 ring-line transition hover:shadow-soft hover:ring-blue/30 sm:flex-row sm:items-center sm:gap-6 sm:p-6"
-          data-reveal
-        >
-          <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-glacier text-blue">
-            <Handshake aria-hidden className="size-6" strokeWidth={1.6} />
+        <Link to="/partner" className="group grid-site gap-y-3 border-y border-line py-7" data-reveal>
+          <span className="t-label col-span-12 lg:col-span-3 lg:pt-1">Partnerprogramm</span>
+          <span className="col-span-12 lg:col-span-7">
+            <span className="block text-[1.25rem] font-medium tracking-[-0.015em]">Sie führen eine Reinigungsfirma oder möchten eine gründen?</span>
+            <span className="mt-1 block text-ink-2">Mit dem CleanStar-Partnerprogramm bringen wir unsere Abläufe in weitere Regionen.</span>
           </span>
-          <span className="flex-1">
-            <span className="block font-semibold text-ink">Sie führen eine Reinigungsfirma oder möchten eine gründen?</span>
-            <span className="block text-sm text-muted">Mit dem CleanStar-Partnerprogramm bringen wir unsere Abläufe in weitere Regionen.</span>
-          </span>
-          <span className="inline-flex items-center gap-2 text-sm font-semibold text-blue">
+          <span className="col-span-12 inline-flex items-center gap-2 self-center font-medium lg:col-span-2 lg:justify-self-end">
             Partner werden
-            <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight aria-hidden className="size-4 transition-transform duration-500 ease-cs group-hover:translate-x-1" strokeWidth={1.75} />
           </span>
         </Link>
       </div>

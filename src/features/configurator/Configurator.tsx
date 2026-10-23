@@ -481,7 +481,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
 
             {step === 4 && (
               <div className="space-y-5">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2">
                   <TextField label="Unternehmen" autoComplete="organization" error={errors.company?.message} {...register('company')} />
                   <TextField label="Ihr Name" autoComplete="name" error={errors.name?.message} {...register('name')} />
                   <TextField label="E-Mail" type="email" autoComplete="email" error={errors.email?.message} {...register('email')} />
@@ -494,10 +494,10 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                   error={errors.location?.message}
                   {...register('location')}
                 />
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2">
                   <TextField label="Wunschtermin für die kostenlose Besichtigung" type="date" optional min={new Date().toISOString().slice(0, 10)} {...register('visitDate')} />
                   <div>
-                    <label htmlFor="cfg-vt" className="mb-1.5 block text-sm font-medium text-ink">
+                    <label htmlFor="cfg-vt" className="field-label mb-1">
                       Tageszeit <span className="font-normal text-muted">(optional)</span>
                     </label>
                     <select
@@ -515,7 +515,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                 <TextArea label="Nachricht" optional placeholder="Besonderheiten, Schlüssel, Zugang, Fragen …" {...register('message')} />
                 <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
                 {sendError && (
-                  <p role="alert" className="rounded-xl bg-danger/10 p-4 text-sm text-danger">
+                  <p role="alert" className="border-l border-danger pl-4 text-[0.9375rem] text-danger">
                     {sendError}
                   </p>
                 )}
@@ -547,7 +547,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-blue px-6 font-semibold text-white shadow-glow transition hover:bg-blue-hover disabled:opacity-70"
+              className="btn btn-primary"
             >
               {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : null}
               Anfrage senden
@@ -613,7 +613,7 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
       <h2 className="mt-6 text-3xl font-semibold tracking-tight">Vielen Dank. Wir melden uns innerhalb von {company.promises.responseHours} Stunden.</h2>
       <p className="mt-3 text-muted">Hier ist die Zusammenfassung Ihrer Angaben.{company.forms.confirmationEmail && <> Eine Kopie erhalten Sie per E-Mail an {d.email}.</>}</p>
       {result.preview && (
-        <p className="mt-5 flex gap-3 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200">
+        <p className="mt-6 flex gap-3 border-l border-ink pl-4 text-[0.9375rem] text-ink-2">
           <Info aria-hidden className="size-5 shrink-0" />
           <span>
             <strong>Vorschau-Modus:</strong> Es ist noch kein Formular-Endpunkt eingetragen (src/content/company.ts → forms). Die Anfrage wurde nicht gesendet.

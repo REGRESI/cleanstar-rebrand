@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Link, useHref, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Clock, MapPin } from 'lucide-react'
 import { hq, places as locations, shortName, type Place as Location } from '@/content/places'
 import { cn } from '@/lib/cn'
+import { EASE_CS_ARRAY } from '@/lib/ease'
 
 /**
  * Eigene SVG-Karte des Ortenaukreises (schematisch, ohne externe Kartendienste, DSGVO-freundlich).
@@ -88,49 +88,27 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
   const root = useHref('/')
   const href = (path: string) => (root.startsWith('#') ? `#${path}` : path)
   const others = locations.filter((l) => l.slug !== 'offenburg')
-  const svg = useRef<SVGSVGElement>(null)
-
-  // Puls um Offenburg nur abspielen, solange die Karte sichtbar ist (bei reduzierter Bewegung gar nicht)
-  useEffect(() => {
-    const el = svg.current
-    if (!el || typeof IntersectionObserver === 'undefined') return
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    el.pauseAnimations()
-    if (reduce) return
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? el.unpauseAnimations() : el.pauseAnimations()))
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
 
   return (
-    <div className={cn('grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center', className)}>
+    <div className={cn('grid grid-cols-1 gap-x-8 gap-y-12 lg:grid-cols-12 lg:items-start', className)}>
       <div className="relative lg:col-span-7">
-        <svg ref={svg} viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} className="h-auto w-full" role="group" aria-label="Karte des Einzugsgebiets im Ortenaukreis">
-          <defs>
-            <linearGradient id="map-fill" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#ffffff" />
-              <stop offset="1" stopColor="#e6eefb" />
-            </linearGradient>
-            <radialGradient id="map-hq" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0" stopColor="#1f5eff" stopOpacity="0.22" />
-              <stop offset="1" stopColor="#1f5eff" stopOpacity="0" />
-            </radialGradient>
-            <pattern id="map-grid" width="24" height="24" patternUnits="userSpaceOnUse">
-              <path d="M24 0H0V24" fill="none" stroke="#0a1628" strokeOpacity="0.05" />
-            </pattern>
-          </defs>
-          <rect x={VB.x} y={VB.y} width={VB.w} height={VB.h} fill="url(#map-grid)" />
-          <path d={toPath(RHINE, false)} fill="none" stroke="#9cc7f0" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-          <text x={proj(48.42, 7.66)[0]} y={proj(48.42, 7.66)[1]} fontSize="13" fill="#5b6b82" transform={`rotate(-70 ${proj(48.42, 7.66).join(' ')})`} letterSpacing="3">
-            RHEIN
+        <svg viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} className="h-auto w-full" role="group" aria-label="Karte des Einzugsgebiets im Ortenaukreis">
+          <path d={toPath(RHINE, false)} fill="none" stroke="var(--color-blue)" strokeOpacity="0.55" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <text
+            x={proj(48.42, 7.66)[0]}
+            y={proj(48.42, 7.66)[1]}
+            fontSize="11"
+            fill="var(--color-muted)"
+            transform={`rotate(-70 ${proj(48.42, 7.66).join(' ')})`}
+            letterSpacing="2"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            Rhein
           </text>
-          <path d={toPath(OUTLINE)} fill="url(#map-fill)" stroke="#1f5eff" strokeOpacity="0.35" strokeWidth="1.5" strokeDasharray="5 4" />
-          <text x={proj(48.3, 8.2)[0]} y={proj(48.3, 8.2)[1]} fontSize="12" fill="#5b6b82" letterSpacing="3" opacity="0.8">
-            SCHWARZWALD
+          <path d={toPath(OUTLINE)} fill="var(--color-surface)" stroke="var(--color-ink)" strokeOpacity="0.6" strokeWidth="1" />
+          <text x={proj(48.3, 8.2)[0]} y={proj(48.3, 8.2)[1]} fontSize="11" fill="var(--color-muted)" letterSpacing="2" style={{ fontFamily: 'var(--font-mono)' }}>
+            Schwarzwald
           </text>
-          <circle cx={HX} cy={HY} r="140" fill="url(#map-hq)" />
-          <circle cx={HX} cy={HY} r="95" fill="none" stroke="#1f5eff" strokeOpacity="0.12" />
-          <circle cx={HX} cy={HY} r="190" fill="none" stroke="#1f5eff" strokeOpacity="0.08" />
 
           {/* Verbindungslinie zum aktiven Ort */}
           {active && active.slug !== 'offenburg' && (
@@ -140,13 +118,11 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
               y1={HY}
               x2={proj(active.lat, active.lng)[0]}
               y2={proj(active.lat, active.lng)[1]}
-              stroke="#2dd4bf"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeDasharray="1 7"
+              stroke="var(--color-blue)"
+              strokeWidth="1.5"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
+              transition={{ duration: 0.5, ease: EASE_CS_ARRAY }}
             />
           )}
 
@@ -169,21 +145,11 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
                 className="cursor-pointer outline-none [&:focus-visible_circle.ring]:stroke-blue"
               >
                 <circle cx={x} cy={y} r="16" fill="transparent" />
-                <circle
-                  className="ring"
-                  cx={x}
-                  cy={y}
-                  r={on ? 10 : l.major ? 7 : 5}
-                  fill="#fff"
-                  stroke={on ? '#1f5eff' : '#0a1628'}
-                  strokeOpacity={on ? 1 : 0.35}
-                  strokeWidth="2"
-                  style={{ transition: 'r .25s' }}
-                />
-                <circle cx={x} cy={y} r={on ? 4.5 : 3} fill={on ? '#1f5eff' : '#0a1628'} style={{ transition: 'r .25s' }} />
+                <circle className="ring" cx={x} cy={y} r={on ? 9 : 0} fill="none" stroke="var(--color-blue)" strokeWidth="1" style={{ transition: 'r .3s' }} />
+                <circle cx={x} cy={y} r={on ? 4.5 : l.major ? 4 : 3} fill={on ? 'var(--color-blue)' : 'var(--color-ink)'} style={{ transition: 'r .3s' }} />
                 {/* Beschriftung nur für größere Orte (sonst zu eng), kleinere beim Darüberfahren */}
                 {!compact && (l.major || on) && (
-                  <text {...labelAttrs(l.slug, x, y)} fontSize="13" fontWeight={on ? 600 : 500} fill={on ? '#1f5eff' : '#0a1628'}>
+                  <text {...labelAttrs(l.slug, x, y)} fontSize="13" fontWeight="500" fill={on ? 'var(--color-blue)' : 'var(--color-ink)'}>
                     {shortName(l)}
                   </text>
                 )}
@@ -205,32 +171,21 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
             onBlur={() => setActive(null)}
             className="cursor-pointer outline-none"
           >
-            <circle cx={HX} cy={HY} r="22" fill="#1f5eff" opacity="0.15">
-              <animate attributeName="r" values="14;30;14" dur="3s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite" />
-            </circle>
-            <circle cx={HX} cy={HY} r="13" fill="#1f5eff" stroke="#fff" strokeWidth="3" />
-            <path
-              d={`M${HX} ${HY - 7} C${HX + 1} ${HY - 2} ${HX + 2} ${HY - 1} ${HX + 7} ${HY} C${HX + 2} ${HY + 1} ${HX + 1} ${HY + 2} ${HX} ${HY + 7} C${HX - 1} ${HY + 2} ${HX - 2} ${HY + 1} ${HX - 7} ${HY} C${HX - 2} ${HY - 1} ${HX - 1} ${HY - 2} ${HX} ${HY - 7}Z`}
-              fill="#fff"
-            />
-            <text x={HX - 20} y={HY - 16} textAnchor="end" fontSize="15" fontWeight="700" fill="#0a1628">
+            <circle cx={HX} cy={HY} r="14" fill="none" stroke="var(--color-blue)" strokeWidth="1" />
+            <circle cx={HX} cy={HY} r="7" fill="var(--color-blue)" />
+            <text x={HX - 20} y={HY - 16} textAnchor="end" fontSize="15" fontWeight="500" fill="var(--color-ink)">
               Offenburg
             </text>
           </a>
         </svg>
-        <p className="mt-2 text-xs text-muted">Schematische Darstellung. Fahrzeiten sind ungefähre Richtwerte mit dem Auto.</p>
+        <p className="caption">Schematische Darstellung. Fahrzeiten sind ungefähre Richtwerte mit dem Auto.</p>
 
         {/* Tooltip */}
         <div aria-live="polite" className="pointer-events-none absolute top-4 left-4 sm:top-6 sm:left-6">
           {active && (
-            <motion.div key={active.slug} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-2xl px-4 py-3 shadow-lift ring-1 ring-line">
-              <p className="flex items-center gap-2 font-semibold text-ink">
-                <MapPin aria-hidden className="size-4 text-blue" />
-                {active.name}
-              </p>
-              <p className="mt-1 flex items-center gap-2 text-sm text-muted">
-                <Clock aria-hidden className="size-4 text-fresh-ink" />
+            <motion.div key={active.slug} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: EASE_CS_ARRAY }} className="border-l border-ink bg-paper py-1 pl-3">
+              <p className="text-[1.125rem] font-medium text-ink">{active.name}</p>
+              <p className="mt-0.5 font-mono text-[0.75rem] text-muted">
                 {active.minutes === 0 ? 'Unser Sitz' : `ca. ${active.minutes} Min. von Offenburg`}
               </p>
             </motion.div>
@@ -238,23 +193,23 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
         </div>
       </div>
 
-      <div className="lg:col-span-5">
-        <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
+      <div className="lg:col-span-4 lg:col-start-9">
+        <p className="t-label mb-4">{locations.length} Orte · Fahrzeit ab Offenburg</p>
+        <ul className="grid grid-cols-1 gap-x-8 border-t border-line min-[440px]:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
           {locations.map((l) => (
-            <li key={l.slug}>
+            <li key={l.slug} className="border-b border-line">
               <Link
                 to={`/einzugsgebiet/${l.slug}`}
                 onMouseEnter={() => setActive(l)}
                 onMouseLeave={() => setActive(null)}
                 onFocus={() => setActive(l)}
                 onBlur={() => setActive(null)}
-                className={cn(
-                  'flex flex-wrap items-center justify-between gap-x-2 gap-y-0.5 rounded-xl px-3.5 py-3 text-sm ring-1 transition-colors',
-                  active?.slug === l.slug ? 'bg-blue text-white ring-blue' : 'bg-white text-ink ring-line hover:ring-blue/40',
-                )}
+                className={cn('flex items-baseline justify-between gap-x-3 py-2.5 text-[0.9375rem] transition-colors', active?.slug === l.slug ? 'text-blue' : 'text-ink')}
               >
-                <span className="font-medium">{shortName(l)}</span>
-                <span className={cn('shrink-0 tabular-nums', active?.slug === l.slug ? 'text-white/80' : 'text-muted')}>{l.minutes === 0 ? 'Sitz' : `${l.minutes}′`}</span>
+                <span>{shortName(l)}</span>
+                <span className={cn('shrink-0 font-mono text-[0.75rem] tabular-nums', active?.slug === l.slug ? 'text-blue' : 'text-muted')}>
+                  {l.minutes === 0 ? 'Sitz' : `${l.minutes} Min.`}
+                </span>
               </Link>
             </li>
           ))}

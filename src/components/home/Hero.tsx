@@ -177,7 +177,7 @@ export function Hero() {
                     {home.hero.kicker}
                   </span>
                 }
-                wordsClassName="t-display block max-w-[11.5ch] text-paper"
+                wordsClassName="t-display block text-paper"
               />
               <div className="fade-up-now mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8 lg:mt-12" style={{ ['--d' as string]: '0.6s' }}>
                 <QuoteButton size="lg" arrow full={isMobile}>

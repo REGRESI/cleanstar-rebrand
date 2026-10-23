@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { Info, RotateCcw, Scale } from 'lucide-react'
 import { pricing } from '@/content/pricing'
 import { formatEuro, formatEuro2, formatNumber } from '@/lib/format'
 import { cn } from '@/lib/cn'
@@ -142,9 +141,9 @@ export function OfferCompare() {
   ]
 
   return (
-    <div className="space-y-8">
-      <div className="rounded-panel bg-white p-5 shadow-soft ring-1 ring-line sm:p-8">
-        <div role="tablist" aria-label="Angebot auswählen" className="grid grid-cols-3 gap-1.5 rounded-2xl bg-glacier p-1.5">
+    <div className="space-y-16">
+      <div className="border-t border-line pt-8">
+        <div role="tablist" aria-label="Angebot auswählen" className="grid grid-cols-3 shadow-[inset_0_0_0_1px_var(--color-line-strong)]">
           {state.offers.map((x, i) => (
             <button
               key={i}
@@ -154,8 +153,8 @@ export function OfferCompare() {
               aria-controls="offer-panel"
               onClick={() => setTab(i)}
               className={cn(
-                'min-h-11 truncate rounded-xl px-1.5 text-[0.8125rem] font-semibold transition min-[360px]:px-2 min-[360px]:text-sm',
-                tab === i ? 'bg-white text-blue-hover shadow-soft' : 'text-ink/70 hover:text-ink',
+                'min-h-12 truncate px-1.5 text-[0.875rem] transition-colors duration-300 min-[360px]:px-2 min-[360px]:text-[0.9375rem]',
+                tab === i ? 'bg-ink text-paper' : 'text-ink-2 hover:text-ink',
               )}
             >
               {!x.name.trim() || x.name.trim() === `Angebot ${LETTERS[i]}` ? (
@@ -170,7 +169,7 @@ export function OfferCompare() {
           ))}
         </div>
 
-        <div id="offer-panel" role="tabpanel" className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div id="offer-panel" role="tabpanel" className="mt-8 grid grid-cols-1 gap-x-8 gap-y-7 md:grid-cols-2">
           <TextInput label="Anbieter" value={o.name} onChange={(v) => set({ name: v })} placeholder={`Angebot ${LETTERS[tab]}`} className="md:col-span-2" />
           <Segmented
             label="Preis laut Angebot"
@@ -199,24 +198,24 @@ export function OfferCompare() {
           <NumberInput label="Anzahl Reinigungskräfte" unit="Kräfte" value={o.staff} onChange={(v) => set({ staff: v })} />
           <NumberInput label="Einsätze pro Woche" unit="× / Woche" value={o.visits} onChange={(v) => set({ visits: v })} />
           <NumberInput label="Kündigungsfrist" unit="Monate" step={0.5} value={o.notice} onChange={(v) => set({ notice: v })} />
-          <div className="grid gap-2 md:col-span-2 md:grid-cols-2">
+          <div className="grid gap-x-8 md:col-span-2 md:grid-cols-2">
             <Toggle label="Fester Ansprechpartner" checked={o.contact} onChange={(v) => set({ contact: v })} />
             <Toggle label="Vertretung bei Ausfall" checked={o.replacement} onChange={(v) => set({ replacement: v })} />
           </div>
           <fieldset className="md:col-span-2">
-            <legend className="mb-2 text-sm font-medium text-ink">Leistungen laut Angebot</legend>
+            <legend className="field-label mb-3">Leistungen laut Angebot</legend>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {SERVICES.map((s) => {
                 const on = o.services.includes(s)
                 return (
-                  <label key={s} className="flex min-h-11 cursor-pointer items-center gap-3 rounded-xl bg-white px-3.5 py-2 ring-1 ring-line">
+                  <label key={s} className="choice cursor-pointer">
                     <input
                       type="checkbox"
                       checked={on}
                       onChange={() => set({ services: on ? o.services.filter((x) => x !== s) : [...o.services, s] })}
-                      className="size-4 shrink-0 accent-blue"
+                      className="size-4 shrink-0 accent-paper"
                     />
-                    <span className="text-sm leading-snug">{s}</span>
+                    <span className="text-[0.9375rem] leading-snug font-normal">{s}</span>
                   </label>
                 )
               })}
@@ -224,7 +223,7 @@ export function OfferCompare() {
           </fieldset>
         </div>
 
-        <div className="mt-6 flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mt-10 flex flex-col gap-6 border-t border-line pt-8 sm:flex-row sm:items-end sm:justify-between">
           <NumberInput
             label="Mitarbeitende im Büro (für Kosten pro Kopf)"
             unit="Personen"
@@ -238,22 +237,20 @@ export function OfferCompare() {
               setState(initial)
               setTab(0)
             }}
-            className="inline-flex min-h-11 items-center gap-2 self-start rounded-full px-3 text-sm font-semibold text-muted transition hover:text-ink active:bg-ink/5"
+            className="ulink self-start py-1 text-[0.9375rem] text-muted hover:text-ink sm:self-auto"
           >
-            <RotateCcw aria-hidden className="size-4" />
             Alle Eingaben löschen
           </button>
         </div>
       </div>
 
-      <section aria-labelledby="cmp-result" className="rounded-panel bg-ink p-5 text-white sm:p-8">
-        <h2 id="cmp-result" className="flex items-center gap-2 text-xl font-semibold tracking-tight">
-          <Scale aria-hidden className="size-5 text-fresh" />
+      <section aria-labelledby="cmp-result" className="on-dark bg-night p-6 text-paper sm:p-10">
+        <h2 id="cmp-result" className="t-h3">
           Vergleich
         </h2>
-        <p className="mt-1 text-sm text-white/65">Alle Preise netto, umgerechnet mit {formatNumber(pricing.weeksPerMonth)} Wochen pro Monat.</p>
-        <dl className="mt-6 divide-y divide-white/10">
-          <div className="grid grid-cols-3 gap-2 pb-3 text-xs font-semibold tracking-wide text-white/60 uppercase sm:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <p className="mt-2 text-muted-dark">Alle Preise netto, umgerechnet mit {formatNumber(pricing.weeksPerMonth)} Wochen pro Monat.</p>
+        <dl className="mt-8 divide-y divide-line-dark border-b border-line-dark">
+          <div className="grid grid-cols-3 gap-2 pb-3 font-mono text-[0.75rem] text-muted-dark sm:grid-cols-[1.4fr_1fr_1fr_1fr]">
             <span className="hidden sm:block" />
             {results.map((r, i) => (
               <span key={i} className="truncate">
@@ -263,11 +260,11 @@ export function OfferCompare() {
           </div>
           {rows.map((row) => (
             <div key={row.label} className="grid grid-cols-3 gap-x-2 gap-y-1 py-3 sm:grid-cols-[1.4fr_1fr_1fr_1fr]">
-              <dt className="col-span-3 text-sm text-white/70 sm:col-span-1">{row.label}</dt>
+              <dt className="col-span-3 text-[0.9375rem] text-muted-dark sm:col-span-1">{row.label}</dt>
               {results.map((r, i) => (
                 <dd
                   key={i}
-                  className={cn('text-[0.9375rem] font-semibold tabular-nums', row.label === 'Monatspreis netto' && best !== null && r.netMonth === best && 'text-fresh')}
+                  className={cn('text-[1rem] font-medium tabular-nums', row.label === 'Monatspreis netto' && best !== null && r.netMonth === best && 'text-blue-on-dark')}
                 >
                   {row.get(r)}
                 </dd>
@@ -276,23 +273,23 @@ export function OfferCompare() {
           ))}
         </dl>
         {notes.length > 0 ? (
-          <ul className="mt-6 space-y-3">
-            {notes.map((n) => (
-              <li key={n} className="flex gap-3 rounded-2xl bg-white/5 p-4 text-sm leading-relaxed text-white/85 ring-1 ring-white/10">
-                <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-fresh" />
+          <ul className="mt-8">
+            {notes.map((n, i) => (
+              <li key={n} className="flex gap-4 border-b border-line-dark py-3 text-[0.9375rem] leading-relaxed text-paper">
+                <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
                 {n}
               </li>
             ))}
           </ul>
         ) : (
-          <p className="mt-6 text-sm text-white/65">Tragen Sie mindestens zwei Angebote ein, dann erscheinen hier neutrale Hinweise zu den Unterschieden.</p>
+          <p className="mt-8 text-[0.9375rem] text-muted-dark">Tragen Sie mindestens zwei Angebote ein, dann erscheinen hier neutrale Hinweise zu den Unterschieden.</p>
         )}
       </section>
 
-      <div className="flex flex-col gap-4 rounded-panel bg-glacier p-6 ring-1 ring-line sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <div className="flex flex-col gap-6 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-lg font-semibold tracking-tight">Möchten Sie uns als viertes Angebot dazunehmen?</p>
-          <p className="mt-1 text-sm text-muted">Kostenlose Besichtigung, Angebot mit Leistungsverzeichnis in 48 Stunden. Im ersten Monat jederzeit kündbar.</p>
+          <p className="t-h4">Möchten Sie uns als viertes Angebot dazunehmen?</p>
+          <p className="mt-2 text-ink-2">Kostenlose Besichtigung, Angebot mit Leistungsverzeichnis in 48 Stunden. Im ersten Monat jederzeit kündbar.</p>
         </div>
         <QuoteButton arrow wrapClassName="shrink-0">
           Angebot anfragen

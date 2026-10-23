@@ -24,9 +24,9 @@ function Range({
   const id = useId()
   return (
     <div>
-      <label htmlFor={id} className="flex flex-wrap items-baseline justify-between gap-x-3 text-sm font-medium text-ink">
-        <span className="min-w-0">{label}</span>
-        <span className="text-lg font-semibold whitespace-nowrap tabular-nums">
+      <label htmlFor={id} className="flex flex-wrap items-baseline justify-between gap-x-3 text-ink">
+        <span className="field-label min-w-0">{label}</span>
+        <span className="text-[1.5rem] font-medium tracking-[-0.02em] whitespace-nowrap tabular-nums">
           {formatNumber(value)} {unit}
         </span>
       </label>
@@ -39,7 +39,7 @@ function Range({
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         aria-valuetext={`${formatNumber(value)} ${unit}`}
-        className="mt-3 w-full accent-blue"
+        className="range mt-4"
       />
     </div>
   )
@@ -53,17 +53,19 @@ export function PerEmployeeCalculator() {
   const netMin = month * hourlyRateNetMin()
   const netMax = month * hourlyRateNetMax()
   return (
-    <div className="grid grid-cols-1 gap-6 rounded-panel bg-glacier p-5 sm:p-8 lg:grid-cols-2 lg:gap-10">
-      <div className="space-y-7">
+    <div className="grid-site gap-y-12 border-t border-line pt-8 lg:pt-10">
+      <div className="col-span-12 space-y-9 lg:col-span-5">
         <Range label="Mitarbeiter in Ihren Räumen" value={employees} onChange={setEmployees} min={1} max={150} step={1} unit="Personen" />
         <Range label="Stunden pro Woche" value={hours} onChange={setHours} min={1} max={60} step={0.5} unit="Std." />
-        <p className="text-sm text-muted">
+        <p className="text-[0.9375rem] text-ink-2">
           Das entspricht rund {formatEuroRange(netMin, netMax)} netto im Monat. Wie viele Stunden Ihr Objekt braucht, sehen wir bei der kostenlosen Besichtigung.
         </p>
       </div>
-      <div className="flex flex-col justify-between gap-5">
-        <PerEmployee netMin={netMin} netMax={netMax} employees={employees} className="shadow-soft" />
-        <QuoteButton arrow>Genaues Angebot anfragen</QuoteButton>
+      <div className="col-span-12 flex flex-col justify-between gap-8 lg:col-span-6 lg:col-start-7">
+        <PerEmployee netMin={netMin} netMax={netMax} employees={employees} />
+        <div>
+          <QuoteButton arrow>Genaues Angebot anfragen</QuoteButton>
+        </div>
       </div>
     </div>
   )

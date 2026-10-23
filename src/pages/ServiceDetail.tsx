@@ -1,5 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
-import { ArrowUpRight, Check, CalendarClock, Users2 } from 'lucide-react'
+import { useParams } from 'react-router-dom'
 import { getService, services } from '@/content/services'
 import { home } from '@/content/site'
 import { Seo } from '@/components/ui/Seo'
@@ -7,9 +6,10 @@ import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
+import { RevealText } from '@/components/ui/RevealText'
 import { Picture } from '@/components/ui/Picture'
 import { Button } from '@/components/ui/Button'
-import { ServiceIcon } from '@/components/ui/ServiceIcon'
+import { FeatureColumns, InlineLinks, LinkRows, NumberedRows } from '@/components/ui/Editorial'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { FinalCta } from '@/components/home/FinalCta'
 import { BeforeAfter } from '@/features/slider/BeforeAfter'
@@ -48,99 +48,81 @@ export default function ServiceDetail() {
         actions={
           <>
             <QuoteButton size="lg" arrow />
-            <Button to="/kontakt#besichtigung" variant="secondary" size="lg">
+            <Button to="/kontakt#besichtigung" variant="link">
               Besichtigung buchen
             </Button>
           </>
         }
       />
-      <Answer className="pt-12 sm:pt-16">{`CleanStar übernimmt die ${s.name} für Unternehmen in Offenburg und im ganzen Ortenaukreis. ${s.short}`}</Answer>
+      <Answer className="pt-20 sm:pt-28">{`CleanStar übernimmt die ${s.name} für Unternehmen in Offenburg und im ganzen Ortenaukreis. ${s.short}`}</Answer>
 
-      {/* Highlights */}
-      <section className="py-20 sm:py-28" aria-label="Das zeichnet uns aus">
+      {/* Die vier Punkte: einheitliche Spalten mit Haarlinie, auf allen Leistungsseiten gleich */}
+      <section className="section-tight" aria-label="Das zeichnet uns aus">
         <div className="container-site">
-          {/* Einheitliches 4er-Raster: ab 360 px zwei Spalten, ab Desktop vier (wie Vertrauensleiste, Werte, Karriere) */}
-          <ul className="feature-grid">
-            {s.highlights.map((h) => (
-              <li key={h.title} className="feature-card bg-white ring-1 ring-line" data-reveal>
-                <span aria-hidden className="grid size-10 place-items-center rounded-xl bg-glacier text-blue">
-                  <Check className="size-5" strokeWidth={2.5} />
-                </span>
-                <h2 className="feature-title mt-4">{h.title}</h2>
-                <p className="feature-text">{h.text}</p>
-              </li>
-            ))}
-          </ul>
+          <FeatureColumns items={s.highlights} titleAs="h2" />
         </div>
       </section>
 
       {/* Leistungsverzeichnis */}
-      <section className="bg-glacier py-24 sm:py-32" aria-labelledby="scope-title">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <SectionHeading
-              eyebrow="Leistungsverzeichnis"
-              title="Was genau enthalten ist."
-              id="scope-title"
-              text="Das ist unser Standard. Im Angebot passen wir das Verzeichnis an Ihr Objekt an. Was drinsteht, wird gemacht. Was nicht drinsteht, besprechen wir vorher."
-            />
+      <section className="section" aria-labelledby="scope-title">
+        <div className="container-site">
+          <SectionHeading
+            layout="split"
+            eyebrow="Leistungsverzeichnis"
+            title="Was genau enthalten ist."
+            id="scope-title"
+            text="Das ist unser Standard. Im Angebot passen wir das Verzeichnis an Ihr Objekt an. Was drinsteht, wird gemacht. Was nicht drinsteht, besprechen wir vorher."
+          />
+          <div className="grid-site mt-14 gap-y-12 lg:mt-20">
             {main && (
-              <div className="mt-8 hidden lg:block" data-reveal>
-                <Picture id="svc-buero-detail" sizes="40vw" />
+              <div className="col-span-12 lg:col-span-4">
+                <div className="lg:sticky lg:top-28">
+                  <Picture id="svc-buero-detail" ratio="4:5" reveal sizes="(min-width:1024px) 30vw, 100vw" caption="Arbeitsplatz nach der Reinigung" />
+                </div>
               </div>
             )}
-          </div>
-          <div className="lg:col-span-7" data-reveal>
-            <Accordion
-              defaultOpen={0}
-              items={s.scope.map((g) => ({
-                title: (
-                  <span className="flex items-baseline gap-3">
-                    {g.title}
-                    <span className="text-sm font-normal text-muted">{g.items.length} Punkte</span>
-                  </span>
-                ),
-                content: (
-                  <ul className="space-y-2.5">
-                    {g.items.map((it) => (
-                      <li key={it} className="flex items-start gap-3">
-                        <Check aria-hidden className="mt-1 size-4 shrink-0 text-fresh-ink" strokeWidth={3} />
-                        <span className="text-ink/85">{it}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ),
-              }))}
-            />
+            <div className={main ? 'col-span-12 lg:col-span-7 lg:col-start-6' : 'col-span-12 lg:col-span-9 lg:col-start-4'} data-reveal>
+              <Accordion
+                defaultOpen={0}
+                items={s.scope.map((g) => ({
+                  title: (
+                    <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                      {g.title}
+                      <span className="t-label">{g.items.length} Punkte</span>
+                    </span>
+                  ),
+                  content: (
+                    <ul className="border-t border-line">
+                      {g.items.map((it) => (
+                        <li key={it} className="border-b border-line py-2.5 text-ink">
+                          {it}
+                        </li>
+                      ))}
+                    </ul>
+                  ),
+                }))}
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Intervalle + Zielgruppe */}
-      <section className="py-24 sm:py-32" aria-label="Intervalle und Zielgruppen">
-        <div className="container-site grid grid-cols-1 gap-14 lg:grid-cols-2">
-          <div>
-            <h2 className="flex items-center gap-3 text-2xl font-semibold tracking-tight sm:text-3xl" data-reveal>
-              <CalendarClock aria-hidden className="size-7 text-blue" />
+      {/* Intervalle und Zielgruppen */}
+      <section className="section pt-0!" aria-label="Intervalle und Zielgruppen">
+        <div className="container-site grid-site gap-y-16">
+          <div className="col-span-12 lg:col-span-6">
+            <h2 className="t-h3" data-reveal>
               Intervalle
             </h2>
-            <ul className="mt-8 space-y-4">
-              {s.intervals.map((i) => (
-                <li key={i.label} className="grid gap-1 border-l-2 border-blue pl-5" data-reveal>
-                  <span className="font-semibold">{i.label}</span>
-                  <span className="text-muted">{i.text}</span>
-                </li>
-              ))}
-            </ul>
+            <NumberedRows className="mt-8" layout="stack" items={s.intervals.map((i) => ({ title: i.label, text: i.text, key: i.label }))} />
           </div>
-          <div>
-            <h2 className="flex items-center gap-3 text-2xl font-semibold tracking-tight sm:text-3xl" data-reveal>
-              <Users2 aria-hidden className="size-7 text-blue" />
+          <div className="col-span-12 lg:col-span-5 lg:col-start-8">
+            <h2 className="t-h3" data-reveal>
               Für wen geeignet
             </h2>
-            <ul className="mt-8 flex flex-wrap gap-2.5">
+            <ul className="mt-8 border-b border-line">
               {s.suitableFor.map((t) => (
-                <li key={t} className="rounded-full bg-glacier px-4 py-2.5 text-sm font-medium text-ink" data-reveal>
+                <li key={t} className="border-t border-line py-4 text-[1.125rem]" data-reveal>
                   {t}
                 </li>
               ))}
@@ -151,64 +133,66 @@ export default function ServiceDetail() {
 
       {main && (
         <>
-          <section className="bg-glacier py-24 sm:py-32" aria-labelledby="plan-title">
+          <section id="grundriss" className="section scroll-mt-24 pt-0!" aria-labelledby="plan-title">
             <div className="container-site">
               <SectionHeading
+                layout="split"
                 eyebrow="Raum für Raum"
                 title="Was wird bei Ihnen gereinigt?"
                 id="plan-title"
                 text="Tippen Sie auf einen Bereich. Sie sehen, was dort gemacht wird und wie oft. Ohne Kleingedrucktes."
               />
-              <div className="mt-12" data-reveal>
+              <div className="mt-14 lg:mt-20" data-reveal>
                 <FloorPlan />
               </div>
             </div>
           </section>
-          <section className="py-24 sm:py-32" aria-labelledby="pe-title">
+          <section className="on-dark section bg-night text-paper" aria-labelledby="ba2-title">
+            <div className="container-site">
+              <SectionHeading layout="split" eyebrow={home.beforeAfter.eyebrow} title={home.beforeAfter.headline} id="ba2-title" text={home.beforeAfter.lead} />
+              <div className="mt-14 lg:mt-20" data-reveal>
+                <BeforeAfter before="before-office" after="after-office" />
+              </div>
+            </div>
+          </section>
+          <section className="section" aria-labelledby="pe-title">
             <div className="container-site">
               <SectionHeading
+                layout="split"
                 eyebrow="Kosten greifbar machen"
                 title="Was kostet das pro Mitarbeiter?"
                 id="pe-title"
                 text="Ein Monatsbetrag sagt wenig. Umgerechnet auf Ihre Mitarbeiter und Arbeitstage sehen Sie, was ein sauberes Büro pro Kopf wirklich kostet."
               />
-              <div className="mt-12" data-reveal>
+              <div className="mt-14 lg:mt-20" data-reveal>
                 <PerEmployeeCalculator />
               </div>
             </div>
           </section>
-          <section className="bg-glacier py-24 sm:py-32" aria-labelledby="cost-title">
+          <section className="section pt-0!" aria-labelledby="cost-title">
             <div className="container-site">
               <SectionHeading
+                layout="split"
                 eyebrow="Kostenvergleich"
                 title="Eigenes Personal oder CleanStar? Rechnen Sie ehrlich nach."
                 id="cost-title"
                 text="Eigene Reinigungskräfte kosten mehr als den Stundenlohn. Der Rechner zeigt alle Posten offen. Und wenn eigenes Personal für Sie günstiger ist, sagt er Ihnen das auch."
               />
-              <div className="mt-12" data-reveal>
+              <div className="mt-14 lg:mt-20" data-reveal>
                 <CostCalculator />
               </div>
             </div>
           </section>
-          <section className="py-24 sm:py-32" aria-labelledby="ba2-title">
-            <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
-              <div className="lg:col-span-4">
-                <SectionHeading eyebrow={home.beforeAfter.eyebrow} title={home.beforeAfter.headline} id="ba2-title" text={home.beforeAfter.lead} />
-              </div>
-              <div className="lg:col-span-8" data-reveal>
-                <BeforeAfter before="before-office" after="after-office" />
-              </div>
-            </div>
-          </section>
-          <section id="jahresplan" className="scroll-mt-24 bg-glacier py-24 sm:py-32" aria-labelledby="plan-title">
+          <section id="jahresplan" className="section scroll-mt-24 pt-0!" aria-labelledby="yplan-title">
             <div className="container-site">
               <SectionHeading
+                layout="split"
                 eyebrow="Jahres-Reinigungsplan"
                 title="Wir denken das ganze Jahr mit."
-                id="plan-title"
+                id="yplan-title"
                 text="Laufende Reinigung, Fenster, Grundreinigung, Teppichpflege: Wählen Sie die Intervalle, und Sie sehen, wann was ansteht. Als PDF zum Weitergeben."
               />
-              <div className="mt-12" data-reveal>
+              <div className="mt-14 lg:mt-20" data-reveal>
                 <YearPlan />
               </div>
             </div>
@@ -217,96 +201,60 @@ export default function ServiceDetail() {
       )}
 
       {/* FAQ */}
-      <section className={main ? 'bg-glacier py-24 sm:py-32' : 'bg-glacier py-24 sm:py-32'} aria-labelledby="sfaq-title">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <SectionHeading eyebrow="Fragen" title={`${s.name}: häufige Fragen`} id="sfaq-title" />
+      <section className={main ? 'section pt-0!' : 'section'} aria-labelledby="sfaq-title">
+        <div className="container-site grid-site gap-y-10">
+          <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+          <div className="col-span-12 lg:col-span-4">
+            <p className="t-label mb-6">Fragen</p>
+            <RevealText as="h2" text={`${s.name}: häufige Fragen`} id="sfaq-title" className="t-h3" />
           </div>
-          <div className="lg:col-span-8" data-reveal>
+          <div className="col-span-12 lg:col-span-8" data-reveal>
             <Accordion items={s.faqs.map((f) => ({ title: f.q, content: f.a }))} />
           </div>
         </div>
       </section>
 
-      <section className="py-24 sm:py-32">
+      <section className="section pt-0!">
         <div className="container-site">
           <LeadMagnet />
         </div>
       </section>
 
-      {/* Interne Verlinkung: Orte und Ratgeber */}
-      <section className="pb-16 sm:pb-20" aria-labelledby="near-title">
-        <div className="container-site grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div>
-            <h2 id="near-title" className="text-2xl font-semibold tracking-tight">
+      {/* Interne Verlinkung: Orte, Ratgeber, weitere Leistungen */}
+      <section className="pb-24 lg:pb-36" aria-label="Weiterlesen">
+        <div className="container-site grid-site gap-y-16">
+          <div className="col-span-12 lg:col-span-4">
+            <h2 id="near-title" className="t-label">
               {s.name} in Ihrer Nähe
             </h2>
-            <ul className="mt-6 flex flex-wrap gap-2">
-              {(main ? officeCities.map((c) => ({ to: `/bueroreinigung/${c.slug}`, label: `Büroreinigung ${c.name}` })) : [])
+            <InlineLinks
+              className="mt-6"
+              items={(main ? officeCities.map((c) => ({ to: `/bueroreinigung/${c.slug}`, label: `Büroreinigung ${c.name}` })) : [])
                 .concat(
                   locations
                     .filter((l) => l.focus.some((f) => f.service === s.slug) && !(main && officeCities.some((c) => c.slug === l.slug)))
                     .slice(0, main ? 8 : 12)
                     .map((l) => ({ to: `/einzugsgebiet/${l.slug}`, label: `${s.name} ${shortName(l)}` })),
                 )
-                .map((x) => (
-                  <li key={x.to}>
-                    <Link
-                      to={x.to}
-                      className="inline-flex min-h-10 items-center rounded-full bg-white px-4 text-sm font-medium ring-1 ring-line transition hover:ring-blue/40 active:bg-blue-soft"
-                    >
-                      {x.label}
-                    </Link>
-                  </li>
-                ))}
-              <li>
-                <Link to="/einzugsgebiet" className="inline-flex min-h-10 items-center rounded-full px-4 text-sm font-semibold text-blue-hover">
-                  Alle Orte im Ortenaukreis
-                </Link>
-              </li>
-            </ul>
+                .concat([{ to: '/einzugsgebiet', label: 'Alle Orte im Ortenaukreis' }])}
+            />
           </div>
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight">Aus dem Ratgeber</h2>
-            <ul className="mt-6 space-y-2">
-              {guides
+          <div className="col-span-12 sm:col-span-6 lg:col-span-4">
+            <h2 className="t-label">Aus dem Ratgeber</h2>
+            <LinkRows
+              className="mt-6"
+              items={guides
                 .filter((g) => g.category === 'unternehmen')
                 .slice(0, 4)
-                .map((g) => (
-                  <li key={g.slug}>
-                    <Link to={`/ratgeber/${g.slug}`} className="group flex items-start gap-2 font-medium text-ink hover:text-blue-hover">
-                      <ArrowUpRight aria-hidden className="mt-1 size-4 shrink-0 text-blue" />
-                      <span className="underline-offset-4 group-hover:underline">{g.title}</span>
-                    </Link>
-                  </li>
-                ))}
-            </ul>
+                .map((g) => ({ to: `/ratgeber/${g.slug}`, label: g.title }))}
+            />
           </div>
-        </div>
-      </section>
-
-      {/* Weitere Leistungen */}
-      <section className="pb-24 sm:pb-32" aria-labelledby="more-title">
-        <div className="container-site">
-          <h2 id="more-title" className="text-2xl font-semibold tracking-tight" data-reveal>
-            Weitere Leistungen
-          </h2>
-          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {services
-              .filter((x) => x.slug !== s.slug)
-              .map((x) => (
-                <li key={x.slug} data-reveal>
-                  <Link
-                    to={`/leistungen/${x.slug}`}
-                    className="group flex h-full items-center gap-3 rounded-2xl bg-white p-4 ring-1 ring-line transition hover:shadow-soft hover:ring-blue/30"
-                  >
-                    <ServiceIcon icon={x.icon} className="size-5 text-blue" />
-                    <span className="flex-1 font-medium">{x.name}</span>
-                    <ArrowUpRight aria-hidden className="size-4 text-muted transition group-hover:text-blue" />
-                  </Link>
-                </li>
-              ))}
-          </ul>
+          <div className="col-span-12 sm:col-span-6 lg:col-span-4">
+            <h2 id="more-title" className="t-label">
+              Weitere Leistungen
+            </h2>
+            <LinkRows className="mt-6" items={services.filter((x) => x.slug !== s.slug).map((x) => ({ to: `/leistungen/${x.slug}`, label: x.name }))} />
+          </div>
         </div>
       </section>
 

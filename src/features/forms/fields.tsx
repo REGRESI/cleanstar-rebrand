@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
-const inputCls =
-  'block w-full rounded-xl border-0 bg-white px-4 py-3.5 text-base text-ink shadow-[inset_0_0_0_1px_var(--color-line)] transition placeholder:text-muted/70 focus:shadow-[inset_0_0_0_2px_var(--color-blue)] focus:outline-none aria-[invalid=true]:shadow-[inset_0_0_0_2px_var(--color-danger)]'
+/** Eingabefeld mit Linie unten (siehe .field in index.css) */
+const inputCls = 'field block'
 
 export const TextField = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & { label: string; error?: string; hint?: ReactNode; optional?: boolean }>(
   function TextField({ label, error, hint, optional, className, id, ...rest }, ref) {
@@ -12,24 +12,24 @@ export const TextField = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLIn
     const fid = id ?? uid
     return (
       <div className={className}>
-        <label htmlFor={fid} className="mb-1.5 block text-sm font-medium text-ink">
+        <label htmlFor={fid} className="field-label mb-1">
           {label}{' '}
           {optional ? (
-            <span className="font-normal text-muted">(optional)</span>
+            <span className="font-mono text-[0.75rem] font-normal text-muted">optional</span>
           ) : (
-            <span aria-hidden className="text-blue">
+            <span aria-hidden className="text-muted">
               *
             </span>
           )}
         </label>
         <input ref={ref} id={fid} aria-invalid={!!error} aria-describedby={error ? `${fid}-e` : hint ? `${fid}-h` : undefined} className={inputCls} {...rest} />
         {hint && !error && (
-          <p id={`${fid}-h`} className="mt-1.5 text-xs text-muted">
+          <p id={`${fid}-h`} className="mt-2 text-[0.8125rem] text-muted">
             {hint}
           </p>
         )}
         {error && (
-          <p id={`${fid}-e`} role="alert" className="mt-1.5 text-sm text-danger">
+          <p id={`${fid}-e`} role="alert" className="mt-2 text-[0.875rem] text-danger">
             {error}
           </p>
         )}
@@ -46,12 +46,12 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<H
   const fid = id ?? uid
   return (
     <div className={className}>
-      <label htmlFor={fid} className="mb-1.5 block text-sm font-medium text-ink">
-        {label} {optional && <span className="font-normal text-muted">(optional)</span>}
+      <label htmlFor={fid} className="field-label mb-1">
+        {label} {optional && <span className="font-mono text-[0.75rem] font-normal text-muted">optional</span>}
       </label>
       <textarea ref={ref} id={fid} rows={4} aria-invalid={!!error} className={cn(inputCls, 'resize-y')} {...rest} />
       {error && (
-        <p role="alert" className="mt-1.5 text-sm text-danger">
+        <p role="alert" className="mt-2 text-[0.875rem] text-danger">
           {error}
         </p>
       )}
@@ -59,31 +59,20 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<H
   )
 })
 
-/** Auswahlkarte für Radio/Checkbox */
+/** Rechteckige Auswahlfläche für Radio/Checkbox (gewählt = dunkel gefüllt, siehe .choice) */
 export const ChoiceCard = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & { label: ReactNode; description?: ReactNode; icon?: ReactNode }>(function ChoiceCard(
-  { label, description, icon, type = 'checkbox', className, ...rest },
+  { label, description, type = 'checkbox', className, ...rest },
   ref,
 ) {
   return (
-    <label className={cn('group relative isolate flex cursor-pointer items-start gap-3 rounded-2xl bg-white p-4', className)}>
+    <label className={cn('choice cursor-pointer items-start has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blue', className)}>
       <input ref={ref} type={type} className="peer sr-only" {...rest} />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 rounded-2xl ring-1 ring-line transition group-hover:ring-blue/40 peer-checked:bg-blue/[0.04] peer-checked:ring-2 peer-checked:ring-blue peer-focus-visible:ring-2 peer-focus-visible:ring-blue"
-      />
-      {icon && <span className="mt-0.5 text-blue">{icon}</span>}
       <span className="min-w-0 flex-1">
-        <span className="block font-medium text-ink">{label}</span>
-        {description && <span className="mt-0.5 block text-sm text-muted">{description}</span>}
+        <span className="block">{label}</span>
+        {description && <span className="mt-0.5 block text-[0.875rem] font-normal opacity-70">{description}</span>}
       </span>
-      <span
-        aria-hidden
-        className={cn(
-          'grid size-5 shrink-0 place-items-center border border-ink/20 text-transparent transition peer-checked:border-blue peer-checked:bg-blue peer-checked:text-white',
-          type === 'radio' ? 'rounded-full' : 'rounded-md',
-        )}
-      >
-        <Check className="size-3.5" strokeWidth={3} />
+      <span aria-hidden className={cn('mt-1 grid size-4 shrink-0 place-items-center border border-current text-transparent peer-checked:text-current', type === 'radio' && 'rounded-full')}>
+        <Check className="size-3" strokeWidth={3} />
       </span>
     </label>
   )
@@ -95,20 +84,20 @@ export const PrivacyCheckbox = forwardRef<HTMLInputElement, InputHTMLAttributes<
   return (
     <div>
       <div className="flex items-start gap-3">
-        <input ref={ref} id={id} type="checkbox" aria-invalid={!!error} className="mt-1 size-5 shrink-0 accent-blue" {...rest} />
-        <label htmlFor={id} className="text-sm leading-relaxed text-muted">
+        <input ref={ref} id={id} type="checkbox" aria-invalid={!!error} className="mt-1 size-[1.125rem] shrink-0 accent-ink" {...rest} />
+        <label htmlFor={id} className="text-[0.9375rem] leading-relaxed text-ink-2">
           Ich bin einverstanden, dass meine Angaben zur Bearbeitung meiner Anfrage verarbeitet werden. Details in der{' '}
-          <Link to="/datenschutz" target="_blank" className="font-medium text-blue underline underline-offset-2">
+          <Link to="/datenschutz" target="_blank" className="link">
             Datenschutzerklärung
           </Link>
           . Die Einwilligung kann ich jederzeit widerrufen.{' '}
-          <span aria-hidden className="text-blue">
+          <span aria-hidden className="text-muted">
             *
           </span>
         </label>
       </div>
       {error && (
-        <p role="alert" className="mt-1.5 text-sm text-danger">
+        <p role="alert" className="mt-2 text-[0.875rem] text-danger">
           {error}
         </p>
       )}
@@ -129,5 +118,5 @@ export const Honeypot = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInp
 })
 
 export function FormNote({ children }: { children: ReactNode }) {
-  return <p className="text-xs leading-relaxed text-muted">{children}</p>
+  return <p className="font-mono text-[0.75rem] leading-relaxed text-muted">{children}</p>
 }
