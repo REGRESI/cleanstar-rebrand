@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { defaultRecipient, type Recipient } from './personal'
 import { images, type ImageId } from '@/content/images'
 import { cn } from '@/lib/cn'
 
@@ -28,6 +29,16 @@ export interface MappeCtx {
   setHoverService: (i: number | null) => void
   /** Index einer Seite anhand ihrer Kennung */
   indexOf: (id: string) => number
+  /** Gemeinsamer Zustand der Seiten (Uhrzeit, Regler, Intervall): echte Seite und Textur zeigen dasselbe */
+  state: Record<string, unknown>
+  setState: (key: string, value: unknown) => void
+  /** Ausklappseite (Grundriss) geöffnet */
+  foldOpen: boolean
+  setFold: (open: boolean) => void
+  /** Anfragekarte aus dem Einsteckfach ziehen */
+  openRequest: () => void
+  /** 3D-Buch (true) oder flache Mappe */
+  is3d: boolean
 }
 
 export const Ctx = createContext<MappeCtx>({
@@ -36,8 +47,37 @@ export const Ctx = createContext<MappeCtx>({
   hoverService: null,
   setHoverService: () => {},
   indexOf: () => -1,
+  state: {},
+  setState: () => {},
+  foldOpen: false,
+  setFold: () => {},
+  openRequest: () => {},
+  is3d: false,
 })
 export const useMappe = () => useContext(Ctx)
+
+/** Für wen die Mappe ist (personalisierter Link). Eigener Kontext, damit auch PDF und Texturen ihn kennen. */
+export const RecipientCtx = createContext<Recipient>(defaultRecipient)
+export const useRecipient = () => useContext(RecipientCtx)
+
+/** Zustand einer Seite, geteilt zwischen echter Seite und Textur-Vorlage */
+export function usePageState<T>(key: string, initial: T): [T, (v: T) => void] {
+  const { state, setState } = useMappe()
+  const [local, setLocal] = useState<T>(initial)
+  const shared = key in state
+  const value = shared ? (state[key] as T) : local
+  const set = useCallback(
+    (v: T) => {
+      setLocal(v)
+      setState(key, v)
+    },
+    [key, setState],
+  )
+  return [value, set]
+}
+
+/** Hält Pointer-Ereignisse von Bedienelementen fern vom Blättern (Sperrzone) */
+export const NO_TURN = { 'data-interactive': '' } as const
 
 /** Sofort-Modus (Texturen, PDF): Animationen springen in ihren Endzustand */
 export const InstantCtx = createContext(false)

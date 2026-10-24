@@ -1,0 +1,9 @@
+/* Handschrift nur für den Notizzettel in der Leistungsmappe (Caveat, SIL Open Font License 1.1).
+   Eigene Datei, damit die Schrift nur mit der Leistungsmappe geladen und nicht auf jeder Seite vorgeladen wird. */
+@font-face {
+  font-family: 'Caveat';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('../../assets/fonts/caveat-latin-500.woff2') format('woff2');
+}

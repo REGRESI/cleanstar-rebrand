@@ -4,6 +4,7 @@ import { services } from '@/content/services'
 import { places, shortName } from '@/content/places'
 import { pricing } from '@/content/pricing'
 import { approvedQuotes, hasProof } from '@/content/proof'
+import { nightEvents } from './extras'
 
 /**
  * Die Leistungsmappe als Text: derselbe Inhalt wie im Buch, für Screenreader, Suchmaschinen und alle,
@@ -45,6 +46,25 @@ export function TextVersion() {
         {services.map((s) => (
           <li key={s.slug}>
             <strong className="font-medium text-ink">{s.name}:</strong> {s.short}
+          </li>
+        ))}
+      </ul>
+
+      <h2 className={h}>Am Abend und am Morgen</h2>
+      <p className={p}>
+        So sieht Ihr Büro am Abend aus. Und so am Morgen. Gleicher Raum, gleicher Blickwinkel: dazwischen liegt eine Nacht, in der unser Team die Arbeitsplätze, die Teeküche und
+        die Sanitärräume reinigt.
+      </p>
+
+      <h2 className={h}>Was passiert, während Sie schlafen</h2>
+      <p className={p}>Beispielablauf. Die Zeiten richten sich nach Ihrem Objekt.</p>
+      <ul className="mt-3 space-y-2 text-ink-2">
+        {nightEvents.map((e) => (
+          <li key={e.at}>
+            <strong className="font-medium text-ink">
+              {e.time} Uhr, {e.title}:
+            </strong>{' '}
+            {e.text}
           </li>
         ))}
       </ul>
@@ -99,6 +119,10 @@ export function TextVersion() {
       <p className={p}>
         {company.legalName}, {fullAddress()}. Telefon <a href={company.phone.href}>{company.phone.display}</a>, E-Mail <a href={`mailto:${company.email}`}>{company.email}</a>.{' '}
         {company.availability}.
+      </p>
+      <p className={p}>Notiz von {company.founders[company.newClientContact]?.name}: „Rufen Sie mich einfach an. Ich nehme mir Zeit.“</p>
+      <p className={p}>
+        Kostenlose Besichtigung anfragen: über die Anfragekarte im Einsteckfach der Mappe oder auf der <a href="/kontakt#besichtigung">Kontaktseite</a>.
       </p>
     </div>
   )

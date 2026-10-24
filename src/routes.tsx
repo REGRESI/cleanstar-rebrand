@@ -58,6 +58,7 @@ export const routes: RouteRecord[] = [
       { path: 'impressum', lazy: page(() => import('@/pages/Imprint')) },
       { path: 'datenschutz', lazy: page(() => import('@/pages/Privacy')) },
       // Interne Übersicht des Design-Systems (noindex, nicht verlinkt, nicht in der Sitemap)
+      { path: 'mappe-link', lazy: page(() => import('@/pages/MappeLink')) },
       { path: 'styleguide', lazy: page(() => import('@/pages/Styleguide')) },
       { path: '404', lazy: page(() => import('@/pages/NotFound')) },
       { path: '*', lazy: page(() => import('@/pages/NotFound')) },

@@ -26,7 +26,7 @@ for (const page of pages) {
   if (out !== html) writeFileSync(file, out)
 }
 // Interne Seiten (noindex) gehören nicht in die Sitemap
-const urls = pages.filter((p) => !p.startsWith('/404') && !p.startsWith('/styleguide')).sort()
+const urls = pages.filter((p) => !p.startsWith('/404') && !p.startsWith('/styleguide') && !p.startsWith('/mappe-link')).sort()
 const today = new Date().toISOString().slice(0, 10)
 const prio = (u) =>
   u === '/'

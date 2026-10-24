@@ -103,8 +103,8 @@ export function softShadowTexture(w = 512, h = 512, inset = 0.18, blur = 60) {
   return t
 }
 
-/** Projektive Abbildung des Rechtecks w × h auf ein Viereck (Bildschirmpunkte p0..p3 im Uhrzeigersinn ab oben links) als CSS matrix3d */
-export function quadMatrix(w: number, h: number, p: [number, number][]) {
+/** Projektive Abbildung des Einheitsquadrats auf ein Viereck (p0..p3 im Uhrzeigersinn ab oben links): Koeffizienten a…h */
+function homography(p: [number, number][]) {
   const [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = p
   const dx1 = x1 - x2,
     dx2 = x3 - x2,
@@ -112,27 +112,22 @@ export function quadMatrix(w: number, h: number, p: [number, number][]) {
   const dy1 = y1 - y2,
     dy2 = y3 - y2,
     dy3 = y0 - y1 + y2 - y3
-  let a, b, c, d, e, f, g, hh
-  if (Math.abs(dx3) < 1e-9 && Math.abs(dy3) < 1e-9) {
-    a = x1 - x0
-    b = x2 - x1
-    c = x0
-    d = y1 - y0
-    e = y2 - y1
-    f = y0
-    g = 0
-    hh = 0
-  } else {
-    const det = dx1 * dy2 - dx2 * dy1
-    g = (dx3 * dy2 - dx2 * dy3) / det
-    hh = (dx1 * dy3 - dx3 * dy1) / det
-    a = x1 - x0 + g * x1
-    b = x3 - x0 + hh * x3
-    c = x0
-    d = y1 - y0 + g * y1
-    e = y3 - y0 + hh * y3
-    f = y0
-  }
+  if (Math.abs(dx3) < 1e-9 && Math.abs(dy3) < 1e-9) return [x1 - x0, x2 - x1, x0, y1 - y0, y2 - y1, y0, 0, 0]
+  const det = dx1 * dy2 - dx2 * dy1
+  const g = (dx3 * dy2 - dx2 * dy3) / det
+  const h = (dx1 * dy3 - dx3 * dy1) / det
+  return [x1 - x0 + g * x1, x3 - x0 + h * x3, x0, y1 - y0 + g * y1, y3 - y0 + h * y3, y0, g, h]
+}
+
+/** Projektive Abbildung des Rechtecks w × h auf ein Viereck (Bildschirmpunkte p0..p3 im Uhrzeigersinn ab oben links) als CSS matrix3d */
+export function quadMatrix(w: number, h: number, p: [number, number][]) {
+  const [a0, b0, c, d0, e0, f, g0, h0] = homography(p)
+  let a = a0,
+    b = b0,
+    d = d0,
+    e = e0,
+    g = g0,
+    hh = h0
   // Einheitsquadrat → Rechteck w × h
   a /= w
   d /= w
@@ -141,4 +136,19 @@ export function quadMatrix(w: number, h: number, p: [number, number][]) {
   e /= h
   hh /= h
   return `matrix3d(${a},${d},0,${g},${b},${e},0,${hh},0,0,1,0,${c},${f},0,1)`
+}
+
+/** Bildschirmpunkt → Lage auf der Seite (u, v jeweils 0…1), Umkehrung der projektiven Abbildung */
+export function quadToUnit(p: [number, number][], X: number, Y: number): [number, number] {
+  const [a, b, c, d, e, f, g, h] = homography(p)
+  // 3×3-Matrix [[a,b,c],[d,e,f],[g,h,1]] invertieren
+  const A = e - f * h,
+    B = f * g - d,
+    C = d * h - e * g
+  const det = a * A + b * B + c * C
+  const inv = [A, c * h - b, b * f - c * e, B, a - c * g, c * d - a * f, C, b * g - a * h, a * e - b * d].map((v) => v / det)
+  const u = inv[0] * X + inv[1] * Y + inv[2]
+  const v = inv[3] * X + inv[4] * Y + inv[5]
+  const w = inv[6] * X + inv[7] * Y + inv[8]
+  return [u / w, v / w]
 }

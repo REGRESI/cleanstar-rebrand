@@ -1,5 +1,6 @@
 // Bereitet die Bilder und den Video-Ausschnitt für die Leistungsmappe (/leistungsmappe) vor.
-// Quelle: bilder/ (Dateinamen mit „mappe“ werden nach Inhalt zugeordnet), Ziel: public/mappe/
+// Quelle: bilder/mappe/ (und ältere Ablage direkt in bilder/ mit „mappe“ im Namen), Ziel: public/mappe/
+// Zuordnung nach Inhalt (Stichwort im Dateinamen, Umlaute normalisiert), Tisch-Ausrichtung nach Seitenverhältnis.
 // Schreibt src/content/mappe-assets.json mit allen vorhandenen Ebenen, damit fehlende Fotos sauber ersetzt werden.
 //
 // Aufruf: node scripts/mappe-assets.mjs
@@ -16,45 +17,146 @@ const SRC = 'bilder'
 const OUT = 'public/mappe'
 mkdirSync(OUT, { recursive: true })
 
-const files = readdirSync(SRC).filter((f) => /mappe/i.test(f) && /\.(png|jpe?g|webp)$/i.test(f))
-// Zuordnung nach Inhalt (Stichwort im Dateinamen) zu festen Namen
+// Dateinamen aus macOS kommen oft zerlegt (NFD): „ü“ als „u“ + Trema. Für den Vergleich vereinheitlichen.
+const nfc = (s) => s.normalize('NFC')
+const isImage = (f) => /\.(png|jpe?g|webp)$/i.test(f)
+const files = [
+  ...(existsSync(join(SRC, 'mappe'))
+    ? readdirSync(join(SRC, 'mappe'))
+        .filter(isImage)
+        .map((f) => join('mappe', f))
+    : []),
+  ...readdirSync(SRC).filter((f) => isImage(f) && /mappe/i.test(nfc(f))),
+]
+
+// Zuordnung nach Inhalt zu festen Namen
 const roles = {
   einband: /einband|cover/i,
-  'tisch-quer': /tisch.*(quer|land)|table.*land/i,
-  'tisch-hoch': /tisch.*(hoch|port)|table.*port/i,
-  tisch: /tisch|table/i,
-  kaffee: /kaffee|coffee|tasse/i,
-  pflanze: /pflanze|plant/i,
-  stift: /stift|pen/i,
+  tisch: /tisch|table|eichenholz|holzoberfl|tischplatte|schreibtisch/i,
+  kaffee: /kaffee|coffee|tasse|cappuccino/i,
+  pflanze: /pflanze|plant|sukkulente|kaktus/i,
+  stift: /stift|kugelschreiber|\bpen\b/i,
   schluessel: /schl(ue|ü)ssel|key/i,
   visitenkarte: /visitenkarte|card/i,
 }
+/** Objekte ohne eigenen Schatten: weicher Schlagschatten nach rechts unten (Licht von links oben wie im Tischfoto) */
+const addShadow = new Set(['kaffee', 'stift'])
+
+async function withShadow(buf, { dx, dy, blur, opacity }) {
+  const img = sharp(buf)
+  const { width, height } = await img.metadata()
+  const pad = Math.ceil(blur * 3 + Math.max(dx, dy))
+  const alpha = await img.clone().extractChannel('alpha').toBuffer()
+  const shadowAlpha = await sharp(alpha)
+    .extend({ top: pad, bottom: pad, left: pad, right: pad, background: { r: 0, g: 0, b: 0 } })
+    .blur(blur)
+    .linear(opacity, 0)
+    .toBuffer()
+  const W = width + 2 * pad,
+    H = height + 2 * pad
+  const dark = await sharp({ create: { width: W, height: H, channels: 3, background: { r: 40, g: 26, b: 14 } } })
+    .joinChannel(shadowAlpha)
+    .png()
+    .toBuffer()
+  return sharp({ create: { width: W, height: H, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+    .composite([
+      { input: dark, left: dx, top: dy },
+      { input: await img.png().toBuffer(), left: pad, top: pad },
+    ])
+    .png()
+    .toBuffer()
+}
+
+/** Tischfoto: in voller Auflösung, zum Rand hin leicht weichgezeichnet (Tiefenunschärfe wie bei einer Aufnahme von oben) */
+async function tableOut(input, file) {
+  const base = sharp(input).removeAlpha()
+  const { width: W, height: H } = await base.metadata()
+  const sharpBuf = await base.clone().png().toBuffer()
+  const blurBuf = await base
+    .clone()
+    .blur(Math.max(2, W / 520))
+    .png()
+    .toBuffer()
+  // Maske: Mitte scharf, nach außen weich in die Unschärfe
+  const mask = Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><defs><radialGradient id="g" cx="50%" cy="50%" r="72%"><stop offset="0.45" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient></defs><rect width="100%" height="100%" fill="url(#g)"/></svg>`,
+  )
+  const maskL = await sharp(mask).greyscale().extractChannel(0).toBuffer()
+  const center = await sharp(sharpBuf).removeAlpha().joinChannel(maskL).png().toBuffer()
+  const info = await sharp(blurBuf)
+    .composite([{ input: center }])
+    .webp({ quality: 84, effort: 6 })
+    .toFile(join(OUT, file))
+  return { width: info.width, height: info.height, size: info.size }
+}
+
+/** Hochformat aus dem Querformat, ohne Hochskalieren: Mittelstück, darunter gespiegelt fortgesetzt (Holz läuft weiter) */
+async function portraitFromLandscape(input) {
+  const { width: W, height: H } = await sharp(input).metadata()
+  const w = Math.min(H, Math.round(W * 0.6))
+  const h = Math.round((w * 16) / 9)
+  const left = Math.round((W - w) / 2)
+  const top = await sharp(input).extract({ left, top: 0, width: w, height: H }).removeAlpha().png().toBuffer()
+  const flipped = await sharp(top).flip().png().toBuffer()
+  return sharp({ create: { width: w, height: H * 2, channels: 3, background: '#000' } })
+    .composite([
+      { input: top, left: 0, top: 0 },
+      { input: flipped, left: 0, top: H },
+    ])
+    .png()
+    .toBuffer()
+    .then((b) =>
+      sharp(b)
+        .extract({ left: 0, top: Math.round((H * 2 - h) / 2), width: w, height: h })
+        .png()
+        .toBuffer(),
+    )
+}
 
 const assets = {}
-/** Rollen, die nur als Quelle dienen (nicht ausgeliefert) */
-const sourceOnly = new Set(['einband'])
+const used = new Set()
 for (const [role, re] of Object.entries(roles)) {
-  const f = files.find((x) => re.test(x) && !Object.values(assets).some((a) => a.source === x))
-  if (!f) continue
+  const matches = files.filter((x) => re.test(nfc(x)) && !used.has(x))
+  if (!matches.length) continue
+  if (role === 'tisch') {
+    // Querformat und Hochformat nach Seitenverhältnis
+    for (const f of matches) {
+      used.add(f)
+      const m = await sharp(join(SRC, f)).metadata()
+      const key = m.width >= m.height ? 'tisch-quer' : 'tisch-hoch'
+      if (assets[key]) continue
+      const r = await tableOut(join(SRC, f), `${key}.webp`)
+      assets[key] = { file: `/mappe/${key}.webp`, width: r.width, height: r.height, alpha: false, source: f }
+      console.log(`✓ ${f} → public/mappe/${key}.webp (${r.width}×${r.height}, ${Math.round(r.size / 1024)} KB)`)
+    }
+    continue
+  }
+  const f = matches[0]
+  used.add(f)
   const src = join(SRC, f)
-  const img = sharp(src)
-  const meta = await img.metadata()
-  const alpha = meta.hasAlpha
-  // Freigestellte Objekte auf ihren Inhalt zuschneiden (Schatten bleibt erhalten)
-  const base = alpha ? sharp(await img.trim({ threshold: 1 }).toBuffer()) : img
-  const isTable = role.startsWith('tisch')
-  const width = role === 'einband' ? 2048 : isTable ? 2560 : 1024
-  const out = join(OUT, `${role}.webp`)
-  if (sourceOnly.has(role)) {
+  if (role === 'einband') {
     assets[role] = { source: f }
     continue
   }
-  const info = await base
-    .resize({ width, withoutEnlargement: true })
-    .webp({ quality: isTable || role === 'einband' ? 80 : 86, alphaQuality: 90, effort: 6 })
-    .toFile(out)
+  const img = sharp(src)
+  const meta = await img.metadata()
+  const alpha = meta.hasAlpha
+  // Freigestellte Objekte auf ihren Inhalt zuschneiden (eigener Schatten bleibt erhalten)
+  let buf = alpha ? await img.trim({ threshold: 1 }).png().toBuffer() : await img.png().toBuffer()
+  buf = await sharp(buf).resize({ width: 1024, height: 1024, fit: 'inside', withoutEnlargement: true }).png().toBuffer()
+  if (alpha && addShadow.has(role)) buf = await withShadow(buf, { dx: 14, dy: 18, blur: 14, opacity: 0.42 })
+  const out = join(OUT, `${role}.webp`)
+  const info = await sharp(buf).webp({ quality: 86, alphaQuality: 90, effort: 6 }).toFile(out)
   assets[role] = { file: `/mappe/${role}.webp`, width: info.width, height: info.height, alpha: !!alpha, source: f }
   console.log(`✓ ${f} → ${out} (${info.width}×${info.height}, ${Math.round(info.size / 1024)} KB)`)
+}
+
+// Hochformat-Tisch fehlt: aus dem Querformat ableiten (gespiegelt verlängert, nicht hochskaliert)
+if (assets['tisch-quer'] && !assets['tisch-hoch']) {
+  const buf = await portraitFromLandscape(join(SRC, assets['tisch-quer'].source))
+  const r = await tableOut(buf, 'tisch-hoch.webp')
+  assets['tisch-hoch'] = { file: '/mappe/tisch-hoch.webp', width: r.width, height: r.height, alpha: false, source: assets['tisch-quer'].source, derived: true }
+  console.log(`✓ Hochformat-Tisch aus dem Querformat abgeleitet (${r.width}×${r.height}); ein echtes Hochformat-Foto fehlt`)
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -169,8 +271,8 @@ async function makeTable(W, H, file) {
     .toFile(join(OUT, file))
   console.log(`✓ Tischfläche public/mappe/${file} (${Math.round(info.size / 1024)} KB, prozedural)`)
 }
-if (!assets.tisch && !assets['tisch-quer']) await makeTable(2048, 1280, 'tisch-quer.webp')
-if (!assets.tisch && !assets['tisch-hoch']) await makeTable(1080, 1920, 'tisch-hoch.webp')
+if (!assets['tisch-quer']) await makeTable(2048, 1280, 'tisch-quer.webp')
+if (!assets['tisch-hoch']) await makeTable(1080, 1920, 'tisch-hoch.webp')
 
 // Stummer Video-Ausschnitt „Ihr Büro über Nacht“: Feierabend, Reinigung, Morgen (aus dem Hero-Video)
 const hero2 = join(SRC, 'hero', 'hero-2.mp4')
@@ -206,7 +308,19 @@ if (existsSync(hero2) && existsSync(hero3)) {
   console.log(`✓ Video-Ausschnitt ${video} (${Math.round(statSync(video).size / 1024)} KB)`)
 }
 
-const missing = Object.keys(roles).filter((r) => !assets[r] && !r.startsWith('tisch-'))
+// Standbilder der Nacht (Feierabend, Reinigung, Morgen): gleicher Bildausschnitt, für Pergament und Nacht-Uhr
+for (const k of ['feierabend', 'reinigung', 'morgen']) {
+  const src = [join(SRC, 'hero', `hero-${k}.jpg`), join('public', 'hero', `key-${k}-d.jpg`)].find((f) => existsSync(f))
+  if (!src) continue
+  const info = await sharp(src)
+    .resize({ width: 1200, withoutEnlargement: true })
+    .webp({ quality: 80, effort: 6 })
+    .toFile(join(OUT, `nacht-${k}.webp`))
+  assets[`nacht-${k}`] = { file: `/mappe/nacht-${k}.webp`, width: info.width, height: info.height, alpha: false, source: src }
+  console.log(`✓ Standbild ${k} → public/mappe/nacht-${k}.webp (${Math.round(info.size / 1024)} KB)`)
+}
+
+const missing = Object.keys(roles).filter((r) => (r === 'tisch' ? !assets['tisch-quer'] : !assets[r]))
 if (missing.length) console.log(`Hinweis: nicht vorhanden (die Szene ersetzt sie): ${missing.join(', ')}`)
 writeFileSync('src/content/mappe-assets.json', JSON.stringify(assets, null, 2) + '\n')
 console.log('✓ src/content/mappe-assets.json')

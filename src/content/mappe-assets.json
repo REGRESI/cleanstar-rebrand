@@ -1,19 +1,75 @@
 {
   "einband": {
-    "source": "cleanstar-mappe-einband-download.png"
+    "source": "mappe/mappe-einband.png"
+  },
+  "tisch-hoch": {
+    "file": "/mappe/tisch-hoch.webp",
+    "width": 941,
+    "height": 1672,
+    "alpha": false,
+    "source": "mappe/mappe-tisch-hoch.png"
+  },
+  "tisch-quer": {
+    "file": "/mappe/tisch-quer.webp",
+    "width": 1672,
+    "height": 941,
+    "alpha": false,
+    "source": "mappe/mappe-tisch-quer.png"
+  },
+  "kaffee": {
+    "file": "/mappe/kaffee.webp",
+    "width": 1143,
+    "height": 1144,
+    "alpha": true,
+    "source": "mappe/mappe-kaffee.png"
+  },
+  "pflanze": {
+    "file": "/mappe/pflanze.webp",
+    "width": 939,
+    "height": 890,
+    "alpha": true,
+    "source": "mappe/mappe-pflanze.png"
+  },
+  "stift": {
+    "file": "/mappe/stift.webp",
+    "width": 1144,
+    "height": 878,
+    "alpha": true,
+    "source": "mappe/mappe-stift.png"
   },
   "schluessel": {
     "file": "/mappe/schluessel.webp",
     "width": 814,
     "height": 752,
     "alpha": true,
-    "source": "mappe-schluessel.png"
+    "source": "mappe/mappe-schluessel.png"
   },
   "visitenkarte": {
     "file": "/mappe/visitenkarte.webp",
     "width": 1024,
     "height": 751,
     "alpha": true,
-    "source": "mappe-visitenkarte.png"
+    "source": "mappe/mappe-visitenkarte.png"
+  },
+  "nacht-feierabend": {
+    "file": "/mappe/nacht-feierabend.webp",
+    "width": 1200,
+    "height": 676,
+    "alpha": false,
+    "source": "bilder/hero/hero-feierabend.jpg"
+  },
+  "nacht-reinigung": {
+    "file": "/mappe/nacht-reinigung.webp",
+    "width": 1200,
+    "height": 676,
+    "alpha": false,
+    "source": "bilder/hero/hero-reinigung.jpg"
+  },
+  "nacht-morgen": {
+    "file": "/mappe/nacht-morgen.webp",
+    "width": 1200,
+    "height": 676,
+    "alpha": false,
+    "source": "bilder/hero/hero-morgen.jpg"
   }
 }

@@ -5,6 +5,8 @@ declare module 'page-flip/dist/js/page-flip.module.js' {
     loadFromHTML(items: HTMLElement[]): void
     on(event: 'flip' | 'changeOrientation' | 'changeState' | 'init', cb: (e: { data: unknown }) => void): this
     getCurrentPageIndex(): number
+    getSettings(): { disableFlipByClick: boolean }
+    getState(): 'user_fold' | 'fold_corner' | 'flipping' | 'read'
     getOrientation(): 'portrait' | 'landscape'
     getBoundsRect(): { pageWidth: number; height: number; width: number; left: number; top: number }
     flipNext(corner?: 'top' | 'bottom'): void

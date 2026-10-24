@@ -34,14 +34,27 @@ export interface SceneBus {
   anims: Map<number, LeafAnim>
   /** Ziehen an einer Ecke: Blatt und Fortschritt */
   drag: { leaf: number; p: number; dir: 1 | -1 } | null
+  /** Ausklappseite: 0 eingeklappt … 1 ausgeklappt (Ziel und aktueller Wert) */
+  fold: number
+  foldTarget: number
+  /** Blätter aus leichtem Papier (Pergament): schneller, stärker gewölbt, durchscheinend */
+  light: Set<number>
   open: number // 0 geschlossen … 1 offen (Kamera, Lage des Buchs)
   openTarget: number
   hoverBook: number
   hoverBookTarget: number
   pointer: { x: number; y: number }
   tilt: { x: number; y: number }
-  /** Seitenecken in Bildschirmkoordinaten für die HTML-Seiten */
-  onCorners?: (left: [number, number][] | null, right: [number, number][] | null, still: boolean) => void
+  /** Doppelseite, an deren rechter Seite die Ausklappseite hängt (-1: keine) */
+  foldSpread: number
+  /** Inhalt der beiden Klappflügel (linke und rechte Hälfte des großen Grundrisses) */
+  foldTex: [THREE.Texture | null, THREE.Texture | null]
+  /** Lesebändchen: Schwingen (Feder) und Klick */
+  ribbonSway: number
+  ribbonVel: number
+  onRibbon?: () => void
+  /** Seitenecken in Bildschirmkoordinaten für die HTML-Seiten; wide: die ausgeklappten Flügel */
+  onCorners?: (left: [number, number][] | null, right: [number, number][] | null, still: boolean, wide: [number, number][] | null) => void
   textures: (THREE.Texture | null)[]
   coverTex: THREE.Texture | null
   endpaper: THREE.Texture | null
@@ -58,6 +71,13 @@ export const busFor = (pages: number): SceneBus => {
     progress: new Array(leaves + 1).fill(0),
     anims: new Map(),
     drag: null,
+    fold: 0,
+    foldTarget: 0,
+    light: new Set(),
+    foldSpread: -1,
+    foldTex: [null, null],
+    ribbonSway: 0,
+    ribbonVel: 0,
     open: 0,
     openTarget: 0,
     hoverBook: 0,
@@ -139,17 +159,48 @@ function useTexture(url: string | undefined, repeat?: number) {
 
 /* ------------------------------------------------------------------------------------------ Tisch und Deko */
 
+/** Tischplatte im Seitenverhältnis des Fotos; 6 Einheiten breit reichen für jedes Bildformat */
 function Table({ tex }: { tex: THREE.Texture | null }) {
+  const img = tex?.image as HTMLImageElement | undefined
+  const aspect = img ? img.height / img.width : 0.5625
+  // Über den Rand hinaus gespiegelt fortgesetzt: Beim Herauszoomen (Ausklappseite) bleibt überall Tisch im Bild
+  useEffect(() => {
+    if (!tex) return
+    tex.wrapS = tex.wrapT = THREE.MirroredRepeatWrapping
+    tex.repeat.set(3, 3)
+    tex.offset.set(-1, -1)
+    tex.needsUpdate = true
+  }, [tex])
   return (
     <mesh rotation-x={-Math.PI / 2} position={[0, -0.001, 0]}>
-      <planeGeometry args={[7.2, 4.5]} />
+      <planeGeometry args={[6.4 * 3, 6.4 * aspect * 3]} />
       <meshBasicMaterial map={tex} color={tex ? '#ffffff' : '#e4ded4'} toneMapped={false} />
     </mesh>
   )
 }
 
 /** Freigestelltes Foto (mit eigenem Schatten) flach auf dem Tisch; bewegt sich beim Überfahren minimal */
-function PhotoObject({ bus, name, url, w, x, z, rot, y = 0.002 }: { bus: SceneBus; name: string; url: string; w: number; x: number; z: number; rot: number; y?: number }) {
+function PhotoObject({
+  bus,
+  name,
+  url,
+  w,
+  x,
+  z,
+  rot,
+  y = 0.002,
+  onHover,
+}: {
+  bus: SceneBus
+  name: string
+  url: string
+  w: number
+  x: number
+  z: number
+  rot: number
+  y?: number
+  onHover?: () => void
+}) {
   const tex = useTexture(url)
   const ref = useRef<THREE.Mesh>(null)
   const aspect = tex ? (tex.image as HTMLImageElement).height / (tex.image as HTMLImageElement).width : 0.7
@@ -158,7 +209,8 @@ function PhotoObject({ bus, name, url, w, x, z, rot, y = 0.002 }: { bus: SceneBu
     if (!m) return
     const k = bus.nudge[name] ?? 0
     bus.nudge[name] = k * (1 - damp(5, delta))
-    m.position.x = x + k * 0.012
+    // Deko rechts weicht der Ausklappseite aus
+    m.position.x = x + k * 0.012 + (x > 0.9 ? bus.fold * 2.3 : 0)
     m.position.z = z - k * 0.008
     m.rotation.z = rot + k * 0.025
   })
@@ -171,6 +223,7 @@ function PhotoObject({ bus, name, url, w, x, z, rot, y = 0.002 }: { bus: SceneBu
       onPointerOver={(e: ThreeEvent<PointerEvent>) => {
         e.stopPropagation()
         bus.nudge[name] = 1
+        onHover?.()
       }}
     >
       <planeGeometry args={[w, w * aspect]} />
@@ -274,6 +327,44 @@ function Coffee({ bus, x, z }: { bus: SceneBus; x: number; z: number }) {
   )
 }
 
+/** Dampf über der Tasse: steigt beim Überfahren einmal auf */
+function Steam({ bus, x, z }: { bus: SceneBus; x: number; z: number }) {
+  const steam = useMemo(() => {
+    const c = document.createElement('canvas')
+    c.width = 128
+    c.height = 256
+    const ctx = c.getContext('2d')!
+    const g = ctx.createRadialGradient(64, 170, 4, 64, 150, 60)
+    g.addColorStop(0, 'rgba(255,255,255,0.55)')
+    g.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.filter = 'blur(10px)'
+    ctx.fillStyle = g
+    ctx.beginPath()
+    ctx.ellipse(64, 150, 30, 90, 0.15, 0, Math.PI * 2)
+    ctx.fill()
+    return new THREE.CanvasTexture(c)
+  }, [])
+  const ref = useRef<THREE.Mesh>(null)
+  useFrame(({ clock }) => {
+    const m = ref.current
+    if (!m) return
+    const t = bus.steamAt < 0 ? 1 : (clock.elapsedTime - bus.steamAt) / 2.2
+    const on = t >= 0 && t < 1
+    m.visible = on
+    if (on) {
+      m.position.y = 0.06 + t * 0.26
+      ;(m.material as THREE.MeshBasicMaterial).opacity = Math.sin(t * Math.PI) * 0.45
+      m.rotation.z = Math.sin(t * 3) * 0.08
+    }
+  })
+  return (
+    <mesh ref={ref} position={[x + bus.fold * 2.3, 0.08, z]} rotation-x={-0.35} visible={false}>
+      <planeGeometry args={[0.2, 0.4]} />
+      <meshBasicMaterial map={steam} transparent opacity={0} depthWrite={false} toneMapped={false} />
+    </mesh>
+  )
+}
+
 /** Stift, modelliert: dunkler Schaft, Metallclip und Spitze */
 function Pen({ x, z, rot }: { x: number; z: number; rot: number }) {
   const shadow = useMemo(() => softShadowTexture(256, 64, 0.18, 10), [])
@@ -302,8 +393,10 @@ function Pen({ x, z, rot }: { x: number; z: number; rot: number }) {
 /* ------------------------------------------------------------------------------------------ Buch */
 
 function Leaf({ bus, index, geom }: { bus: SceneBus; index: number; geom: THREE.BufferGeometry }) {
-  const front = useMemo(() => pageMaterial(THREE.FrontSide), [])
-  const back = useMemo(() => pageMaterial(THREE.BackSide), [])
+  // Pergament: durchscheinend (Alpha aus der Textur), wird nach den übrigen Blättern gezeichnet
+  const light = bus.light.has(index + 1)
+  const front = useMemo(() => Object.assign(pageMaterial(THREE.FrontSide), light ? { transparent: true, depthWrite: false } : {}), [light])
+  const back = useMemo(() => Object.assign(pageMaterial(THREE.BackSide), light ? { transparent: true, depthWrite: false } : {}), [light])
   useFrame(() => {
     const ft = bus.textures[index * 2] ?? null
     const bt = bus.textures[index * 2 + 1] ?? null
@@ -317,12 +410,68 @@ function Leaf({ bus, index, geom }: { bus: SceneBus; index: number; geom: THREE.
     }
     front.color.set(ft ? '#ffffff' : '#f5f2eb')
     back.color.set(bt ? '#ffffff' : '#f5f2eb')
+    if (light && !ft) front.opacity = back.opacity = 0.5
   })
   return (
     <group>
-      <mesh geometry={geom} material={front} />
-      <mesh geometry={geom} material={back} />
+      <mesh geometry={geom} material={front} renderOrder={light ? 3 : 0} />
+      <mesh geometry={geom} material={back} renderOrder={light ? 3 : 0} />
     </group>
+  )
+}
+
+/** Lesebändchen: dunkelblaues Satinband, tritt an der Unterkante nahe der Bindung aus und liegt auf dem Tisch. Klick: zu den Konditionen. */
+function Ribbon({ bus }: { bus: SceneBus }) {
+  const N = 40
+  const geom = useMemo(() => {
+    const g = new THREE.BufferGeometry()
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array((N + 1) * 2 * 3), 3))
+    const idx: number[] = []
+    for (let i = 0; i < N; i++) idx.push(i * 2, i * 2 + 1, i * 2 + 2, i * 2 + 1, i * 2 + 3, i * 2 + 2)
+    g.setIndex(idx)
+    return g
+  }, [])
+  const mat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#1b2a4a', roughness: 0.42, metalness: 0.08, side: THREE.DoubleSide }), [])
+  const last = useRef({ open: 0, moving: 0 })
+  useFrame((_, delta) => {
+    const dt = Math.min(delta, 0.05)
+    // Anstoß, wenn das Buch sich bewegt (Öffnen, Blättern): gedämpfte Feder
+    const moving = bus.anims.size + (bus.drag ? 1 : 0)
+    const kick = Math.abs(bus.open - last.current.open) * 30 + (moving !== last.current.moving ? 0.6 : 0)
+    last.current = { open: bus.open, moving }
+    bus.ribbonVel += (-28 * bus.ribbonSway - 3.2 * bus.ribbonVel) * dt + kick * (Math.random() > 0.5 ? 1 : -1)
+    bus.ribbonSway += bus.ribbonVel * dt
+    const pos = geom.getAttribute('position') as THREE.BufferAttribute
+    const L = bus.leaves
+    const yIn = COVER_T + LEAF_T * L * 0.5
+    const x0 = 0.07
+    const w = 0.03
+    for (let i = 0; i <= N; i++) {
+      const t = i / N
+      const z = PH / 2 - 0.05 + t * 0.27
+      const out = Math.max(0, Math.min(1, (z - PH / 2) / 0.06))
+      const y = yIn * (1 - out * out * (3 - 2 * out)) + 0.0016
+      const x = x0 + 0.012 * Math.sin(t * Math.PI * 1.1) + bus.ribbonSway * 0.05 * t * t
+      const taper = t > 0.96 ? (1 - t) / 0.04 : 1
+      pos.setXYZ(i * 2, x - (w / 2) * taper, y, z)
+      pos.setXYZ(i * 2 + 1, x + (w / 2) * taper, y, z)
+    }
+    pos.needsUpdate = true
+    geom.computeVertexNormals()
+    geom.computeBoundingSphere()
+  })
+  return (
+    <mesh
+      geometry={geom}
+      material={mat}
+      onClick={(e) => {
+        e.stopPropagation()
+        bus.ribbonVel += 1.2
+        bus.onRibbon?.()
+      }}
+      onPointerOver={() => (document.body.style.cursor = 'pointer')}
+      onPointerOut={() => (document.body.style.cursor = '')}
+    />
   )
 }
 
@@ -341,6 +490,17 @@ function Book({ bus, onOpen }: { bus: SceneBus; onOpen: () => void }) {
   const backMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.95 }), [])
   const edgeL = useRef<THREE.Mesh>(null)
   const edgeR = useRef<THREE.Mesh>(null)
+  const foldA = useRef<THREE.Group>(null)
+  const foldB = useRef<THREE.Group>(null)
+  const foldMatA = useMemo(() => pageMaterial(THREE.FrontSide), [])
+  const foldMatB = useMemo(() => pageMaterial(THREE.FrontSide), [])
+  const foldBack = useMemo(() => new THREE.MeshBasicMaterial({ color: '#efeadf', side: THREE.BackSide, toneMapped: false }), [])
+  const panelGeom = useMemo(() => {
+    const g = new THREE.PlaneGeometry(PW, PH)
+    g.rotateX(-Math.PI / 2)
+    g.translate(PW / 2, 0, 0)
+    return g
+  }, [])
   const { camera, size } = useThree()
   const v = useMemo(() => new THREE.Vector3(), [])
 
@@ -383,7 +543,8 @@ function Book({ bus, onOpen }: { bus: SceneBus; onOpen: () => void }) {
       const moving = p > 0.001 && p < 0.999
       const dir = bus.drag?.leaf === i + 1 ? bus.drag.dir : (bus.anims.get(i + 1)?.dir ?? 1)
       // Wölbung: stark in der Mitte des Blätterns, flach am Anfang und Ende
-      const curl = moving ? -dir * 0.95 * Math.sin(p * Math.PI) : 0
+      // Pergament ist leichter: stärkere, weichere Wölbung
+      const curl = moving ? -dir * (bus.light.has(i + 1) ? 1.5 : 0.95) * Math.sin(p * Math.PI) : 0
       bendLeaf(leafGeoms[i], p, y0, curl)
     }
 
@@ -397,13 +558,16 @@ function Book({ bus, onOpen }: { bus: SceneBus; onOpen: () => void }) {
     // Papierkanten der Stapel
     if (edgeR.current) {
       // Papierblock knapp unter dem obersten Blatt, damit er es nie verdeckt
-      const hR = Math.max(0.0005, (nRight - 0.7) * LEAF_T)
+      // Liegt oben ein durchscheinendes Blatt (Pergament), endet der Block ein Blatt tiefer: Die Seite darunter bleibt sichtbar
+      const topR = turned.indexOf(false)
+      const hR = Math.max(0.0005, (nRight - 0.7 - (topR >= 0 && bus.light.has(topR + 1) ? 1 : 0)) * LEAF_T)
       edgeR.current.scale.y = hR
       edgeR.current.position.y = COVER_T + hR / 2
       edgeR.current.visible = nRight > 0
     }
     if (edgeL.current) {
-      const hL = Math.max(0.0005, (nLeft - 0.7) * LEAF_T)
+      const topL = turned.lastIndexOf(true)
+      const hL = Math.max(0.0005, (nLeft - 0.7 - (topL >= 0 && bus.light.has(topL + 1) ? 1 : 0)) * LEAF_T)
       edgeL.current.scale.y = hL
       edgeL.current.position.y = COVER_T + hL / 2
       edgeL.current.visible = pc > 0.5 && nLeft > 0
@@ -419,9 +583,9 @@ function Book({ bus, onOpen }: { bus: SceneBus; onOpen: () => void }) {
       group.current.position.y = bus.hoverBook * 0.012
     }
     if (shadow.current) {
-      const w = COVER_W * (1 + bus.open)
+      const w = COVER_W * (1 + bus.open) + 2 * PW * bus.fold
       shadow.current.scale.set(w * 1.45 + bus.hoverBook * 0.08, COVER_H * 1.32 + bus.hoverBook * 0.08, 1)
-      shadow.current.position.x = 0.045
+      shadow.current.position.x = 0.045 + PW * bus.fold
       ;(shadow.current.material as THREE.MeshBasicMaterial).opacity = 0.5 - bus.hoverBook * 0.12
     }
     // Schatten des blätternden Blatts auf der Seite darunter
@@ -441,8 +605,40 @@ function Book({ bus, onOpen }: { bus: SceneBus; onOpen: () => void }) {
       ;(turnShade.current.material as THREE.MeshBasicMaterial).opacity = k * 0.28
     }
 
+    // Ausklappseite: zwei Flügel an der Außenkante der rechten Seite, nacheinander entlang der Knickkanten
+    bus.fold += (bus.foldTarget - bus.fold) * damp(2.8, delta)
+    if (Math.abs(bus.foldTarget - bus.fold) < 0.002) bus.fold = bus.foldTarget
+    const turnedCount = turned.filter(Boolean).length
+    const rFirst = turned.indexOf(false)
+    let topR = COVER_T
+    if (rFirst >= 0) {
+      let above = 0
+      for (let j = rFirst + 1; j < L; j++) if (!turned[j]) above++
+      topR = COVER_T + LEAF_T * (above + 0.5)
+    }
+    const foldOn = pc > 0.999 && bus.foldSpread >= 0 && turnedCount === bus.foldSpread && bus.fold > 0.001
+    if (foldA.current && foldB.current) {
+      foldA.current.visible = foldOn
+      const sm = (x: number) => {
+        const t = Math.max(0, Math.min(1, x))
+        return t * t * (3 - 2 * t)
+      }
+      foldA.current.position.set(PW, topR + 0.003, 0)
+      foldA.current.rotation.z = Math.PI * (1 - sm(bus.fold / 0.62))
+      foldB.current.rotation.z = Math.PI * (1 - sm((bus.fold - 0.38) / 0.62))
+      for (const [m, t] of [
+        [foldMatA, bus.foldTex[0]],
+        [foldMatB, bus.foldTex[1]],
+      ] as const) {
+        if (m.map !== t) {
+          m.map = t
+          m.needsUpdate = true
+        }
+      }
+    }
+
     // Seitenecken für die HTML-Seiten (nur wenn das Buch offen ist und still liegt)
-    anyMoving = anyMoving || Math.abs(bus.openTarget - bus.open) > 0.002 || pc < 0.999
+    anyMoving = anyMoving || Math.abs(bus.openTarget - bus.open) > 0.002 || pc < 0.999 || Math.abs(bus.foldTarget - bus.fold) > 0.002
     if (bus.onCorners && group.current) {
       const gx = group.current.position.x
       const gy = group.current.position.y
@@ -466,7 +662,11 @@ function Book({ bus, onOpen }: { bus: SceneBus; onOpen: () => void }) {
           right = [proj(0, y, -PH / 2), proj(PW, y, -PH / 2), proj(PW, y, PH / 2), proj(0, y, PH / 2)]
         }
       }
-      bus.onCorners(left, right, !anyMoving)
+      const wide =
+        foldOn && bus.fold > 0.999
+          ? [proj(PW, topR + 0.003, -PH / 2), proj(3 * PW, topR + 0.003, -PH / 2), proj(3 * PW, topR + 0.003, PH / 2), proj(PW, topR + 0.003, PH / 2)]
+          : null
+      bus.onCorners(left, right, !anyMoving, wide)
     }
     void clock
   })
@@ -491,6 +691,16 @@ function Book({ bus, onOpen }: { bus: SceneBus; onOpen: () => void }) {
         {leafGeoms.map((g, i) => (
           <Leaf key={i} bus={bus} index={i} geom={g} />
         ))}
+        {/* Ausklappseite: Flügel A an der Außenkante, Flügel B an A */}
+        <group ref={foldA} visible={false}>
+          <mesh geometry={panelGeom} material={foldMatA} />
+          <mesh geometry={panelGeom} material={foldBack} />
+          <group ref={foldB} position={[PW, 0.002, 0]}>
+            <mesh geometry={panelGeom} material={foldMatB} />
+            <mesh geometry={panelGeom} material={foldBack} />
+          </group>
+        </group>
+        <Ribbon bus={bus} />
         <mesh ref={turnShade} rotation-x={-Math.PI / 2} visible={false}>
           <planeGeometry args={[PW, PH]} />
           <meshBasicMaterial color="#3a2f22" transparent opacity={0} depthWrite={false} toneMapped={false} />
@@ -508,7 +718,7 @@ function Book({ bus, onOpen }: { bus: SceneBus; onOpen: () => void }) {
             onPointerOut={() => (bus.hoverBookTarget = 0)}
           />
           {/* Außenseite mit Prägung */}
-          <mesh geometry={faceGeom} material={coverMat} rotation-x={-Math.PI / 2} position={[COVER_W / 2, COVER_T + 0.0035, 0]} />
+          <mesh geometry={faceGeom} material={coverMat} rotation-x={-Math.PI / 2} position={[COVER_W / 2, COVER_T + 0.0065, 0]} />
         </group>
       </group>
     </group>
@@ -528,14 +738,16 @@ function Rig({ bus }: { bus: SceneBus }) {
     const fov = ((camera as THREE.PerspectiveCamera).fov * Math.PI) / 180
     const fit = (w: number, h: number) => Math.max(h / 2 / Math.tan(fov / 2), w / 2 / Math.tan(fov / 2) / aspect)
     const closed = fit(aspect > 1.2 ? 4.4 : COVER_W / 0.6, COVER_H / 0.58)
-    const open = fit((2 * COVER_W) / 0.66, COVER_H / 0.74) * 1.02
+    // Ausgeklappt: Kamera zoomt leicht heraus und rückt zur Mitte der vier Seitenbreiten
+    const open = fit((2 * COVER_W + 2 * PW * bus.fold) / 0.66, COVER_H / 0.74) * 1.02
     const e = bus.open * bus.open * (3 - 2 * bus.open)
     const dist = closed + (open - closed) * e
+    const cx = PW * bus.fold
     const tiltBase = THREE.MathUtils.degToRad(12)
     const ax = tiltBase + THREE.MathUtils.degToRad(-bus.tilt.y)
     const ay = THREE.MathUtils.degToRad(bus.tilt.x)
-    camera.position.set(Math.sin(ay) * dist * Math.cos(ax), Math.cos(ax) * dist, Math.sin(ax) * dist)
-    camera.lookAt(0, 0, 0.02)
+    camera.position.set(cx + Math.sin(ay) * dist * Math.cos(ax), Math.cos(ax) * dist, Math.sin(ax) * dist)
+    camera.lookAt(cx, 0, 0.02)
   })
   return null
 }
@@ -547,6 +759,11 @@ export function Scene3D({ bus, onOpen, onCreated, active = true }: { bus: SceneB
   const key = mappeAsset('schluessel')
   const card = mappeAsset('visitenkarte')
   const plant = mappeAsset('pflanze')
+  const coffee = mappeAsset('kaffee')
+  const pen = mappeAsset('stift')
+  const steam = () => {
+    if (bus.steamAt < 0 || performance.now() / 1000 - bus.steamAt > 3) bus.steamAt = performance.now() / 1000
+  }
   return (
     <Canvas
       flat
@@ -555,7 +772,7 @@ export function Scene3D({ bus, onOpen, onCreated, active = true }: { bus: SceneB
       camera={{ fov: 26, near: 0.1, far: 40, position: [0, 6, 1] }}
       gl={{ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true }}
       onCreated={({ gl }) => {
-        gl.setClearColor('#e4ded4')
+        gl.setClearColor(table ? '#8a6440' : '#e4ded4')
         onCreated?.()
       }}
       onPointerMove={(e) => {
@@ -569,12 +786,20 @@ export function Scene3D({ bus, onOpen, onCreated, active = true }: { bus: SceneB
       <Rig bus={bus} />
       <Table tex={table} />
       <Book bus={bus} onOpen={onOpen} />
-      {/* Deko rund um das Buch: Kaffee rechts oben, Stift links, Schlüssel und Visitenkarte rechts unten */}
-      <Coffee bus={bus} x={1.72} z={-0.62} />
-      <Pen x={-1.62} z={0.18} rot={0.42} />
+      {/* Deko an natürlichen Plätzen: Pflanze links oben, Kaffee rechts oben, Stift links, Schlüssel und Visitenkarte rechts unten.
+          Fotos, sobald vorhanden; sonst modellierte Tasse und Stift. */}
+      {plant && <PhotoObject bus={bus} name="pflanze" url={plant.file} w={0.62} x={-1.72} z={-0.68} rot={0} y={0.004} />}
+      {coffee ? (
+        <>
+          <PhotoObject bus={bus} name="kaffee" url={coffee.file} w={0.78} x={1.74} z={-0.6} rot={0.2} y={0.004} onHover={steam} />
+          <Steam bus={bus} x={1.7} z={-0.66} />
+        </>
+      ) : (
+        <Coffee bus={bus} x={1.72} z={-0.62} />
+      )}
+      {pen ? <PhotoObject bus={bus} name="stift" url={pen.file} w={0.72} x={-1.62} z={0.32} rot={-0.12} y={0.003} /> : <Pen x={-1.62} z={0.18} rot={0.42} />}
       {key && <PhotoObject bus={bus} name="schluessel" url={key.file} w={0.42} x={1.62} z={0.5} rot={-0.35} y={0.003} />}
       {card && <PhotoObject bus={bus} name="visitenkarte" url={card.file} w={0.5} x={1.5} z={0.86} rot={0.12} y={0.002} />}
-      {plant && <PhotoObject bus={bus} name="pflanze" url={plant.file} w={0.9} x={-1.65} z={-0.62} rot={0} y={0.004} />}
     </Canvas>
   )
 }
@@ -586,6 +811,8 @@ export function useBookControls(bus: SceneBus, pages: number, onTurn?: () => voi
   const maxSpread = pages % 2 === 1 ? leaves - 1 : leaves
   const spreadRef = useRef(-1)
   const [spread, setSpread] = useState(-1)
+  /** Gepufferte Ziele: Während eine Animation läuft, werden neue Befehle gesammelt und danach der Reihe nach ausgeführt */
+  const queue = useRef<number[]>([])
 
   const animate = useCallback(
     (entry: number, to: number, delay = 0, dur = 1050) => {
@@ -598,29 +825,31 @@ export function useBookControls(bus: SceneBus, pages: number, onTurn?: () => voi
     [bus],
   )
 
-  const goTo = useCallback(
+  const run = useCallback(
     (target: number) => {
       const t = Math.max(-1, Math.min(maxSpread, target))
       const from = spreadRef.current
       if (t === from) return
+      // Ausklappseite vor dem Blättern wieder einklappen
+      bus.foldTarget = 0
       // Buchdecke
       if (from === -1 && t >= 0) {
         bus.openTarget = 1
         animate(0, 1, 0, 1300)
       }
-      if (t === -1) {
-        bus.openTarget = 0
-      }
+      if (t === -1) bus.openTarget = 0
       // Blätter dazwischen fächern durch (gestaffelt, bei weiten Sprüngen schneller)
       const lo = Math.min(Math.max(from, 0), Math.max(t, 0))
       const hi = Math.max(Math.max(from, 0), Math.max(t, 0))
       const jumps = hi - lo
       const dur = jumps > 1 ? 820 : 1050
       const step = jumps > 1 ? 110 : 0
+      // leichtes Blatt (Pergament): schneller
+      const d = (leaf: number) => (bus.light.has(leaf) && jumps <= 1 ? 640 : dur)
       if (t > from) {
-        for (let i = Math.max(from, 0); i < t; i++) animate(i + 1, 1, (from === -1 ? 520 : 0) + (i - Math.max(from, 0)) * step, dur)
+        for (let i = Math.max(from, 0); i < t; i++) animate(i + 1, 1, (from === -1 ? 520 : 0) + (i - Math.max(from, 0)) * step, d(i + 1))
       } else {
-        for (let i = Math.max(from, 0) - 1; i >= Math.max(t, 0); i--) animate(i + 1, 0, (Math.max(from, 0) - 1 - i) * step, dur)
+        for (let i = Math.max(from, 0) - 1; i >= Math.max(t, 0); i--) animate(i + 1, 0, (Math.max(from, 0) - 1 - i) * step, d(i + 1))
         if (t === -1) animate(0, 0, jumps * step + 80, 1200)
       }
       spreadRef.current = t
@@ -630,9 +859,51 @@ export function useBookControls(bus: SceneBus, pages: number, onTurn?: () => voi
     [animate, bus, maxSpread, onTurn],
   )
 
-  /** Ziehen an einer Ecke: Fortschritt des obersten Blatts direkt setzen, beim Loslassen fertig blättern oder zurück */
+  // Läuft etwas (Blättern, Ziehen, Ausklappseite offen)? Dann wird gepuffert; eine offene Ausklappseite klappt zuerst ein
+  const busy = useCallback(() => {
+    if (bus.fold > 0.01) bus.foldTarget = 0
+    return bus.anims.size > 0 || !!bus.drag || bus.fold > 0.01
+  }, [bus])
+
+  // Puffer abarbeiten, sobald nichts mehr läuft
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (!queue.current.length || busy()) return
+      run(queue.current.shift()!)
+    }, 60)
+    return () => window.clearInterval(id)
+  }, [busy, run])
+
+  /** Zu einer Doppelseite blättern (absolut, z. B. aus dem Inhaltsverzeichnis): ersetzt gepufferte Befehle */
+  const goTo = useCallback(
+    (target: number) => {
+      if (busy()) queue.current = [target]
+      else {
+        queue.current = []
+        run(target)
+      }
+    },
+    [busy, run],
+  )
+
+  /** Eine Doppelseite vor oder zurück; während einer Animation gepuffert */
+  const step = useCallback(
+    (dir: 1 | -1) => {
+      const base = queue.current.length ? queue.current[queue.current.length - 1] : spreadRef.current
+      const t = Math.max(-1, Math.min(maxSpread, base + dir))
+      if (t === base) return
+      if (busy()) queue.current.push(t)
+      else run(t)
+    },
+    [busy, maxSpread, run],
+  )
+
+  /**
+   * Ziehen: Fortschritt des obersten Blatts direkt setzen (die Seite folgt Finger bzw. Maus).
+   * Beim Loslassen entscheiden Weg (über 35 %) oder Geschwindigkeit über Umblättern oder Zurückfedern.
+   */
   const drag = useCallback(
-    (side: 'left' | 'right', p: number | null) => {
+    (side: 'left' | 'right', p: number | null, velocity = 0) => {
       const s = spreadRef.current
       if (s < 0) return
       const leaf = side === 'right' ? s + 1 : s
@@ -642,22 +913,26 @@ export function useBookControls(bus: SceneBus, pages: number, onTurn?: () => voi
         const d = bus.drag
         bus.drag = null
         if (!d) return
-        const done = side === 'right' ? d.p > 0.35 : d.p < 0.65
+        const fling = side === 'right' ? velocity < -0.5 : velocity > 0.5
+        const back = side === 'right' ? velocity > 0.5 : velocity < -0.5
+        const done = !back && (fling || (side === 'right' ? d.p > 0.35 : d.p < 0.65))
         bus.progress[leaf] = d.p
+        const rest = side === 'right' ? 1 - d.p : d.p
         if (done) {
           spreadRef.current = side === 'right' ? s + 1 : s - 1
           setSpread(spreadRef.current)
-          animate(leaf, side === 'right' ? 1 : 0, 0, 700)
+          animate(leaf, side === 'right' ? 1 : 0, 0, 260 + rest * 520)
           onTurn?.()
-        } else animate(leaf, side === 'right' ? 0 : 1, 0, 500)
+        } else animate(leaf, side === 'right' ? 0 : 1, 0, 220 + (1 - rest) * 420)
         return
       }
+      bus.foldTarget = 0
       bus.drag = { leaf, p: Math.max(0, Math.min(1, p)), dir: side === 'right' ? 1 : -1 }
     },
     [animate, bus, maxSpread, onTurn],
   )
 
-  return { spread, goTo, drag, maxSpread, spreadRef } as const
+  return { spread, goTo, step, drag, maxSpread, spreadRef } as const
 }
 
 export type BookControls = ReturnType<typeof useBookControls>

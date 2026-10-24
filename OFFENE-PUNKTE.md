@@ -74,7 +74,11 @@ neutralen Text oder blendet die Stelle aus.
 
 ## Leistungsmappe (/leistungsmappe)
 
-- **Fotos für die Schreibtisch-Szene fehlen:** Vorhanden waren nur Einband, Schlüssel und Visitenkarte. Ersetzt sind: Tischfläche (erzeugte helle Steinoberfläche), Kaffeetasse und Stift (in 3D modelliert). **Die Pflanze oben links fehlt**, weil sie sich nicht glaubwürdig ohne Foto nachbauen lässt. Ein Tischfoto (`bilder/mappe-tisch.jpg`, von oben) und eine freigestellte Pflanze (`bilder/mappe-pflanze.png` mit Transparenz) ablegen und `node scripts/mappe-assets.mjs` ausführen; die Szene übernimmt sie automatisch.
-- **Startseiten-Standbild:** `public/mappe/teaser.webp` ist ein Standbild der Szene. Nach neuen Fotos bitte neu erzeugen (Szene öffnen, Bildschirmfoto 1200 × 800).
-- **Inhalte** kommen vollständig aus den Inhaltsdateien (`site.ts`, `company.ts`, `services.ts`, `floorplan.ts`, `pricing.ts`, `places.ts`, `proof.ts`). Das Kapitel „Referenzen“ erscheint automatisch, sobald `proof.ts` freigegebene Einträge hat.
+- **Fotos der Schreibtisch-Szene:** liegen jetzt alle in `bilder/mappe/` (Tisch quer und hoch, Kaffee, Pflanze, Stift, Schlüssel, Visitenkarte, Einband). Neue Fotos dort ablegen und `node scripts/mappe-assets.mjs` ausführen; das Skript erkennt sie am Namen (auch „Kugelschreiber“, „Sukkulente“, „Eichenholz“, „Tischplatte“), die Tisch-Ausrichtung am Seitenverhältnis.
+- **Tischfoto-Auflösung:** Das Querformat hat 1672 px. Auf großen Bildschirmen fangen eine leichte Randunschärfe und feines Filmkorn das auf. Ein Foto mit mindestens 3000 px Breite wäre schärfer.
+- **Startseiten-Standbild:** `public/mappe/teaser.webp` ist ein Standbild der Szene. Nach neuen Fotos bitte neu erzeugen (Szene öffnen, Bildschirmfoto 1200 × 800 ohne Bedienleiste).
+- **Personalisierte Mappe:** Links erzeugt die interne Seite `/mappe-link` (nicht verlinkt, nicht in der Sitemap, noindex). Sie ist öffentlich erreichbar, verrät aber nichts Vertrauliches.
+- **Nacht-Uhr:** Die Uhrzeiten sind als Beispielablauf gekennzeichnet. Bitte prüfen, ob die Reihenfolge zu Ihrem tatsächlichen Ablauf passt (`src/features/mappe/extras.tsx`, `nightEvents`).
+- **Anfragekarte:** sendet über Web3Forms mit Betreff „Besichtigung (Leistungsmappe): Firma“. Einmal testen.
+- **Inhalte** kommen aus den Inhaltsdateien (`site.ts`, `company.ts`, `services.ts`, `floorplan.ts`, `pricing.ts`, `places.ts`, `proof.ts`). Das Kapitel „Referenzen“ erscheint automatisch, sobald `proof.ts` freigegebene Einträge hat.
 - **Smartphone:** Die flache Mappe zeigt die Seiten verkleinert; längere Texte sind dort klein. Wer lesen statt blättern möchte, nutzt „Als Text lesen“ oder das PDF.

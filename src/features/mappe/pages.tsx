@@ -15,7 +15,8 @@ import { formatEuroRange } from '@/lib/format'
 import { EASE_CS_ARRAY } from '@/lib/ease'
 import { cn } from '@/lib/cn'
 import type { ImageId } from '@/content/images'
-import { PageImg, Sheet, useCount, useMappe, useStagger, type PageProps } from './core'
+import { PageImg, Sheet, useCount, useMappe, usePageState, useRecipient, useStagger, type PageProps } from './core'
+import { Einsteckfach, FoldTab, Morgen, Notizen, Notizzettel, Nachtablauf, PergamentHinten, PergamentVorne, Uhr, VorherIntro } from './extras'
 import { downloadVCard } from './vcard'
 
 const h1 = 'text-[44px] leading-[1.02] font-medium tracking-[-0.035em]'
@@ -25,6 +26,7 @@ const body = 'text-[15px] leading-[1.55] text-ink-2'
 /* ------------------------------------------------------------------ 1 Innen-Titel */
 function Titel({ play, side, folio }: PageProps) {
   const lines = brand.promiseSet.split('\n')
+  const recipient = useRecipient()
   return (
     <Sheet side={side} folio={folio} label="Ausgabe 2026">
       <div className="relative mt-6 w-[260px]">
@@ -50,6 +52,12 @@ function Titel({ play, side, folio }: PageProps) {
         <p className={cn(body, 'mt-8 max-w-[34ch]')}>
           Büroreinigung in {company.seat} und im {company.serviceArea}. Alles Wichtige auf einen Blick, zum Blättern und Weitergeben.
         </p>
+        {recipient.company && (
+          <p className="mt-8 border-t border-line pt-4 text-[15px]">
+            <span className="t-label mr-3">Erstellt für</span>
+            <span className="font-medium">{recipient.company}</span>
+          </p>
+        )}
       </div>
     </Sheet>
   )
@@ -62,6 +70,8 @@ const tocEntries: { id: string; title: string }[] = [
   { id: 'leistungen', title: 'Leistungen' },
   { id: 'buero', title: 'Büroreinigung im Detail' },
   { id: 'grundriss', title: 'Was wird bei Ihnen gereinigt?' },
+  { id: 'vorher', title: 'Am Abend und am Morgen' },
+  { id: 'uhr', title: 'Was passiert, während Sie schlafen' },
   { id: 'ablauf', title: 'So läuft es ab' },
   { id: 'garantie', title: 'Qualitätsgarantie' },
   { id: 'referenzen', title: 'Referenzen' },
@@ -86,6 +96,7 @@ function Inhalt({ side, folio }: PageProps) {
             <li key={e.id} className="border-b border-line">
               <button
                 type="button"
+                data-toc={e.id}
                 onClick={() => jump(idx)}
                 onMouseEnter={() => setHover(idx)}
                 onMouseLeave={() => setHover(null)}
@@ -259,7 +270,7 @@ function LeistungenFoto() {
 const detailZones = ['arbeitsplaetze', 'teekueche', 'sanitaer']
 function Buero({ play, side, folio }: PageProps) {
   const svc = services[0]
-  const [interval, setInterval] = useState<PlanInterval>('3x')
+  const [interval, setInterval] = usePageState<PlanInterval>('buero.interval', '3x')
   const groups = useMemo(() => {
     const tasks = zones.filter((z) => detailZones.includes(z.id)).flatMap((z) => z.tasks.map((t) => ({ ...t, zone: z.name })))
     const order = ['visit', 'weekly', 'monthly', 'request'] as const
@@ -276,7 +287,7 @@ function Buero({ play, side, folio }: PageProps) {
     <Sheet side={side} folio={folio}>
       <p className="t-label mb-5">Büroreinigung im Detail</p>
       <h2 className={h2}>{svc.short}</h2>
-      <div className="mt-6 flex items-center gap-1 self-start border border-line-strong p-1" role="radiogroup" aria-label="Reinigungsintervall">
+      <div data-interactive className="mt-6 flex items-center gap-1 self-start border border-line-strong p-1" role="radiogroup" aria-label="Reinigungsintervall">
         {planIntervals.map((p) => (
           <button
             key={p.id}
@@ -320,13 +331,13 @@ function Buero({ play, side, folio }: PageProps) {
 
 /* ------------------------------------------------------------------ 7 Grundriss */
 function Grundriss({ side, folio }: PageProps) {
-  const [zone, setZone] = useState(zones[0].id)
+  const [zone, setZone] = usePageState('plan.zone', zones[0].id)
   const z = zones.find((x) => x.id === zone) ?? zones[0]
   return (
     <Sheet side={side} folio={folio}>
       <p className="t-label mb-5">Raum für Raum</p>
       <h2 className={h2}>Was wird bei Ihnen gereinigt?</h2>
-      <svg viewBox="0 0 800 500" className="mt-7 w-full" role="group" aria-label="Grundriss eines Büros">
+      <svg data-interactive viewBox="0 0 800 500" className="mt-7 w-full" role="group" aria-label="Grundriss eines Büros">
         {zones.map((r) => {
           const [x, y, w, hh] = r.rect
           const on = r.id === zone
@@ -382,6 +393,7 @@ function Grundriss({ side, folio }: PageProps) {
           </motion.div>
         </AnimatePresence>
       </div>
+      <FoldTab />
     </Sheet>
   )
 }
@@ -528,8 +540,8 @@ function Referenzen({ side, folio }: PageProps) {
 
 /* ------------------------------------------------------------------ 10 Konditionen (Mini-Rechner) */
 function Konditionen({ side, folio }: PageProps) {
-  const [hours, setHours] = useState(6)
-  const [staff, setStaff] = useState(1)
+  const [hours, setHours] = usePageState('konditionen.hours', 6)
+  const [staff, setStaff] = usePageState('konditionen.staff', 1)
   const r = monthlyRange(staff, hours, 1)
   return (
     <Sheet side={side} folio={folio}>
@@ -583,7 +595,7 @@ function Konditionen({ side, folio }: PageProps) {
 function PaperRange({ min, max, value, onChange }: { min: number; max: number; value: number; onChange: (v: number) => void }) {
   const pct = ((value - min) / (max - min)) * 100
   return (
-    <span className="relative mt-1 block h-5">
+    <span data-interactive className="relative mt-1 block h-5">
       <span aria-hidden className="absolute inset-x-0 top-1/2 h-px bg-line-strong" />
       <span aria-hidden className="absolute top-1/2 left-0 h-px bg-ink" style={{ width: `${pct}%` }} />
       <span aria-hidden className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 bg-ink" style={{ left: `${pct}%` }} />
@@ -610,7 +622,7 @@ function Gebiet({ side, folio }: PageProps) {
       <p className="t-label mb-5">Einzugsgebiet</p>
       <h2 className={h2}>Im ganzen {company.serviceArea} zuhause.</h2>
       <div className="relative mt-4 min-h-0 flex-1">
-        <svg viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} className="mx-auto h-full max-h-[520px] w-auto" role="group" aria-label="Karte des Einzugsgebiets">
+        <svg data-interactive viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} className="mx-auto h-full max-h-[520px] w-auto" role="group" aria-label="Karte des Einzugsgebiets">
           <path d={toPath(RHINE, false)} fill="none" stroke="var(--color-blue)" strokeOpacity="0.5" strokeWidth="2" />
           <path d={toPath(OUTLINE)} fill="#ece7dc" stroke="var(--color-ink)" strokeOpacity="0.5" strokeWidth="1" />
           {h && h.slug !== 'offenburg' && <line x1={HX} y1={HY} x2={proj(h.lat, h.lng)[0]} y2={proj(h.lat, h.lng)[1]} stroke="var(--color-blue)" strokeWidth="1.5" />}
@@ -660,7 +672,8 @@ function Gebiet({ side, folio }: PageProps) {
 
 /* ------------------------------------------------------------------ 12 Kontakt */
 function Kontakt({ side, folio }: PageProps) {
-  const p = company.founders[company.newClientContact] ?? company.founders[0]
+  const recipient = useRecipient()
+  const p = company.founders[recipient.contact] ?? company.founders[0]
   return (
     <Sheet side={side} folio={folio}>
       <p className="t-label mb-5">Kontakt</p>
@@ -684,6 +697,7 @@ function Kontakt({ side, folio }: PageProps) {
       </div>
       <p className="mt-8 text-[30px] font-medium tracking-[-0.03em] tabular-nums">{company.phone.display}</p>
       <p className="t-meta mt-1">{company.email}</p>
+      <Notizzettel name={(p.name ?? '').split(' ')[0]} />
       <div className="mt-auto flex flex-wrap gap-3">
         <a href={company.phone.href} className="btn btn-primary btn-sm">
           Anrufen
@@ -750,9 +764,15 @@ export interface MappePage {
   title: string
   Component: ComponentType<PageProps>
   opposite?: ComponentType
+  /** Nur als Textur (durchscheinendes Pergament): keine HTML-Seite darüber */
+  textureOnly?: boolean
+  /** Ohne Papierhintergrund fotografieren (Durchsicht) */
+  transparent?: boolean
+  /** Blatt aus leichtem Papier (Pergament) */
+  light?: boolean
 }
 
-export const mappePages: MappePage[] = [
+const pages: MappePage[] = [
   { id: 'titel', title: 'Innen-Titel', Component: Titel },
   { id: 'inhalt', title: 'Inhalt', Component: Inhalt },
   { id: 'wer', title: 'Wer wir sind', Component: Wer },
@@ -760,6 +780,13 @@ export const mappePages: MappePage[] = [
   { id: 'leistungen', title: 'Leistungen', Component: Leistungen, opposite: LeistungenFoto },
   { id: 'buero', title: 'Büroreinigung im Detail', Component: Buero },
   { id: 'grundriss', title: 'Was wird bei Ihnen gereinigt?', Component: Grundriss },
+  // Doppelseite mit Pergament: links die Einleitung, rechts das Pergament über dem Morgen-Foto
+  { id: 'vorher', title: 'Am Abend und am Morgen', Component: VorherIntro },
+  { id: 'pergament', title: 'Pergament: das Büro am Abend', Component: PergamentVorne, textureOnly: true, transparent: true, light: true },
+  { id: 'pergament-rueck', title: 'Pergament, Rückseite', Component: PergamentHinten, textureOnly: true, transparent: true, light: true },
+  { id: 'morgen', title: 'Das Büro am Morgen', Component: Morgen },
+  { id: 'uhr', title: 'Was passiert, während Sie schlafen', Component: Uhr },
+  { id: 'nacht', title: 'Ablauf der Nacht', Component: Nachtablauf },
   { id: 'ablauf', title: 'So läuft es ab', Component: Ablauf },
   { id: 'garantie', title: 'Qualitätsgarantie', Component: Garantie },
   ...(hasProof() ? [{ id: 'referenzen', title: 'Referenzen', Component: Referenzen }] : []),
@@ -768,3 +795,8 @@ export const mappePages: MappePage[] = [
   { id: 'kontakt', title: 'Kontakt', Component: Kontakt },
   { id: 'rueckseite', title: 'Rückseite', Component: Rueckseite },
 ]
+// Das Einsteckfach liegt innen auf dem hinteren Einband, also immer rechts: davor bei Bedarf eine Notizseite
+if (pages.length % 2 === 1) pages.push({ id: 'notizen', title: 'Notizen', Component: Notizen })
+pages.push({ id: 'einsteckfach', title: 'Einsteckfach: Besichtigung anfragen', Component: Einsteckfach })
+
+export const mappePages: MappePage[] = pages

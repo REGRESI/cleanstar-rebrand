@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent as RPointerEvent } from 'react'
 import * as THREE from 'three'
 import { busFor, Scene3D, useBookControls, cornersToTransform, type SceneBus } from './Book3D'
 import { SnapshotHost, type SnapshotApi } from './snapshots'
 import { mappePages } from './pages'
 import { Ctx, PAGE_H, PAGE_W, type Side } from './core'
+import { GrundrissGross, WIDE_W } from './extras'
+import { quadMatrix, quadToUnit } from './geometry'
+import { personalCover } from './cover'
 import { playPageTurn } from './sound'
+import { BLOCK, SWIPE_MIN, type MappeShared, type NavState } from './shared'
 import { cn } from '@/lib/cn'
-
-const INTERACTIVE = 'a, button, input, select, textarea, label, [role="button"], [role="radio"], [data-interactive]'
 
 /** Textur aus dem abfotografierten Canvas (scharf: Mipmaps und anisotrope Filterung) */
 function toTexture(canvas: HTMLCanvasElement) {
@@ -19,10 +21,10 @@ function toTexture(canvas: HTMLCanvasElement) {
   return t
 }
 
-/** Erst fotografieren, wenn nichts blättert: Das Abfotografieren belegt kurz den Hauptthread und soll keine Bewegung stören */
+/** Erst fotografieren, wenn nichts blättert und die Bühne sichtbar ist; dann in einer Leerlaufphase des Browsers */
 async function whenIdle(bus: SceneBus) {
-  while (!bus.visible || bus.anims.size > 0 || bus.drag || Math.abs(bus.openTarget - bus.open) > 0.002) await new Promise((r) => setTimeout(r, 120))
-  // zusätzlich auf eine Leerlaufphase des Browsers warten
+  while (!bus.visible || bus.anims.size > 0 || bus.drag || Math.abs(bus.openTarget - bus.open) > 0.002 || Math.abs(bus.foldTarget - bus.fold) > 0.002)
+    await new Promise((r) => setTimeout(r, 120))
   await new Promise((r) => ('requestIdleCallback' in window ? window.requestIdleCallback(r, { timeout: 600 }) : setTimeout(r, 0)))
 }
 
@@ -34,13 +36,32 @@ function preview(canvas: HTMLCanvasElement) {
   return c.toDataURL('image/jpeg', 0.82)
 }
 
+/** Großen Grundriss in die beiden Flügel teilen */
+function halves(c: HTMLCanvasElement): [HTMLCanvasElement, HTMLCanvasElement] {
+  return [0, 1].map((k) => {
+    const h = document.createElement('canvas')
+    h.width = c.width / 2
+    h.height = c.height
+    h.getContext('2d')!.drawImage(c, (k * c.width) / 2, 0, c.width / 2, c.height, 0, 0, c.width / 2, c.height)
+    return h
+  }) as [HTMLCanvasElement, HTMLCanvasElement]
+}
+
+const indexOf = (id: string) => mappePages.findIndex((p) => p.id === id)
+const spreadOf = (i: number) => Math.floor((i + 1) / 2)
+
 /**
  * Die Leistungsmappe in 3D: Schreibtisch, Buch, Blättern. Liegt eine Doppelseite still, liegen darüber die echten
  * HTML-Seiten (klickbar, scharf), perspektivisch exakt auf der Seitenfläche. Beim Blättern sind es wieder Texturen.
  */
-export default function Experience3D({ sound, onReady, onSpread }: { sound: boolean; onReady: () => void; onSpread?: (s: number) => void }) {
+export default function Experience3D({ sound, onReady, onNav, shared }: { sound: boolean; onReady: () => void; onNav: (n: NavState) => void; shared: MappeShared }) {
   const n = mappePages.length
-  const bus = useMemo(() => busFor(n), [n])
+  const bus = useMemo(() => {
+    const b = busFor(n)
+    mappePages.forEach((p, i) => p.light && b.light.add(Math.floor(i / 2) + 1))
+    b.foldSpread = spreadOf(indexOf('grundriss'))
+    return b
+  }, [n])
   const snap = useRef<SnapshotApi>(null)
   const [played, setPlayed] = useState<Record<number, boolean>>({})
   const [previews, setPreviews] = useState<Record<number, string>>({})
@@ -48,31 +69,79 @@ export default function Experience3D({ sound, onReady, onSpread }: { sound: bool
   const [hoverService, setHoverService] = useState<number | null>(null)
   const [still, setStill] = useState(false)
   const [inView, setInView] = useState(true)
+  const [foldOpen, setFoldOpen] = useState(false)
+  const [wideOn, setWideOn] = useState(false)
+  const [hoverZone, setHoverZone] = useState<Side | null>(null)
   const stage = useRef<HTMLDivElement>(null)
   const soundRef = useRef(sound)
   soundRef.current = sound
   const onTurn = useCallback(() => {
     if (soundRef.current) playPageTurn()
   }, [])
-  const { spread, goTo, drag, maxSpread, spreadRef } = useBookControls(bus, n, onTurn)
+  const { spread, goTo, step, drag, maxSpread, spreadRef } = useBookControls(bus, n, onTurn)
   const leftEl = useRef<HTMLDivElement>(null)
   const rightEl = useRef<HTMLDivElement>(null)
+  const wideEl = useRef<HTMLDivElement>(null)
+  const prevBtn = useRef<HTMLButtonElement>(null)
+  const nextBtn = useRef<HTMLButtonElement>(null)
   const geom = useRef<{ left: [number, number][] | null; right: [number, number][] | null }>({ left: null, right: null })
   const pr = Math.min(2, Math.max(1.25, (typeof window !== 'undefined' ? window.devicePixelRatio : 1) * 1.05))
 
+  // Seitenzahl und Pfeile für die Bedienleiste
   useEffect(() => {
-    onSpread?.(spread)
-  }, [spread, onSpread])
+    const folio = Math.min(2 * spread + 1, n)
+    onNav({
+      label: spread < 0 ? 'Einband' : `${folio} / ${n}`,
+      canPrev: spread >= 0,
+      canNext: spread < maxSpread,
+      prev: () => step(-1),
+      next: () => step(1),
+    })
+  }, [spread, n, maxSpread, step, onNav])
 
-  // Einband und Seitentexturen laden: zuerst Einband und die ersten Seiten, den Rest ruhig im Hintergrund
+  // Ausklappseite schließt, sobald die Doppelseite wechselt
+  useEffect(() => {
+    if (spread !== bus.foldSpread) setFoldOpen(false)
+  }, [spread, bus])
+  const setFold = useCallback(
+    (open: boolean) => {
+      if (open && spreadRef.current !== bus.foldSpread) return
+      bus.foldTarget = open ? 1 : 0
+      setFoldOpen(open)
+    },
+    [bus, spreadRef],
+  )
+
+  // Lesebändchen: direkt zu den Konditionen
+  useEffect(() => {
+    bus.onRibbon = () => goTo(spreadOf(indexOf('konditionen')))
+    return () => {
+      bus.onRibbon = undefined
+    }
+  }, [bus, goTo])
+
+  // Einband (persönlich geprägt, falls ein Firmenname mitkommt)
   useEffect(() => {
     let alive = true
-    new THREE.TextureLoader().load('/mappe/cover.webp', (t) => {
-      t.colorSpace = THREE.SRGBColorSpace
-      t.anisotropy = 8
-      bus.coverTex = t
-      if (alive) setLoaded((x) => x + 1)
-    })
+    personalCover(shared.recipient.company)
+      .then((c) => {
+        if (!alive) return
+        const t = new THREE.CanvasTexture(c)
+        t.colorSpace = THREE.SRGBColorSpace
+        t.anisotropy = 8
+        bus.coverTex?.dispose()
+        bus.coverTex = t
+        setLoaded((x) => x + 1)
+      })
+      .catch(() => {})
+    return () => {
+      alive = false
+    }
+  }, [bus, shared.recipient.company])
+
+  // Seitentexturen: zuerst die ersten Seiten, den Rest ruhig im Hintergrund
+  useEffect(() => {
+    let alive = true
     ;(async () => {
       await document.fonts?.ready
       for (let i = 0; i < n; i++) {
@@ -83,8 +152,11 @@ export default function Experience3D({ sound, onReady, onSpread }: { sound: bool
         bus.textures[i] = toTexture(c)
         setPreviews((p) => ({ ...p, [i]: preview(c) }))
         setLoaded((x) => x + 1)
-        // dem Browser Luft lassen, damit nichts ruckelt
-        await new Promise((r) => setTimeout(r, i < 3 ? 0 : 60))
+        // nach dem Grundriss gleich die Klappflügel
+        if (mappePages[i].id === 'grundriss') {
+          const [a, b] = halves(await snap.current.captureWide(pr))
+          bus.foldTex = [toTexture(a), toTexture(b)]
+        }
       }
     })().catch(() => {})
     return () => {
@@ -97,7 +169,7 @@ export default function Experience3D({ sound, onReady, onSpread }: { sound: bool
     if (ready) onReady()
   }, [ready, onReady])
 
-  // Gesehene Seiten bleiben im Endzustand; ihre Textur wird im Endzustand neu fotografiert (unsichtbarer Wechsel beim nächsten Blättern)
+  // Gesehene Seiten bleiben im Endzustand; ihre Textur wird im Endzustand neu fotografiert (unsichtbarer Wechsel)
   const left = spread > 0 ? 2 * spread - 1 : -1
   const right = spread >= 0 && 2 * spread < n ? 2 * spread : -1
   useEffect(() => {
@@ -106,37 +178,74 @@ export default function Experience3D({ sound, onReady, onSpread }: { sound: bool
     if (!fresh.length) return
     setPlayed((p) => ({ ...p, ...Object.fromEntries(fresh.map((i) => [i, true])) }))
   }, [still, spread, left, right, played])
-  useEffect(() => {
-    const ids = Object.keys(played).map(Number)
-    let alive = true
-    ;(async () => {
-      await new Promise((r) => setTimeout(r, 50))
+  const recapture = useCallback(
+    async (ids: number[], withWide = false) => {
       for (const i of ids) {
-        if (!alive || !snap.current || bus.textures[i]?.userData.final) continue
         await whenIdle(bus)
-        if (!alive || !snap.current) return
-        const c = await snap.current.capture(i, pr)
-        const t = toTexture(c)
+        if (!snap.current) return
+        const t = toTexture(await snap.current.capture(i, pr))
         t.userData.final = true
         bus.textures[i]?.dispose()
         bus.textures[i] = t
       }
-    })().catch(() => {})
-    return () => {
-      alive = false
-    }
-  }, [played, bus, pr])
+      if (withWide && snap.current) {
+        await whenIdle(bus)
+        const [a, b] = halves(await snap.current.captureWide(pr))
+        bus.foldTex.forEach((t) => t?.dispose())
+        bus.foldTex = [toTexture(a), toTexture(b)]
+      }
+    },
+    [bus, pr],
+  )
+  useEffect(() => {
+    const ids = Object.keys(played)
+      .map(Number)
+      .filter((i) => !bus.textures[i]?.userData.final)
+    if (!ids.length) return
+    const t = window.setTimeout(() => void recapture(ids).catch(() => {}), 50)
+    return () => window.clearTimeout(t)
+  }, [played, bus, recapture])
+  // Nach Bedienung (Uhr, Regler, Intervall, Grundriss): sichtbare Seiten neu fotografieren, damit die Textur beim Blättern stimmt
+  const visibleRef = useRef({ left, right, spread })
+  visibleRef.current = { left, right, spread }
+  useEffect(() => {
+    if (!shared.version) return
+    const t = window.setTimeout(() => {
+      const v = visibleRef.current
+      void recapture(
+        [v.left, v.right].filter((i) => i >= 0),
+        v.spread === bus.foldSpread,
+      ).catch(() => {})
+    }, 500)
+    return () => window.clearTimeout(t)
+  }, [shared.version, recapture, bus])
 
-  // Ecken der Seiten → Transform der HTML-Seiten (direkt am DOM, ohne Rendern)
+  // Ecken der Seiten → Transform der HTML-Seiten und Lage der Pfeile (direkt am DOM, ohne Rendern)
   useEffect(() => {
     let wasStill = false
-    bus.onCorners = (l, r, s) => {
+    let wasWide = false
+    bus.onCorners = (l, r, s, w) => {
       geom.current = { left: l, right: r }
       if (leftEl.current && l) leftEl.current.style.transform = cornersToTransform(l)
       if (rightEl.current && r) rightEl.current.style.transform = cornersToTransform(r)
+      if (wideEl.current && w) wideEl.current.style.transform = quadMatrix(WIDE_W, PAGE_H, w)
+      // Pfeile links und rechts neben dem Buch
+      const xs = [...(l ?? []), ...(r ?? []), ...(w ?? [])].map((p) => p[0])
+      const ys = [...(l ?? []), ...(r ?? [])].map((p) => p[1])
+      const cx = window.innerWidth / 2
+      const cy = ys.length ? ys.reduce((a, b) => a + b, 0) / ys.length : window.innerHeight / 2
+      let minX = xs.length ? Math.min(...xs) : cx - 250
+      const maxX = xs.length ? Math.max(...xs) : cx + 250
+      if (!l && r) minX = r[0][0] - (r[1][0] - r[0][0])
+      if (prevBtn.current) prevBtn.current.style.transform = `translate(${Math.max(12, minX - 64)}px, ${cy - 22}px)`
+      if (nextBtn.current) nextBtn.current.style.transform = `translate(${Math.min(window.innerWidth - 56, maxX + 20)}px, ${cy - 22}px)`
       if (s !== wasStill) {
         wasStill = s
         setStill(s)
+      }
+      if (!!w !== wasWide) {
+        wasWide = !!w
+        setWideOn(!!w)
       }
     }
     return () => {
@@ -156,67 +265,123 @@ export default function Experience3D({ sound, onReady, onSpread }: { sound: bool
     return () => io.disconnect()
   }, [bus])
 
-  // Pfeiltasten
+  // Pfeiltasten (nicht, solange ein Eingabefeld oder die Uhr den Fokus hat)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement)?.closest('input, textarea, select')) return
-      if (e.key === 'ArrowRight') goTo(spreadRef.current + 1)
-      if (e.key === 'ArrowLeft') goTo(spreadRef.current - 1)
+      if ((e.target as HTMLElement)?.closest?.('input, textarea, select, [role="slider"], [contenteditable], [role="dialog"]')) return
+      if (e.key === 'ArrowRight') step(1)
+      if (e.key === 'ArrowLeft') step(-1)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [goTo, spreadRef])
+  }, [step])
 
-  // Ziehen an der Seitenecke
-  const startDrag = (side: Side, e: React.PointerEvent) => {
+  /**
+   * Geste auf einer Seite: Tippen ist kein Wischen. Erst ab 12 px überwiegend waagerechter Bewegung folgt die Seite
+   * dem Finger bzw. der Maus. Beim Loslassen entscheiden Weg oder Tempo. Ein Tippen blättert nur am Außenrand.
+   */
+  const onPagePointerDown = (side: Side, e: RPointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0 || foldOpen) return
+    const target = e.target as HTMLElement
+    if (target.closest(BLOCK)) return
     const g = geom.current[side]
     if (!g) return
-    e.preventDefault()
-    const spineX = side === 'right' ? (g[0][0] + g[3][0]) / 2 : (g[1][0] + g[2][0]) / 2
-    const outerX = side === 'right' ? (g[1][0] + g[2][0]) / 2 : (g[0][0] + g[3][0]) / 2
-    const pageW = Math.abs(outerX - spineX)
+    const pageW = Math.abs(g[1][0] - g[0][0]) || 400
+    const x0 = e.clientX
+    const y0 = e.clientY
+    const inZone = zoneAt(side, e.clientX, e.clientY)
+    let active = false
+    let cancelled = false
+    const samples: [number, number][] = [[x0, e.timeStamp]]
     const move = (ev: PointerEvent) => {
-      const d = (ev.clientX - spineX) / pageW // +1 außen rechts, -1 außen links
-      const p = side === 'right' ? (1 - d) / 2 : (1 - d) / 2
-      drag(side, Math.max(0, Math.min(1, p)))
+      const dx = ev.clientX - x0
+      const dy = ev.clientY - y0
+      if (!active && !cancelled) {
+        if (Math.abs(dy) > SWIPE_MIN && Math.abs(dy) > Math.abs(dx)) cancelled = true
+        else if (Math.abs(dx) > SWIPE_MIN && Math.abs(dx) > Math.abs(dy) * 1.2) {
+          const ok = side === 'right' ? dx < 0 && spreadRef.current < maxSpread : dx > 0 && spreadRef.current > 0
+          if (!ok || bus.anims.size > 0) cancelled = true
+          else active = true
+        }
+      }
+      if (!active) return
+      samples.push([ev.clientX, ev.timeStamp])
+      if (samples.length > 6) samples.shift()
+      const p = side === 'right' ? Math.max(0, Math.min(1, -dx / (2 * pageW))) : 1 - Math.max(0, Math.min(1, dx / (2 * pageW)))
+      drag(side, p)
     }
-    const up = () => {
+    const up = (ev: PointerEvent) => {
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', up)
-      drag(side, null)
+      window.removeEventListener('pointercancel', up)
+      if (active) {
+        const [a, b] = [samples[0], samples[samples.length - 1]]
+        const vx = b[1] > a[1] ? (b[0] - a[0]) / (b[1] - a[1]) : 0
+        drag(side, null, vx)
+      } else if (!cancelled && inZone && Math.hypot(ev.clientX - x0, ev.clientY - y0) < SWIPE_MIN) {
+        step(side === 'right' ? 1 : -1)
+      }
     }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', up)
-    drag(side, side === 'right' ? 0.02 : 0.98)
+    window.addEventListener('pointercancel', up)
   }
+
+  /** Randzone außen (12 % der Seitenbreite): aus der Zeigerposition auf der Seite berechnet, Bedienelemente haben Vorrang */
+  const zoneAt = (side: Side, x: number, y: number) => {
+    const g = geom.current[side]
+    if (!g) return false
+    const [u, v] = quadToUnit(g, x, y)
+    if (v < 0 || v > 1) return false
+    return side === 'right' ? u > 0.88 && u <= 1 : u < 0.12 && u >= 0
+  }
+  const onPageHover = (side: Side, e: RPointerEvent<HTMLDivElement>) => {
+    const canTurn = side === 'right' ? spreadRef.current < maxSpread : spreadRef.current > 0
+    const on = canTurn && !foldOpen && !(e.target as HTMLElement).closest(BLOCK) && zoneAt(side, e.clientX, e.clientY)
+    e.currentTarget.style.cursor = on ? (side === 'right' ? 'e-resize' : 'w-resize') : ''
+    const z = on ? side : hoverZone === side ? null : hoverZone
+    if (z !== hoverZone) setHoverZone(z)
+  }
+
+  const openRequest = useCallback(() => {
+    const card = rightEl.current?.querySelector('[data-request-card]') as HTMLElement | null
+    shared.openRequest(card?.getBoundingClientRect() ?? new DOMRect(window.innerWidth / 2 - 150, window.innerHeight / 2 - 90, 300, 180))
+  }, [shared])
 
   const ctx = useMemo(
     () => ({
-      jump: (i: number) => goTo(Math.floor((i + 1) / 2)),
+      jump: (i: number) => goTo(spreadOf(i)),
       previews,
       hoverService,
       setHoverService,
-      indexOf: (id: string) => mappePages.findIndex((p) => p.id === id),
+      indexOf,
+      state: shared.state,
+      setState: shared.setState,
+      foldOpen,
+      setFold,
+      openRequest,
+      is3d: true,
     }),
-    [goTo, previews, hoverService],
+    [goTo, previews, hoverService, shared.state, shared.setState, foldOpen, setFold, openRequest],
   )
 
   const overlayOn = still && spread >= 0
   const slot = (i: number, side: Side, ref: React.RefObject<HTMLDivElement | null>) => {
     const Page = i >= 0 ? mappePages[i] : null
+    const showHtml = overlayOn && Page && !Page.textureOnly
     const opp = side === 'left' && right >= 0 ? mappePages[right].opposite : side === 'right' && left >= 0 ? mappePages[left].opposite : undefined
     const canTurn = side === 'right' ? spread < maxSpread : spread > 0
     return (
       <div
         ref={ref}
-        className={cn('absolute top-0 left-0 origin-top-left transition-opacity duration-200', overlayOn && Page ? 'opacity-100' : 'pointer-events-none opacity-0')}
-        style={{ width: PAGE_W, height: PAGE_H }}
-        onClick={(e) => {
-          if ((e.target as HTMLElement).closest(INTERACTIVE)) return
-          goTo(spread + (side === 'right' ? 1 : -1))
-        }}
+        data-page-slot={side}
+        className={cn('absolute top-0 left-0 origin-top-left select-none', overlayOn && Page ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0')}
+        style={{ width: PAGE_W, height: PAGE_H, transition: 'opacity 200ms' }}
+        onPointerDown={(e) => onPagePointerDown(side, e)}
+        onPointerMove={(e) => onPageHover(side, e)}
+        onPointerLeave={() => hoverZone === side && setHoverZone(null)}
       >
-        {overlayOn && Page && (
+        {showHtml && (
           <>
             <Page.Component play={!!played[i]} side={side} folio={i + 1} />
             {opp && (
@@ -227,48 +392,66 @@ export default function Experience3D({ sound, onReady, onSpread }: { sound: bool
                 })()}
               </div>
             )}
-            {canTurn && (
-              <div
-                data-interactive
-                role="button"
-                aria-label={side === 'right' ? 'Weiterblättern' : 'Zurückblättern'}
-                onPointerDown={(e) => startDrag(side, e)}
-                onClick={() => goTo(spread + (side === 'right' ? 1 : -1))}
-                className={cn('group/corner absolute bottom-0 size-24 cursor-grab touch-none', side === 'right' ? 'right-0' : 'left-0')}
-              >
-                {/* Eselsohr: Die Ecke hebt sich beim Überfahren leicht an */}
-                <span
-                  aria-hidden
-                  className={cn('absolute bottom-0 size-0 transition-[width,height] duration-300 ease-cs group-hover/corner:size-11', side === 'right' ? 'right-0' : 'left-0')}
-                  style={{
-                    background:
-                      side === 'right'
-                        ? 'linear-gradient(135deg, #f5f2eb 0%, #f5f2eb 45%, #e4ded2 50%, rgba(40,30,15,0.18) 51%, transparent 75%)'
-                        : 'linear-gradient(225deg, #f5f2eb 0%, #f5f2eb 45%, #e4ded2 50%, rgba(40,30,15,0.18) 51%, transparent 75%)',
-                    boxShadow: '0 0 0 0 transparent',
-                  }}
-                />
-              </div>
-            )}
           </>
+        )}
+        {overlayOn && Page && canTurn && !foldOpen && (
+          // Am Außenrand hebt sich die Ecke leicht an
+          <span
+            aria-hidden
+            className={cn(
+              'pointer-events-none absolute bottom-0 transition-[width,height] duration-300 ease-cs',
+              side === 'right' ? 'right-0' : 'left-0',
+              hoverZone === side ? 'size-12' : 'size-0',
+            )}
+            style={{
+              background:
+                side === 'right'
+                  ? 'linear-gradient(315deg, transparent 0%, transparent 49%, rgba(40,30,15,0.18) 50%, #e9e3d6 53%, #f5f2eb 100%)'
+                  : 'linear-gradient(45deg, transparent 0%, transparent 49%, rgba(40,30,15,0.18) 50%, #e9e3d6 53%, #f5f2eb 100%)',
+              boxShadow: side === 'right' ? '-3px -3px 8px -4px rgba(30,25,15,0.35)' : '3px -3px 8px -4px rgba(30,25,15,0.35)',
+            }}
+          />
         )}
       </div>
     )
   }
 
+  const arrow =
+    'pointer-events-auto absolute top-0 left-0 grid size-11 place-items-center rounded-full bg-paper/85 text-ink shadow-[0_6px_18px_-8px_rgba(0,0,0,0.5)] backdrop-blur transition-opacity duration-300 hover:bg-paper disabled:pointer-events-none disabled:opacity-0'
   return (
     <Ctx.Provider value={ctx}>
       <div ref={stage} className="absolute inset-0">
         <Scene3D bus={bus} active={inView} onOpen={() => goTo(spreadRef.current < 0 ? 0 : spreadRef.current)} />
-        <div className="pointer-events-none absolute inset-0 overflow-hidden [&>*]:pointer-events-auto">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
           {slot(left, 'left', leftEl)}
           {slot(right, 'right', rightEl)}
+          <div
+            ref={wideEl}
+            data-page-slot="wide"
+            className={cn(
+              'absolute top-0 left-0 origin-top-left transition-opacity duration-200',
+              wideOn && overlayOn ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
+            )}
+            style={{ width: WIDE_W, height: PAGE_H }}
+          >
+            {wideOn && overlayOn && <GrundrissGross />}
+          </div>
         </div>
+        <button ref={prevBtn} type="button" onClick={() => step(-1)} disabled={spread < 0} className={arrow} aria-label="Zurückblättern" data-mappe-prev>
+          <svg viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+            <path d="M12.5 4.5 7 10l5.5 5.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        <button ref={nextBtn} type="button" onClick={() => step(1)} disabled={spread >= maxSpread} className={arrow} aria-label="Weiterblättern" data-mappe-next>
+          <svg viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+            <path d="M7.5 4.5 13 10l-5.5 5.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
         {!ready && (
           <div className="absolute inset-x-0 bottom-28 flex flex-col items-center gap-3" role="status" aria-live="polite">
-            <span className="t-meta">Mappe wird vorbereitet</span>
-            <span className="block h-px w-40 bg-line">
-              <span className="block h-px origin-left bg-ink transition-transform duration-500 ease-cs" style={{ transform: `scaleX(${Math.min(1, loaded / 4)})` }} />
+            <span className="t-meta text-paper/85">Mappe wird vorbereitet</span>
+            <span className="block h-px w-40 bg-paper/30">
+              <span className="block h-px origin-left bg-paper transition-transform duration-500 ease-cs" style={{ transform: `scaleX(${Math.min(1, loaded / 4)})` }} />
             </span>
           </div>
         )}
