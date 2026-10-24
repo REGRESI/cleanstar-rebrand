@@ -736,7 +736,9 @@ function Rueckseite({ side, folio }: PageProps) {
           draggable={false}
           className="w-[300px] transition-transform duration-500 ease-cs group-hover:-translate-y-1 group-hover:-rotate-1"
         />
-        <span data-hint className="t-meta mt-2 block">{saved ? 'Kontakt gespeichert' : 'Klicken: Kontakt als vCard speichern'}</span>
+        <span data-hint className="t-meta mt-2 block">
+          {saved ? 'Kontakt gespeichert' : 'Klicken: Kontakt als vCard speichern'}
+        </span>
       </button>
     </Sheet>
   )
