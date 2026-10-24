@@ -125,6 +125,7 @@ export const home = {
       { label: 'Grundriss', to: '/leistungen/bueroreinigung#grundriss' },
       { label: 'Jahresplan', to: '/leistungen/bueroreinigung#jahresplan' },
       { label: 'Gründer-Rechner', to: '/reinigungsfirma-kalkulieren' },
+      { label: 'Leistungsmappe', to: '/leistungsmappe' },
       { label: 'Ratgeber', to: '/ratgeber' },
     ],
   },

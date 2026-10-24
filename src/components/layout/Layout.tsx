@@ -30,6 +30,8 @@ function QuoteModal() {
 
 function Shell() {
   const { pathname, hash, key } = useLocation()
+  // Leistungsmappe: Vollbild-Bühne mit eigener Kopfzeile
+  const immersive = pathname.replace(/\/$/, '') === '/leistungsmappe'
   const navType = useNavigationType()
   const first = useRef(true)
   const initialNav = useRef(true)
@@ -190,7 +192,7 @@ function Shell() {
       >
         Zum Inhalt springen
       </a>
-      <Header />
+      {!immersive && <Header />}
       <main id="main" tabIndex={-1} className="outline-none">
         <motion.div
           key={pathname}
@@ -204,7 +206,7 @@ function Shell() {
       <Footer />
       {/* Farbwechsel zwischen Abschnitten markieren (Haarlinien an Übergängen), vor dem ersten Zeichnen */}
       <script dangerouslySetInnerHTML={{ __html: inlineMarkTones }} />
-      <MobileBar />
+      {!immersive && <MobileBar />}
       <QuoteModal />
     </>
   )

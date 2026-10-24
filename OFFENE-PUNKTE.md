@@ -67,7 +67,14 @@ neutralen Text oder blendet die Stelle aus.
 
 ## Redesign
 
-- **Schrift:** Die Wunschschrift Switzer (Fontshare) war aus der Arbeitsumgebung nicht abrufbar. Eingesetzt sind Instrument Sans und IBM Plex Mono, beide unter SIL Open Font License, lokal eingebunden. Wenn Switzer gewünscht ist, die WOFF2-Datei unter `src/assets/fonts/` ablegen und in `src/styles/index.css` (`@font-face` und `--font-sans`) tauschen. Die Lizenz von Fontshare bitte vorher prüfen.
+- **Schrift:** Die Wunschschrift Switzer (Fontshare) war aus der Arbeitsumgebung nicht abrufbar. Eingesetzt ist Instrument Sans (SIL Open Font License, lokal eingebunden); die frühere Monospace-Schrift ist entfernt. Wenn Switzer gewünscht ist, die WOFF2-Datei unter `src/assets/fonts/` ablegen und in `src/styles/index.css` (`@font-face` und `--font-sans`) tauschen. Die Lizenz von Fontshare bitte vorher prüfen.
 - **Belege (`src/content/proof.ts`):** Der Bereich „Beweise“ auf der Startseite ist ausgeblendet (`enabled: false`), weil es noch keine freigegebenen Kundenstimmen, Objekte oder Logos gibt. Einträge nur mit schriftlicher Zustimmung des Kunden eintragen, dann `enabled: true` setzen.
 - **Fotoshooting:** Die Shot-Liste steht in `BILDER.md` (Abschnitt „Shot-Liste für das Fotoshooting“). Die aktuellen Bilder funktionieren, ein einheitliches Shooting würde das Design deutlich stärken.
 - **Styleguide:** `/styleguide` ist intern, nicht verlinkt, `noindex` und nicht in der Sitemap.
+
+## Leistungsmappe (/leistungsmappe)
+
+- **Fotos für die Schreibtisch-Szene fehlen:** Vorhanden waren nur Einband, Schlüssel und Visitenkarte. Ersetzt sind: Tischfläche (erzeugte helle Steinoberfläche), Kaffeetasse und Stift (in 3D modelliert). **Die Pflanze oben links fehlt**, weil sie sich nicht glaubwürdig ohne Foto nachbauen lässt. Ein Tischfoto (`bilder/mappe-tisch.jpg`, von oben) und eine freigestellte Pflanze (`bilder/mappe-pflanze.png` mit Transparenz) ablegen und `node scripts/mappe-assets.mjs` ausführen; die Szene übernimmt sie automatisch.
+- **Startseiten-Standbild:** `public/mappe/teaser.webp` ist ein Standbild der Szene. Nach neuen Fotos bitte neu erzeugen (Szene öffnen, Bildschirmfoto 1200 × 800).
+- **Inhalte** kommen vollständig aus den Inhaltsdateien (`site.ts`, `company.ts`, `services.ts`, `floorplan.ts`, `pricing.ts`, `places.ts`, `proof.ts`). Das Kapitel „Referenzen“ erscheint automatisch, sobald `proof.ts` freigegebene Einträge hat.
+- **Smartphone:** Die flache Mappe zeigt die Seiten verkleinert; längere Texte sind dort klein. Wer lesen statt blättern möchte, nutzt „Als Text lesen“ oder das PDF.

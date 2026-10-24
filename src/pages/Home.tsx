@@ -6,6 +6,7 @@ import { ServicesGrid } from '@/components/home/ServicesGrid'
 import { Proof } from '@/components/home/Proof'
 import { Founders } from '@/components/home/Founders'
 import { AreaTeaser } from '@/components/home/AreaTeaser'
+import { MappeTeaser } from '@/components/home/MappeTeaser'
 import { ToolsLine } from '@/components/home/ToolsLine'
 import { FinalCta } from '@/components/home/FinalCta'
 import { Seo } from '@/components/ui/Seo'
@@ -49,6 +50,7 @@ export default function Home() {
         <Proof />
         <Founders />
         <AreaTeaser />
+        <MappeTeaser />
         {/* Schlussblock vor dem Abschluss: Zusammenfassung und Werkzeuge in einer Zeile */}
         <Answer bottom="pb-10 sm:pb-12 lg:pb-14">{home.answer}</Answer>
         <ToolsLine />

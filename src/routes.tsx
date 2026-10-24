@@ -53,6 +53,7 @@ export const routes: RouteRecord[] = [
       { path: 'partner', lazy: page(() => import('@/pages/Partner')) },
       { path: 'faq', lazy: page(() => import('@/pages/Faq')) },
       { path: 'reinigungs-check', lazy: page(() => import('@/pages/CleaningCheckPage')) },
+      { path: 'leistungsmappe', lazy: page(() => import('@/pages/Leistungsmappe')) },
       { path: 'kontakt', lazy: page(() => import('@/pages/Contact')) },
       { path: 'impressum', lazy: page(() => import('@/pages/Imprint')) },
       { path: 'datenschutz', lazy: page(() => import('@/pages/Privacy')) },

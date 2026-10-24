@@ -1,0 +1,19 @@
+{
+  "einband": {
+    "source": "cleanstar-mappe-einband-download.png"
+  },
+  "schluessel": {
+    "file": "/mappe/schluessel.webp",
+    "width": 814,
+    "height": 752,
+    "alpha": true,
+    "source": "mappe-schluessel.png"
+  },
+  "visitenkarte": {
+    "file": "/mappe/visitenkarte.webp",
+    "width": 1024,
+    "height": 751,
+    "alpha": true,
+    "source": "mappe-visitenkarte.png"
+  }
+}

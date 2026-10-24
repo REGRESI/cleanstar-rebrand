@@ -15,10 +15,10 @@ const LNG0 = 7.6
 const LAT0 = 48.76
 const K = 1000
 const COS = Math.cos((48.45 * Math.PI) / 180)
-const proj = (lat: number, lng: number) => [(lng - LNG0) * K * COS, (LAT0 - lat) * K] as const
+export const proj = (lat: number, lng: number) => [(lng - LNG0) * K * COS, (LAT0 - lat) * K] as const
 
 // Schematischer Umriss des Ortenaukreises (vereinfacht)
-const OUTLINE: [number, number][] = [
+export const OUTLINE: [number, number][] = [
   [48.735, 7.99],
   [48.7, 8.09],
   [48.64, 8.17],
@@ -39,7 +39,7 @@ const OUTLINE: [number, number][] = [
   [48.62, 7.85],
   [48.69, 7.92],
 ]
-const RHINE: [number, number][] = [
+export const RHINE: [number, number][] = [
   [48.76, 7.95],
   [48.69, 7.89],
   [48.62, 7.82],
@@ -50,7 +50,7 @@ const RHINE: [number, number][] = [
   [48.22, 7.72],
   [48.13, 7.68],
 ]
-const toPath = (pts: [number, number][], close = true) =>
+export const toPath = (pts: [number, number][], close = true) =>
   pts
     .map(
       ([la, ln], i) =>
@@ -80,7 +80,7 @@ const labelAttrs = (slug: string, x: number, y: number) => {
   if (pos === 'tl') return { x: x - 10, y: y - 10, textAnchor: 'end' as const }
   return { x: x + 14, y: y + 4, textAnchor: 'start' as const }
 }
-const VB = { x: -20, y: -10, w: 560, h: 660 }
+export const VB = { x: -20, y: -10, w: 560, h: 660 }
 
 export function AreaMap({ className, compact }: { className?: string; compact?: boolean }) {
   const [active, setActive] = useState<Location | null>(null)

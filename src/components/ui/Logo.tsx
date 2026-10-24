@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import logoSvg from '@/assets/brand/logo.svg?raw'
 import { cn } from '@/lib/cn'
 
@@ -15,6 +16,9 @@ const innerMono = inner
 
 /** Original-Logo von CleanStar als sauberes SVG nachgebaut (Design unverändert). */
 export function Logo({ className, title = 'CleanStar Dienstleistungen', mono }: { className?: string; title?: string; mono?: boolean }) {
+  // Eindeutige Verlaufs-IDs je Logo: Sonst fehlt das Symbol, wenn das erste Logo der Seite verborgen ist
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '')
+  const html = mono ? innerMono : inner.replace(/cs([AB])\b/g, `cs$1${uid}`)
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +26,7 @@ export function Logo({ className, title = 'CleanStar Dienstleistungen', mono }: 
       role="img"
       aria-label={title}
       className={cn('block h-auto', className)}
-      dangerouslySetInnerHTML={{ __html: mono ? innerMono : inner }}
+      dangerouslySetInnerHTML={{ __html: html }}
     />
   )
 }

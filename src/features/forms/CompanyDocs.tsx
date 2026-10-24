@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { ArrowDown } from 'lucide-react'
+import { ArrowDown, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import downloads from 'virtual:downloads'
 import { company, fullAddress } from '@/content/company'
 
@@ -70,6 +71,15 @@ export function CompanyDocs() {
               </a>
             </li>
           ))}
+          <li className="border-b border-line">
+            <Link to="/leistungsmappe" className="group flex items-start gap-4 py-4">
+              <span className="min-w-0 flex-1">
+                <span className="ulink text-[1.125rem] font-medium">Leistungsmappe zum Blättern</span>
+                <span className="t-meta mt-1 block">Online ansehen oder als PDF speichern</span>
+              </span>
+              <ArrowRight aria-hidden className="mt-1 size-4 shrink-0 transition-transform duration-500 ease-cs group-hover:translate-x-0.5" strokeWidth={1.75} />
+            </Link>
+          </li>
         </ul>
         {company.liabilityInsurance && (
           <p className="mt-8 text-[0.9375rem] text-ink-2">

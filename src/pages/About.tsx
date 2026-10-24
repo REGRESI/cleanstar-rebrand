@@ -1,4 +1,5 @@
 import { Seo } from '@/components/ui/Seo'
+import { Button } from '@/components/ui/Button'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
 import { ImageBand } from '@/components/ui/ImageBand'
@@ -121,6 +122,11 @@ export default function About() {
               )
             })}
           </ul>
+          <div className="mt-10">
+            <Button to="/leistungsmappe" variant="link">
+              Alles über uns kompakt: die Leistungsmappe zum Blättern
+            </Button>
+          </div>
         </div>
       </section>
 

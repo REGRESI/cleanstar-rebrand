@@ -828,3 +828,16 @@ html.lenis body {
 footer[data-no-top] {
   border-top-width: 0;
 }
+
+/* Leistungsmappe im PDF: Hinweise zum Überfahren und Klicken ergeben auf Papier keinen Sinn */
+.mappe-pdf [data-hint] {
+  visibility: hidden;
+}
+
+/* Leistungsmappe: Vorlage für Texturen und PDF ohne Übergänge (Endzustand sofort) */
+.mappe-instant *,
+.mappe-instant *::before,
+.mappe-instant *::after {
+  transition: none !important;
+  animation: none !important;
+}

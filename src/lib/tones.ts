@@ -54,6 +54,8 @@ function markTones(doc: Document) {
   const bare = (e: HTMLElement, s: CSSStyleDeclaration) =>
     !e.matches('.btn, .field, .choice, .tlink, .ulink, input, select, textarea, button, label, summary, picture, img, svg, canvas, video') &&
     /rgba\(\d+, \d+, \d+, 0\)|transparent/.test(s.backgroundColor) &&
+    s.position !== 'absolute' &&
+    s.position !== 'fixed' &&
     parseFloat(s.borderLeftWidth) === 0 &&
     parseFloat(s.borderRightWidth) === 0
 
