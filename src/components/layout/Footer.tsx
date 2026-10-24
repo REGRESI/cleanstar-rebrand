@@ -79,7 +79,7 @@ export function Footer() {
                 <CallbackButton />
               </li>
             </ul>
-            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 font-mono text-[0.8125rem] text-muted">
+            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 font-medium tabular-nums text-[0.8125rem] text-muted">
               <dt>Adresse</dt>
               <dd>
                 <address className="not-italic">
@@ -148,7 +148,7 @@ export function Footer() {
             <QuoteButton variant="link" className="text-lg">
               Kostenlose Besichtigung anfragen
             </QuoteButton>
-            <a href={company.phone.href} className="ulink self-start font-mono text-[0.9375rem] text-ink sm:self-auto">
+            <a href={company.phone.href} className="ulink self-start font-medium tabular-nums text-[0.9375rem] text-ink sm:self-auto">
               {company.phone.display} · {company.availability}
             </a>
           </div>
@@ -159,7 +159,7 @@ export function Footer() {
           </HomeLink>
         </div>
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-line py-6 font-mono text-[0.8125rem] text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t border-line py-6 font-medium tabular-nums text-[0.8125rem] text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {company.legalName}, {company.seat}
           </p>

@@ -55,14 +55,7 @@ export default function Guides() {
           {ci > 0 && <ImageBand id="svc-treppenhaus" />}
           <section id={c.id} aria-labelledby={`cat-${c.id}`} className={cn('section scroll-mt-24', ci % 2 === 1 && 'bg-surface')}>
             <div className="container-site">
-              <SectionHeading
-                layout="rail"
-                index={String(ci + 1).padStart(2, '0')}
-                eyebrow={c.id === 'gruender' ? 'Für Gründer' : 'Für Unternehmen'}
-                title={c.label}
-                text={c.text}
-                id={`cat-${c.id}`}
-              />
+              <SectionHeading layout="rail" eyebrow={c.id === 'gruender' ? 'Für Gründer' : 'Für Unternehmen'} title={c.label} text={c.text} id={`cat-${c.id}`} />
               <ul className="mt-14 grid grid-cols-1 gap-x-8 sm:grid-cols-2 lg:mt-20 lg:grid-cols-3">
                 {guides
                   .filter((g) => g.category === c.id)
@@ -81,7 +74,6 @@ export default function Guides() {
         <div className="container-site">
           <SectionHeading
             layout="rail"
-            index={String(guideCategories.length + 1).padStart(2, '0')}
             eyebrow="Werkzeuge"
             title={'Rechner und\u00A0Werkzeuge'}
             text="Kostenlos, ohne Anmeldung. Ihre Eingaben bleiben in Ihrem Browser."

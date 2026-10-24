@@ -7,10 +7,10 @@ import { CallbackButton } from '@/features/callback/Callback'
 /** Ansprechpartner für Neukunden (company.newClientContact) */
 export const newClientContact = () => company.founders[company.newClientContact] ?? company.founders[0]
 
-/** Status „Jetzt erreichbar · 24/7“ in Monospace mit kleinem Punkt (funktionaler Zustand) */
+/** Status „Jetzt erreichbar · 24/7“ klein mit Punkt (funktionaler Zustand) */
 export function AvailableNow({ dark, className }: { dark?: boolean; className?: string }) {
   return (
-    <span className={cn('inline-flex items-center gap-2 font-mono text-[0.75rem]', dark ? 'text-muted-dark' : 'text-muted', className)}>
+    <span className={cn('inline-flex items-center gap-2 font-medium tabular-nums text-[0.75rem]', dark ? 'text-muted-dark' : 'text-muted', className)}>
       <span aria-hidden className="size-1.5 rounded-full bg-success" />
       Jetzt erreichbar · 24/7
     </span>

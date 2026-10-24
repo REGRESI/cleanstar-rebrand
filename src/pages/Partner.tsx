@@ -72,14 +72,13 @@ export default function Partner() {
       </PageHero>
 
       <Chunk>
-        <ProblemSolution id="partner-problems" index="01" eyebrow={page.problems.eyebrow} headline={page.problems.headline} lead={page.problems.lead} items={page.problems.items} />
+        <ProblemSolution id="partner-problems" eyebrow={page.problems.eyebrow} headline={page.problems.headline} lead={page.problems.lead} items={page.problems.items} />
       </Chunk>
       <Chunk>
         <section className="section" aria-labelledby="ways-title">
           <div className="container-site">
             <SectionHeading
               layout="split"
-              index="02"
               eyebrow="Zwei Wege"
               title="Wo stehen Sie gerade?"
               id="ways-title"
@@ -96,7 +95,6 @@ export default function Partner() {
           <div className="container-site">
             <SectionHeading
               layout="split"
-              index="03"
               eyebrow="Was Partner bekommen"
               title="Ein Baukasten aus dem, was in Offenburg täglich funktioniert."
               id="modules-title"
@@ -111,7 +109,7 @@ export default function Partner() {
       <Chunk>
         <section className="on-dark section bg-night text-paper" aria-labelledby="expect-title">
           <div className="container-site">
-            <SectionHeading layout="split" index="04" eyebrow={page.expectations.eyebrow} title={page.expectations.headline} id="expect-title" text={page.expectations.lead} />
+            <SectionHeading layout="split" eyebrow={page.expectations.eyebrow} title={page.expectations.headline} id="expect-title" text={page.expectations.lead} />
             <NumberedRows className="mt-14 lg:mt-20" dark items={page.expectations.items.map((e) => ({ title: e.title, text: e.text, key: e.title }))} />
           </div>
         </section>
@@ -121,7 +119,6 @@ export default function Partner() {
           <div className="container-site">
             <SectionHeading
               layout="split"
-              index="05"
               eyebrow="Regionen"
               title="Wo wir Partner suchen."
               id="regions-title"
@@ -146,14 +143,14 @@ export default function Partner() {
       </Chunk>
       <Chunk>
         <ImageBand id="svc-halle" />
-        <ProcessTimeline index="06" eyebrow="Ablauf" title="In sieben Schritten zum Partner." steps={partnerSteps} id="partner-process-title" />
+        <ProcessTimeline eyebrow="Ablauf" title="In sieben Schritten zum Partner." steps={partnerSteps} id="partner-process-title" />
       </Chunk>
       <Chunk>
         <section className="section bg-surface" aria-labelledby="conditions-title">
           <div className="container-site grid-site gap-y-10">
             <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
             <div className="col-span-12 lg:col-span-4">
-              <p className="t-label mb-6">07 / Konditionen</p>
+              <p className="t-label mb-6">Konditionen</p>
               <RevealText as="h2" text="Klare Zahlen. Im Gespräch, nicht im Kleingedruckten." id="conditions-title" className="t-h3" />
             </div>
             <div className="col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
@@ -184,7 +181,6 @@ export default function Partner() {
             <span aria-hidden data-reveal-rule className="rule col-span-12" />
             <div className="col-span-12 lg:col-span-4">
               <SectionHeading
-                index="08"
                 eyebrow="Partneranfrage"
                 title="Unverbindlich anfragen."
                 id="apply-title"
@@ -283,7 +279,7 @@ export default function Partner() {
       </Chunk>
       <Chunk>
         <section aria-label="Rechtlicher Hinweis" className="py-12">
-          <p className="container-site measure font-mono text-[0.75rem] leading-relaxed text-muted">
+          <p className="container-site measure font-medium tabular-nums text-[0.75rem] leading-relaxed text-muted">
             {page.legalNote}
             <Todo title="Rechtlichen Hinweis anwaltlich prüfen lassen">anwaltlich prüfen</Todo>
           </p>

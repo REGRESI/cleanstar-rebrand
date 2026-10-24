@@ -9,7 +9,7 @@ import { cn } from '@/lib/cn'
  * Randloses Bildband über die volle Breite (21:9, auf dem Handy 4:3) als ruhiger Taktwechsel zwischen Textabschnitten.
  * Das Foto bewegt sich beim Scrollen sehr dezent gegen die Seite (Parallax ±4 %), bei reduzierter Bewegung steht es.
  */
-export function ImageBand({ id, caption, className }: { id: ImageId; caption?: string; className?: string }) {
+export function ImageBand({ id, className }: { id: ImageId; className?: string }) {
   const frame = useRef<HTMLDivElement>(null)
   const inner = useRef<HTMLDivElement>(null)
 
@@ -28,11 +28,6 @@ export function ImageBand({ id, caption, className }: { id: ImageId; caption?: s
           <Picture id={id} aspect="size-full" sizes="100vw" />
         </div>
       </div>
-      {caption && (
-        <figcaption className="container-site">
-          <span className="caption block">{caption}</span>
-        </figcaption>
-      )}
     </figure>
   )
 }

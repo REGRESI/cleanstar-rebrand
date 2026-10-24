@@ -47,7 +47,7 @@ function Num({
           className={cn('field tabular-nums', unit && 'pr-12')}
           aria-describedby={hint ? `${id}-h` : undefined}
         />
-        {unit && <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center font-mono text-[0.8125rem] text-muted">{unit}</span>}
+        {unit && <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center font-medium tabular-nums text-[0.8125rem] text-muted">{unit}</span>}
       </div>
       {hint && (
         <p id={`${id}-h`} className="mt-1.5 text-[0.8125rem] text-muted">
@@ -191,7 +191,7 @@ export function CostCalculator() {
               <div className="mt-3 h-1.5 bg-surface">
                 <motion.div className="h-full bg-ink" initial={false} animate={{ width: `${(calc.own / scale) * 100}%` }} transition={{ duration: 0.6, ease: EASE_CS_ARRAY }} />
               </div>
-              <p className="mt-2 font-mono text-[0.75rem] text-muted">entspricht {formatEuro2(calc.ownPerHour)} pro geleisteter Stunde</p>
+              <p className="mt-2 font-medium tabular-nums text-[0.75rem] text-muted">entspricht {formatEuro2(calc.ownPerHour)} pro geleisteter Stunde</p>
             </div>
             <div>
               <div className="flex flex-wrap items-baseline justify-between gap-x-4">
@@ -216,7 +216,7 @@ export function CostCalculator() {
                   transition={{ duration: 0.6, ease: EASE_CS_ARRAY }}
                 />
               </div>
-              <p className="mt-2 font-mono text-[0.75rem] text-muted">
+              <p className="mt-2 font-medium tabular-nums text-[0.75rem] text-muted">
                 {pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Mitarbeiterstunde (
                 {formatEuro2Range(net(pricing.hourlyRateGrossMin), net(pricing.hourlyRateGrossMax))} netto), gleiche Stundenzahl angenommen
               </p>
@@ -254,7 +254,7 @@ export function CostCalculator() {
                 <div key={k} className="flex items-baseline justify-between gap-4 border-b border-line py-3">
                   <dt>
                     <span className="text-ink">{k}</span>
-                    <span className="block font-mono text-[0.75rem] text-muted">{note}</span>
+                    <span className="block font-medium tabular-nums text-[0.75rem] text-muted">{note}</span>
                   </dt>
                   <dd className="font-medium whitespace-nowrap tabular-nums">{formatEuro(val)}</dd>
                 </div>

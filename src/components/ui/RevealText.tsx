@@ -39,7 +39,7 @@ export function RevealText({
   className?: string
   immediate?: boolean
   id?: string
-  /** Vorzeile innerhalb derselben Überschrift (z. B. Keyword-Zeile in Monospace über der Leitidee) */
+  /** Vorzeile innerhalb derselben Überschrift (z. B. Keyword-Zeile zur Leitidee) */
   kicker?: ReactNode
   /** Vorzeile optisch unter die Wörter setzen; im HTML bleibt sie vorn (Keyword am Anfang der Überschrift) */
   kickerAfter?: boolean

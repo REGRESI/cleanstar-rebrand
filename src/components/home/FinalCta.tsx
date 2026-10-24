@@ -14,7 +14,7 @@ const types: { id: ObjectType; label: string }[] = [
 ]
 
 /** Abschluss auf dunklem Grund: kostenlose Besichtigung, Ansprechpartner, 24/7, direkter Einstieg in den Konfigurator. */
-export function FinalCta({ headline = home.finalCta.headline, index }: { headline?: string; index?: string }) {
+export function FinalCta({ headline = home.finalCta.headline }: { headline?: string }) {
   const { open } = useQuote()
   return (
     <section className="on-dark section bg-night text-paper" aria-labelledby="cta-title">
@@ -22,7 +22,6 @@ export function FinalCta({ headline = home.finalCta.headline, index }: { headlin
         <div className="grid-site gap-y-6">
           <span aria-hidden data-reveal-rule className="rule col-span-12 mb-2 lg:mb-6" />
           <p className="t-label col-span-12 lg:col-span-3 lg:pt-3" data-reveal>
-            {index ? `${index} / ` : ''}
             {home.finalCta.eyebrow}
           </p>
           <RevealText as="h2" id="cta-title" text={headline} className="t-h1 col-span-12 max-w-[16ch] lg:col-span-9" />
@@ -37,7 +36,9 @@ export function FinalCta({ headline = home.finalCta.headline, index }: { headlin
               <QuoteButton size="lg" arrow>
                 Kostenlose Besichtigung
               </QuoteButton>
-              <p className="mt-4 font-mono text-[0.75rem] text-muted-dark">Kostenlos und unverbindlich. Antwort innerhalb von {company.promises.responseHours} Stunden.</p>
+              <p className="mt-4 font-medium tabular-nums text-[0.75rem] text-muted-dark">
+                Kostenlos und unverbindlich. Antwort innerhalb von {company.promises.responseHours} Stunden.
+              </p>
             </div>
             <div className="mt-12" data-reveal>
               <p className="t-label">Oder direkt mit dem Objekt beginnen</p>
@@ -50,7 +51,7 @@ export function FinalCta({ headline = home.finalCta.headline, index }: { headlin
                       className="flex min-h-13 w-full items-center justify-between gap-3 px-4 py-3 text-left text-paper shadow-[inset_0_0_0_1px_var(--color-line-dark)] transition-shadow duration-300 hover:shadow-[inset_0_0_0_1px_var(--color-paper)]"
                     >
                       {t.label}
-                      <span aria-hidden className="font-mono text-[0.75rem] text-muted-dark">
+                      <span aria-hidden className="font-medium tabular-nums text-[0.75rem] text-muted-dark">
                         →
                       </span>
                     </button>

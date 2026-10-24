@@ -33,7 +33,7 @@ export const home = {
   seoTitle: 'Büroreinigung Offenburg & Ortenaukreis',
   seoDescription: 'Reinigungsfirma aus Offenburg für Büroreinigung im Ortenaukreis: festes Team, fester Ansprechpartner, Ersatz bei Ausfall und Angebot in 48 Stunden.',
   hero: {
-    /** Kleine Zeile in Monospace, Teil der H1 (Keyword für Google) */
+    /** Kleine Zeile, Teil der H1 (Keyword für Google) */
     kicker: 'Büroreinigung in Offenburg und im Ortenaukreis',
     /** Große Zeile der H1: das Markenversprechen */
     headline: 'Sauber.\nOhne dass Sie nachfragen müssen.',

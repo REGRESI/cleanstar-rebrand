@@ -6,13 +6,13 @@ import { cn } from '@/lib/cn'
 export interface Row {
   title: ReactNode
   text?: ReactNode
-  /** Zusatz rechts oder unter dem Titel in Monospace (z. B. Dauer, Fahrzeit) */
+  /** Zusatz rechts oder unter dem Titel als Metadaten (z. B. Dauer, Fahrzeit) */
   meta?: ReactNode
   key?: string
 }
 
 /**
- * Editoriale Liste: Nummer in Monospace, Titel, Text, getrennt durch Haarlinien (statt Karten).
+ * Editoriale Liste: kleine Nummer, Titel, Text, getrennt durch Haarlinien (statt Karten).
  * row:   volle Breite im 12er-Raster, Titel links, Text versetzt rechts
  * stack: für schmale Spalten, Titel und Text untereinander
  */
@@ -33,7 +33,7 @@ export function NumberedRows({
   size?: 'md' | 'lg'
   numbered?: boolean
   start?: number
-  /** Gesamtzahl für „03 / 08“ (Fortschritt in Monospace) */
+  /** Gesamtzahl für „03 / 08“ (Fortschritt) */
   total?: number
   dark?: boolean
   as?: 'ol' | 'ul'
@@ -55,7 +55,7 @@ export function NumberedRows({
               {numbered && <p className={cn('t-label col-span-12 lg:pt-1.5', total ? 'lg:col-span-2' : 'lg:col-span-1')}>{num(i)}</p>}
               <div className={cn('col-span-12', numbered ? (total ? 'lg:col-span-4' : 'lg:col-span-5') : 'lg:col-span-6')}>
                 <Title className={titleCls}>{it.title}</Title>
-                {it.meta && <p className="t-label mt-3">{it.meta}</p>}
+                {it.meta && <p className="t-meta mt-3">{it.meta}</p>}
               </div>
               {it.text && <div className={cn('col-span-12 measure lg:col-span-5 lg:col-start-8', dark ? 'text-muted-dark' : 'text-ink-2')}>{it.text}</div>}
             </div>
@@ -64,7 +64,7 @@ export function NumberedRows({
               {numbered && <p className="t-label pt-1">{num(i)}</p>}
               <div className="min-w-0">
                 <Title className={titleCls}>{it.title}</Title>
-                {it.meta && <p className="t-label mt-2">{it.meta}</p>}
+                {it.meta && <p className="t-meta mt-2">{it.meta}</p>}
                 {it.text && <div className={cn('mt-3 measure', dark ? 'text-muted-dark' : 'text-ink-2')}>{it.text}</div>}
               </div>
             </div>
@@ -75,12 +75,12 @@ export function NumberedRows({
   )
 }
 
-/** Kennzahl: große Zahl in der Display-Schrift, darunter ein Label in Monospace. Ohne Kasten. */
+/** Kennzahl: große Zahl in der Display-Schrift, darunter eine kleine Beschriftung. Ohne Kasten. */
 export function Stat({ value, label, className }: { value: ReactNode; label: ReactNode; className?: string }) {
   return (
     <div className={cn('border-t border-line pt-6', className)}>
       <p className="t-num">{value}</p>
-      <p className="t-label mt-4 max-w-[22ch]">{label}</p>
+      <p className="t-meta mt-4 max-w-[22ch]">{label}</p>
     </div>
   )
 }
@@ -136,7 +136,7 @@ export function LinkRows({
             {numbered && <span className="t-label w-7 shrink-0">{String(i + 1).padStart(2, '0')}</span>}
             <span className="min-w-0 flex-1">
               <span className="ulink">{it.label}</span>
-              {it.meta && <span className="t-label ml-3">{it.meta}</span>}
+              {it.meta && <span className="t-meta ml-3">{it.meta}</span>}
             </span>
             <ArrowUpRight
               aria-hidden

@@ -15,7 +15,7 @@ export const TextField = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLIn
         <label htmlFor={fid} className="field-label mb-1">
           {label}{' '}
           {optional ? (
-            <span className="font-mono text-[0.75rem] font-normal text-muted">optional</span>
+            <span className="tabular-nums text-[0.75rem] font-normal text-muted">optional</span>
           ) : (
             <span aria-hidden className="text-muted">
               *
@@ -47,7 +47,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<H
   return (
     <div className={className}>
       <label htmlFor={fid} className="field-label mb-1">
-        {label} {optional && <span className="font-mono text-[0.75rem] font-normal text-muted">optional</span>}
+        {label} {optional && <span className="tabular-nums text-[0.75rem] font-normal text-muted">optional</span>}
       </label>
       <textarea ref={ref} id={fid} rows={4} aria-invalid={!!error} className={cn(inputCls, 'resize-y')} {...rest} />
       {error && (
@@ -120,5 +120,5 @@ export const Honeypot = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInp
 })
 
 export function FormNote({ children }: { children: ReactNode }) {
-  return <p className="font-mono text-[0.75rem] leading-relaxed text-muted">{children}</p>
+  return <p className="font-medium tabular-nums text-[0.75rem] leading-relaxed text-muted">{children}</p>
 }

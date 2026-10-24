@@ -210,7 +210,7 @@ Mit freundlichen Grüßen
             <TextInput label="Bisheriger Anbieter" value={s.firm} onChange={(v) => set({ firm: v })} />
             <TextInput label="Objekt (Adresse)" value={s.object} onChange={(v) => set({ object: v })} />
           </div>
-          <pre className="mt-6 max-h-96 overflow-auto bg-surface p-5 font-mono text-[0.8125rem] leading-relaxed whitespace-pre-wrap text-ink" tabIndex={0}>
+          <pre className="mt-6 max-h-96 overflow-auto bg-surface p-5 font-medium tabular-nums text-[0.8125rem] leading-relaxed whitespace-pre-wrap text-ink" tabIndex={0}>
             {letter}
           </pre>
           <div className="mt-4 flex flex-wrap items-center gap-3">

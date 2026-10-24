@@ -17,7 +17,6 @@ export function PageHero({
   actions,
   image,
   imageRatio = '21:9',
-  caption,
   dark,
   children,
 }: {
@@ -29,12 +28,14 @@ export function PageHero({
   image?: ImageId
   /** Seitenverhältnis des Bildes ab Tablet (Handy: 4:3) */
   imageRatio?: PictureRatio
-  caption?: string
   dark?: boolean
   children?: ReactNode
 }) {
   return (
-    <section className={cn('relative pt-28 sm:pt-36 lg:pt-44', image ? 'pb-0' : 'pb-4 sm:pb-6 lg:pb-8', dark ? 'on-dark bg-night text-paper' : 'bg-paper')}>
+    <section
+      data-tone-end={image ? 'image' : undefined}
+      className={cn('relative pt-28 sm:pt-36 lg:pt-44', image ? 'pb-0' : 'pb-4 sm:pb-6 lg:pb-8', dark ? 'on-dark bg-night text-paper' : 'bg-paper')}
+    >
       <div className="container-site">
         <Breadcrumbs trail={trail} dark={dark} />
         <div className="grid-site gap-y-8 lg:gap-y-12">
@@ -72,7 +73,6 @@ export function PageHero({
             sizes="(min-width:1600px) 1472px, 100vw"
             tone={dark ? 'dark' : 'light'}
             aspect={cn('aspect-[4/3]', imageRatio === '21:9' ? 'sm:aspect-[21/9]' : imageRatio === '3:2' ? 'sm:aspect-[3/2]' : 'sm:aspect-[16/9]')}
-            caption={caption}
           />
         </div>
       )}

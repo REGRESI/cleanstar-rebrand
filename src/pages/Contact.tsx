@@ -34,7 +34,6 @@ export default function Contact() {
       <PageHero
         trail={trail}
         image="contact"
-        caption="Offenburg, Prinz-Eugen-Straße"
         eyebrow="Kontakt"
         title="Sprechen wir über Ihr Objekt."
         lead="Rufen Sie an, schreiben Sie uns oder buchen Sie direkt einen Termin für die kostenlose Besichtigung. Wir melden uns innerhalb von 24 Stunden."
@@ -64,7 +63,7 @@ export default function Contact() {
                 </li>
               ))}
             </ul>
-            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 font-mono text-[0.8125rem]" data-reveal>
+            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 font-medium tabular-nums text-[0.8125rem]" data-reveal>
               <dt className="text-muted">Firma</dt>
               <dd>{company.legalName}</dd>
               <dt className="text-muted">Adresse</dt>
@@ -83,7 +82,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <ImageBand id="region" caption="Wir kommen zu Ihnen, im ganzen Ortenaukreis" />
+      <ImageBand id="region" />
       <section id="besichtigung" className="section scroll-mt-28 bg-surface" aria-labelledby="booking-title">
         <div className="container-site">
           <SectionHeading

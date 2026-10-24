@@ -16,7 +16,7 @@ const featuredAreas = ['Arbeitsplätze und Besprechung', 'Teeküche und Sanitär
  * großem Titel und Kurztext. Alle Zeilen stehen in voller Textfarbe; die aktive Zeile (Desktop) zeigt nur dezent
  * Nummer in Markenblau, leicht versetzten Pfeil und das passende Foto an fester Position.
  */
-export function ServicesGrid({ heading = true, index }: { heading?: boolean; index?: string }) {
+export function ServicesGrid({ heading = true }: { heading?: boolean }) {
   const Title = heading ? 'h3' : 'h2'
   const featured = services.find((s) => s.featured) ?? services[0]
   const rest = services.filter((s) => s !== featured)
@@ -25,7 +25,7 @@ export function ServicesGrid({ heading = true, index }: { heading?: boolean; ind
   return (
     <section className="section" aria-labelledby={heading ? 'services-title' : undefined} aria-label={heading ? undefined : 'Leistungen'}>
       <div className="container-site">
-        {heading && <SectionHeading layout="rail" index={index} eyebrow={home.services.eyebrow} title={home.services.headline} text={home.services.lead} id="services-title" />}
+        {heading && <SectionHeading layout="rail" eyebrow={home.services.eyebrow} title={home.services.headline} text={home.services.lead} id="services-title" />}
 
         {/* Kernleistung: großer Abschnitt mit randlosem Foto */}
         <div className={cn('grid-site gap-y-8', heading && 'mt-16 lg:mt-24')}>
@@ -35,7 +35,6 @@ export function ServicesGrid({ heading = true, index }: { heading?: boolean; ind
               reveal
               aspect="aspect-[4/5] sm:aspect-[3/2] lg:aspect-[21/9]"
               sizes="(min-width:1600px) 1472px, 100vw"
-              caption="01 / Unsere Kernleistung"
               className="[&_img]:transition-transform [&_img]:duration-[1200ms] [&_img]:ease-cs group-hover:[&_img]:scale-[1.02]"
             />
           </Link>
@@ -102,7 +101,6 @@ export function ServicesGrid({ heading = true, index }: { heading?: boolean; ind
                   </div>
                 ))}
               </div>
-              <p className="caption">{rest[active]?.name}</p>
             </div>
           </div>
         </div>

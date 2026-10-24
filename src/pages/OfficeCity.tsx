@@ -100,7 +100,7 @@ export default function OfficeCity() {
                   pro Monat brutto, bei rund {formatNumber(Math.round(ex.hours))} Stunden ({pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto pro Stunde). Netto{' '}
                   {formatEuroRange(ex.netMin, ex.netMax)}.
                 </p>
-                <p className="mt-5 font-mono text-[0.75rem] leading-relaxed text-muted-dark">
+                <p className="mt-5 font-medium tabular-nums text-[0.75rem] leading-relaxed text-muted-dark">
                   Unverbindliches Rechenbeispiel. Ihren tatsächlichen Stundenbedarf ermitteln wir bei der kostenlosen Besichtigung.
                 </p>
                 <div className="mt-6">

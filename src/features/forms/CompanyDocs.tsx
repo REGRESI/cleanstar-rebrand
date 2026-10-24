@@ -50,7 +50,7 @@ export function CompanyDocs() {
         <dl className="mt-4 border-t border-line">
           {rows.map(([k, v]) => (
             <div key={k} className="grid grid-cols-1 gap-0.5 border-b border-line py-3.5 min-[420px]:grid-cols-[9rem_1fr] min-[420px]:gap-4">
-              <dt className="font-mono text-[0.8125rem] text-muted min-[420px]:pt-0.5">{k}</dt>
+              <dt className="font-medium tabular-nums text-[0.8125rem] text-muted min-[420px]:pt-0.5">{k}</dt>
               <dd className="break-words text-ink">{v}</dd>
             </div>
           ))}
@@ -64,7 +64,7 @@ export function CompanyDocs() {
               <a href={f.href} download={f.file} className="group flex items-start gap-4 py-4">
                 <span className="min-w-0 flex-1">
                   <span className="ulink text-[1.125rem] font-medium">{f.title}</span>
-                  <span className="mt-1 block font-mono text-[0.75rem] text-muted">PDF · {f.note}</span>
+                  <span className="mt-1 block font-medium tabular-nums text-[0.75rem] text-muted">PDF · {f.note}</span>
                 </span>
                 <ArrowDown aria-hidden className="mt-1 size-4 shrink-0 transition-transform duration-500 ease-cs group-hover:translate-y-0.5" strokeWidth={1.75} />
               </a>

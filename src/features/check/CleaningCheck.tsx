@@ -7,7 +7,7 @@ import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
 import { useReducedMotion } from '@/lib/env'
 import { EASE_CS_ARRAY } from '@/lib/ease'
 
-/** Punktzahl typografisch: große Zahl, Label in Monospace, dünne Linie für den Anteil */
+/** Punktzahl typografisch: große Zahl, kleine Beschriftung, dünne Linie für den Anteil */
 function Score({ percent }: { percent: number }) {
   const reduced = useReducedMotion()
   return (
@@ -65,7 +65,7 @@ export function CleaningCheck() {
       {!done && (
         <div className="pt-5">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[0.8125rem] tabular-nums">
+            <span className="font-medium tabular-nums text-[0.8125rem] tabular-nums">
               {String(step + 1).padStart(2, '0')} / {String(checkQuestions.length).padStart(2, '0')}
             </span>
             {step > 0 && (
@@ -142,7 +142,7 @@ export function CleaningCheck() {
               </div>
             </div>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <span className="font-mono text-[0.75rem] text-muted">Ihre Antworten bleiben in Ihrem Browser. Es wird nichts gespeichert oder gesendet.</span>
+              <span className="font-medium tabular-nums text-[0.75rem] text-muted">Ihre Antworten bleiben in Ihrem Browser. Es wird nichts gespeichert oder gesendet.</span>
               <button type="button" onClick={() => setAnswers([])} className="ulink self-start py-1 text-[0.9375rem] text-ink sm:self-auto">
                 Test neu starten
               </button>

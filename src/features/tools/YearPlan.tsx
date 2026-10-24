@@ -47,7 +47,7 @@ export function YearPlan() {
                         animate={{ opacity: on ? 1 : 0.9, scaleY: on || reduced ? 1 : 0.6 }}
                         transition={{ duration: reduced ? 0 : 0.35, delay: reduced ? 0 : i * 0.015 }}
                       />
-                      <span aria-hidden className="mt-1.5 block text-center font-mono text-[0.625rem] text-muted sm:text-[0.6875rem]">
+                      <span aria-hidden className="mt-1.5 block text-center font-medium tabular-nums text-[0.625rem] text-muted sm:text-[0.6875rem]">
                         {m}
                       </span>
                     </li>

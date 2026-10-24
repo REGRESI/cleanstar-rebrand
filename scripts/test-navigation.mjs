@@ -93,7 +93,7 @@ async function runDevice(browser, label, opts) {
       await ready(page)
       const links = await collectLinks(page)
       // Auf Mobile zusätzlich die Links im aufgeklappten Menü
-      const menu = label === 'Mobile' ? ['/', '/leistungen', '/ablauf', '/einzugsgebiet', '/kontakt'] : []
+      const menu = label === 'Mobile' ? ['/leistungen', '/ablauf', '/einzugsgebiet', '/kontakt'] : []
       const plan = [...links.map((l) => ({ ...l, menu: false })), ...menu.map((href) => ({ area: 'menü', href, text: href, menu: true }))]
       for (const l of plan) {
         if (norm(new URL(page.url()).pathname) !== norm(src)) {

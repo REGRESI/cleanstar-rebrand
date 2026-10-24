@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 
-/** Brotkrumen in Monospace, getrennt durch Schrägstriche */
+/** Brotkrumen klein, getrennt durch Schrägstriche */
 export function Breadcrumbs({ trail, dark }: { trail: { name: string; path: string }[]; dark?: boolean }) {
   return (
     <nav aria-label="Brotkrumen" className="mb-10 sm:mb-14">
-      <ol className={cn('flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[0.8125rem]', dark ? 'text-muted-dark' : 'text-muted')}>
+      <ol className={cn('flex flex-wrap items-center gap-x-2 gap-y-1 font-medium tabular-nums text-[0.8125rem]', dark ? 'text-muted-dark' : 'text-muted')}>
         {trail.map((t, i) => {
           const last = i === trail.length - 1
           return (

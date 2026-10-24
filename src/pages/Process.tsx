@@ -61,7 +61,6 @@ export default function Process() {
         title="So arbeiten wir zusammen."
         lead="Sechs klare Schritte, ohne Überraschungen. Ihr Aufwand: ein Termin für die Besichtigung. Den Rest organisieren wir, und im ersten Monat können Sie jederzeit kündigen."
         image="svc-unterhalt"
-        caption="Fester Start im Objekt"
         actions={
           <>
             <QuoteButton size="lg" arrow>
@@ -73,11 +72,11 @@ export default function Process() {
           </>
         }
       />
-      <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" index="01" />
+      <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" />
       <ImageBand id="evening-clean" />
       <section className="section bg-surface" aria-labelledby="details-title">
         <div className="container-site">
-          <SectionHeading layout="rail" index="02" eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />
+          <SectionHeading layout="rail" eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />
           <ul className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4">
             {details.map((d) => (
               <li key={d.title} className="relative pt-6" data-reveal>
@@ -98,7 +97,7 @@ export default function Process() {
       <section className="on-dark section bg-night text-paper" aria-labelledby="trial-title">
         <div className="container-site grid-site gap-y-12 lg:items-end">
           <div className="col-span-12 lg:col-span-6">
-            <p className="t-label mb-6">03 / Erster Monat</p>
+            <p className="t-label mb-6">Erster Monat</p>
             <RevealText as="h2" text="Erst überzeugen, dann binden." id="trial-title" className="t-h1" />
             <p className="t-lead measure mt-8" data-reveal>
               Im ersten Monat können Sie jederzeit kündigen, ohne Frist. Sie sehen jeden Morgen, wie Ihr Büro aussieht, und entscheiden dann. Eine einzelne Probereinigung vor dem
@@ -117,7 +116,6 @@ export default function Process() {
         <div className="container-site">
           <SectionHeading
             layout="split"
-            index="04"
             eyebrow="Wechsel-Rechner"
             title="Wann können Sie wechseln?"
             id="switch-title"

@@ -104,7 +104,7 @@ export function Markdown({ source }: { source: string }) {
             <ol key={bi} className="mt-5 border-t border-line">
               {lines.map((l, i) => (
                 <li key={i} className="flex gap-4 border-b border-line py-3">
-                  <span aria-hidden className="w-6 shrink-0 pt-1 font-mono text-[0.75rem] text-muted tabular-nums">
+                  <span aria-hidden className="w-6 shrink-0 pt-1 font-medium tabular-nums text-[0.75rem] text-muted tabular-nums">
                     {i + 1}
                   </span>
                   <span className="min-w-0">{inline(l.replace(/^\d+\. /, ''))}</span>
@@ -129,7 +129,7 @@ export function Markdown({ source }: { source: string }) {
                   <thead className="border-b border-line">
                     <tr>
                       {head.map((c, i) => (
-                        <th key={i} scope="col" className="py-3 pr-4 font-mono text-[0.75rem] font-normal text-muted">
+                        <th key={i} scope="col" className="py-3 pr-4 tabular-nums text-[0.75rem] font-normal text-muted">
                           {inline(c)}
                         </th>
                       ))}
@@ -157,7 +157,7 @@ export function Markdown({ source }: { source: string }) {
                       {r.slice(1).map((c, ci) =>
                         c ? (
                           <div key={ci} className="flex items-baseline justify-between gap-4 py-2">
-                            <dt className="font-mono text-[0.75rem] text-muted">{inline(head[ci + 1] || '')}</dt>
+                            <dt className="font-medium tabular-nums text-[0.75rem] text-muted">{inline(head[ci + 1] || '')}</dt>
                             <dd className={cn('text-right text-ink', numeric(c) && 'whitespace-nowrap tabular-nums')}>{inline(c)}</dd>
                           </div>
                         ) : null,

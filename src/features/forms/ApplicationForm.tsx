@@ -135,7 +135,7 @@ export function ApplicationForm() {
         {isSubmitting && <Loader2 aria-hidden className="size-4 animate-spin" />}
         Bewerbung abschicken
       </button>
-      <p className="font-mono text-[0.75rem] text-muted">Kein Lebenslauf nötig. Wir rufen Sie zurück.</p>
+      <p className="font-medium tabular-nums text-[0.75rem] text-muted">Kein Lebenslauf nötig. Wir rufen Sie zurück.</p>
     </form>
   )
 }

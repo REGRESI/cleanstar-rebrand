@@ -7,11 +7,10 @@ import { cn } from '@/lib/cn'
  * stack: Label, Überschrift und Text untereinander (für Spalten innerhalb eines Rasters)
  * rail:  Label links in Spalte 1 bis 3, Überschrift ab Spalte 4, Text darunter versetzt
  * split: Überschrift über 7 Spalten, Text versetzt in Spalte 9 bis 12, unten bündig
- * Das Label erscheint in Monospace, mit Nummer als „01 / Leistungen“.
+ * Das Label steht klein in Versalien, ohne Nummer.
  */
 export function SectionHeading({
   eyebrow,
-  index,
   title,
   text,
   className,
@@ -23,8 +22,6 @@ export function SectionHeading({
   rule,
 }: {
   eyebrow?: string
-  /** Abschnittsnummer, z. B. "01" */
-  index?: string
   title: string
   text?: ReactNode
   className?: string
@@ -36,7 +33,8 @@ export function SectionHeading({
   /** Haarlinie über dem Abschnitt (Standard bei rail und split) */
   rule?: boolean
 }) {
-  const label = index && eyebrow ? `${index} / ${eyebrow}` : (eyebrow ?? index)
+  // Abschnittslabels ohne Nummer
+  const label = eyebrow
   const titleCls = size === 'h1' ? 't-h1' : size === 'h3' ? 't-h3' : 't-h2'
   const withRule = rule ?? layout !== 'stack'
   const ruleEl = withRule ? <span aria-hidden data-reveal-rule className="rule col-span-12 mb-6 lg:mb-8" /> : null

@@ -51,7 +51,6 @@ export default function About() {
         <div className="container-site">
           <SectionHeading
             layout="rail"
-            index="01"
             eyebrow="Die Gründer"
             title="Drei Menschen. Klare Zuständigkeiten."
             id="founders-title"
@@ -62,7 +61,7 @@ export default function About() {
               <li key={i} className="col-span-12 md:col-span-4">
                 <Picture id={f.image as ImageId} ratio="4:5" reveal sizes="(min-width:768px) 33vw, 100vw" />
                 <h3 className="mt-6 text-[2.25rem] leading-none font-medium tracking-[-0.04em] lg:text-[2.75rem]">{f.name ?? `Gründer ${i + 1}`}</h3>
-                <p className="t-label mt-3">{f.role.replace('Gründer · ', '')}</p>
+                <p className="t-meta mt-3">{f.role.replace('Gründer · ', '')}</p>
                 <p className="mt-5 text-ink-2">{f.bio}</p>
                 <p className="t-label mt-8">Zuständig für</p>
                 <ul className="mt-3 border-t border-line">
@@ -88,7 +87,7 @@ export default function About() {
             </div>
             <blockquote className="col-span-12 lg:col-span-8 lg:col-start-5">
               <RevealText as="p" text={`„${founders[1].statement}“`} className="t-h2" />
-              <figcaption className="t-label mt-8">
+              <figcaption className="t-meta mt-8">
                 {founders[1].name}, {founders[1].role.replace('Gründer · ', '')}
               </figcaption>
             </blockquote>
@@ -100,13 +99,12 @@ export default function About() {
         <div className="container-site">
           <SectionHeading
             layout="rail"
-            index="02"
             eyebrow="Zuständigkeiten"
             title="Wer ist wofür zuständig?"
             id="who-title"
             text="Kein Weiterverbinden, kein „Da muss ich nachfragen“. Für jedes Anliegen gibt es einen Verantwortlichen."
           />
-          <div className="mt-14 hidden grid-cols-12 gap-x-8 pb-3 font-mono text-[0.75rem] text-muted lg:grid" aria-hidden>
+          <div className="mt-14 hidden grid-cols-12 gap-x-8 pb-3 font-medium tabular-nums text-[0.75rem] text-muted lg:grid" aria-hidden>
             <span className="col-span-4">Anliegen</span>
             <span className="col-span-5">Zum Beispiel</span>
             <span className="col-span-3 text-right">Zuständig</span>
@@ -118,7 +116,7 @@ export default function About() {
                 <li key={r.topic} className="grid grid-cols-1 gap-x-8 gap-y-1 border-t border-line py-5 lg:grid-cols-12 lg:py-6" data-reveal>
                   <span className="text-[1.25rem] font-medium tracking-[-0.015em] lg:col-span-4">{r.topic}</span>
                   <span className="text-ink-2 lg:col-span-5">{r.example}</span>
-                  {f && <span className="mt-2 font-mono text-[0.8125rem] lg:col-span-3 lg:mt-1 lg:text-right">{f.name}</span>}
+                  {f && <span className="mt-2 font-medium tabular-nums text-[0.8125rem] lg:col-span-3 lg:mt-1 lg:text-right">{f.name}</span>}
                 </li>
               )
             })}
@@ -130,7 +128,7 @@ export default function About() {
         <div className="container-site grid-site gap-y-10">
           <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
           <div className="col-span-12 lg:col-span-4">
-            <p className="t-label mb-6">03 / Unsere Geschichte</p>
+            <p className="t-label mb-6">Unsere Geschichte</p>
             <RevealText as="h2" text="Warum es CleanStar gibt." id="story-title" className="t-h3" />
           </div>
           <div className="prose-cs col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
@@ -152,7 +150,7 @@ export default function About() {
 
       <section className="section" aria-labelledby="values-title">
         <div className="container-site">
-          <SectionHeading layout="rail" index="04" eyebrow="Werte" title="Woran Sie uns messen können." id="values-title" />
+          <SectionHeading layout="rail" eyebrow="Werte" title="Woran Sie uns messen können." id="values-title" />
           <FeatureColumns className="mt-14 lg:mt-20" items={values} />
         </div>
       </section>
@@ -160,11 +158,11 @@ export default function About() {
       {timeline.length > 0 && (
         <section className="section pt-0!" aria-labelledby="timeline-title">
           <div className="container-site">
-            <SectionHeading layout="rail" index="05" eyebrow="Meilensteine" title="Unser Weg bisher." id="timeline-title" />
+            <SectionHeading layout="rail" eyebrow="Meilensteine" title="Unser Weg bisher." id="timeline-title" />
             <ol className="mt-14 border-b border-line lg:mt-20">
               {timeline.map((t) => (
                 <li key={t.title} className="grid-site gap-y-2 border-t border-line py-7" data-reveal>
-                  <p className="col-span-12 font-mono text-[0.9375rem] lg:col-span-3">{t.year}</p>
+                  <p className="col-span-12 font-medium tabular-nums text-[0.9375rem] lg:col-span-3">{t.year}</p>
                   <h3 className="col-span-12 text-[1.5rem] leading-tight font-medium tracking-[-0.02em] lg:col-span-4">{t.title}</h3>
                   <p className="col-span-12 text-ink-2 lg:col-span-5">{t.text}</p>
                 </li>
@@ -182,7 +180,7 @@ export default function About() {
         </div>
       )}
 
-      <ImageBand id="team-work" caption="Festes Team im Objekt" />
+      <ImageBand id="team-work" />
       <section className="on-dark section bg-night text-paper" aria-labelledby="team-title">
         <div className="container-site grid-site gap-y-8 lg:items-end">
           <div className="col-span-12 lg:col-span-6">

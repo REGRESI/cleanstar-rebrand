@@ -13,6 +13,7 @@ import { jumpTo, scrollToElement, startSmoothScroll, stopSmoothScroll } from '@/
 import { ScrollTrigger } from '@/lib/gsap'
 import { onIdle } from '@/lib/idle'
 import { EASE_CS_ARRAY } from '@/lib/ease'
+import { inlineMarkTones, markSectionTones } from '@/lib/tones'
 
 const Configurator = lazy(() => import('@/features/configurator/Configurator'))
 
@@ -73,6 +74,25 @@ function Shell() {
     window.addEventListener('scroll', save, { passive: true })
     return () => window.removeEventListener('scroll', save)
   }, [])
+
+  // Farbwechsel nach jedem Seitenwechsel neu markieren (auch, wenn nachgeladene Abschnitte erscheinen)
+  useLayoutEffect(() => {
+    markSectionTones()
+    const t = window.setTimeout(markSectionTones, 400)
+    // Bei anderer Breite liegen die Linien anders (Raster, Umbrüche): neu markieren
+    let r = 0
+    const onResize = () => {
+      window.clearTimeout(r)
+      r = window.setTimeout(markSectionTones, 200)
+    }
+    window.addEventListener('resize', onResize)
+    document.fonts?.ready.then(markSectionTones)
+    return () => {
+      window.clearTimeout(t)
+      window.clearTimeout(r)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [pathname])
 
   // Seitenwechsel: immer ganz nach oben (auch beim erneuten Klick auf dieselbe Seite).
   // Ausnahmen: Links mit Anker (#) springen zum Anker; Zurück/Vor stellt die gemerkte Position dieser Seite wieder her.
@@ -182,6 +202,8 @@ function Shell() {
         </motion.div>
       </main>
       <Footer />
+      {/* Farbwechsel zwischen Abschnitten markieren (Haarlinien an Übergängen), vor dem ersten Zeichnen */}
+      <script dangerouslySetInnerHTML={{ __html: inlineMarkTones }} />
       <MobileBar />
       <QuoteModal />
     </>

@@ -54,8 +54,8 @@ export function BeforeAfter({ before, after, className, label = 'Vorher-Nachher-
         <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
           <Picture id={before} ratio="16:9" className="h-full" />
         </div>
-        <span className="pointer-events-none absolute top-0 left-0 bg-night px-3 py-1.5 font-mono text-[0.75rem] text-paper">Vorher</span>
-        <span className="pointer-events-none absolute top-0 right-0 bg-paper px-3 py-1.5 font-mono text-[0.75rem] text-ink">Nachher</span>
+        <span className="pointer-events-none absolute top-0 left-0 bg-night px-3 py-1.5 font-medium tabular-nums text-[0.75rem] text-paper">Vorher</span>
+        <span className="pointer-events-none absolute top-0 right-0 bg-paper px-3 py-1.5 font-medium tabular-nums text-[0.75rem] text-ink">Nachher</span>
         <div aria-hidden className="pointer-events-none absolute inset-y-0 w-px -translate-x-1/2 bg-paper" style={{ left: `${pos}%` }} />
         <div
           role="slider"

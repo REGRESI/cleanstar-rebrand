@@ -88,7 +88,7 @@ export default function Location() {
         <div className="fade-up-now mt-5" style={{ ['--d' as string]: '0.65s' }}>
           <CallbackButton />
         </div>
-        <p className="t-label fade-up-now mt-10 border-t border-line pt-4" style={{ ['--d' as string]: '0.7s' }}>
+        <p className="t-meta fade-up-now mt-10 border-t border-line pt-4" style={{ ['--d' as string]: '0.7s' }}>
           {hq ? 'Unser Sitz' : `ca.\u00A0${l.minutes}\u00A0Min. von Offenburg`} · {company.serviceArea}
         </p>
       </PageHero>

@@ -33,7 +33,8 @@ const type = [
   ['t-h4', 'Kleiner Titel', '1.25rem · 1.25'],
   ['t-lead', 'Einleitung', 'clamp(1.1875rem, 1rem + 0.6vw, 1.5rem) · 1.45'],
   ['t-body', 'Fließtext', '1.125rem · 1.55 · max. 65 Zeichen'],
-  ['t-label', 'Label in Monospace', '0.8125rem · IBM Plex Mono'],
+  ['t-label', 'Label in Versalien', '0.75rem · 500 · Laufweite 0,06em'],
+  ['t-meta', 'Metadaten', '0.8125rem · 500 · tabular-nums'],
 ] as const
 
 function Block({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
@@ -77,7 +78,7 @@ export default function Styleguide() {
         </Block>
 
         <Block n="02" title="Schrift">
-          <p className="t-label">Instrument Sans (400, 500, 600) und IBM Plex Mono (400), lokal eingebunden, SIL Open Font License</p>
+          <p className="t-label">Instrument Sans (400, 500, 600) für alles, lokal eingebunden, SIL Open Font License</p>
           <ul className="mt-8 border-t border-line">
             {type.map(([cls, use, spec]) => (
               <li key={cls} className="grid grid-cols-1 gap-2 border-b border-line py-6 lg:grid-cols-[12rem_1fr]">
@@ -88,7 +89,7 @@ export default function Styleguide() {
                   <br />
                   {spec}
                 </p>
-                <p className={cls === 't-display' ? 't-display' : cls}>{cls === 't-label' ? '01 / Leistungen · Offenburg · 24/7' : 'Sauber. Ohne dass Sie nachfragen müssen.'}</p>
+                <p className={cls === 't-display' ? 't-display' : cls}>{cls === 't-label' ? 'Leistungen · Offenburg · 24/7' : 'Sauber. Ohne dass Sie nachfragen müssen.'}</p>
               </li>
             ))}
           </ul>
@@ -101,7 +102,7 @@ export default function Styleguide() {
           </p>
           <div className="mt-8 grid grid-cols-12 gap-x-5 lg:gap-x-8">
             {Array.from({ length: 12 }, (_, i) => (
-              <span key={i} className="flex h-24 items-end bg-surface p-1 font-mono text-[0.625rem] text-muted">
+              <span key={i} className="flex h-24 items-end bg-surface p-1 font-medium tabular-nums text-[0.625rem] text-muted">
                 {i + 1}
               </span>
             ))}
@@ -131,10 +132,9 @@ export default function Styleguide() {
         <Block n="05" title="Abschnittsüberschrift">
           <SectionHeading
             layout="split"
-            index="01"
             eyebrow="Leistungen"
             title="Wir reinigen Büros. Und zwar richtig."
-            text="Label in Monospace, Überschrift über 7 Spalten, Text versetzt rechts."
+            text="Label klein in Versalien, Überschrift über 7 Spalten, Text versetzt rechts."
           />
         </Block>
 
@@ -180,7 +180,7 @@ export default function Styleguide() {
         </Block>
 
         <Block n="09" title="Bild-Slot">
-          <Picture id="svc-buero" ratio="21:9" reveal caption="01 / Büroreinigung · Bildunterschrift in Monospace" />
+          <Picture id="svc-buero" ratio="21:9" reveal />
           <p className="mt-6 text-ink-2">Feste Seitenverhältnisse (21:9, 3:2, 4:5, 16:9), einheitliche Farbbehandlung, Aufdecken von unten per clip-path.</p>
         </Block>
 

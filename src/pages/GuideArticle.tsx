@@ -73,7 +73,7 @@ export default function GuideArticle() {
             <ol className="mt-4 space-y-2 text-[0.9375rem]">
               {[...toc, { id: 'fragen', text: 'Häufige Fragen' }, { id: 'quellen', text: 'Quellen' }].map((h, i) => (
                 <li key={h.id} className="flex gap-3">
-                  <span className="w-7 shrink-0 font-mono text-[0.75rem] leading-[1.6rem] text-muted tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="w-7 shrink-0 font-medium tabular-nums text-[0.75rem] leading-[1.6rem] text-muted tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                   <a href={`#${h.id}`} className="ulink text-ink-2 hover:text-ink">
                     {h.text}
                   </a>
@@ -120,7 +120,7 @@ export default function GuideArticle() {
                 </li>
               ))}
             </ol>
-            <p className="mt-6 font-mono text-[0.75rem] leading-relaxed text-muted">
+            <p className="mt-6 font-medium tabular-nums text-[0.75rem] leading-relaxed text-muted">
               Veröffentlicht am {formatDate(g.published)}, zuletzt geprüft am {formatDate(g.modified)}. Dieser Artikel dient der allgemeinen Information und ersetzt keine Rechts-
               oder Steuerberatung.
             </p>

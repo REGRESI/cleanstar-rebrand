@@ -10,7 +10,6 @@ import { cn } from '@/lib/cn'
 import { lockScroll } from '@/lib/smooth-scroll'
 import { EASE_CS_ARRAY } from '@/lib/ease'
 
-const mobileNav = [{ label: 'Startseite', to: '/' }, ...navigation]
 const mobileSecondary = [
   { label: 'Ratgeber', to: '/ratgeber' },
   { label: 'Karriere', to: '/karriere' },
@@ -91,7 +90,7 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-5">
-            <a href={company.phone.href} className="ulink hidden py-1 font-mono text-[0.8125rem] whitespace-nowrap text-ink 2xl:inline-block">
+            <a href={company.phone.href} className="ulink hidden py-1 font-medium tabular-nums text-[0.8125rem] whitespace-nowrap text-ink 2xl:inline-block">
               {company.phone.display}
             </a>
             <Link to="/partner" className="ulink hidden py-1 text-[0.875rem] whitespace-nowrap text-muted hover:text-ink xl:inline-block">
@@ -131,18 +130,17 @@ export function Header() {
           >
             <nav aria-label="Mobile Navigation" className="container-site flex flex-1 flex-col pt-6 pb-8">
               <ul className="border-t border-line">
-                {mobileNav.map((item, i) => (
+                {navigation.map((item, i) => (
                   <li key={item.to} className="overflow-hidden border-b border-line">
                     <motion.div initial={{ y: '100%' }} animate={{ y: 0 }} transition={{ duration: 0.6, ease: EASE_CS_ARRAY, delay: 0.04 * i + 0.05 }}>
-                      <NavLink to={item.to} end={item.to === '/'} className="group flex items-baseline gap-4 py-3.5">
-                        {({ isActive }) => (
-                          <>
-                            <span className="t-label w-7 shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                            <span className={cn('text-[2rem] leading-[1.1] font-medium tracking-[-0.035em] min-[400px]:text-[2.375rem]', isActive ? 'text-blue' : 'text-ink')}>
-                              {item.label}
-                            </span>
-                          </>
-                        )}
+                      {/* Ohne Nummern und ohne „Startseite“: Das Logo oben führt zur Startseite */}
+                      <NavLink
+                        to={item.to}
+                        className={({ isActive }) =>
+                          cn('block py-3.5 text-[2rem] leading-[1.1] font-medium tracking-[-0.035em] min-[400px]:text-[2.375rem]', isActive ? 'text-blue' : 'text-ink')
+                        }
+                      >
+                        {item.label}
                       </NavLink>
                     </motion.div>
                   </li>
@@ -151,14 +149,14 @@ export function Header() {
               <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
                 {mobileSecondary.map((l) => (
                   <li key={l.to}>
-                    <Link to={l.to} className="ulink py-1 text-[0.9375rem] text-muted">
+                    <NavLink to={l.to} className={({ isActive }) => cn('ulink py-1 text-[0.9375rem]', isActive ? 'text-blue' : 'text-muted')}>
                       {l.label}
-                    </Link>
+                    </NavLink>
                   </li>
                 ))}
               </ul>
               <div className="mt-auto pt-10">
-                <p className="t-label">{company.availability}</p>
+                <p className="t-meta">{company.availability}</p>
                 <a href={company.phone.href} className="mt-1 block text-[1.75rem] font-medium tracking-[-0.03em] text-ink">
                   {company.phone.display}
                 </a>

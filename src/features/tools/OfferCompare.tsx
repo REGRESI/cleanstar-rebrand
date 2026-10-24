@@ -245,7 +245,7 @@ export function OfferCompare() {
         </h2>
         <p className="mt-2 text-muted-dark">Alle Preise netto, umgerechnet mit {formatNumber(pricing.weeksPerMonth)} Wochen pro Monat.</p>
         <dl className="mt-8 divide-y divide-line-dark border-b border-line-dark">
-          <div className="grid grid-cols-3 gap-2 pb-3 font-mono text-[0.75rem] text-muted-dark sm:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div className="grid grid-cols-3 gap-2 pb-3 font-medium tabular-nums text-[0.75rem] text-muted-dark sm:grid-cols-[1.4fr_1fr_1fr_1fr]">
             <span className="hidden sm:block" />
             {results.map((r, i) => (
               <span key={i} className="truncate">

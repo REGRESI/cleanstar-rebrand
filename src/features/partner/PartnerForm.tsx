@@ -218,13 +218,13 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
             <span className="block h-px bg-line">
               <motion.span className="block h-px bg-ink" initial={false} animate={{ width: i < step ? '100%' : i === step ? '50%' : '0%' }} />
             </span>
-            <span className={cn('mt-2 hidden font-mono text-[0.75rem] md:block', i <= step ? 'text-ink' : 'text-muted')}>
+            <span className={cn('mt-2 hidden font-medium tabular-nums text-[0.75rem] md:block', i <= step ? 'text-ink' : 'text-muted')}>
               {String(i + 1).padStart(2, '0')} {t}
             </span>
           </button>
         ))}
       </div>
-      <p className="mt-2 font-mono text-[0.75rem] text-muted md:hidden">
+      <p className="mt-2 font-medium tabular-nums text-[0.75rem] text-muted md:hidden">
         Schritt {step + 1} von {STEPS.length}: {STEPS[step]}
       </p>
 
@@ -368,7 +368,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
                 </div>
                 <TextArea label="Nachricht" optional placeholder="Fragen, Ideen, Ihre Situation …" {...register('message')} />
                 <PrivacyCheckbox error={errors.privacy?.message} {...register('privacy')} />
-                <p className="font-mono text-[0.75rem] text-muted">Ihre Anfrage ist unverbindlich. Verbindlich ist erst ein schriftlicher Partnervertrag.</p>
+                <p className="font-medium tabular-nums text-[0.75rem] text-muted">Ihre Anfrage ist unverbindlich. Verbindlich ist erst ein schriftlicher Partnervertrag.</p>
                 {error && (
                   <p role="alert" className="border-l border-danger pl-4 text-[0.9375rem] text-danger">
                     {error}
@@ -386,7 +386,7 @@ export function PartnerForm({ way, region }: { way: PartnerWay; region: string }
               Zurück
             </button>
           ) : (
-            <span className="font-mono text-[0.75rem] text-muted">Unverbindlich, ca. 2 Minuten</span>
+            <span className="font-medium tabular-nums text-[0.75rem] text-muted">Unverbindlich, ca. 2 Minuten</span>
           )}
           {step < STEPS.length - 1 ? (
             <button type="button" onClick={() => go(step + 1)} className="btn btn-primary">

@@ -44,7 +44,7 @@ export default function Careers() {
       />
       <section className="section" aria-labelledby="why-title">
         <div className="container-site">
-          <SectionHeading layout="rail" index="01" eyebrow="Warum CleanStar" title="Was Sie bei uns erwartet." id="why-title" />
+          <SectionHeading layout="rail" eyebrow="Warum CleanStar" title="Was Sie bei uns erwartet." id="why-title" />
           <FeatureColumns className="mt-14 lg:mt-20" items={careers.benefits} />
           <p className="mt-6 text-sm text-muted">
             <Todo title={careers.benefitsTodo}>{careers.benefitsTodo}</Todo>
@@ -56,7 +56,6 @@ export default function Careers() {
         <div className="container-site grid-site gap-y-12">
           <div className="col-span-12 lg:col-span-4">
             <SectionHeading
-              index="02"
               eyebrow="Offene Stellen"
               title={`${open.length} ${open.length === 1 ? 'offene Stelle' : 'offene Stellen'}`}
               id="jobs-title"
@@ -71,7 +70,7 @@ export default function Careers() {
                 title: (
                   <span>
                     <span className="block">{j.title}</span>
-                    <span className="mt-2 block font-mono text-[0.75rem] font-normal tracking-normal text-muted">
+                    <span className="mt-2 block tabular-nums text-[0.75rem] font-normal tracking-normal text-muted">
                       {j.type} · {j.location} · {j.times}
                     </span>
                   </span>
@@ -114,7 +113,6 @@ export default function Careers() {
         <div className="container-site grid-site gap-y-12">
           <div className="col-span-12 lg:col-span-4">
             <SectionHeading
-              index="03"
               eyebrow="Kurzbewerbung"
               title="In 2 Minuten beworben."
               id="apply-title"

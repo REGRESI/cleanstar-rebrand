@@ -30,15 +30,13 @@ interface Props {
   rounded?: string
   /** Aufdecken beim Scrollen (clip-path von unten) */
   reveal?: boolean | 'now'
-  /** Bildunterschrift in Monospace unter dem Bild */
-  caption?: string
 }
 
 /**
  * Bild-Slot mit festem Seitenverhältnis: responsives Foto (AVIF/WebP, lazy) mit einheitlicher Farbbehandlung,
  * oder, solange kein Foto vorliegt, ein schlichter Platzhalter. Ein echtes Foto wird nur ausgetauscht (siehe BILDER.md).
  */
-export function Picture({ id, className, ratio, aspect: aspectOverride, sizes = '100vw', priority, compact, tone = 'light', rounded = 'rounded-none', reveal, caption }: Props) {
+export function Picture({ id, className, ratio, aspect: aspectOverride, sizes = '100vw', priority, compact, tone = 'light', rounded = 'rounded-none', reveal }: Props) {
   const spec = images[id]
   const aspect = aspectOverride ?? ratioClass[ratio ?? spec.ratio]
   const objectPosition = spec.position ?? '50% 50%'
@@ -82,7 +80,7 @@ export function Picture({ id, className, ratio, aspect: aspectOverride, sizes = 
         {...dataAttrs}
       >
         {!compact && (
-          <p aria-hidden className="absolute inset-x-0 bottom-0 p-4 font-mono text-[0.6875rem] leading-snug sm:text-xs">
+          <p aria-hidden className="absolute inset-x-0 bottom-0 p-4 font-medium tabular-nums text-[0.6875rem] leading-snug sm:text-xs">
             Bild: {spec.label}
           </p>
         )}
@@ -90,13 +88,7 @@ export function Picture({ id, className, ratio, aspect: aspectOverride, sizes = 
     )
   }
 
-  if (!caption) return media
-  return (
-    <figure>
-      {media}
-      <figcaption className="caption">{caption}</figcaption>
-    </figure>
-  )
+  return media
 }
 
 /** URL eines Bildes als WebP (z. B. für die PDF-Zusammenfassung). null, solange kein Foto vorliegt. */

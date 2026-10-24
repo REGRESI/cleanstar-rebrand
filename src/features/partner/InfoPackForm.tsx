@@ -90,7 +90,7 @@ export function InfoPackForm({ region }: { region: string }) {
               Infomappe anfordern
               {isSubmitting ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <ArrowDown aria-hidden className="size-4" strokeWidth={1.75} />}
             </button>
-            <p className="font-mono text-[0.75rem] text-muted">Kostenlos und unverbindlich. Der Download startet direkt nach dem Absenden.</p>
+            <p className="font-medium tabular-nums text-[0.75rem] text-muted">Kostenlos und unverbindlich. Der Download startet direkt nach dem Absenden.</p>
           </form>
         )}
       </div>

@@ -101,12 +101,12 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
             fill="var(--color-muted)"
             transform={`rotate(-70 ${proj(48.42, 7.66).join(' ')})`}
             letterSpacing="2"
-            style={{ fontFamily: 'var(--font-mono)' }}
+            style={{ fontFamily: 'var(--font-sans)', fontWeight: 500 }}
           >
             Rhein
           </text>
           <path d={toPath(OUTLINE)} fill="var(--color-surface)" stroke="var(--color-ink)" strokeOpacity="0.6" strokeWidth="1" />
-          <text x={proj(48.3, 8.2)[0]} y={proj(48.3, 8.2)[1]} fontSize="11" fill="var(--color-muted)" letterSpacing="2" style={{ fontFamily: 'var(--font-mono)' }}>
+          <text x={proj(48.3, 8.2)[0]} y={proj(48.3, 8.2)[1]} fontSize="11" fill="var(--color-muted)" letterSpacing="2" style={{ fontFamily: 'var(--font-sans)', fontWeight: 500 }}>
             Schwarzwald
           </text>
 
@@ -191,7 +191,7 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
               className="border-l border-ink bg-paper py-1 pl-3"
             >
               <p className="text-[1.125rem] font-medium text-ink">{active.name}</p>
-              <p className="mt-0.5 font-mono text-[0.75rem] text-muted">{active.minutes === 0 ? 'Unser Sitz' : `ca. ${active.minutes} Min. von Offenburg`}</p>
+              <p className="mt-0.5 font-medium tabular-nums text-[0.75rem] text-muted">{active.minutes === 0 ? 'Unser Sitz' : `ca. ${active.minutes} Min. von Offenburg`}</p>
             </motion.div>
           )}
         </div>
@@ -211,7 +211,7 @@ export function AreaMap({ className, compact }: { className?: string; compact?: 
                 className={cn('flex items-baseline justify-between gap-x-3 py-2.5 text-[0.9375rem] transition-colors', active?.slug === l.slug ? 'text-blue' : 'text-ink')}
               >
                 <span>{shortName(l)}</span>
-                <span className={cn('shrink-0 font-mono text-[0.75rem] tabular-nums', active?.slug === l.slug ? 'text-blue' : 'text-muted')}>
+                <span className={cn('shrink-0 font-medium tabular-nums text-[0.75rem] tabular-nums', active?.slug === l.slug ? 'text-blue' : 'text-muted')}>
                   {l.minutes === 0 ? 'Sitz' : `${l.minutes} Min.`}
                 </span>
               </Link>

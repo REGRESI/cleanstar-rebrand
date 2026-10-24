@@ -44,7 +44,7 @@ export function WaysToggle({ way, onChange, onApply }: { way: PartnerWay; onChan
                 on ? 'bg-ink text-paper' : 'text-ink hover:bg-surface',
               )}
             >
-              <span className={cn('font-mono text-[0.75rem]', on ? 'text-paper/70' : 'text-muted')}>{String(i + 1).padStart(2, '0')}</span>
+              <span className={cn('font-medium tabular-nums text-[0.75rem]', on ? 'text-paper/70' : 'text-muted')}>{String(i + 1).padStart(2, '0')}</span>
               {partnerWays[id].label}
             </button>
           )

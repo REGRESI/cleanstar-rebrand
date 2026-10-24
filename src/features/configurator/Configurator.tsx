@@ -78,7 +78,7 @@ function Stepper({
             onChange={(e) => onChange(clamp(Number(e.target.value) || min))}
             className="w-16 bg-transparent text-center text-[1.375rem] font-medium tracking-[-0.02em] text-ink tabular-nums focus:outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
           />
-          {unit && <span className="font-mono text-[0.75rem] text-muted">{unit}</span>}
+          {unit && <span className="font-medium tabular-nums text-[0.75rem] text-muted">{unit}</span>}
         </div>
         <button
           type="button"
@@ -111,7 +111,7 @@ export function PriceRange({ staff, hours, visits, dark }: { staff: number; hour
       <p className={cn('mt-2 text-[0.9375rem]', dark ? 'text-muted-dark' : 'text-ink-2')}>
         {formatEuroRange(r.grossMin, r.grossMax)} brutto inkl. {Math.round(pricing.vatRate * 100)} % MwSt.
       </p>
-      <p className={cn('mt-5 border-t pt-4 font-mono text-[0.75rem] leading-relaxed', dark ? 'border-line-dark text-muted-dark' : 'border-line text-muted')}>
+      <p className={cn('mt-5 border-t pt-4 font-medium tabular-nums text-[0.75rem] leading-relaxed', dark ? 'border-line-dark text-muted-dark' : 'border-line text-muted')}>
         Grundlage: {staff} {staff === 1 ? 'Reinigungskraft' : 'Reinigungskräfte'} × {formatNumber(hours)} Std. × {visits} Einsätze pro Woche × {formatNumber(pricing.weeksPerMonth)}{' '}
         Wochen = rund {formatNumber(r.hours)} Stunden im Monat, zu {formatEuro2Range(hourlyRateNetMin(), hourlyRateNetMax())} netto pro Stunde. Unverbindliche Orientierung. Das
         finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.
@@ -271,13 +271,13 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                   transition={{ duration: 0.5, ease: EASE_CS_ARRAY }}
                 />
               </span>
-              <span className={cn('mt-2 hidden font-mono text-[0.75rem] sm:block', i <= step ? 'text-ink' : 'text-muted')}>
+              <span className={cn('mt-2 hidden font-medium tabular-nums text-[0.75rem] sm:block', i <= step ? 'text-ink' : 'text-muted')}>
                 {i + 1}. {t}
               </span>
             </button>
           ))}
         </div>
-        <p className="mt-2 font-mono text-[0.75rem] text-muted sm:hidden">
+        <p className="mt-2 font-medium tabular-nums text-[0.75rem] text-muted sm:hidden">
           Schritt {step + 1} von {stepTitles.length}: {stepTitles[step]}
         </p>
       </div>
@@ -398,7 +398,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                             aria-valuetext={`${field.value} Quadratmeter`}
                             className="range"
                           />
-                          <div className="mt-1 flex justify-between font-mono text-[0.75rem] text-muted">
+                          <div className="mt-1 flex justify-between font-medium tabular-nums text-[0.75rem] text-muted">
                             <span>50 m²</span>
                             <span>5.000 m²+</span>
                           </div>
@@ -483,7 +483,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
                   <TextField label="Wunschtermin für die kostenlose Besichtigung" type="date" optional min={new Date().toISOString().slice(0, 10)} {...register('visitDate')} />
                   <div>
                     <label htmlFor="cfg-vt" className="field-label mb-1">
-                      Tageszeit <span className="font-mono text-[0.75rem] font-normal text-muted">optional</span>
+                      Tageszeit <span className="tabular-nums text-[0.75rem] font-normal text-muted">optional</span>
                     </label>
                     <select id="cfg-vt" className="field block" {...register('visitTime')}>
                       <option value="">Egal</option>
@@ -513,7 +513,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
               Zurück
             </button>
           ) : (
-            <span className="font-mono text-[0.75rem] text-muted">Kostenlos und unverbindlich</span>
+            <span className="font-medium tabular-nums text-[0.75rem] text-muted">Kostenlos und unverbindlich</span>
           )}
           {step < stepTitles.length - 1 ? (
             <button type="button" onClick={() => go(step + 1)} className="btn btn-primary">
@@ -533,7 +533,7 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
           </div>
         )}
         {isModal && step === 0 && (
-          <p className="mt-4 text-center font-mono text-[0.75rem] text-muted">
+          <p className="mt-4 text-center font-medium tabular-nums text-[0.75rem] text-muted">
             Lieber in Ruhe?{' '}
             <Link to="/angebot" onClick={onDone} className="link">
               Konfigurator als eigene Seite öffnen
@@ -590,13 +590,13 @@ function Success({ result, isModal, onDone, onRestart }: { result: { preview: bo
       <dl className="mt-8 border-t border-line">
         {rows.map(([k, val]) => (
           <div key={k} className="grid grid-cols-1 gap-0.5 border-b border-line py-3 min-[400px]:grid-cols-[9rem_1fr] min-[400px]:gap-3 sm:grid-cols-[12rem_1fr]">
-            <dt className="font-mono text-[0.8125rem] text-muted min-[400px]:pt-0.5">{k}</dt>
+            <dt className="font-medium tabular-nums text-[0.8125rem] text-muted min-[400px]:pt-0.5">{k}</dt>
             <dd className="text-ink">{val}</dd>
           </div>
         ))}
       </dl>
       {r && (
-        <p className="mt-3 font-mono text-[0.75rem] text-muted">
+        <p className="mt-3 font-medium tabular-nums text-[0.75rem] text-muted">
           Unverbindliche Orientierung. Das finale Angebot erstellen wir nach einer kurzen Objektbesichtigung oder auf Basis Ihrer Angaben.
         </p>
       )}

@@ -21,10 +21,10 @@ export function GuideMeta({ g, author }: { g: Guide; author: Person }) {
         <Picture id={author.image as ImageId} compact ratio="4:5" className="w-12 shrink-0" sizes="48px" />
         <span>
           <span className="block font-medium text-ink">{author.name}</span>
-          <span className="t-label block">{author.role.replace('Gründer · ', 'Gründer, ')}</span>
+          <span className="t-meta block">{author.role.replace('Gründer · ', 'Gründer, ')}</span>
         </span>
       </span>
-      <span className="t-label">
+      <span className="t-meta">
         <time dateTime={g.modified}>{formatDate(g.modified)}</time> · {readingMinutes(g)}
         {'\u00A0'}Min. Lesezeit
       </span>
@@ -151,7 +151,7 @@ export function GuideDownload({ id }: { id: 'serviceList' | 'checklist' }) {
 export function GuideCard({ g }: { g: Guide }) {
   return (
     <Link to={`/ratgeber/${g.slug}`} className="group grid h-full grid-cols-[1fr_auto] gap-x-6 border-t border-line pt-6 pb-8">
-      <span className="t-label col-span-2">
+      <span className="t-meta col-span-2">
         {g.category === 'gruender' ? 'Für Gründer' : 'Für Unternehmen'} · {readingMinutes(g)}
         {'\u00A0'}Min.
       </span>

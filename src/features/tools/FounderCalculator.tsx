@@ -152,7 +152,7 @@ export function FounderCalculator() {
               ['Gewinn vor Steuern im Monat', r.profitMonth === null ? '–' : formatEuro(r.profitMonth)],
             ].map(([k, val]) => (
               <div key={k} className="border-t border-line-dark pt-3">
-                <dt className="font-mono text-[0.75rem] leading-snug text-muted-dark">{k}</dt>
+                <dt className="font-medium tabular-nums text-[0.75rem] leading-snug text-muted-dark">{k}</dt>
                 <dd className="mt-2 text-[1.375rem] font-medium tracking-[-0.02em] tabular-nums">{val}</dd>
               </div>
             ))}

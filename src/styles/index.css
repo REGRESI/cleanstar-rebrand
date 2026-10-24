@@ -2,9 +2,8 @@
 
 /* ==========================================================================
    SCHRIFTEN (lokal, DSGVO: keine Verbindung zu externen Schriftdiensten)
-   Instrument Sans: Grotesk für alles (SIL Open Font License 1.1)
-   IBM Plex Mono: Zahlen-Labels, Metadaten, Abschnittsnummern (SIL Open Font License 1.1)
-   Schrift tauschen: Datei in src/assets/fonts ablegen und hier sowie in --font-sans/--font-mono eintragen.
+   Instrument Sans: eine Schrift für alles, auch Labels und Metadaten (SIL Open Font License 1.1)
+   Schrift tauschen: Datei in src/assets/fonts ablegen und hier sowie in --font-sans eintragen.
    ========================================================================== */
 @font-face {
   font-family: 'Instrument Sans';
@@ -15,30 +14,11 @@
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url('../assets/fonts/ibm-plex-mono-latin-400.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-/* 500 nur für die Keyword-Zeile im Hero (bessere Lesbarkeit auf dem Foto) */
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 500;
-  src: url('../assets/fonts/ibm-plex-mono-latin-500.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 
 /* ==========================================================================
    DESIGN-TOKENS
    Alle Farben, Schriften, Radien und Bewegungswerte an einer Stelle.
-   Tailwind erzeugt daraus Klassen wie bg-paper, text-ink, border-line, font-mono.
+   Tailwind erzeugt daraus Klassen wie bg-paper, text-ink, border-line.
    Übersicht aller Bausteine: /styleguide (nicht verlinkt, noindex)
    ========================================================================== */
 @theme {
@@ -81,7 +61,6 @@
   --color-ink-3: var(--color-night-2);
 
   --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   /* Formen: rechteckig, höchstens 4 px */
   --radius-card: 2px;
@@ -461,7 +440,7 @@ html.lenis body {
     @apply link;
   }
   .todo-flag {
-    @apply bg-amber-100 px-1.5 py-0.5 font-mono text-[0.75em] text-amber-900;
+    @apply bg-amber-100 px-1.5 py-0.5 text-[0.75em] font-medium text-amber-900;
   }
 }
 
@@ -517,12 +496,25 @@ html.lenis body {
   line-height: 1.5;
 }
 
+/* Labels: klein, Großbuchstaben, leicht gesperrt */
 @utility t-label {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
   line-height: 1.4;
-  letter-spacing: 0.01em;
-  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+}
+
+/* Metadaten und Kennzahlen-Beschriftungen: klein, normale Schreibung, Ziffern gleich breit */
+@utility t-meta {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
   color: var(--color-muted);
 }
 
@@ -548,7 +540,8 @@ html.lenis body {
     color: var(--color-blue-hover);
   }
 }
-.on-dark .t-label {
+.on-dark .t-label,
+.on-dark .t-meta {
   color: var(--color-muted-dark);
 }
 
@@ -815,4 +808,23 @@ html.lenis body {
   .sparkle {
     display: none !important;
   }
+}
+
+/* ==========================================================================
+   ÜBERGÄNGE ZWISCHEN ABSCHNITTEN (Markierung in src/lib/tones.ts)
+   Nach einem Farbwechsel keine Haarlinie am Anfang, vor einem Farbwechsel keine am Ende.
+   ========================================================================== */
+.rule[data-no-top] {
+  display: none;
+}
+[data-no-top] {
+  border-top-color: transparent;
+  padding-top: 0;
+}
+[data-no-bottom] {
+  border-bottom-color: transparent;
+  padding-bottom: 0;
+}
+footer[data-no-top] {
+  border-top-width: 0;
 }

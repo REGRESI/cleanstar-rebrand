@@ -151,7 +151,7 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
             })}
           </motion.svg>
         </AnimatePresence>
-        <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[0.75rem] text-muted" aria-label="Legende">
+        <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 font-medium tabular-nums text-[0.75rem] text-muted" aria-label="Legende">
           <li className="flex items-center gap-2">
             <span aria-hidden className="size-3 bg-blue" />
             CleanStar-Stammgebiet

@@ -53,7 +53,7 @@ function Furniture() {
   )
 }
 
-/** Häufigkeit in Monospace: häufig = dunkel, selten = gedämpft (keine farbigen Pillen) */
+/** Häufigkeit als kleine Beschriftung: häufig = dunkel, selten = gedämpft (keine farbigen Pillen) */
 const freqCls: Record<Freq, string> = {
   visit: 'text-ink',
   weekly: 'text-ink',
@@ -171,7 +171,7 @@ export function FloorPlan() {
                 {zone.tasks.map((t) => (
                   <li key={t.task} className="grid grid-cols-1 gap-x-4 gap-y-1 border-b border-line py-3 min-[400px]:grid-cols-[minmax(0,1fr)_auto]">
                     <span className="text-ink">{t.task}</span>
-                    <span className={cn('font-mono text-[0.8125rem] whitespace-nowrap min-[400px]:pt-0.5 min-[400px]:text-right', freqCls[t.freq])}>
+                    <span className={cn('font-medium tabular-nums text-[0.8125rem] whitespace-nowrap min-[400px]:pt-0.5 min-[400px]:text-right', freqCls[t.freq])}>
                       {freqLabel(t.freq, interval)}
                     </span>
                   </li>

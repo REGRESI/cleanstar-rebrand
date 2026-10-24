@@ -72,7 +72,6 @@ export default function Guarantee() {
         title="Was wir zusagen. Und was passiert, wenn es einmal nicht klappt."
         lead="Eine Garantie ist nur so viel wert wie der Ablauf dahinter. Hier steht, worauf Sie sich verlassen können, und was wir tun, wenn doch einmal etwas fehlt."
         image="quality-check"
-        caption="Qualitätskontrolle vor Ort"
         actions={<QuoteButton size="lg" arrow />}
       />
 
@@ -88,7 +87,7 @@ export default function Guarantee() {
               />
               <div className="mt-12 hidden lg:block" aria-live="polite">
                 <p className="t-label">Geprüft</p>
-                <p className="mt-2 font-mono text-[2.5rem] leading-none tracking-[-0.04em] tabular-nums">
+                <p className="mt-2 font-medium tabular-nums text-[2.5rem] leading-none tracking-[-0.04em] tabular-nums">
                   {pad(done)} / {pad(guaranteePoints.length)}
                 </p>
                 <span className="mt-5 block h-px bg-line">
@@ -101,7 +100,7 @@ export default function Guarantee() {
           <div className="col-span-12 lg:col-span-7 lg:col-start-6">
             {/* Handy und Tablet: schlanke Fortschrittszeile klebt oben, solange die Liste im Bild ist */}
             <div className="sticky top-0 z-20 -mx-5 mb-2 border-b border-line bg-paper px-5 py-3 sm:-mx-8 sm:px-8 lg:hidden" aria-hidden>
-              <p className="flex justify-between font-mono text-[0.8125rem]">
+              <p className="flex justify-between font-medium tabular-nums text-[0.8125rem]">
                 <span>
                   {pad(done)} / {pad(guaranteePoints.length)} geprüft
                 </span>
@@ -116,7 +115,7 @@ export default function Guarantee() {
                 const on = i < done
                 return (
                   <li key={p.title} className="grid grid-cols-[4.5rem_1fr] gap-x-4 border-t border-line py-7 sm:grid-cols-[6rem_1fr] sm:py-9">
-                    <span className={cn('font-mono text-[0.8125rem] transition-colors duration-500', on ? 'text-ink' : 'text-muted')}>
+                    <span className={cn('font-medium tabular-nums text-[0.8125rem] transition-colors duration-500', on ? 'text-ink' : 'text-muted')}>
                       {pad(i + 1)} / {pad(guaranteePoints.length)}
                     </span>
                     <div className="min-w-0">
@@ -191,7 +190,7 @@ export default function Guarantee() {
       <section className="section" aria-labelledby="qc-title">
         <div className="container-site grid-site gap-y-12 lg:items-end">
           <div className="col-span-12 lg:col-span-5">
-            <Picture id="team-briefing" ratio="4:5" reveal sizes="(min-width:1024px) 40vw, 100vw" caption="Abstimmung mit dem Team" />
+            <Picture id="team-briefing" ratio="4:5" reveal sizes="(min-width:1024px) 40vw, 100vw" />
           </div>
           <div className="col-span-12 lg:col-span-6 lg:col-start-7">
             <p className="t-label mb-6">Qualitätskontrolle</p>

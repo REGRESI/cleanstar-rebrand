@@ -55,7 +55,7 @@ export function NumberInput({
           className={cn(field, unit && 'pr-14')}
           aria-describedby={hint ? `${id}-h` : undefined}
         />
-        {unit && <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center font-mono text-[0.8125rem] text-muted">{unit}</span>}
+        {unit && <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center font-medium tabular-nums text-[0.8125rem] text-muted">{unit}</span>}
       </div>
       {hint && (
         <p id={`${id}-h`} className="mt-2 text-[0.8125rem] leading-relaxed text-muted">

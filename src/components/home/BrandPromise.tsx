@@ -16,7 +16,7 @@ export function BrandPromise() {
         <div className="grid-site gap-y-6">
           <span aria-hidden data-reveal-rule className="rule col-span-12 mb-2 lg:mb-6" />
           <p className="t-label col-span-12 lg:col-span-3 lg:pt-3" data-reveal>
-            01 / {home.promise.eyebrow}
+            {home.promise.eyebrow}
           </p>
           <RevealText as="h2" id="promise-title" text={home.promise.statement} className="t-h2 col-span-12 lg:col-span-9" />
           <div className="col-span-12 mt-6 lg:col-span-5 lg:col-start-4 lg:mt-12">

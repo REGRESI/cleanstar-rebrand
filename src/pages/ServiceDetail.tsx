@@ -77,7 +77,7 @@ export default function ServiceDetail() {
             {main && (
               <div className="col-span-12 lg:col-span-4">
                 <div className="lg:sticky lg:top-28">
-                  <Picture id="svc-buero-detail" ratio="4:5" reveal sizes="(min-width:1024px) 30vw, 100vw" caption="Arbeitsplatz nach der Reinigung" />
+                  <Picture id="svc-buero-detail" ratio="4:5" reveal sizes="(min-width:1024px) 30vw, 100vw" />
                 </div>
               </div>
             )}

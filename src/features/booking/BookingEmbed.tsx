@@ -35,7 +35,7 @@ export function BookingEmbed() {
           {company.founders.map((f) => (
             <li key={f.image}>
               <Picture id={f.image as ImageId} compact ratio="4:5" sizes="120px" />
-              <p className="mt-2 font-mono text-[0.75rem] text-muted">{f.name?.split(' ')[0]}</p>
+              <p className="mt-2 font-medium tabular-nums text-[0.75rem] text-muted">{f.name?.split(' ')[0]}</p>
             </li>
           ))}
         </ul>
@@ -66,7 +66,7 @@ export function BookingEmbed() {
               <button type="button" onClick={() => setConsent(true)} className="btn btn-primary mt-8 max-sm:w-full">
                 Kalender laden
               </button>
-              <p className="mt-5 font-mono text-[0.75rem] leading-relaxed text-muted-dark">
+              <p className="mt-5 font-medium tabular-nums text-[0.75rem] leading-relaxed text-muted-dark">
                 Mit dem Klick wird der Buchungskalender von Cal.com geladen. Dabei werden Daten (z. B. Ihre IP-Adresse) an Cal.com übertragen. Details in der Datenschutzerklärung.
               </p>
             </>

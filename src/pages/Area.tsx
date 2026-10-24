@@ -39,7 +39,7 @@ export default function Area() {
           <AreaMap />
         </div>
       </section>
-      <ImageBand id="region" caption="Ortenaukreis" />
+      <ImageBand id="region" />
       <section className="on-dark section bg-night text-paper" aria-labelledby="why-local-title">
         <div className="container-site grid-site gap-y-8 lg:items-end">
           <div className="col-span-12 lg:col-span-6">

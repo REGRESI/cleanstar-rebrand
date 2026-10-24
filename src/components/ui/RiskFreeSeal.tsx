@@ -4,7 +4,7 @@ import { Modal } from '@/components/ui/Modal'
 import { company } from '@/content/company'
 import { cn } from '@/lib/cn'
 
-/** Typografisches Siegel: Kreis aus Monospace-Text um eine große „1“ (erster Monat). Rein dekorativ. */
+/** Typografisches Siegel: Kreis aus kleiner Versalschrift um eine große „1“ (erster Monat). Rein dekorativ. */
 export function SealMark({ className, dark, text: label = 'Erster Monat · jederzeit kündbar · ohne Frist · ' }: { className?: string; dark?: boolean; text?: string }) {
   const id = useId().replace(/:/g, '')
   const ink = dark ? 'var(--color-paper)' : 'var(--color-ink)'
@@ -13,7 +13,7 @@ export function SealMark({ className, dark, text: label = 'Erster Monat · jeder
       <defs>
         <path id={`seal-${id}`} d="M60 60 m-46 0 a46 46 0 1 1 92 0 a46 46 0 1 1 -92 0" />
       </defs>
-      <text fontSize="8.6" letterSpacing="0.2" fill={ink} style={{ fontFamily: 'var(--font-mono)' }}>
+      <text fontSize="8.6" letterSpacing="0.2" fill={ink} style={{ fontFamily: 'var(--font-sans)', fontWeight: 500 }}>
         <textPath href={`#seal-${id}`} startOffset="0" textLength="286" lengthAdjust="spacing">
           {label}
         </textPath>
@@ -45,7 +45,7 @@ export function RiskFreeSeal({ variant = 'badge', dark, className }: { variant?:
         <SealMark dark={dark} className="size-16 shrink-0 transition-transform duration-[1200ms] ease-cs group-hover:rotate-[20deg]" />
         <span className="leading-tight">
           <span className="block font-medium">{c.riskFree}</span>
-          <span className={cn('ulink mt-1 inline-block font-mono text-[0.75rem]', dark ? 'text-muted-dark' : 'text-muted')}>Bedingungen ansehen</span>
+          <span className={cn('ulink mt-1 inline-block font-medium tabular-nums text-[0.75rem]', dark ? 'text-muted-dark' : 'text-muted')}>Bedingungen ansehen</span>
         </span>
       </button>
     ) : (

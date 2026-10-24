@@ -123,7 +123,7 @@ export function Hero() {
   const morning = mode === 'static-morning'
 
   return (
-    <section ref={section} aria-labelledby="hero-title" className="relative">
+    <section ref={section} aria-labelledby="hero-title" className="relative" data-tone-start="dark" data-tone-end="paper">
       <div ref={spacer}>
         <div ref={pin} className="relative h-[100svh] min-h-[560px] overflow-hidden bg-night">
           {/* Bildfläche: Desktop höchstens in nativer Framegröße (keine Streckung über 100 %). Einheitliche Farbbehandlung. */}
@@ -185,7 +185,7 @@ export function Hero() {
             <div className="absolute inset-x-0 bottom-0 h-[80%] bg-[linear-gradient(to_top,rgb(11_15_23/0.88)_0%,rgb(11_15_23/0.7)_35%,rgb(11_15_23/0.32)_68%,rgb(11_15_23/0)_100%)] lg:h-[72%]" />
           </div>
 
-          {/* Text: H1 aus Keyword-Zeile (Monospace) und Leitidee (Display), unten im Raster */}
+          {/* Text: H1 aus Keyword-Zeile und Leitidee (Display), unten im Raster */}
           <div className="on-dark container-site relative flex h-full flex-col justify-end pt-24 pb-[max(2.5rem,env(safe-area-inset-bottom))] text-paper sm:pb-14 lg:pb-[9vh]">
             <div ref={copy} className="will-change-transform">
               <RevealText
@@ -195,7 +195,7 @@ export function Hero() {
                 immediate
                 kicker={
                   <span
-                    className="fade-up-now mt-6 block font-mono text-[0.875rem] leading-[1.45] font-medium tracking-[0.03em] text-paper lg:mt-8 lg:text-[1rem]"
+                    className="fade-up-now mt-6 block text-[0.875rem] leading-[1.45] font-medium tracking-[0.03em] text-paper lg:mt-8 lg:text-[1rem]"
                     style={{ ['--d' as string]: '0.45s' }}
                   >
                     {home.hero.kicker}
@@ -215,7 +215,7 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Szenen-Untertitel in Monospace mit dünner Fortschrittslinie (Desktop) */}
+          {/* Szenen-Untertitel mit dünner Fortschrittslinie (Desktop) */}
           {desktopVideo && (
             <div
               aria-hidden
@@ -223,7 +223,7 @@ export function Hero() {
             >
               <div className="container-site flex justify-end pb-6 lg:pb-[9vh]">
                 <div className="w-64 text-paper">
-                  <p className="flex justify-between font-mono text-[0.75rem] text-paper/80">
+                  <p className="flex justify-between font-medium tabular-nums text-[0.75rem] text-paper/80">
                     <span>
                       {String(step + 1).padStart(2, '0')} / {String(home.hero.sceneSteps.length).padStart(2, '0')}
                     </span>
