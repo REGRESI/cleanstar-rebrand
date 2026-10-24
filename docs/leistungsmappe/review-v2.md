@@ -45,3 +45,9 @@ Nach den Korrekturen erneut aufgenommen (Bilder in `docs/leistungsmappe/screens-
 - Startseite Lighthouse mobil: Performance 94 in drei Läufen (vorher 93 bis 94), Barrierefreiheit, Best Practices, SEO je 100.
 - /leistungsmappe Lighthouse mobil: Barrierefreiheit, Best Practices, SEO je 100, Performance 70 (flache Mappe mit Seitenbildern und Holztisch).
 - Ladezeit der Szene: 3D-Code wie bisher nur auf dieser Seite. Neue Bilder zusammen etwa 1 MB (Tisch 154 KB, Hochformat 197 KB, Kaffee 173 KB, Pflanze 155 KB, Stift 50 KB, drei Standbilder je rund 80 KB).
+
+## Abschluss
+
+- Navigationstest über alle 75 Seiten: 7620 von 7620 Prüfungen bestanden (Desktop und Smartphone).
+- Mappen-Test: 146 von 146 (Desktop und Smartphone), nach der letzten Änderung Smartphone erneut 67 von 67.
+- Einband-Linie nach dem Neubau im Standbild geprüft: verschwunden. Startseiten-Standbild neu erzeugt.
