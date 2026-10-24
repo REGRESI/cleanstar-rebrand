@@ -37,3 +37,9 @@ Nach den Korrekturen: Öffnen, Blättern und Sprung über das Inhaltsverzeichnis
 - Startseite Lighthouse mobil: Performance 93 bis 94 in drei Läufen (vorher 93), Barrierefreiheit, Best Practices und SEO je 100. Die 3D-Bausteine werden auf der Startseite nicht geladen.
 - /leistungsmappe: Barrierefreiheit, Best Practices, SEO je 100. Performance 77 (mobil, flache Mappe mit Seitenbildern).
 - Szene gesamt: 3D-Code 255 KB (gzip), Bilder und Video 1,1 MB. Deutlich unter 4 MB.
+
+## Nachtrag: Navigationstest
+
+Der Navigationstest fand auf /leistungsmappe am Desktop Links in der Fußzeile, die direkt nach dem Laden nicht reagierten. Ursache: Das Abfotografieren der Seiten belegte den Hauptthread auch dann, wenn die Bühne gar nicht im Bild war. Jetzt ruhen Rendern und Abfotografieren, solange die Bühne nicht sichtbar ist, und fotografiert wird nur in Leerlaufphasen des Browsers. Danach liefen alle 70 Seitenwechsel dieser Seite fehlerfrei. Der Test selbst überspringt das mobile Menü auf Seiten ohne Kopfzeile.
+
+Abschluss-Screenshots: `docs/leistungsmappe/screens/`.

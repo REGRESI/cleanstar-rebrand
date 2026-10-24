@@ -21,7 +21,9 @@ function toTexture(canvas: HTMLCanvasElement) {
 
 /** Erst fotografieren, wenn nichts blättert: Das Abfotografieren belegt kurz den Hauptthread und soll keine Bewegung stören */
 async function whenIdle(bus: SceneBus) {
-  while (bus.anims.size > 0 || bus.drag || Math.abs(bus.openTarget - bus.open) > 0.002) await new Promise((r) => setTimeout(r, 120))
+  while (!bus.visible || bus.anims.size > 0 || bus.drag || Math.abs(bus.openTarget - bus.open) > 0.002) await new Promise((r) => setTimeout(r, 120))
+  // zusätzlich auf eine Leerlaufphase des Browsers warten
+  await new Promise((r) => ('requestIdleCallback' in window ? window.requestIdleCallback(r, { timeout: 600 }) : setTimeout(r, 0)))
 }
 
 function preview(canvas: HTMLCanvasElement) {
@@ -45,6 +47,8 @@ export default function Experience3D({ sound, onReady, onSpread }: { sound: bool
   const [loaded, setLoaded] = useState(0)
   const [hoverService, setHoverService] = useState<number | null>(null)
   const [still, setStill] = useState(false)
+  const [inView, setInView] = useState(true)
+  const stage = useRef<HTMLDivElement>(null)
   const soundRef = useRef(sound)
   soundRef.current = sound
   const onTurn = useCallback(() => {
@@ -138,6 +142,18 @@ export default function Experience3D({ sound, onReady, onSpread }: { sound: bool
     return () => {
       bus.onCorners = undefined
     }
+  }, [bus])
+
+  // Außerhalb des Bildes (Textfassung, Fußzeile) ruhen Rendern und Abfotografieren
+  useEffect(() => {
+    const el = stage.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => {
+      bus.visible = e.isIntersecting
+      setInView(e.isIntersecting)
+    })
+    io.observe(el)
+    return () => io.disconnect()
   }, [bus])
 
   // Pfeiltasten
@@ -242,8 +258,8 @@ export default function Experience3D({ sound, onReady, onSpread }: { sound: bool
 
   return (
     <Ctx.Provider value={ctx}>
-      <div className="absolute inset-0">
-        <Scene3D bus={bus} onOpen={() => goTo(spreadRef.current < 0 ? 0 : spreadRef.current)} />
+      <div ref={stage} className="absolute inset-0">
+        <Scene3D bus={bus} active={inView} onOpen={() => goTo(spreadRef.current < 0 ? 0 : spreadRef.current)} />
         <div className="pointer-events-none absolute inset-0 overflow-hidden [&>*]:pointer-events-auto">
           {slot(left, 'left', leftEl)}
           {slot(right, 'right', rightEl)}

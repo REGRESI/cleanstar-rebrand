@@ -46,6 +46,8 @@ export interface SceneBus {
   coverTex: THREE.Texture | null
   endpaper: THREE.Texture | null
   steamAt: number
+  /** Bühne im Bild? Außerhalb ruhen Rendern und Abfotografieren */
+  visible: boolean
   nudge: Record<string, number>
 }
 
@@ -66,6 +68,7 @@ export const busFor = (pages: number): SceneBus => {
     coverTex: null,
     endpaper: null,
     steamAt: -1,
+    visible: true,
     nudge: {},
   }
 }
@@ -539,7 +542,7 @@ function Rig({ bus }: { bus: SceneBus }) {
 
 /* ------------------------------------------------------------------------------------------ Gesamte Szene */
 
-export function Scene3D({ bus, onOpen, onCreated }: { bus: SceneBus; onOpen: () => void; onCreated?: () => void }) {
+export function Scene3D({ bus, onOpen, onCreated, active = true }: { bus: SceneBus; onOpen: () => void; onCreated?: () => void; active?: boolean }) {
   const table = useTexture(tableFile(false))
   const key = mappeAsset('schluessel')
   const card = mappeAsset('visitenkarte')
@@ -547,6 +550,7 @@ export function Scene3D({ bus, onOpen, onCreated }: { bus: SceneBus; onOpen: () 
   return (
     <Canvas
       flat
+      frameloop={active ? 'always' : 'never'}
       dpr={[1, 2]}
       camera={{ fov: 26, near: 0.1, far: 40, position: [0, 6, 1] }}
       gl={{ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true }}

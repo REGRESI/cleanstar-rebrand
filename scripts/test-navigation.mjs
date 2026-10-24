@@ -92,8 +92,9 @@ async function runDevice(browser, label, opts) {
       await page.goto(B + src)
       await ready(page)
       const links = await collectLinks(page)
-      // Auf Mobile zusätzlich die Links im aufgeklappten Menü
-      const menu = label === 'Mobile' ? ['/leistungen', '/ablauf', '/einzugsgebiet', '/kontakt'] : []
+      // Auf Mobile zusätzlich die Links im aufgeklappten Menü (nicht auf Vollbildseiten ohne Kopfzeile, z. B. /leistungsmappe)
+      const hasMenu = (await page.locator('[aria-controls="mobile-menu"]').count()) > 0
+      const menu = label === 'Mobile' && hasMenu ? ['/leistungen', '/ablauf', '/einzugsgebiet', '/kontakt'] : []
       const plan = [...links.map((l) => ({ ...l, menu: false })), ...menu.map((href) => ({ area: 'menü', href, text: href, menu: true }))]
       for (const l of plan) {
         if (norm(new URL(page.url()).pathname) !== norm(src)) {
