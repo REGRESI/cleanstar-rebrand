@@ -14,6 +14,7 @@ import { ScrollTrigger } from '@/lib/gsap'
 import { onIdle } from '@/lib/idle'
 import { EASE_CS_ARRAY } from '@/lib/ease'
 import { inlineMarkTones, markSectionTones } from '@/lib/tones'
+import { setupCurtains } from '@/lib/curtains'
 
 const Configurator = lazy(() => import('@/features/configurator/Configurator'))
 
@@ -93,6 +94,19 @@ function Shell() {
       window.clearTimeout(t)
       window.clearTimeout(r)
       window.removeEventListener('resize', onResize)
+    }
+  }, [pathname])
+
+  // Vorhang-Übergänge an Farbwechseln: nach dem Aufbau der Seite (Linien markiert, Abschnitte nachgeladen)
+  useEffect(() => {
+    // Im Leerlauf einrichten, damit das Laden der Seite nicht blockiert wird
+    let stop = () => {}
+    let cancel = () => {}
+    const t = window.setTimeout(() => (cancel = onIdle(() => (stop = setupCurtains(pathname)), 1500)), 450)
+    return () => {
+      window.clearTimeout(t)
+      cancel()
+      stop()
     }
   }, [pathname])
 

@@ -31,7 +31,7 @@ export function WipeScene() {
   })
 
   return (
-    <section ref={outer} className="scene" style={{ '--scene-run': '170svh', '--scene-run-m': '110svh' } as CSSProperties} aria-labelledby="wipe-title">
+    <section ref={outer} data-no-curtain className="scene" style={{ '--scene-run': '170svh', '--scene-run-m': '110svh' } as CSSProperties} aria-labelledby="wipe-title">
       <div className="scene-stage">
         <div className="wipe-stage w-full">
           <img

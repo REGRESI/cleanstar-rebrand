@@ -1,7 +1,8 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { ImageBand } from '@/components/ui/ImageBand'
+import { Collage } from '@/components/ui/Collage'
+import { LoopVideo } from '@/components/ui/LoopVideo'
 import { Todo } from '@/components/ui/Todo'
 import { Accordion } from '@/components/ui/Accordion'
 import { Button } from '@/components/ui/Button'
@@ -51,7 +52,12 @@ export default function Careers() {
           </p>
         </div>
       </section>
-      <ImageBand id="team-work" />
+      <div className="container-site pb-20 sm:pb-28 lg:pb-36">
+        <Collage
+          className="mx-auto max-w-4xl"
+          layers={[{ id: 'team-work' }, { id: 'partner-onboarding' }, { node: <LoopVideo name="wischen" className="size-full" position="30% 50%" /> }]}
+        />
+      </div>
       <section className="section bg-surface" aria-labelledby="jobs-title">
         <div className="container-site grid-site gap-y-12">
           <div className="col-span-12 lg:col-span-4">

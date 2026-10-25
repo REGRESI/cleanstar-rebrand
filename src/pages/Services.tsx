@@ -1,6 +1,7 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
+import { Collage } from '@/components/ui/Collage'
 import { WipeScene } from '@/components/scenes/WipeScene'
 import { ServicesGrid } from '@/components/home/ServicesGrid'
 import { FinalCta } from '@/components/home/FinalCta'
@@ -60,14 +61,20 @@ export default function Services() {
             id="incl-title"
             text="Egal, welche Leistung Sie buchen: Diese Punkte sind kein Extra, sondern Standard. Damit Sie nicht nachfragen müssen."
           />
-          <ol className="mt-14 grid gap-x-8 sm:grid-cols-2 lg:mt-20">
-            {included.map((t, i) => (
-              <li key={t} className="flex items-baseline gap-5 border-b border-line py-5 first:border-t sm:[&:nth-child(2)]:border-t" data-reveal>
-                <span className="t-label w-7 shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                <span className="text-[1.25rem] tracking-[-0.015em]">{t}</span>
-              </li>
-            ))}
-          </ol>
+          <div className="grid-site mt-14 gap-y-16 lg:mt-20 lg:items-center">
+            <ol className="col-span-12 lg:col-span-6">
+              {included.map((t, i) => (
+                <li key={t} className="flex items-baseline gap-5 border-b border-line py-5 first:border-t" data-reveal>
+                  <span className="t-label w-7 shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="text-[1.25rem] tracking-[-0.015em]">{t}</span>
+                </li>
+              ))}
+            </ol>
+            <Collage
+              className="col-span-12 sm:col-span-10 sm:col-start-2 lg:col-span-5 lg:col-start-8"
+              layers={[{ id: 'svc-fenster' }, { id: 'svc-treppenhaus' }, { id: 'svc-hygiene' }]}
+            />
+          </div>
         </div>
       </section>
       <Answer className="pt-20 sm:pt-28 lg:pt-36">

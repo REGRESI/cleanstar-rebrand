@@ -10,6 +10,8 @@ import { RevealText } from '@/components/ui/RevealText'
 import { FeatureColumns } from '@/components/ui/Editorial'
 import { FinalCta } from '@/components/home/FinalCta'
 import { FoundersScene } from '@/components/scenes/FoundersScene'
+import { Collage } from '@/components/ui/Collage'
+import { Bridge } from '@/components/ui/Bridge'
 import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
 import { company } from '@/content/company'
 import { values } from '@/content/site'
@@ -133,12 +135,14 @@ export default function About() {
         </div>
       </section>
 
+      <Bridge id="svc-unterhalt" side="right" />
       <section className="section bg-surface" aria-labelledby="story-title">
         <div className="container-site grid-site gap-y-10">
           <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
           <div className="col-span-12 lg:col-span-4">
             <p className="t-label mb-6">Unsere Geschichte</p>
             <RevealText as="h2" text="Warum es CleanStar gibt." id="story-title" className="t-h3" />
+            <Collage className="mt-12 max-w-md lg:mt-16" layers={[{ id: 'inspection' }, { id: 'quality-check' }, { id: 'svc-buero-detail' }]} />
           </div>
           <div className="prose-cs col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
             <p className="t-lead">
@@ -157,6 +161,7 @@ export default function About() {
         </div>
       </section>
 
+      <Bridge id="trial-clean" side="right" />
       <section className="section" aria-labelledby="values-title">
         <div className="container-site">
           <SectionHeading layout="rail" eyebrow="Werte" title="Woran Sie uns messen können." id="values-title" />
@@ -189,7 +194,7 @@ export default function About() {
         </div>
       )}
 
-      <ImageBand id="team-work" />
+      <ImageBand id="team-work" loop="wagen" />
       <section className="on-dark section bg-night text-paper" aria-labelledby="team-title">
         <div className="container-site grid-site gap-y-8 lg:items-end">
           <div className="col-span-12 lg:col-span-6">

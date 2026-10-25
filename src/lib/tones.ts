@@ -11,7 +11,7 @@ function markTones(doc: Document) {
   const wrap = main && main.firstElementChild
   if (!wrap) return
   const blocks: HTMLElement[] = []
-  for (const el of Array.from(wrap.children) as HTMLElement[]) if (el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE') blocks.push(el)
+  for (const el of Array.from(wrap.children) as HTMLElement[]) if (el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE' && !el.hasAttribute('data-bridge')) blocks.push(el)
   const footer = doc.querySelector<HTMLElement>('body footer')
   if (footer) blocks.push(footer)
   const tone = (el: HTMLElement, edge: 'Start' | 'End') => {

@@ -1337,3 +1337,73 @@ footer[data-no-top] {
     font-size: 1.375rem;
   }
 }
+
+/* ==========================================================================
+   Vorhang-Übergänge (src/lib/curtains.ts): neuer Abschnitt fährt über den vorherigen.
+   Hintergrund des neuen Abschnitts beginnt unter der gerundeten Kante; Rundung, Ecken-Füllung und Schatten
+   sind eigene Elemente, damit nur opacity animiert wird.
+   ========================================================================== */
+.curtain-prev,
+.curtain-next {
+  position: relative;
+}
+.curtain-prev {
+  will-change: transform;
+}
+.curtain-next {
+  --curtain-r: 12px;
+  background: linear-gradient(var(--curtain-bg), var(--curtain-bg)) 0 var(--curtain-r) / 100% 100% no-repeat !important;
+}
+@media (max-width: 767px) {
+  .curtain-next {
+    --curtain-r: 8px;
+  }
+}
+.curtain-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: var(--color-night);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+.curtain-cap {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: var(--curtain-r);
+  pointer-events: none;
+}
+.curtain-cap > span {
+  position: absolute;
+  inset: 0;
+  background: var(--curtain-bg);
+}
+.curtain-round {
+  border-radius: var(--curtain-r) var(--curtain-r) 0 0;
+}
+.curtain-square {
+  opacity: 0;
+  will-change: opacity;
+}
+/* weicher Schatten nach oben, über dem zurücktretenden Abschnitt */
+.curtain-cap > .curtain-shadow {
+  inset: auto 0 100% 0;
+  height: 56px;
+  background: linear-gradient(to top, rgb(11 15 23 / 0.2), rgb(11 15 23 / 0.06) 45%, transparent);
+  will-change: opacity;
+}
+
+/* Bild-Brücke: Foto mittig auf der Grenze zwischen zwei Abschnitten */
+/* Größe so, dass das Foto samt Parallax-Weg im Abschnittsabstand bleibt und nie Text überdeckt */
+.bridge-photo {
+  --bridge-y: -50%;
+  width: clamp(7rem, 15vw, 13.5rem);
+}
+@media (max-width: 767px) {
+  /* Handy: kleinere Abstände, das Foto liegt etwas mehr im oberen Abschnitt */
+  .bridge-photo {
+    --bridge-y: -64%;
+  }
+}
