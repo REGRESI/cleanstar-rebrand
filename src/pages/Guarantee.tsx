@@ -1,23 +1,20 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { noOrphan } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
 import { ImageBand } from '@/components/ui/ImageBand'
-import { Sparkle } from '@/components/ui/Sparkle'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
-import { Todo } from '@/components/ui/Todo'
 import { FinalCta } from '@/components/home/FinalCta'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { RevealText } from '@/components/ui/RevealText'
-import { guaranteePoints, complaintSteps } from '@/content/site'
+import { complaintSteps } from '@/content/site'
+import { GuaranteeChecks } from '@/components/scenes/GuaranteeChecks'
 import { company } from '@/content/company'
 import { breadcrumbSchema } from '@/lib/schema'
-import { gsap, ScrollTrigger } from '@/lib/gsap'
-import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
+import { gsap } from '@/lib/gsap'
 import { useReducedMotion } from '@/lib/env'
-import { cn } from '@/lib/cn'
 import { CallbackButton } from '@/features/callback/Callback'
 
 const trail = [
@@ -29,25 +26,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
 
 export default function Guarantee() {
   const reduced = useReducedMotion()
-  const list = useRef<HTMLOListElement>(null)
   const flow = useRef<HTMLOListElement>(null)
-  const [checked, setChecked] = useState(0)
-  const done = reduced ? guaranteePoints.length : checked
-
-  // Prüfpunkte werden beim Scrollen nacheinander abgehakt
-  useEffect(() => {
-    if (reduced || !list.current) return
-    const items = Array.from(list.current.querySelectorAll('li'))
-    const triggers = items.map((el, i) =>
-      ScrollTrigger.create({
-        trigger: el,
-        start: 'top 62%',
-        onEnter: () => setChecked((c) => Math.max(c, i + 1)),
-        onLeaveBack: () => setChecked(i),
-      }),
-    )
-    return () => triggers.forEach((t) => t.kill())
-  }, [reduced])
 
   // Reklamation: Verbindungslinie füllt sich beim Scrollen, Schritte leuchten nacheinander auf
   useEffect(() => {
@@ -75,75 +54,7 @@ export default function Guarantee() {
         actions={<QuoteButton size="lg" arrow />}
       />
 
-      <section className="section" aria-labelledby="points-title">
-        <div className="container-site grid-site gap-y-12">
-          <div className="col-span-12 lg:col-span-4">
-            <div className="lg:sticky lg:top-28">
-              <SectionHeading
-                eyebrow="Unsere Prüfpunkte"
-                title={`${['Sieben', 'Acht', 'Neun'][guaranteePoints.length - 7] ?? guaranteePoints.length} Zusagen, an denen Sie uns messen können.`}
-                id="points-title"
-                size="h3"
-              />
-              <div className="mt-12 hidden lg:block" aria-live="polite">
-                <p className="t-label">Geprüft</p>
-                <p className="mt-2 font-medium tabular-nums text-[2.5rem] leading-none tracking-[-0.04em] tabular-nums">
-                  {pad(done)} / {pad(guaranteePoints.length)}
-                </p>
-                <span className="mt-5 block h-px bg-line">
-                  <span className="block h-px origin-left bg-ink transition-transform duration-700 ease-cs" style={{ transform: `scaleX(${done / guaranteePoints.length})` }} />
-                </span>
-              </div>
-              <RiskFreeSeal variant="card" className="mt-12" />
-            </div>
-          </div>
-          <div className="col-span-12 lg:col-span-7 lg:col-start-6">
-            {/* Handy und Tablet: schlanke Fortschrittszeile klebt oben, solange die Liste im Bild ist */}
-            <div className="sticky top-0 z-20 -mx-5 mb-2 border-b border-line bg-paper px-5 py-3 sm:-mx-8 sm:px-8 lg:hidden" aria-hidden>
-              <p className="flex justify-between font-medium tabular-nums text-[0.8125rem]">
-                <span>
-                  {pad(done)} / {pad(guaranteePoints.length)} geprüft
-                </span>
-                <span className="text-muted">Qualitätsgarantie</span>
-              </p>
-              <span className="mt-2 block h-px bg-line">
-                <span className="block h-px origin-left bg-ink transition-transform duration-700 ease-cs" style={{ transform: `scaleX(${done / guaranteePoints.length})` }} />
-              </span>
-            </div>
-            <ol ref={list} className="border-b border-line">
-              {guaranteePoints.map((p, i) => {
-                const on = i < done
-                return (
-                  <li key={p.title} className="grid grid-cols-[4.5rem_1fr] gap-x-4 border-t border-line py-7 sm:grid-cols-[6rem_1fr] sm:py-9">
-                    <span className={cn('font-medium tabular-nums text-[0.8125rem] transition-colors duration-500', on ? 'text-ink' : 'text-muted')}>
-                      {pad(i + 1)} / {pad(guaranteePoints.length)}
-                    </span>
-                    <div className="min-w-0">
-                      <h3
-                        className={cn(
-                          'text-[1.25rem] leading-[1.2] font-medium tracking-[-0.02em] transition-colors duration-500 min-[400px]:text-[1.5rem] sm:text-[1.75rem]',
-                          on ? 'text-ink' : 'text-ink-2',
-                        )}
-                      >
-                        {noOrphan(p.title, 16)}
-                        <span aria-hidden className="relative inline-block w-0">
-                          <Sparkle play={on} delay={0.15} className="absolute bottom-[0.2em] left-[0.3em] size-[0.6em]" />
-                        </span>
-                      </h3>
-                      <p className="measure mt-3 text-ink-2">
-                        {p.usesComplaintPeriod && company.complaintPeriod
-                          ? `Passt etwas nicht, melden Sie es Ihrem Ansprechpartner. Wir reinigen kostenlos nach, innerhalb von ${company.complaintPeriod}.`
-                          : p.text}
-                        {p.todo && <Todo title={p.todo}>{p.todo}</Todo>}
-                      </p>
-                    </div>
-                  </li>
-                )
-              })}
-            </ol>
-          </div>
-        </div>
-      </section>
+      <GuaranteeChecks />
 
       <ImageBand id="after-office" />
 

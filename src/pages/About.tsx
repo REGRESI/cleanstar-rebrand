@@ -9,6 +9,7 @@ import { Todo } from '@/components/ui/Todo'
 import { RevealText } from '@/components/ui/RevealText'
 import { FeatureColumns } from '@/components/ui/Editorial'
 import { FinalCta } from '@/components/home/FinalCta'
+import { FoundersScene } from '@/components/scenes/FoundersScene'
 import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
 import { company } from '@/content/company'
 import { values } from '@/content/site'
@@ -48,11 +49,13 @@ export default function About() {
         lead="Keine Hotline, keine Zentrale, kein wechselndes Personal. Sie sprechen mit den Gründern selbst, und das Team in Ihrem Büro bleibt dasselbe."
       />
 
-      <section className="section" aria-labelledby="founders-title">
+      <FoundersScene founders={founders} />
+
+      <section className="section pt-0!" aria-labelledby="founders-title">
         <div className="container-site">
           <SectionHeading
             layout="rail"
-            eyebrow="Die Gründer"
+            eyebrow="Wer wir sind"
             title="Drei Menschen. Klare Zuständigkeiten."
             id="founders-title"
             text="Bei uns wissen Sie, wen Sie anrufen. Jeder von uns hat seinen Bereich, und alle drei kennen Ihr Objekt."
@@ -60,8 +63,8 @@ export default function About() {
           <ul className="grid-site mt-16 gap-y-16 lg:mt-24">
             {founders.map((f, i) => (
               <li key={i} className="col-span-12 md:col-span-4">
-                <Picture id={f.image as ImageId} ratio="4:5" reveal sizes="(min-width:768px) 33vw, 100vw" />
-                <h3 className="mt-6 text-[2.25rem] leading-none font-medium tracking-[-0.04em] lg:text-[2.75rem]">{f.name ?? `Gründer ${i + 1}`}</h3>
+                <span aria-hidden data-reveal-rule className="rule mb-6 block" />
+                <h3 className="text-[2.25rem] leading-none font-medium tracking-[-0.04em] lg:text-[2.75rem]">{f.name ?? `Gründer ${i + 1}`}</h3>
                 <p className="t-meta mt-3">{f.role.replace('Gründer · ', '')}</p>
                 <p className="mt-5 text-ink-2">{f.bio}</p>
                 <p className="t-label mt-8">Zuständig für</p>

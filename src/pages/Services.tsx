@@ -1,7 +1,7 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
-import { ImageBand } from '@/components/ui/ImageBand'
+import { WipeScene } from '@/components/scenes/WipeScene'
 import { ServicesGrid } from '@/components/home/ServicesGrid'
 import { FinalCta } from '@/components/home/FinalCta'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -50,7 +50,7 @@ export default function Services() {
         }
       />
       <ServicesGrid heading={false} />
-      <ImageBand id="after-office" />
+      <WipeScene />
       <section className="section bg-surface" aria-labelledby="incl-title">
         <div className="container-site">
           <SectionHeading

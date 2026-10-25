@@ -1,4 +1,4 @@
-import { ImageBand } from '@/components/ui/ImageBand'
+import { NightClock } from '@/components/scenes/NightClock'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -73,7 +73,7 @@ export default function Process() {
         }
       />
       <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" />
-      <ImageBand id="evening-clean" />
+      <NightClock />
       <section className="section bg-surface" aria-labelledby="details-title">
         <div className="container-site">
           <SectionHeading layout="rail" eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />

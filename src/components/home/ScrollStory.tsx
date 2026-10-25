@@ -109,7 +109,55 @@ export function ScrollStory() {
     return () => st.kill()
   }, [])
 
+  // Wort vor dem Bild, Bild und folgendes Satzzeichen bilden eine untrennbare Einheit (kein Komma allein am Zeilenanfang)
   let w = -1
+  const nodes = []
+  for (let k = 0; k < tokens.length; k++) {
+    const t = tokens[k]
+    if (t.kind === 'img') continue
+    w++
+    const word = (
+      <span data-w className={cn('story-w', t.blue ? 'is-blue text-blue' : 'text-ink')}>
+        {t.text}
+      </span>
+    )
+    const next = tokens[k + 1]
+    if (next?.kind === 'img') {
+      // Bild erscheint, wenn die Färbung das Wort davor erreicht
+      const rot = [-7, 6, -5, 7][['feierabend', 'schluessel', 'team', 'kaffee'].indexOf(next.img)]
+      const tileAt = w
+      if (next.after) w++
+      nodes.push(
+        <Fragment key={k}>
+          {k > 0 ? ' ' : ''}
+          <span className="whitespace-nowrap">
+            {word}{' '}
+            <span data-tile={tileAt} className={cn('story-tile-wrap', next.img === 'team' && 'is-team')}>
+              <Tile img={next.img} rot={rot} />
+            </span>
+            {next.after && (
+              <span data-w className="story-w text-ink">
+                {next.after}
+              </span>
+            )}
+          </span>
+        </Fragment>,
+      )
+      continue
+    }
+    nodes.push(
+      <Fragment key={k}>
+        {k > 0 ? ' ' : ''}
+        {word}
+        {k === tokens.length - 1 && (
+          <span className="relative inline-block w-0">
+            <Sparkle play={done} className="absolute bottom-[0.55em] left-[0.1em] size-[0.55em]" />
+          </span>
+        )}
+      </Fragment>,
+    )
+  }
+
   return (
     <section ref={outer} className="story" aria-labelledby="story-title">
       <div className="story-stage">
@@ -117,44 +165,7 @@ export function ScrollStory() {
           <h2 id="story-title" className="sr-only">
             Unser Versprechen
           </h2>
-          <p className="story-text max-w-[22ch] sm:max-w-[24ch] lg:max-w-[30ch]">
-            {tokens.map((t, k) => {
-              if (t.kind === 'word') {
-                w++
-                const isLast = k === tokens.length - 1
-                return (
-                  <Fragment key={k}>
-                    {k > 0 ? ' ' : ''}
-                    <span data-w className={cn('story-w', t.blue ? 'is-blue text-blue' : 'text-ink')}>
-                      {t.text}
-                    </span>
-                    {isLast && (
-                      <span className="relative inline-block w-0">
-                        <Sparkle play={done} className="absolute bottom-[0.55em] left-[0.1em] size-[0.55em]" />
-                      </span>
-                    )}
-                  </Fragment>
-                )
-              }
-              // Bild erscheint, wenn die Färbung das Wort davor erreicht
-              const rot = [-7, 6, -5, 7][['feierabend', 'schluessel', 'team', 'kaffee'].indexOf(t.img)]
-              const tileAt = w
-              if (t.after) w++
-              return (
-                <Fragment key={k}>
-                  {' '}
-                  <span data-tile={tileAt} className={cn('story-tile-wrap', t.img === 'team' && 'is-team')}>
-                    <Tile img={t.img} rot={rot} />
-                  </span>
-                  {t.after && (
-                    <span data-w className="story-w text-ink">
-                      {t.after}
-                    </span>
-                  )}
-                </Fragment>
-              )
-            })}
-          </p>
+          <p className="story-text max-w-[22ch] sm:max-w-[24ch] lg:max-w-[30ch]">{nodes}</p>
           <div data-story-cta className="story-cta mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 sm:mt-10 lg:mt-14">
             <QuoteButton size="lg" arrow>
               Kostenlose Besichtigung

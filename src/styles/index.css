@@ -1019,3 +1019,321 @@ footer[data-no-top] {
     font-size: 1rem;
   }
 }
+
+/* ==========================================================================
+   Scroll-Stopper (useScrollScene): Abschnitt bleibt stehen, Fortschritt folgt dem Scrollen.
+   Höchstens einer pro Seite. Ohne .js-motion (kein JavaScript, reduzierte Bewegung): Endzustand, normaler Fluss.
+   --scene-run: zusätzlicher Scrollweg am Desktop, --scene-run-m auf dem Handy.
+   ========================================================================== */
+.js-motion .scene {
+  height: calc(100svh + var(--scene-run, 200svh));
+}
+@media (max-width: 767px) {
+  .js-motion .scene {
+    height: calc(100svh + var(--scene-run-m, 120svh));
+  }
+}
+.js-motion .scene-stage {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  overflow: clip;
+}
+@media (max-height: 620px) {
+  .js-motion .scene {
+    height: auto;
+  }
+  .js-motion .scene-stage {
+    position: static;
+    min-height: 0;
+  }
+}
+/* Wort-für-Wort-Färbung wie im Scroll-Text der Startseite, Endfarbe Textton */
+.js-motion .scrub-w {
+  color: color-mix(in oklab, var(--color-ink) calc(16% + 84% * var(--p, 0)), var(--color-paper));
+}
+
+/* --- Leistungen: „Der Wisch“ ------------------------------------------------ */
+.wipe-stage {
+  position: relative;
+  height: clamp(26rem, 78svh, 52rem);
+  overflow: clip;
+  background: var(--color-night);
+}
+.js-motion .wipe-stage {
+  height: 100svh;
+}
+.wipe-stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 40%;
+}
+.wipe-fog,
+.wipe-blade {
+  display: none;
+}
+.js-motion .wipe-fog {
+  display: block;
+  position: absolute;
+  inset: 0;
+  will-change: clip-path;
+}
+/* Abzieher: Gummilippe vorn, Metallschiene dahinter, davor ein schmaler Wasserfilm */
+.js-motion .wipe-blade {
+  display: block;
+  position: absolute;
+  top: -3%;
+  bottom: -3%;
+  left: 0;
+  width: 15px;
+  margin-left: -15px;
+  rotate: 0.8deg;
+  background: linear-gradient(90deg, #6f7880 0, #c9d0d6 24%, #8a939b 48%, #3a4047 62%, #121518 70%, #262b31 86%, #0e1013 100%);
+  box-shadow:
+    -14px 0 28px rgb(255 255 255 / 0.1),
+    3px 0 6px rgb(14 16 19 / 0.25);
+  will-change: transform;
+}
+.js-motion .wipe-blade::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 100%;
+  width: 12px;
+  background: linear-gradient(90deg, rgb(255 255 255 / 0.32), rgb(255 255 255 / 0.08) 45%, transparent);
+}
+.wipe-copy {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding-block: 8rem clamp(2.5rem, 6vw, 5rem);
+  background: linear-gradient(to top, rgb(14 16 19 / 0.62), rgb(14 16 19 / 0.28) 55%, transparent);
+}
+.js-motion .wipe-copy h2 {
+  opacity: var(--h, 0);
+  transform: translateY(calc((1 - var(--h, 0)) * 18px));
+}
+@media (max-width: 767px) {
+  .wipe-copy {
+    padding-bottom: 5.5rem;
+  }
+}
+
+/* --- Ablauf: „Die Nacht-Uhr“ ------------------------------------------------ */
+.night-stage {
+  padding-block: clamp(5rem, 10vw, 9rem);
+}
+.js-motion .night-stage {
+  padding-block: 5.5rem 2.5rem;
+}
+.night-clock {
+  width: min(100%, 26rem, 50svh);
+  aspect-ratio: 1;
+}
+.night-photos {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-height: 36svh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-night-2);
+}
+.night-photos img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.night-photos img:not(:last-child) {
+  opacity: 0;
+}
+.js-motion .night-photos [data-ph] {
+  opacity: var(--o, 0);
+}
+.js-motion .night-lines li {
+  color: color-mix(in oklab, var(--color-paper) calc(50% + 50% * var(--a, 0)), var(--color-night));
+  transition: color 0.5s var(--ease-cs);
+}
+.js-motion .night-lines time {
+  color: color-mix(in oklab, var(--color-blue-on-dark) calc(var(--a, 0) * 100%), var(--color-muted-dark));
+}
+@media (max-width: 767px) {
+  .night-clock {
+    width: min(28vw, 7.5rem);
+  }
+  .js-motion .night-stage {
+    padding-block: 3.75rem 4rem;
+    row-gap: 1rem;
+  }
+  .js-motion .night-photos {
+    max-height: 22svh;
+  }
+  /* Handy: immer nur die aktuelle Zeile, alle liegen übereinander (Höhe der längsten bleibt reserviert) */
+  .js-motion .night-lines {
+    display: grid;
+    border: 0;
+  }
+  .js-motion .night-lines li {
+    grid-area: 1 / 1;
+    border: 0;
+    opacity: var(--cur, 0);
+    transition:
+      opacity 0.45s var(--ease-cs),
+      color 0.5s var(--ease-cs);
+  }
+}
+
+/* --- Qualitätsgarantie: Prüfliste mit Siegel -------------------------------- */
+.gp-check circle {
+  stroke: var(--color-line);
+}
+.gp-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.js-motion .gp-check path {
+  stroke-dashoffset: calc(1 - var(--c, 0));
+}
+.js-motion .gp-item h3 {
+  color: color-mix(in oklab, var(--color-ink) calc(62% + 38% * var(--c, 0)), var(--color-paper));
+}
+.gp-seal {
+  display: grid;
+  place-items: center;
+  width: 9.5rem;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  border: 2px solid var(--color-blue);
+  box-shadow:
+    inset 0 0 0 5px var(--color-paper),
+    inset 0 0 0 6px var(--color-blue);
+  color: var(--color-blue);
+  rotate: -8deg;
+}
+.js-motion .gp-seal {
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-cs);
+}
+.js-motion [data-on] > .gp-seal {
+  opacity: 1;
+  animation: gp-stamp 0.62s var(--ease-cs) both;
+}
+@keyframes gp-stamp {
+  0% {
+    opacity: 0;
+    transform: scale(1.32);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(0.97);
+  }
+  78% {
+    transform: scale(1.012);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@media (max-width: 767px) {
+  .gp-seal {
+    width: 5.75rem;
+    border-width: 1.5px;
+    box-shadow:
+      inset 0 0 0 3px var(--color-paper),
+      inset 0 0 0 4px var(--color-blue);
+  }
+}
+.gp-stage {
+  padding-block: clamp(5rem, 10vw, 9rem);
+}
+.js-motion .gp-stage {
+  padding-block: 5.5rem 2.5rem;
+}
+@media (max-width: 767px) {
+  .js-motion .gp-stage {
+    padding-block: 3.75rem 3.6rem;
+  }
+}
+/* Mit Bewegung: Erläuterung des aktuellen Punkts in einer Spalte rechts (Handy: darunter), alle übereinander */
+.js-motion .gp-list {
+  position: relative;
+}
+.js-motion .gp-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 1.25rem);
+  margin: 0;
+  opacity: var(--cur, 0);
+  transition: opacity 0.45s var(--ease-cs);
+}
+@media (min-width: 1024px) {
+  .js-motion .gp-text {
+    left: 58%;
+    top: 0;
+  }
+}
+
+/* --- Über uns: Gründer rücken zusammen --------------------------------------- */
+.founders-stage {
+  padding-block: clamp(5rem, 10vw, 9rem);
+}
+.js-motion .founders-stage {
+  padding-block: 5.5rem 3rem;
+}
+@media (max-width: 767px) {
+  .js-motion .founders-stage {
+    padding-block: 4.25rem 4.75rem;
+  }
+}
+.founders-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 2rem);
+  width: min(100%, 44rem, 72svh);
+}
+.js-motion .founders-row > li {
+  transform: translate(calc(var(--dx) * (1 - var(--k, 0))), calc(var(--dy) * (1 - var(--k, 0)))) rotate(calc(var(--rot) * (1 - var(--k, 0))));
+  will-change: transform;
+}
+.founders-statement {
+  font-size: min(clamp(1.75rem, 1.1rem + 2.2vw, 3.25rem), 5.4svh);
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+/* Siegel: oben neben der Überschrift (Handy, ohne Bewegung) bzw. unten rechts neben der Liste (Desktop mit Bewegung) */
+.gp-seal-d {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .js-motion .gp-seal-d {
+    display: block;
+  }
+  .js-motion .gp-seal-m {
+    display: none;
+  }
+  .js-motion .gp-list ol {
+    width: 52%;
+  }
+  .js-motion .gp-text {
+    padding-top: 0.875rem;
+  }
+}
+@media (max-width: 1023px) {
+  .js-motion .gp-list {
+    margin-bottom: 7rem;
+  }
+  .js-motion .gp-item {
+    padding-block: 0.3rem;
+  }
+  .js-motion .gp-stage h2 {
+    font-size: 1.375rem;
+  }
+}
