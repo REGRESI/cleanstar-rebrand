@@ -849,3 +849,173 @@ footer[data-no-top] {
   transition: none !important;
   animation: none !important;
 }
+
+/* ==========================================================================
+   Startseite: Scroll-Text, der „sauber wird“ (ScrollStory)
+   Ohne JavaScript bzw. bei reduzierter Bewegung: voller Text, Bilder sichtbar, kein Sticky.
+   ========================================================================== */
+.story-text {
+  /* zusätzlich nach Bildschirmhöhe begrenzt, damit der stehende Abschnitt immer ganz ins Bild passt */
+  font-size: min(clamp(1.9rem, 1.15rem + 2.3vw, 3.4rem), 6.2svh);
+  line-height: 1.16;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+/* Bildkacheln im Fließtext: Platz ist immer reserviert (kein Springen des Textes). Die Zeile behält ihre Höhe,
+   die Kachel ragt nur optisch darüber hinaus, damit alle Zeilen gleichen Abstand haben. */
+.story-tile-wrap {
+  position: relative;
+  display: inline-block;
+  width: 1.18em;
+  height: 1em;
+  vertical-align: -0.14em;
+}
+.story-tile-wrap.is-team {
+  width: 2.5em;
+}
+.story-tile {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1.18em;
+  height: 1.18em;
+  translate: 0 -50%;
+}
+.story-tile > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgb(14 16 19 / 0.12),
+    0 6px 14px -6px rgb(14 16 19 / 0.28);
+}
+.story-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Gründer: drei kleine, leicht überlappende Kreise */
+.story-team {
+  width: 2.5em;
+}
+.story-team > span {
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  box-shadow: none;
+  border-radius: 0;
+}
+.story-team img {
+  width: 1.12em;
+  height: 1.12em;
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 0.06em var(--color-paper),
+    0 4px 10px -4px rgb(14 16 19 / 0.35);
+}
+.story-team img + img {
+  margin-left: -0.32em;
+}
+@media (max-width: 639px) {
+  .story-tile-wrap,
+  .story-tile {
+    width: 1.06em;
+  }
+  .story-tile {
+    height: 1.06em;
+  }
+  .story-tile-wrap.is-team,
+  .story-team {
+    width: 2.3em;
+  }
+  .story-team img {
+    width: 1.02em;
+    height: 1.02em;
+  }
+}
+
+/* Mit Bewegung: Abschnitt bleibt stehen (sticky), während der Text sich färbt */
+.js-motion .story {
+  height: calc(100svh + 230svh);
+}
+@media (max-width: 767px) {
+  .js-motion .story {
+    height: calc(100svh + 160svh);
+  }
+}
+.story-stage {
+  padding-block: clamp(5rem, 10vw, 9rem);
+}
+.js-motion .story-stage {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding-block: 5.5rem 3rem;
+}
+@media (max-width: 767px) {
+  .story-text {
+    font-size: min(1.9rem, 4.5svh);
+  }
+  /* oben die Kopfzeile, unten die feste Leiste mit Anrufen/Rückruf/Angebot */
+  .js-motion .story-stage {
+    padding-block: 4.25rem 4.25rem;
+  }
+}
+/* Sehr niedrige Bildschirme: kein Stehenbleiben, der Text färbt sich beim normalen Durchscrollen */
+@media (max-height: 620px) {
+  .js-motion .story {
+    height: auto;
+  }
+  .js-motion .story-stage {
+    position: static;
+    min-height: 0;
+    padding-block: 4rem 5rem;
+  }
+  .story-text {
+    font-size: 1.75rem;
+  }
+}
+/* Färbung je Wort: --p von 0 (hell, 16 % Textton) bis 1 (voller Textton bzw. Markenblau) */
+.js-motion .story-w {
+  color: color-mix(in oklab, var(--color-ink) calc(16% + 84% * var(--p, 0)), var(--color-paper));
+}
+.js-motion .story-w.is-blue {
+  color: color-mix(in oklab, var(--color-blue) calc(var(--p, 0) * 100%), color-mix(in oklab, var(--color-ink) 16%, var(--color-paper)));
+}
+/* Kacheln: erscheinen mit ruhiger Feder (0,6 → 1, kleine Drehung pendelt auf 0) */
+.js-motion .story-tile > span {
+  opacity: 0;
+  transform: scale(0.6) rotate(var(--r, -6deg));
+  transition:
+    opacity 0.45s var(--ease-cs),
+    transform 0.9s cubic-bezier(0.34, 1.24, 0.5, 1);
+}
+.js-motion [data-tile][data-on] .story-tile > span {
+  opacity: 1;
+  transform: none;
+}
+/* Abschluss: Button und Zusage blenden ruhig ein */
+.js-motion .story-cta {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.7s var(--ease-cs),
+    transform 0.7s var(--ease-cs);
+}
+.js-motion .story-cta[data-on] {
+  opacity: 1;
+  transform: none;
+}
+@media (max-width: 639px) {
+  /* mobil normale Buttongröße, damit der stehende Abschnitt ins Bild passt */
+  .story-cta .btn-lg {
+    min-height: 3rem;
+    padding-block: 0.75rem;
+    font-size: 1rem;
+  }
+}

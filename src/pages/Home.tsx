@@ -1,6 +1,6 @@
 import { Suspense, type ReactNode } from 'react'
 import { Hero } from '@/components/home/Hero'
-import { BrandPromise } from '@/components/home/BrandPromise'
+import { ScrollStory } from '@/components/home/ScrollStory'
 import { ProblemSolution } from '@/components/home/ProblemSolution'
 import { ServicesGrid } from '@/components/home/ServicesGrid'
 import { Proof } from '@/components/home/Proof'
@@ -21,7 +21,7 @@ const Chunk = ({ children }: { children: ReactNode }) => <Suspense fallback={nul
 
 /**
  * Startseite: eine Geschichte in acht Schritten.
- * 1 Hero mit Scroll-Video (Leitidee) · 2 Versprechen, danach ein randloses Bildband · 3 Das kennen Sie vielleicht (dunkel) ·
+ * 1 Hero mit Scroll-Video (Leitidee) · 2 Scroll-Text, der sich Wort für Wort färbt (Versprechen), danach ein randloses Bildband · 3 Das kennen Sie vielleicht (dunkel) ·
  * 4 Leistungen · 5 Beweise (nur mit Einträgen) · 6 Gründer (Papierfläche) · 7 Einzugsgebiet · Auf einen Blick und Werkzeuge ·
  * 8 Abschluss (dunkel). Die Leitidee steht im Hero und im Footer. Nie mehr als zwei helle Textabschnitte hintereinander.
  */
@@ -37,7 +37,7 @@ export default function Home() {
       />
       <Hero />
       <Chunk>
-        <BrandPromise />
+        <ScrollStory />
         <ImageBand id="evening-clean" />
       </Chunk>
       <Chunk>
