@@ -188,10 +188,10 @@ export function PlaceGrid({ items, className }: { items: { to: string; label: Re
 /** Kurze Linkliste als fließende Zeile mit Trennpunkten (für wenige Einträge, keine halb leeren Rasterzeilen) */
 export function DotList({ items, className }: { items: { to: string; label: ReactNode }[]; className?: string }) {
   return (
-    <ul className={cn('text-[1.0625rem] leading-[2]', className)}>
+    <ul className={cn('flex flex-wrap text-[1.0625rem] leading-[2]', className)}>
       {items.map((it, i) => (
-        <li key={it.to} className="inline">
-          <Link to={it.to} className="ulink whitespace-nowrap text-ink">
+        <li key={it.to} className="whitespace-nowrap">
+          <Link to={it.to} className="ulink text-ink">
             {it.label}
           </Link>
           {i < items.length - 1 && (
