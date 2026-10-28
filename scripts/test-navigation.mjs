@@ -126,6 +126,14 @@ async function runDevice(browser, label, opts) {
           )
         }
         if (!clicked) continue
+        // Ortslinks der Karte wechseln erst nach dem Vogelflug die Seite (bis etwa 2,5 s)
+        if (norm(l.href.split('?')[0]) !== norm(src)) {
+          await Promise.race([
+            page.waitForURL((u) => norm(u.pathname) !== norm(src), { timeout: 4000 }),
+            page.locator('[role=dialog]').first().waitFor({ timeout: 4000 }),
+          ]).catch(() => {})
+          await page.waitForLoadState('domcontentloaded')
+        }
         const [y1, y2] = await measureTop(page)
         const at = norm(new URL(page.url()).pathname)
         // „Kostenloses Angebot“ öffnet den Konfigurator als Fenster statt die Seite zu wechseln: kein Seitenwechsel

@@ -51,7 +51,17 @@ export function AreaMap({ className }: { className?: string }) {
             {locations.map((l) => {
               const [x, y] = proj(l.lat, l.lng)
               return (
-                <a key={l.slug} href={`/einzugsgebiet/${l.slug}/`} aria-label={`${l.name}: ca. ${l.minutes} Minuten von Offenburg`}>
+                <a
+                  key={l.slug}
+                  href={`/einzugsgebiet/${l.slug}/`}
+                  aria-label={`${l.name}: ca. ${l.minutes} Minuten von Offenburg`}
+                  onClick={(e) => {
+                    // Mit JavaScript ohne Neuladen der Seite (ohne JavaScript bleibt es ein normaler Link)
+                    if (e.metaKey || e.ctrlKey || e.shiftKey) return
+                    e.preventDefault()
+                    open(l)
+                  }}
+                >
                   <circle cx={x} cy={y} r={l.major ? 4 : 3} fill="var(--color-blue)" />
                 </a>
               )
