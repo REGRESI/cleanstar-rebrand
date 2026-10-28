@@ -47,7 +47,13 @@ export function WipeScene() {
           <div className="wipe-fog" aria-hidden>
             <img srcSet={src('wisch-beschlagen')} sizes="100vw" src="/images/scenes/wisch-beschlagen-1672.webp" alt="" width={1672} height={941} loading="lazy" decoding="async" />
           </div>
-          <span className="wipe-blade" aria-hidden />
+          <span className="wipe-blade" aria-hidden>
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
           <div className="wipe-copy">
             <div className="container-site">
               <h2 id="wipe-title" className="t-h1 max-w-[14ch] text-paper">

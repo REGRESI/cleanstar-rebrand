@@ -1,21 +1,21 @@
-import { Picture } from '@/components/ui/Picture'
+import { FounderPortrait } from '@/components/ui/FounderPortrait'
 import { Button } from '@/components/ui/Button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { company } from '@/content/company'
 import { home } from '@/content/site'
 import type { ImageId } from '@/content/images'
 
-/** Die Gründer mit Gesichtern und einem Satz: drei Porträts im gleichen Format, Namen groß, Zuständigkeit klein darunter. */
+/** Die Gründer mit Gesichtern: drei Porträts, die sich beim Hineinscrollen nacheinander einfärben, Namen groß, Zuständigkeit klein. */
 export function Founders() {
   const founders = company.founders.slice(0, 3)
   return (
     <section className="section bg-surface" aria-labelledby="about-title">
       <div className="container-site">
-        <SectionHeading layout="rail" eyebrow={home.about.eyebrow} title={home.about.headline} text={home.about.short} id="about-title" />
+        <SectionHeading scrub layout="rail" eyebrow={home.about.eyebrow} title={home.about.headline} text={home.about.short} id="about-title" />
         <ul className="grid-site mt-16 gap-y-12 lg:mt-24">
           {founders.map((f, i) => (
             <li key={i} className="col-span-12 sm:col-span-4">
-              <Picture id={f.image as ImageId} ratio="4:5" reveal sizes="(min-width:640px) 33vw, 100vw" />
+              <FounderPortrait id={f.image as ImageId} order={i} sizes="(min-width:640px) 33vw, 100vw" />
               <p className="mt-5 text-[1.625rem] leading-tight font-medium tracking-[-0.025em]">{f.name ?? `Gründer ${i + 1}`}</p>
               <p className="t-meta mt-2">{f.role.replace('Gründer · ', '')}</p>
             </li>

@@ -9,7 +9,7 @@ import { zones, planIntervals, freqLabel, type PlanInterval } from '@/content/fl
 import { places, hq, shortName } from '@/content/places'
 import { pricing, monthlyRange } from '@/content/pricing'
 import { approvedQuotes, hasProof, proof } from '@/content/proof'
-import { proj, OUTLINE, RHINE, toPath, VB } from '@/features/map/AreaMap'
+import { proj, OUTLINE, RHINE, toPath, VB } from '@/features/map/schematic'
 import { CallbackButton } from '@/features/callback/Callback'
 import { formatEuroRange } from '@/lib/format'
 import { EASE_CS_ARRAY } from '@/lib/ease'

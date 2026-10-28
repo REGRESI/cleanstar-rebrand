@@ -5,7 +5,7 @@ declare const __PREVIEW__: boolean
 declare const __PAGES__: boolean
 
 declare module 'virtual:downloads' {
-  const downloads: Record<'checklist' | 'partnerInfo' | 'serviceList', { href: string; file: string }>
+  const downloads: Record<'checklist' | 'partnerInfo' | 'serviceList', { href: string; file: string; size: number }>
   export default downloads
 }
 

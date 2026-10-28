@@ -22,27 +22,30 @@
    Übersicht aller Bausteine: /styleguide (nicht verlinkt, noindex)
    ========================================================================== */
 @theme {
-  /* Flächen: warmes Off-White statt Weiß, leicht abgesetzte Fläche, tiefes Schwarzblau für Schlüsselmomente */
-  --color-paper: #f3f1ec;
-  --color-surface: #e9e6df;
-  --color-night: #0b0f17;
-  --color-night-2: #151a24;
+  /* Flächen: kühles Klarweiß (kein reines Weiß), kühles Hellgrau-Blau für abgesetzte Abschnitte,
+     tiefes Marken-Navy für dunkle Abschnitte und den Abschluss. Alles aus dem Markenblau abgeleitet, keine warme Tönung. */
+  --color-paper: #f7f9fb;
+  --color-surface: #edf1f5;
+  --color-night: #0a1a33;
+  --color-night-2: #13284a;
 
   /* Text */
-  --color-ink: #0e1013; /* 16,9 : 1 auf paper */
-  --color-ink-2: #2a2d31;
-  --color-muted: #54575c; /* 6,4 : 1 auf paper, 5,8 : 1 auf surface */
-  --color-muted-dark: #a2a6ad; /* 7,9 : 1 auf night */
+  --color-ink: #0b1220; /* 17,7 : 1 auf paper */
+  --color-ink-2: #26303f; /* 12,6 : 1 auf paper */
+  --color-muted: #4a5566; /* 7,2 : 1 auf paper, 6,7 : 1 auf surface */
+  --color-muted-dark: #a9b6cc; /* 8,5 : 1 auf night, 7,2 : 1 auf night-2 */
 
   /* Markenblau (aus dem Logo): nur primärer Button, Links im Fließtext, wenige Akzente */
-  --color-blue: #1a4fe0; /* 5,7 : 1 auf paper, auch als Grund für paper-Text */
+  --color-blue: #1a4fe0; /* 6,1 : 1 auf paper, 5,7 : 1 auf surface, auch als Grund für paper-Text */
   --color-blue-hover: #143fb8;
-  --color-blue-on-dark: #8da6ff; /* 8,3 : 1 auf night */
+  --color-blue-on-dark: #8da6ff; /* 7,5 : 1 auf night */
+  /* Links auf Navy: gedämpftes Hellblau, beim Überfahren Klarweiß */
+  --color-link-dark: #9fb8e8; /* 8,7 : 1 auf night */
 
   /* Haarlinien */
-  --color-line: rgb(14 16 19 / 0.16);
-  --color-line-strong: rgb(14 16 19 / 0.4);
-  --color-line-dark: rgb(243 241 236 / 0.16);
+  --color-line: rgb(11 18 32 / 0.14);
+  --color-line-strong: rgb(11 18 32 / 0.4);
+  --color-line-dark: rgb(247 249 251 / 0.16);
 
   /* Funktionale Zustände (nur Formulare und Rückmeldungen) */
   --color-danger: #b42318;
@@ -51,10 +54,12 @@
   /* Logo-Farben: nur im Logo selbst */
   --color-logo-cyan: #00caf9;
   --color-logo-blue: #005df3;
+  /* Helles Logo-Blau (aus dem Glanz-Stern): Akzent auf Navy, 4,7 : 1 auf night */
+  --color-logo-sky: #0086f6;
 
   /* Alte Namen, auf das neue System abgebildet (Sicherheitsnetz, wird schrittweise entfernt) */
   --color-glacier: var(--color-surface);
-  --color-glacier-2: #dedad2;
+  --color-glacier-2: #e2e8ef;
   --color-blue-soft: rgb(26 79 224 / 0.1);
   --color-fresh: var(--color-blue-on-dark);
   --color-fresh-ink: var(--color-blue);
@@ -81,7 +86,7 @@
   --shadow-soft: 0 0 #0000;
   --shadow-lift: 0 0 #0000;
   --shadow-glow: 0 0 #0000;
-  --shadow-menu: 0 30px 80px -30px rgb(14 16 19 / 0.45);
+  --shadow-menu: 0 30px 80px -30px rgb(11 18 32 / 0.45);
 }
 
 /* ==========================================================================
@@ -130,7 +135,7 @@
   }
   a,
   button {
-    -webkit-tap-highlight-color: rgb(14 16 19 / 0.08);
+    -webkit-tap-highlight-color: rgb(11 18 32 / 0.08);
   }
   [hidden] {
     display: none !important;
@@ -195,14 +200,24 @@ html.lenis body {
   }
   /* Textlink mit Pfeil: Unterstrich zieht sich beim Überfahren zurück und zeichnet sich neu */
   .tlink {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 0.6em;
     font-weight: 500;
     padding-bottom: 0.2em;
-    background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
   }
-  .tlink:hover {
+  /* Haarlinie als eigenes Element (kein Verlauf): zieht sich nach rechts zurück und zeichnet sich von links neu */
+  .tlink::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left;
+  }
+  .tlink:hover::after {
     animation: underline-redraw 0.7s var(--ease-cs);
   }
   .tlink svg {
@@ -213,13 +228,16 @@ html.lenis body {
   }
   /* Unterstrich, der nur beim Überfahren erscheint (Navigation, Listen) */
   .ulink {
-    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
-    transition: background-size 0.5s var(--ease-cs);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.28em;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 0.4s var(--ease-cs);
   }
   .ulink:hover,
   .ulink[aria-current='page'],
   .ulink[aria-pressed='true'] {
-    background-size: 100% 1px;
+    text-decoration-color: currentColor;
   }
 
   /* ---- Buttons: rechteckig ---- */
@@ -275,7 +293,7 @@ html.lenis body {
     background: #fff;
   }
   .btn-outline-dark {
-    box-shadow: inset 0 0 0 1px rgb(243 241 236 / 0.35);
+    box-shadow: inset 0 0 0 1px rgb(247 249 251 / 0.35);
     color: var(--color-paper);
   }
   .btn-outline-dark:hover {
@@ -371,7 +389,7 @@ html.lenis body {
   /* Formulare auf dunklem Grund */
   .on-dark .field {
     color: var(--color-paper);
-    border-bottom-color: rgb(243 241 236 / 0.4);
+    border-bottom-color: rgb(247 249 251 / 0.4);
   }
   .on-dark .field:hover {
     border-bottom-color: var(--color-paper);
@@ -387,7 +405,7 @@ html.lenis body {
     color: var(--color-paper);
   }
   .on-dark .choice {
-    box-shadow: inset 0 0 0 1px rgb(243 241 236 / 0.35);
+    box-shadow: inset 0 0 0 1px rgb(247 249 251 / 0.35);
   }
   .on-dark .choice:hover {
     box-shadow: inset 0 0 0 1px var(--color-paper);
@@ -555,20 +573,20 @@ html.lenis body {
 
 @keyframes underline-redraw {
   0% {
-    background-size: 100% 1px;
-    background-position: 100% 100%;
+    transform: scaleX(1);
+    transform-origin: right;
   }
   45% {
-    background-size: 0 1px;
-    background-position: 100% 100%;
+    transform: scaleX(0);
+    transform-origin: right;
   }
   46% {
-    background-size: 0 1px;
-    background-position: 0 100%;
+    transform: scaleX(0);
+    transform-origin: left;
   }
   100% {
-    background-size: 100% 1px;
-    background-position: 0 100%;
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 
@@ -731,13 +749,13 @@ html.lenis body {
 
 /* Durchgestrichenes Problem: die Linie zeichnet sich, sobald die Zeile eingeblendet ist */
 .strike {
-  background: linear-gradient(currentColor, currentColor) 0 58% / 100% 1px no-repeat;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  transition: background-size 0.9s var(--ease-cs) 0.15s;
+  text-decoration-line: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: currentColor;
+  transition: text-decoration-color 0.9s var(--ease-cs) 0.15s;
 }
 .js-motion [data-reveal]:not([data-revealed]) .strike {
-  background-size: 0 1px;
+  text-decoration-color: transparent;
 }
 
 /* Hero-Bildfläche: höchstens native Framegröße (Desktop) */
@@ -888,8 +906,8 @@ footer[data-no-top] {
   border-radius: 4px;
   overflow: hidden;
   box-shadow:
-    0 1px 2px rgb(14 16 19 / 0.12),
-    0 6px 14px -6px rgb(14 16 19 / 0.28);
+    0 1px 2px rgb(11 18 32 / 0.12),
+    0 6px 14px -6px rgb(11 18 32 / 0.28);
 }
 .story-tile img {
   display: block;
@@ -914,7 +932,7 @@ footer[data-no-top] {
   border-radius: 999px;
   box-shadow:
     0 0 0 0.06em var(--color-paper),
-    0 4px 10px -4px rgb(14 16 19 / 0.35);
+    0 4px 10px -4px rgb(11 18 32 / 0.35);
 }
 .story-team img + img {
   margin-left: -0.32em;
@@ -980,12 +998,9 @@ footer[data-no-top] {
     font-size: 1.75rem;
   }
 }
-/* Färbung je Wort: --p von 0 (hell, 16 % Textton) bis 1 (voller Textton bzw. Markenblau) */
-.js-motion .story-w {
-  color: color-mix(in oklab, var(--color-ink) calc(16% + 84% * var(--p, 0)), var(--color-paper));
-}
-.js-motion .story-w.is-blue {
-  color: color-mix(in oklab, var(--color-blue) calc(var(--p, 0) * 100%), color-mix(in oklab, var(--color-ink) 16%, var(--color-paper)));
+/* Letzter Satz endet in Markenblau */
+.story-w.is-blue {
+  --scrub-to: var(--color-blue);
 }
 /* Kacheln: erscheinen mit ruhiger Feder (0,6 → 1, kleine Drehung pendelt auf 0) */
 .js-motion .story-tile > span {
@@ -1050,9 +1065,23 @@ footer[data-no-top] {
     min-height: 0;
   }
 }
-/* Wort-für-Wort-Färbung wie im Scroll-Text der Startseite, Endfarbe Textton */
+/* Färbeeffekt (Buchstaben bzw. Wörter): --p von 0 (gedämpft, 16 % der Endfarbe) bis 1 (volle Endfarbe).
+   Endfarbe und Grund lassen sich je Abschnitt setzen (dunkle Abschnitte: Klarweiß auf Navy). Keine Verläufe. */
+.js-motion .scrub-l,
 .js-motion .scrub-w {
-  color: color-mix(in oklab, var(--color-ink) calc(16% + 84% * var(--p, 0)), var(--color-paper));
+  color: color-mix(in oklab, var(--scrub-to, var(--color-ink)) calc(16% + 84% * var(--p, 0)), var(--scrub-from, var(--color-paper)));
+}
+.on-dark {
+  --scrub-to: var(--color-paper);
+  --scrub-from: var(--color-night);
+}
+.scrub-accent {
+  --scrub-to: var(--color-blue);
+  color: var(--color-blue);
+}
+.on-dark .scrub-accent {
+  --scrub-to: var(--color-logo-sky);
+  color: var(--color-logo-sky);
 }
 
 /* --- Leistungen: „Der Wisch“ ------------------------------------------------ */
@@ -1083,36 +1112,47 @@ footer[data-no-top] {
   inset: 0;
   will-change: clip-path;
 }
-/* Abzieher: Gummilippe vorn, Metallschiene dahinter, davor ein schmaler Wasserfilm */
+/* Abzieher: Metallschiene, Gummilippe und ein schmaler Wasserfilm davor, als flache Streifen (kein Verlauf) */
 .js-motion .wipe-blade {
-  display: block;
+  display: flex;
   position: absolute;
   top: -3%;
   bottom: -3%;
   left: 0;
-  width: 15px;
-  margin-left: -15px;
+  width: 22px;
+  margin-left: -16px;
   rotate: 0.8deg;
-  background: linear-gradient(90deg, #6f7880 0, #c9d0d6 24%, #8a939b 48%, #3a4047 62%, #121518 70%, #262b31 86%, #0e1013 100%);
-  box-shadow:
-    -14px 0 28px rgb(255 255 255 / 0.1),
-    3px 0 6px rgb(14 16 19 / 0.25);
   will-change: transform;
 }
-.js-motion .wipe-blade::after {
-  content: '';
-  position: absolute;
-  inset-block: 0;
-  left: 100%;
-  width: 12px;
-  background: linear-gradient(90deg, rgb(255 255 255 / 0.32), rgb(255 255 255 / 0.08) 45%, transparent);
+.wipe-blade > i {
+  display: block;
+  height: 100%;
+}
+.wipe-blade > i:nth-child(1) {
+  width: 4px;
+  background: #8a939b;
+}
+.wipe-blade > i:nth-child(2) {
+  width: 3px;
+  background: #c9d0d6;
+}
+.wipe-blade > i:nth-child(3) {
+  width: 3px;
+  background: #3a4047;
+}
+.wipe-blade > i:nth-child(4) {
+  width: 6px;
+  background: #121518;
+}
+.wipe-blade > i:nth-child(5) {
+  width: 6px;
+  background: rgb(255 255 255 / 0.18);
 }
 .wipe-copy {
   position: absolute;
   inset-inline: 0;
   bottom: 0;
   padding-block: 8rem clamp(2.5rem, 6vw, 5rem);
-  background: linear-gradient(to top, rgb(14 16 19 / 0.62), rgb(14 16 19 / 0.28) 55%, transparent);
 }
 .js-motion .wipe-copy h2 {
   opacity: var(--h, 0);
@@ -1339,9 +1379,8 @@ footer[data-no-top] {
 }
 
 /* ==========================================================================
-   Vorhang-Übergänge (src/lib/curtains.ts): neuer Abschnitt fährt über den vorherigen.
-   Hintergrund des neuen Abschnitts beginnt unter der gerundeten Kante; Rundung, Ecken-Füllung und Schatten
-   sind eigene Elemente, damit nur opacity animiert wird.
+   Vorhang-Übergänge (src/lib/curtains.ts, nur Desktop): neuer Abschnitt fährt über den vorherigen.
+   Die gerundete Kante ragt als flache Fläche in der Farbe des neuen Abschnitts 12 px nach oben.
    ========================================================================== */
 .curtain-prev,
 .curtain-next {
@@ -1349,15 +1388,6 @@ footer[data-no-top] {
 }
 .curtain-prev {
   will-change: transform;
-}
-.curtain-next {
-  --curtain-r: 12px;
-  background: linear-gradient(var(--curtain-bg), var(--curtain-bg)) 0 var(--curtain-r) / 100% 100% no-repeat !important;
-}
-@media (max-width: 767px) {
-  .curtain-next {
-    --curtain-r: 8px;
-  }
 }
 .curtain-dim {
   position: absolute;
@@ -1371,8 +1401,8 @@ footer[data-no-top] {
 .curtain-cap {
   position: absolute;
   inset-inline: 0;
-  top: 0;
-  height: var(--curtain-r);
+  bottom: 100%;
+  height: 12px;
   pointer-events: none;
 }
 .curtain-cap > span {
@@ -1381,29 +1411,114 @@ footer[data-no-top] {
   background: var(--curtain-bg);
 }
 .curtain-round {
-  border-radius: var(--curtain-r) var(--curtain-r) 0 0;
+  border-radius: 12px 12px 0 0;
 }
 .curtain-square {
   opacity: 0;
   will-change: opacity;
 }
-/* weicher Schatten nach oben, über dem zurücktretenden Abschnitt */
-.curtain-cap > .curtain-shadow {
-  inset: auto 0 100% 0;
-  height: 56px;
-  background: linear-gradient(to top, rgb(11 15 23 / 0.2), rgb(11 15 23 / 0.06) 45%, transparent);
-  will-change: opacity;
+
+/* ==========================================================================
+   Liquid Glass, gezielt an zwei Stellen: Kopfzeile nach dem Scrollen und untere Aktionsleiste (Handy).
+   Milchiges Glas mit Weichzeichnung und leichter Sättigung, feine helle Kante oben. Ohne backdrop-filter: deckend.
+   ========================================================================== */
+.glass {
+  background-color: var(--color-paper);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background-color: rgb(247 249 251 / 0.72);
+    -webkit-backdrop-filter: blur(18px) saturate(1.7);
+    backdrop-filter: blur(18px) saturate(1.7);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.85);
+  }
+}
+/* Lichtreflexion: ein weicher, heller Streifen, der beim Scrollen langsam durch das Glas wandert */
+.glass-glint {
+  position: absolute;
+  inset-block: 0;
+  left: -200px;
+  width: 140px;
+  background: rgb(255 255 255 / 0.35);
+  filter: blur(22px);
+  transform: translateX(var(--glint, 0px)) skewX(-18deg);
+  pointer-events: none;
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .glass-glint {
+    display: none;
+  }
 }
 
-/* Bild-Brücke: Foto mittig auf der Grenze zwischen zwei Abschnitten */
-/* Größe so, dass das Foto samt Parallax-Weg im Abschnittsabstand bleibt und nie Text überdeckt */
-.bridge-photo {
-  --bridge-y: -50%;
-  width: clamp(7rem, 15vw, 13.5rem);
+/* Partner-Ablauf: Zeilen decken sich nacheinander von links auf (Abdeckung fährt nach rechts ab) */
+.row-reveal {
+  overflow: hidden;
 }
-@media (max-width: 767px) {
-  /* Handy: kleinere Abstände, das Foto liegt etwas mehr im oberen Abschnitt */
-  .bridge-photo {
-    --bridge-y: -64%;
-  }
+.row-mask {
+  display: none;
+}
+.js-motion .row-mask {
+  display: block;
+  position: absolute;
+  inset: 1px 0 0;
+  background: var(--color-paper);
+  transform: translateX(101%);
+  transition: transform 1s var(--ease-cs) calc(var(--i, 0) * 0.12s);
+  pointer-events: none;
+}
+.js-motion [data-reveal]:not([data-revealed]).row-reveal .row-mask {
+  transform: translateX(0);
+}
+
+/* „Das kennen Sie vielleicht“: Problem wird Buchstabe für Buchstabe weggewischt (--w: 0 bis 1).
+   Ohne Bewegung steht es gleich durchgestrichen und gedämpft da. */
+.wipe-l {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 1px;
+  color: color-mix(in oklab, var(--color-muted-dark) 70%, var(--color-night));
+}
+.js-motion .wipe-l {
+  color: color-mix(in oklab, var(--color-muted-dark) calc(100% - 30% * var(--w, 0)), var(--color-night));
+  text-decoration-color: color-mix(in oklab, var(--color-muted-dark) calc(100% * var(--w, 0)), transparent);
+}
+
+/* Gründerporträts: Schwarzweiß-Kopie über dem Farbfoto; ohne Bewegung ausgeblendet */
+.founder-gray {
+  display: none;
+}
+.js-motion .founder-gray {
+  display: block;
+}
+
+/* Karte Einzugsgebiet: Ortsnamen als HTML, Hinweis beim Überfahren, Wolken beim Vogelflug */
+.map-label {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.map-label.is-hq {
+  font-size: 0.9375rem;
+}
+.map-tip {
+  position: absolute;
+  transform: translate(14px, -50%);
+  padding: 0.45rem 0.7rem;
+  background: var(--color-paper);
+  border-left: 1px solid var(--color-ink);
+  white-space: nowrap;
+}
+.map-cloud {
+  position: absolute;
+  inset: -20%;
+  background-size: cover;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.maplibregl-ctrl-attrib {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
 }

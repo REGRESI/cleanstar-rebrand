@@ -88,6 +88,10 @@ export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, l
       },
     })
     activity()
+    // Der Pin fügt Scrollweg ein: Alle Abschnitte darunter (Scroll-Text) müssen ihre Positionen neu berechnen.
+    // Sonst stimmen sie nach einem Neuladen nicht, wenn dieser Trigger erst nach den anderen entsteht.
+    ScrollTrigger.sort()
+    ScrollTrigger.refresh()
     return () => {
       window.clearTimeout(timer)
       st.kill()

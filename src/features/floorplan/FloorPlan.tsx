@@ -6,7 +6,7 @@ import { EASE_CS_ARRAY } from '@/lib/ease'
 import { Segments } from '@/features/tools/ui'
 
 const LINE = 'var(--color-line)'
-const INK = 'rgb(14 16 19 / 0.24)'
+const INK = 'rgb(11 18 32 / 0.24)'
 
 /** Möbel und Einbauten als dezente Linien (rein dekorativ) */
 function Furniture() {
@@ -107,7 +107,7 @@ export function FloorPlan() {
                     fill={on ? 'rgb(26 79 224 / 0.1)' : 'var(--color-paper)'}
                     stroke={on ? 'var(--color-blue)' : LINE}
                     strokeWidth={on ? 2.5 : 1.5}
-                    className="transition-[fill] duration-300 group-hover:fill-[rgb(14_16_19/0.04)] group-focus-visible:stroke-[var(--color-blue)]"
+                    className="transition-[fill] duration-300 group-hover:fill-[rgb(11_18_32/0.04)] group-focus-visible:stroke-[var(--color-blue)]"
                   />
                 </g>
               )

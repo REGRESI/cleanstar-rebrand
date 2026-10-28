@@ -6,3 +6,4 @@ dist-preview
 .DS_Store
 .lighthouse
 site-check/
+scripts/map/.data/

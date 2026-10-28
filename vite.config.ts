@@ -2,7 +2,7 @@ import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { viteSingleFile } from 'vite-plugin-singlefile'
-import { readFileSync, existsSync, readdirSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
 import sharp from 'sharp'
 // @ts-expect-error: Hilfsskript ohne Typen
 import { previewGateBody, previewGateHead } from './scripts/preview-gate.mjs'
@@ -25,7 +25,8 @@ function downloadsPlugin(inline: boolean, base = '/'): Plugin {
       if (loadId !== '\0' + id) return null
       const entries = Object.entries(files).map(([key, file]) => {
         const href = inline ? 'data:application/pdf;base64,' + readFileSync(`${root}public/downloads/${file}`).toString('base64') : `${base}downloads/${file}`
-        return `  ${key}: { href: ${JSON.stringify(href)}, file: ${JSON.stringify(file)} },`
+        const size = statSync(`${root}public/downloads/${file}`).size
+        return `  ${key}: { href: ${JSON.stringify(href)}, file: ${JSON.stringify(file)}, size: ${size} },`
       })
       return `export default {\n${entries.join('\n')}\n}`
     },

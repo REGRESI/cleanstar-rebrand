@@ -55,6 +55,7 @@ export default function Services() {
       <section className="section bg-surface" aria-labelledby="incl-title">
         <div className="container-site">
           <SectionHeading
+            scrub
             layout="split"
             eyebrow="Bei jeder Leistung"
             title="Das ist immer dabei."

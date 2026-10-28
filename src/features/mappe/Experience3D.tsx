@@ -404,10 +404,7 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
               hoverZone === side ? 'size-12' : 'size-0',
             )}
             style={{
-              background:
-                side === 'right'
-                  ? 'linear-gradient(315deg, transparent 0%, transparent 49%, rgba(40,30,15,0.18) 50%, #e9e3d6 53%, #f5f2eb 100%)'
-                  : 'linear-gradient(45deg, transparent 0%, transparent 49%, rgba(40,30,15,0.18) 50%, #e9e3d6 53%, #f5f2eb 100%)',
+              background: `url(/mappe/shade/ecke-${side === 'right' ? 'r' : 'l'}.png) 0 0 / 100% 100% no-repeat`,
               boxShadow: side === 'right' ? '-3px -3px 8px -4px rgba(30,25,15,0.35)' : '3px -3px 8px -4px rgba(30,25,15,0.35)',
             }}
           />

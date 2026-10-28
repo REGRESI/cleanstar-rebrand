@@ -1,11 +1,12 @@
 import { useRef, type CSSProperties } from 'react'
 import { Picture } from '@/components/ui/Picture'
 import type { ImageId } from '@/content/images'
-import { paintWords, span, spanEase, useScrollScene } from '@/lib/scrollScene'
+import { paintLetters, span, spanEase, useScrollScene } from '@/lib/scrollScene'
+import { Letters } from '@/components/ui/ScrubText'
 
 /**
  * Über uns, Scroll-Stopper: Die drei Gründerporträts liegen zunächst auseinander und leicht versetzt und rücken beim
- * Scrollen zu einer ruhigen Dreierreihe zusammen. Darunter färbt sich die Aussage Wort für Wort (wie auf der Startseite).
+ * Scrollen zu einer ruhigen Dreierreihe zusammen und färben sich dabei nacheinander von Schwarzweiß zu Farbe. Darunter färbt sich die Aussage Buchstabe für Buchstabe (wie auf der Startseite).
  * Ohne Bewegung: Reihe steht, Text in voller Farbe.
  */
 
@@ -25,20 +26,28 @@ export function FoundersScene({ founders }: { founders: { name?: string | null; 
     const root = outer.current
     if (!root) return
     root.style.setProperty('--k', spanEase(t, 0.02, 0.48).toFixed(4))
-    const words = Array.from(root.querySelectorAll<HTMLElement>('[data-w]'))
-    last.current ??= new Float32Array(words.length).fill(-1)
-    paintWords(words, span(t, 0.36, 0.9), last.current)
+    // Porträts färben sich nacheinander ein (Schwarzweiß-Kopie blendet aus)
+    root.querySelectorAll<HTMLElement>('[data-gray]').forEach((g, i) => g.style.setProperty('opacity', (1 - spanEase(t, 0.06 + i * 0.1, 0.36 + i * 0.1)).toFixed(3)))
+    const letters = Array.from(root.querySelectorAll<HTMLElement>('[data-l]'))
+    last.current ??= new Float32Array(letters.length).fill(-1)
+    paintLetters(letters, span(t, 0.36, 0.9), last.current)
   })
 
   return (
     <section ref={outer} className="scene" style={{ '--scene-run': '170svh', '--scene-run-m': '120svh' } as CSSProperties} aria-labelledby="founders-intro">
       <div className="scene-stage">
         <div className="founders-stage container-site flex w-full flex-col items-center text-center">
-          <p className="t-label">Die Gründer</p>
-          <ul className="founders-row mx-auto mt-8 lg:mt-12">
+          <p className="t-label">Über uns</p>
+          <p className="t-h1 mt-3">Drei Gründer.</p>
+          <ul className="founders-row mx-auto mt-6 lg:mt-10">
             {founders.map((f, i) => (
               <li key={i} style={{ '--dx': START[i].dx, '--dy': START[i].dy, '--rot': START[i].rot } as CSSProperties}>
-                <Picture id={f.image as ImageId} ratio="4:5" sizes="(min-width:1024px) 15rem, 30vw" />
+                <div className="relative">
+                  <Picture id={f.image as ImageId} ratio="4:5" sizes="(min-width:1024px) 15rem, 30vw" />
+                  <div data-gray aria-hidden className="founder-gray pointer-events-none absolute inset-0">
+                    <Picture id={f.image as ImageId} ratio="4:5" sizes="(min-width:1024px) 15rem, 30vw" className="grayscale" />
+                  </div>
+                </div>
                 <p className="t-meta mt-3 text-ink">{f.name}</p>
               </li>
             ))}
@@ -47,8 +56,8 @@ export function FoundersScene({ founders }: { founders: { name?: string | null; 
             {STATEMENT.split(' ').map((w, i) => (
               <span key={i}>
                 {i > 0 && ' '}
-                <span data-w className="scrub-w text-ink">
-                  {w}
+                <span className="whitespace-nowrap text-ink">
+                  <Letters text={w} />
                 </span>
               </span>
             ))}

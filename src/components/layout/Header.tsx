@@ -23,6 +23,8 @@ const mobileSecondary = [
  */
 export function Header() {
   const [hidden, setHidden] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const bar = useRef<HTMLDivElement>(null)
   const [menu, setMenu] = useState(false)
   const { pathname, key } = useLocation()
   const last = useRef(0)
@@ -34,6 +36,9 @@ export function Header() {
       raf = requestAnimationFrame(() => {
         raf = 0
         const y = window.scrollY
+        setScrolled(y > 24)
+        // Lichtreflexion im Glas wandert langsam mit der Scrollposition (nur transform)
+        bar.current?.style.setProperty('--glint', `${(y * 0.35) % (window.innerWidth + 400)}px`)
         const d = y - last.current
         if (y < 96) setHidden(false)
         else if (d > 6) setHidden(true)
@@ -67,12 +72,19 @@ export function Header() {
     // Nur die Leiste wird verschoben: Ein transformierter <header> wäre Bezugsrahmen für das feste Vollbild-Menü
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
       <div
+        ref={bar}
         className={cn(
-          'pointer-events-auto relative z-10 border-b border-line bg-paper transition-transform duration-500 ease-cs focus-within:translate-y-0',
+          'pointer-events-auto relative z-10 border-b border-line bg-paper transition-[transform,background-color] duration-500 ease-cs focus-within:translate-y-0',
+          scrolled && !menu && 'glass',
           hidden && !menu && '-translate-y-full',
         )}
       >
-        <div className="container-site flex h-16 items-center justify-between gap-6 lg:h-[4.75rem]">
+        {scrolled && !menu && (
+          <span aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+            <span className="glass-glint" />
+          </span>
+        )}
+        <div className="container-site relative flex h-16 items-center justify-between gap-6 lg:h-[4.75rem]">
           <HomeLink label={`${company.name}, zur Startseite`} className="shrink-0" onNavigate={() => setMenu(false)}>
             <Logo className="w-[124px] lg:w-[142px]" />
           </HomeLink>

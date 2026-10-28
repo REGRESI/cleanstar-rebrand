@@ -119,7 +119,6 @@ export function Hero() {
     }
   }, [isMobile])
 
-  const loadingVisible = desktopVideo && seq.load && seq.progress < 1
   const morning = mode === 'static-morning'
 
   return (
@@ -182,7 +181,7 @@ export function Hero() {
           {/* Lesbarkeit: ruhige Abdunklung, dazu ein Verlauf von unten hinter dem gesamten Textblock */}
           <div ref={shade} aria-hidden className="pointer-events-none absolute inset-0">
             <div className="absolute inset-0 bg-night/20" />
-            <div className="absolute inset-x-0 bottom-0 h-[80%] bg-[linear-gradient(to_top,rgb(11_15_23/0.88)_0%,rgb(11_15_23/0.7)_35%,rgb(11_15_23/0.32)_68%,rgb(11_15_23/0)_100%)] lg:h-[72%]" />
+            <div className="absolute inset-x-0 bottom-0 h-[80%] bg-[linear-gradient(to_top,rgb(10_26_51/0.88)_0%,rgb(10_26_51/0.7)_35%,rgb(10_26_51/0.32)_68%,rgb(10_26_51/0)_100%)] lg:h-[72%]" />
           </div>
 
           {/* Text: H1 aus Keyword-Zeile und Leitidee (Display), unten im Raster */}
@@ -233,7 +232,7 @@ export function Hero() {
                   <span className="relative mt-3 block h-px bg-paper/25">
                     <span
                       className="absolute inset-0 origin-left bg-paper transition-transform duration-300"
-                      style={{ transform: `scaleX(${loadingVisible ? seq.progress : (step + 1) / home.hero.sceneSteps.length})` }}
+                      style={{ transform: `scaleX(${(step + 1) / home.hero.sceneSteps.length})` }}
                     />
                   </span>
                 </div>

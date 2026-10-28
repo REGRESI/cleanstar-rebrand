@@ -11,7 +11,6 @@ import { FeatureColumns } from '@/components/ui/Editorial'
 import { FinalCta } from '@/components/home/FinalCta'
 import { FoundersScene } from '@/components/scenes/FoundersScene'
 import { Collage } from '@/components/ui/Collage'
-import { Bridge } from '@/components/ui/Bridge'
 import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
 import { company } from '@/content/company'
 import { values } from '@/content/site'
@@ -135,7 +134,6 @@ export default function About() {
         </div>
       </section>
 
-      <Bridge id="svc-unterhalt" side="right" />
       <section className="section bg-surface" aria-labelledby="story-title">
         <div className="container-site grid-site gap-y-10">
           <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
@@ -161,7 +159,6 @@ export default function About() {
         </div>
       </section>
 
-      <Bridge id="trial-clean" side="right" />
       <section className="section" aria-labelledby="values-title">
         <div className="container-site">
           <SectionHeading layout="rail" eyebrow="Werte" title="Woran Sie uns messen können." id="values-title" />

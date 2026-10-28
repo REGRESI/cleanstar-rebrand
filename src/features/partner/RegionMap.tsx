@@ -161,7 +161,9 @@ export function RegionMap({ onSelect }: { onSelect: (regionName: string) => void
             Partner gesucht
           </li>
           <li className="flex items-center gap-2">
-            <span aria-hidden className="size-3 bg-[repeating-linear-gradient(45deg,rgb(14_16_19/0.3)_0_1.5px,transparent_1.5px_5px)] ring-1 ring-ink/40" />
+            <svg aria-hidden viewBox="0 0 12 12" className="size-3 ring-1 ring-ink/40">
+              <path d="M-2 4 4 -2M-2 10 10 -2M2 14 14 2M8 14 14 8" stroke="var(--color-ink)" strokeOpacity="0.3" strokeWidth="1.5" />
+            </svg>
             Bereits vergeben
           </li>
           {view === 'bw' && (

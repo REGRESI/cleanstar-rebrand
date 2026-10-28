@@ -1,6 +1,9 @@
 import { Fragment, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { Sparkle } from '@/components/ui/Sparkle'
+import { Letters } from '@/components/ui/ScrubText'
+import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
+import { paintLetters } from '@/lib/scrollScene'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
@@ -68,26 +71,18 @@ export function ScrollStory() {
     const root = outer.current
     if (!root || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
     const words = Array.from(root.querySelectorAll<HTMLElement>('[data-w]'))
+    const letters = Array.from(root.querySelectorAll<HTMLElement>('[data-l]'))
+    // letzter Buchstabe je Wort: Kacheln erscheinen, wenn die Färbung das Wort davor erreicht hat
+    const lastOf = words.map((w) => letters.indexOf(w.lastElementChild as HTMLElement))
     const tiles = Array.from(root.querySelectorAll<HTMLElement>('[data-tile]'))
     const cta = root.querySelector<HTMLElement>('[data-story-cta]')
-    const n = words.length
-    const soft = 2.6 // so viele Wörter breit ist der weiche Übergang
+    const n = letters.length
     const last = new Float32Array(n).fill(-1)
     let finished = false
     const apply = (t: number) => {
-      // Färbung zwischen 4 % und 86 % des Scrollwegs, danach Ruhe und Abschluss
-      const x = Math.max(0, Math.min(1, (t - 0.04) / 0.82)) * (n + soft)
-      for (let i = 0; i < n; i++) {
-        const p = Math.max(0, Math.min(1, (x - i) / soft))
-        if (Math.abs(p - last[i]) > 0.002 || (p === 1 && last[i] !== 1) || (p === 0 && last[i] !== 0)) {
-          last[i] = p
-          words[i].style.setProperty('--p', p.toFixed(3))
-        }
-      }
-      for (const el of tiles) {
-        const i = Number(el.dataset.tile)
-        el.toggleAttribute('data-on', last[i] > 0.55)
-      }
+      // Färbung zwischen 4 % und 86 % des Scrollwegs, Buchstabe für Buchstabe mit weicher Überlappung, danach Abschluss
+      paintLetters(letters, Math.max(0, Math.min(1, (t - 0.04) / 0.82)), last)
+      for (const el of tiles) el.toggleAttribute('data-on', last[lastOf[Number(el.dataset.tile)]] > 0.55)
       const complete = last[n - 1] >= 1
       cta?.toggleAttribute('data-on', t > 0.9)
       if (complete && !finished) {
@@ -106,6 +101,8 @@ export function ScrollStory() {
       animation: gsap.to({}, { duration: 1 }),
       onUpdate: (self) => apply(self.progress),
     })
+    // sofort den richtigen Stand zeigen (z. B. nach einem Neuladen mitten im Abschnitt)
+    apply(st.progress)
     return () => st.kill()
   }, [])
 
@@ -118,7 +115,7 @@ export function ScrollStory() {
     w++
     const word = (
       <span data-w className={cn('story-w', t.blue ? 'is-blue text-blue' : 'text-ink')}>
-        {t.text}
+        <Letters text={t.text} />
       </span>
     )
     const next = tokens[k + 1]
@@ -137,7 +134,7 @@ export function ScrollStory() {
             </span>
             {next.after && (
               <span data-w className="story-w text-ink">
-                {next.after}
+                <Letters text={next.after} />
               </span>
             )}
           </span>
@@ -170,12 +167,7 @@ export function ScrollStory() {
             <QuoteButton size="lg" arrow>
               Kostenlose Besichtigung
             </QuoteButton>
-            <p className="t-meta inline-flex items-center gap-2 text-ink">
-              <svg viewBox="0 0 16 16" className="size-4 text-blue" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
-                <path d="M3 8.5 6.5 12 13 4.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Erster Monat jederzeit kündbar
-            </p>
+            <RiskFreeSeal className="text-[0.9375rem]" />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { prefersReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
 
@@ -19,6 +19,7 @@ export function Sparkle({
   delay = 0,
   className,
   style,
+  tone = '#0086F6',
 }: {
   play?: boolean
   onReveal?: boolean
@@ -26,8 +27,9 @@ export function Sparkle({
   delay?: number
   className?: string
   style?: CSSProperties
+  /** Flache Farbe aus den Logo-Blautönen (#00CAF9, #0086F6, #0060F4) */
+  tone?: string
 }) {
-  const id = useId()
   const ref = useRef<SVGSVGElement>(null)
   const [trigger, setTrigger] = useState(false)
   const [fired, setFired] = useState(false)
@@ -62,15 +64,8 @@ export function Sparkle({
 
   return (
     <svg ref={ref} aria-hidden viewBox="190 501 105 110" className={cn('sparkle', fired && 'is-on', className)} style={{ ...style, ['--sd' as string]: `${delay}s` }}>
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="0.4" y2="1">
-          <stop offset="0" stopColor="#00CAF9" />
-          <stop offset="0.55" stopColor="#0086F6" />
-          <stop offset="1" stopColor="#0060F4" />
-        </linearGradient>
-      </defs>
       <path
-        fill={`url(#${id})`}
+        fill={tone}
         d="M246 503C251.64 545.16 261.04 557.56 293 565 261.04 570.28 251.64 579.08 246 609 239.52 579.08 228.72 570.28 192 565 228.72 557.56 239.52 545.16 246 503Z"
       />
     </svg>

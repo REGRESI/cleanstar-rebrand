@@ -164,3 +164,43 @@ export function InlineLinks({ items, className }: { items: { to: string; label: 
     </ul>
   )
 }
+
+/**
+ * Ortsliste als ausgewogenes Raster: Desktop 4, Tablet 3, Handy 2 Spalten, Haarlinien zwischen den Zeilen.
+ * Die Anzahl wird auf ein Vielfaches von 12 gekürzt (bei weniger Einträgen auf 8 bzw. 6), damit keine Zeile halb leer bleibt.
+ */
+export function PlaceGrid({ items, className }: { items: { to: string; label: ReactNode }[]; className?: string }) {
+  const n = items.length
+  const k = n >= 12 ? 12 * Math.floor(n / 12) : n >= 8 ? 8 : n >= 6 ? 6 : n
+  return (
+    <ul className={cn('grid grid-cols-2 gap-x-6 border-t border-line sm:grid-cols-3 lg:grid-cols-4', className)}>
+      {items.slice(0, k).map((it) => (
+        <li key={it.to} className="border-b border-line">
+          <Link to={it.to} className="ulink block py-3.5 text-[1rem] text-ink">
+            {it.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+/** Kurze Linkliste als fließende Zeile mit Trennpunkten (für wenige Einträge, keine halb leeren Rasterzeilen) */
+export function DotList({ items, className }: { items: { to: string; label: ReactNode }[]; className?: string }) {
+  return (
+    <ul className={cn('text-[1.0625rem] leading-[2]', className)}>
+      {items.map((it, i) => (
+        <li key={it.to} className="inline">
+          <Link to={it.to} className="ulink text-ink">
+            {it.label}
+          </Link>
+          {i < items.length - 1 && (
+            <span aria-hidden className="mx-3 text-muted">
+              ·
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}

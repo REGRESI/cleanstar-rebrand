@@ -11,7 +11,7 @@ import { ToolsLine } from '@/components/home/ToolsLine'
 import { FinalCta } from '@/components/home/FinalCta'
 import { Seo } from '@/components/ui/Seo'
 import { Answer } from '@/components/ui/Answer'
-import { Bridge } from '@/components/ui/Bridge'
+import { ImageBand } from '@/components/ui/ImageBand'
 import { home } from '@/content/site'
 import { faqs } from '@/content/faq'
 import { faqSchema, localBusinessSchema, websiteSchema } from '@/lib/schema'
@@ -38,7 +38,7 @@ export default function Home() {
       <Hero />
       <Chunk>
         <ScrollStory />
-        <Bridge id="evening-clean" side="right" />
+        <ImageBand id="evening-clean" />
       </Chunk>
       <Chunk>
         <ProblemSolution />
@@ -47,7 +47,6 @@ export default function Home() {
         <ServicesGrid />
       </Chunk>
       <Chunk>
-        <Bridge id="team-work" side="left" />
         <Proof />
         <Founders />
         <AreaTeaser />

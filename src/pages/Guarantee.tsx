@@ -61,6 +61,7 @@ export default function Guarantee() {
       <section className="on-dark section bg-night text-paper" aria-labelledby="complaint-title">
         <div className="container-site">
           <SectionHeading
+            scrub
             layout="split"
             eyebrow="Reklamation"
             title="Wenn etwas fehlt: ein Anruf genügt."

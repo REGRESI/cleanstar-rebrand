@@ -122,7 +122,7 @@ export default function Leistungsmappe() {
         aria-label="Leistungsmappe zum Blättern"
       >
         {/* Licht von oben links, zum Rand hin etwas dunkler; darüber feines Filmkorn (die Fläche wirkt wie fotografiert, nicht hochskaliert) */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(120%_90%_at_25%_10%,transparent_40%,rgba(0,0,0,0.28))]" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-[1] bg-[url(/mappe/shade/vignette.png)] bg-[length:100%_100%]" />
         <div aria-hidden className="mappe-grain pointer-events-none absolute inset-0 z-[1]" />
 
         <RecipientCtx.Provider value={recipient}>

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { RevealText } from './RevealText'
+import { ScrubText } from './ScrubText'
 import { cn } from '@/lib/cn'
 
 /**
@@ -20,6 +21,7 @@ export function SectionHeading({
   layout = 'stack',
   size = 'h2',
   rule,
+  scrub,
 }: {
   eyebrow?: string
   title: string
@@ -32,7 +34,10 @@ export function SectionHeading({
   size?: 'h1' | 'h2' | 'h3'
   /** Haarlinie über dem Abschnitt (Standard bei rail und split) */
   rule?: boolean
+  /** Überschrift färbt sich beim Hineinscrollen Buchstabe für Buchstabe (je Seite höchstens ein bis zwei Stellen) */
+  scrub?: boolean
 }) {
+  const renderTitle = (c?: string) => (scrub ? <ScrubText as={as} text={title} className={c} id={id} /> : <RevealText as={as} text={title} className={c} id={id} />)
   // Abschnittslabels ohne Nummer
   const label = eyebrow
   const titleCls = size === 'h1' ? 't-h1' : size === 'h3' ? 't-h3' : 't-h2'
@@ -49,7 +54,7 @@ export function SectionHeading({
           </p>
         )}
         <div className={cn('col-span-12', label ? 'lg:col-span-9' : 'lg:col-span-10')}>
-          <RevealText as={as} text={title} className={cn(titleCls, 'max-w-[22ch]')} id={id} />
+          {renderTitle(cn(titleCls, 'max-w-[22ch]'))}
           {text && (
             <div className="t-lead measure mt-6 lg:mt-8" data-reveal>
               {text}
@@ -70,7 +75,7 @@ export function SectionHeading({
               {label}
             </p>
           )}
-          <RevealText as={as} text={title} className={titleCls} id={id} />
+          {renderTitle(titleCls)}
         </div>
         {text && (
           <div className="t-lead col-span-12 lg:col-span-4 lg:col-start-9" data-reveal>
@@ -89,7 +94,7 @@ export function SectionHeading({
           {label}
         </p>
       )}
-      <RevealText as={as} text={title} className={titleCls} id={id} />
+      {renderTitle(titleCls)}
       {text && (
         <div className={cn('t-lead measure mt-6', align === 'center' && 'mx-auto')} data-reveal>
           {text}

@@ -143,7 +143,7 @@ export default function Partner() {
       </Chunk>
       <Chunk>
         <ImageBand id="svc-halle" />
-        <ProcessTimeline eyebrow="Ablauf" title="In sieben Schritten zum Partner." steps={partnerSteps} id="partner-process-title" />
+        <ProcessTimeline variant="rows" eyebrow="Ablauf" title="In sieben Schritten zum Partner." steps={partnerSteps} id="partner-process-title" />
       </Chunk>
       <Chunk>
         <section className="section bg-surface" aria-labelledby="conditions-title">

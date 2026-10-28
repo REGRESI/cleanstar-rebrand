@@ -35,7 +35,17 @@ ${out.join('\n')}</svg>`)
 
 for (const w of [960, 1672]) {
   const h = Math.round((w * 941) / 1672)
-  await sharp(SRC).resize(w, h).webp({ quality: 80 }).toFile(`${OUT}/wisch-klar-${w}.webp`)
+  // Klares Foto: unten ins Bild gerechnete Abdunklung, damit die weiße Zeile darüber lesbar ist (kein CSS-Verlauf)
+  const shade = Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><defs><linearGradient id="s" x1="0" y1="1" x2="0" y2="0">` +
+      `<stop offset="0" stop-color="#0a1a33" stop-opacity="0.66"/><stop offset="0.3" stop-color="#0a1a33" stop-opacity="0.32"/><stop offset="0.55" stop-color="#0a1a33" stop-opacity="0"/>` +
+      `</linearGradient></defs><rect width="100%" height="100%" fill="url(#s)"/></svg>`,
+  )
+  await sharp(SRC)
+    .resize(w, h)
+    .composite([{ input: shade }])
+    .webp({ quality: 80 })
+    .toFile(`${OUT}/wisch-klar-${w}.webp`)
   // Beschlag: stark weichgezeichnet, aufgehellt und entsättigt, darüber ein milchiger Schleier und die Tropfen
   const fog = await sharp(SRC)
     .resize(w, h)

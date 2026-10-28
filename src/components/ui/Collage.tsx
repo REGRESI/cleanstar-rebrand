@@ -45,7 +45,7 @@ export function Collage({ layers, className }: { layers: [Layer, Layer, Layer]; 
     <div ref={root} className={cn('relative aspect-[6/5]', className)}>
       {layers.map((l, i) => (
         <div key={i} data-layer className={cn('absolute will-change-transform', LAYOUT[i].cls)}>
-          <div style={{ rotate: `${LAYOUT[i].rot}deg` }} className="shadow-[0_20px_40px_-24px_rgb(11_15_23/0.4)]">
+          <div style={{ rotate: `${LAYOUT[i].rot}deg` }} className="shadow-[0_20px_40px_-24px_rgb(10_26_51/0.4)]">
             {'id' in l ? <Picture id={l.id} aspect={RATIOS[i]} sizes="(min-width:1024px) 22vw, 50vw" /> : <div className={RATIOS[i]}>{l.node}</div>}
           </div>
         </div>

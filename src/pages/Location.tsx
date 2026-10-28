@@ -1,5 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { getLocation, locations, shortName } from '@/content/locations'
+import { locationExtra } from '@/content/locationsExtra'
+import { pricing } from '@/content/pricing'
 import { officeCities } from '@/content/officeCities'
 import { services, getService } from '@/content/services'
 import { company } from '@/content/company'
@@ -9,7 +11,7 @@ import { Answer } from '@/components/ui/Answer'
 import { ImageBand } from '@/components/ui/ImageBand'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { FaqBlock } from '@/components/ui/FaqBlock'
-import { InlineLinks, LinkRows, NumberedRows } from '@/components/ui/Editorial'
+import { DotList, LinkRows, NumberedRows } from '@/components/ui/Editorial'
 import { RevealText } from '@/components/ui/RevealText'
 import { FinalCta } from '@/components/home/FinalCta'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
@@ -31,26 +33,9 @@ export default function Location() {
     { name: short, path },
   ]
   const hq = l.minutes === 0
-  const faqs = [
-    {
-      q: `Wie schnell sind Sie in ${short} vor Ort?`,
-      a: hq
-        ? 'Offenburg ist unser Sitz. Wir sind in der Regel innerhalb kurzer Zeit bei Ihnen. ' + l.route
-        : `In ${short} sind wir in ungefähr ${l.minutes} Minuten vor Ort. ${l.route} Für die Besichtigung vereinbaren wir einen Termin, der Ihnen passt.`,
-    },
-    {
-      q: `Welche Reinigungsleistungen sind in ${short} am meisten gefragt?`,
-      a: `In ${short} fragen Unternehmen vor allem ${l.focus
-        .map((f) => getService(f.service)!.name)
-        .join(', ')
-        .replace(/, ([^,]*)$/, ' und $1')} an. ${l.focus[0].why} Alle Leistungen bekommen Sie mit einem Ansprechpartner und einem Angebot.`,
-    },
-    {
-      q: `Was kostet eine Büroreinigung in ${short}?`,
-      a: `Eine Büroreinigung in ${short} kostet bei uns 35 bis 45 € brutto pro Mitarbeiterstunde, dieselben Sätze wie überall im Ortenaukreis. Wie viele Stunden Ihr Objekt braucht, klären wir bei einer kostenlosen Besichtigung. Das Angebot erhalten Sie innerhalb von 48 Stunden.`,
-    },
-    l.faq,
-  ]
+  // Drei eigene Fragen je Ort (keine Vorlagen mit ausgetauschtem Ortsnamen)
+  const extra = locationExtra[l.slug]
+  const faqs = [l.faq, ...(extra?.faqs ?? [])]
   const office = getService('bueroreinigung')!
   const nearby = l.nearby.map((s) => getLocation(s)).filter(Boolean)
   const city = officeCities.find((c) => c.slug === l.slug)
@@ -112,14 +97,12 @@ export default function Location() {
                 <p className="mt-3 text-ink-2">{l.economy}</p>
               </div>
             </div>
-            <ul className="mt-12 border-t border-line">
-              {['Fester Ansprechpartner', 'Festes, eingewiesenes Team', 'Ersatzkraft bei Ausfall', 'Kostenlose Nachreinigung'].map((t, i) => (
-                <li key={t} className="flex gap-5 border-b border-line py-3.5">
-                  <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
-                  {t}
-                </li>
-              ))}
-            </ul>
+            {extra && (
+              <div className="mt-8 border-t border-line pt-5">
+                <h3 className="t-label">{short} in Kürze</h3>
+                <p className="mt-3 text-ink-2">{extra.character}</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -175,7 +158,7 @@ export default function Location() {
             <h2 id="loc-near" className="t-label col-span-12 lg:col-span-4">
               Auch in der Nähe
             </h2>
-            <InlineLinks
+            <DotList
               className="col-span-12 lg:col-span-8"
               items={nearby
                 .map((n) => ({ to: `/einzugsgebiet/${n!.slug}`, label: `Reinigungsfirma ${shortName(n!)}` }))
@@ -184,7 +167,16 @@ export default function Location() {
           </div>
         </nav>
       )}
-      <Answer className={nearby.length > 0 ? undefined : 'pt-20 sm:pt-28 lg:pt-36'}>
+      <Answer
+        className={nearby.length > 0 ? undefined : 'pt-20 sm:pt-28 lg:pt-36'}
+        facts={[
+          ['Ort', `${l.name}, ${company.serviceArea}`],
+          ['Fahrzeit', hq ? 'Unser Sitz' : `ca. ${l.minutes} Minuten ab Offenburg`],
+          ['Gefragt', l.focus.map((f) => getService(f.service)!.name).join(', ')],
+          ['Stundensatz', `${pricing.hourlyRateGrossMin} bis ${pricing.hourlyRateGrossMax} € brutto je Mitarbeiterstunde`],
+          ['Erreichbarkeit', 'Rund um die Uhr, Antwort innerhalb von 24 Stunden'],
+        ]}
+      >
         {hq
           ? `CleanStar ist eine Reinigungsfirma mit Sitz in Offenburg und reinigt Büros, Praxen und Gewerbeflächen in der ganzen Stadt, mit festem Team und festem Ansprechpartner.`
           : `CleanStar ist eine Reinigungsfirma aus Offenburg und reinigt Büros, Praxen und Gewerbeflächen in ${short}, rund ${l.minutes} Minuten von unserem Sitz entfernt, mit festem Team und festem Ansprechpartner.`}

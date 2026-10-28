@@ -7,7 +7,7 @@ import { scrollToId } from '@/lib/smooth-scroll'
 import { useHeroVisible } from '@/lib/heroVisibility'
 import { cn } from '@/lib/cn'
 
-/** Leiste am unteren Rand auf dem Handy: Anrufen, Rückruf und Angebot (auf /partner: Partneranfrage). Rechteckig, mit Haarlinien. */
+/** Leiste am unteren Rand auf dem Handy: Anrufen, Rückruf und Angebot (auf /partner: Partneranfrage). Rechteckig, mit Haarlinien, als milchiges Glas. */
 export function MobileBar() {
   const { open, isOpen } = useQuote()
   const callback = useCallbackRequest()
@@ -20,7 +20,7 @@ export function MobileBar() {
       aria-hidden={heroVisible || undefined}
       inert={heroVisible}
       className={cn(
-        'fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-[transform,opacity] duration-500 ease-cs lg:hidden',
+        'glass fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-[transform,opacity] duration-500 ease-cs lg:hidden',
         heroVisible && 'pointer-events-none translate-y-full opacity-0',
       )}
     >

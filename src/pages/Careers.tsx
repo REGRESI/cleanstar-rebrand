@@ -45,7 +45,7 @@ export default function Careers() {
       />
       <section className="section" aria-labelledby="why-title">
         <div className="container-site">
-          <SectionHeading layout="rail" eyebrow="Warum CleanStar" title="Was Sie bei uns erwartet." id="why-title" />
+          <SectionHeading scrub layout="rail" eyebrow="Warum CleanStar" title="Was Sie bei uns erwartet." id="why-title" />
           <FeatureColumns className="mt-14 lg:mt-20" items={careers.benefits} />
           <p className="mt-6 text-sm text-muted">
             <Todo title={careers.benefitsTodo}>{careers.benefitsTodo}</Todo>

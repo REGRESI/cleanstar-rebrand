@@ -10,7 +10,7 @@ import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
 import { ImageBand } from '@/components/ui/ImageBand'
 import { FaqBlock } from '@/components/ui/FaqBlock'
-import { InlineLinks } from '@/components/ui/Editorial'
+import { DotList } from '@/components/ui/Editorial'
 import { Button } from '@/components/ui/Button'
 import { FinalCta } from '@/components/home/FinalCta'
 import { ContactPerson } from '@/components/ui/ContactPerson'
@@ -124,7 +124,7 @@ export default function OfficeCity() {
           <h2 id="oc-more" className="t-label col-span-12 lg:col-span-4">
             Mehr zu {c.name} und Umgebung
           </h2>
-          <InlineLinks
+          <DotList
             className="col-span-12 lg:col-span-8"
             items={[
               { to: `/einzugsgebiet/${loc.slug}`, label: `Alle Leistungen in ${c.name}` },

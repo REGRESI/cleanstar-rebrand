@@ -112,14 +112,14 @@ export function Sheet({ side, folio, children, className, label = 'Leistungsmapp
         <div className="relative flex min-h-0 flex-1 flex-col">{children}</div>
         <div className={cn('mt-6 t-meta', side === 'left' ? 'text-left' : 'text-right')}>{folio}</div>
       </div>
-      {/* Falz: weicher Schatten zur Bindung, leichter Glanz außen */}
+      {/* Falz: weicher Schatten zur Bindung, leichter Glanz außen (Texturen aus scripts/mappe-shading.mjs) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-y-0 w-24"
         style={
           side === 'left'
-            ? { right: 0, background: 'linear-gradient(to left, rgba(40,30,15,0.16), rgba(40,30,15,0.05) 30%, transparent)' }
-            : { left: 0, background: 'linear-gradient(to right, rgba(40,30,15,0.18), rgba(40,30,15,0.05) 30%, transparent)' }
+            ? { right: 0, background: 'url(/mappe/shade/falz-l.png) 0 0 / 100% 100% no-repeat' }
+            : { left: 0, background: 'url(/mappe/shade/falz-r.png) 0 0 / 100% 100% no-repeat' }
         }
       />
       <div
@@ -127,8 +127,8 @@ export function Sheet({ side, folio, children, className, label = 'Leistungsmapp
         className="pointer-events-none absolute inset-y-0 w-10"
         style={
           side === 'left'
-            ? { left: 0, background: 'linear-gradient(to right, rgba(255,255,255,0.35), transparent)' }
-            : { right: 0, background: 'linear-gradient(to left, rgba(0,0,0,0.035), transparent)' }
+            ? { left: 0, background: 'url(/mappe/shade/glanz-l.png) 0 0 / 100% 100% no-repeat' }
+            : { right: 0, background: 'url(/mappe/shade/glanz-r.png) 0 0 / 100% 100% no-repeat' }
         }
       />
     </div>

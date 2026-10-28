@@ -54,7 +54,7 @@ export default function MappeLink() {
 
   const downloadQr = () => {
     if (!qr) return
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 ${qr.n + 8} ${qr.n + 8}" width="1024" height="1024" shape-rendering="crispEdges"><rect x="-4" y="-4" width="${qr.n + 8}" height="${qr.n + 8}" fill="#fff"/><path d="${qr.d}" fill="#0b0f17"/></svg>`
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 ${qr.n + 8} ${qr.n + 8}" width="1024" height="1024" shape-rendering="crispEdges"><rect x="-4" y="-4" width="${qr.n + 8}" height="${qr.n + 8}" fill="#fff"/><path d="${qr.d}" fill="#0a1a33"/></svg>`
     const a = document.createElement('a')
     a.href = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }))
     a.download = `Leistungsmappe-QR${clean ? '-' + clean.replace(/[^\p{L}\p{N}]+/gu, '-') : ''}.svg`
@@ -112,7 +112,7 @@ export default function MappeLink() {
             <div className="mt-3 w-[220px] bg-white p-3">
               {qr ? (
                 <svg viewBox={`0 0 ${qr.n} ${qr.n}`} className="block size-full" shapeRendering="crispEdges" role="img" aria-label={`QR-Code: ${link}`}>
-                  <path d={qr.d} fill="#0b0f17" />
+                  <path d={qr.d} fill="#0a1a33" />
                 </svg>
               ) : (
                 <div className="aspect-square" />

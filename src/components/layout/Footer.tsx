@@ -1,9 +1,10 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { Logo } from '@/components/ui/Logo'
 import { HomeLink } from '@/components/ui/HomeLink'
-import { RevealText } from '@/components/ui/RevealText'
+import { ScrubText } from '@/components/ui/ScrubText'
+import { Sparkle } from '@/components/ui/Sparkle'
 import { company } from '@/content/company'
 import { services } from '@/content/services'
 import { places, shortName } from '@/content/places'
@@ -36,12 +37,16 @@ const companyLinks = [
 ]
 
 /**
- * Link in der Fußzeile: Unterstrich beim Überfahren, sofortige Rückmeldung beim Tippen (Markenblau)
- * und dauerhafte Hervorhebung der aktuellen Seite (aria-current="page" setzt NavLink selbst).
+ * Link in der Fußzeile (Navy): gedämpftes Hellblau, beim Überfahren Klarweiß mit Unterstrich, die aktuelle Seite
+ * bleibt Klarweiß (aria-current="page" setzt NavLink selbst).
  */
 function FooterLink({ to, children }: { to: string; children: ReactNode }) {
   return (
-    <NavLink to={to} end className={({ isActive }) => cn('ulink py-0.5 transition-colors duration-150 active:text-blue', isActive ? 'text-ink' : 'text-muted hover:text-ink')}>
+    <NavLink
+      to={to}
+      end
+      className={({ isActive }) => cn('ulink py-0.5 transition-colors duration-150 active:text-paper', isActive ? 'text-paper' : 'text-link-dark hover:text-paper')}
+    >
       {children}
     </NavLink>
   )
@@ -49,37 +54,43 @@ function FooterLink({ to, children }: { to: string; children: ReactNode }) {
 
 function Column({ title, children, className }: { title: ReactNode; children: ReactNode; className?: string }) {
   return (
-    <nav aria-label={typeof title === 'string' ? title : undefined} className={cn('border-t border-line pt-5', className)}>
+    <nav aria-label={typeof title === 'string' ? title : undefined} className={cn('border-t border-line-dark pt-5', className)}>
       <h2 className="t-label">{title}</h2>
       <ul className="mt-5 space-y-2.5 text-[0.9375rem]">{children}</ul>
     </nav>
   )
 }
 
+/**
+ * Fußbereich auf tiefem Marken-Navy (durchgehend mit dem dunklen Abschluss darüber): Text Klarweiß, Links gedämpftes
+ * Hellblau. Der Slogan färbt sich beim Hineinscrollen Buchstabe für Buchstabe, „müssen.“ endet im Logo-Blau, danach
+ * funkeln einmal zwei, drei kleine Sterne. Darunter das Logo groß und einfarbig in Klarweiß.
+ */
 export function Footer() {
   const year = new Date().getFullYear()
+  const [shine, setShine] = useState(false)
   return (
-    <footer className="relative border-t border-line bg-paper pb-24 lg:pb-0">
+    <footer className="on-dark relative bg-night pb-24 text-paper lg:pb-0">
       <div className="container-site">
         <div className="grid-site gap-y-12 pt-20 lg:pt-28">
-          <div className="col-span-12 border-t border-line pt-5 md:col-span-6 lg:col-span-4">
+          <div className="col-span-12 border-t border-line-dark pt-5 md:col-span-6 lg:col-span-4">
             <h2 className="t-label">Kontakt</h2>
             <ul className="mt-5 space-y-3">
               <li>
-                <a href={company.phone.href} className="ulink text-[1.375rem] font-medium tracking-[-0.02em] text-ink">
+                <a href={company.phone.href} className="ulink text-[1.375rem] font-medium tracking-[-0.02em] text-paper">
                   {company.phone.display}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${company.email}`} className="ulink text-[0.9375rem] break-all text-ink">
+                <a href={`mailto:${company.email}`} className="ulink text-[0.9375rem] break-all text-link-dark hover:text-paper">
                   {company.email}
                 </a>
               </li>
               <li>
-                <CallbackButton />
+                <CallbackButton dark />
               </li>
             </ul>
-            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 font-medium tabular-nums text-[0.8125rem] text-muted">
+            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 font-medium tabular-nums text-[0.8125rem] text-muted-dark">
               <dt>Adresse</dt>
               <dd>
                 <address className="not-italic">
@@ -142,24 +153,30 @@ export function Footer() {
         </div>
 
         {/* Schluss: die Leitidee in der Display-Schrift, darunter das Logo groß und einfarbig */}
-        <div className="mt-24 grid-site gap-y-10 border-t border-line pt-16 lg:mt-36 lg:pt-24">
-          <RevealText as="p" text={brand.promiseSet} className="t-display col-span-12" />
+        <div className="mt-24 grid-site gap-y-10 border-t border-line-dark pt-16 lg:mt-36 lg:pt-24">
+          <ScrubText as="p" text={brand.promiseSet} accentLast={1} start="top 92%" end="top 50%" className="t-display col-span-12" onComplete={() => setShine(true)}>
+            <span className="relative inline-block w-0 align-top">
+              <Sparkle play={shine} className="absolute top-[0.05em] left-[0.05em] size-[0.42em]" />
+              <Sparkle play={shine} delay={0.18} tone="#00CAF9" className="absolute top-[-0.32em] left-[0.42em] size-[0.24em]" />
+              <Sparkle play={shine} delay={0.34} tone="#0060F4" className="absolute top-[0.36em] left-[0.5em] size-[0.18em]" />
+            </span>
+          </ScrubText>
           <div className="col-span-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10" data-reveal>
-            <QuoteButton variant="link" className="text-lg">
+            <QuoteButton variant="link" className="text-lg text-paper">
               Kostenlose Besichtigung anfragen
             </QuoteButton>
-            <a href={company.phone.href} className="ulink self-start font-medium tabular-nums text-[0.9375rem] text-ink sm:self-auto">
+            <a href={company.phone.href} className="ulink self-start font-medium tabular-nums text-[0.9375rem] text-link-dark hover:text-paper sm:self-auto">
               {company.phone.display} · {company.availability}
             </a>
           </div>
         </div>
         <div className="mt-16 lg:mt-24">
-          <HomeLink label={`${company.name}, zur Startseite`} className="block text-ink">
+          <HomeLink label={`${company.name}, zur Startseite`} className="block text-paper">
             <Logo mono className="w-full max-w-[64rem]" />
           </HomeLink>
         </div>
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-line py-6 font-medium tabular-nums text-[0.8125rem] text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t border-line-dark py-6 font-medium tabular-nums text-[0.8125rem] text-muted-dark sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {company.legalName}, {company.seat}
           </p>
@@ -172,7 +189,7 @@ export function Footer() {
             </li>
             {!__PREVIEW__ && (
               <li>
-                <a href="/sitemap.xml" className="ulink py-0.5 hover:text-ink">
+                <a href="/sitemap.xml" className="ulink py-0.5 text-link-dark hover:text-paper">
                   Sitemap
                 </a>
               </li>

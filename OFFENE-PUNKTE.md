@@ -82,3 +82,9 @@ neutralen Text oder blendet die Stelle aus.
 - **Anfragekarte:** sendet über Web3Forms mit Betreff „Besichtigung (Leistungsmappe): Firma“. Einmal testen.
 - **Inhalte** kommen aus den Inhaltsdateien (`site.ts`, `company.ts`, `services.ts`, `floorplan.ts`, `pricing.ts`, `places.ts`, `proof.ts`). Das Kapitel „Referenzen“ erscheint automatisch, sobald `proof.ts` freigegebene Einträge hat.
 - **Smartphone:** Die flache Mappe zeigt die Seiten verkleinert; längere Texte sind dort klein. Wer lesen statt blättern möchte, nutzt „Als Text lesen“ oder das PDF.
+
+## Karte Einzugsgebiet (/einzugsgebiet)
+
+- **Kartendaten:** Die Karte nutzt selbst gehostete Vektorkacheln (`public/map/ortenau.pmtiles`, aus OpenStreetMap-Daten über Overture Maps, ODbL). Aktualisieren: `python3 scripts/map/fetch_overture.py …` (Aufrufe stehen im Kopf der Datei), danach `python3 scripts/map/build_tiles.py`. Die Quellenangabe „© OpenStreetMap-Mitwirkende, Overture Maps“ steht in der Karte und muss bleiben.
+- **Fahrzeiten:** weiterhin Richtwerte aus `src/content/places.ts`.
+- **Ortstexte:** Charakter und je zwei weitere Fragen pro Ort stehen in `src/content/locationsExtra.ts`. Bitte einmal gegenlesen, ob alles zu Ihrer Arbeitsweise passt. Ähnlichkeit der Ortsseiten prüfen: `node scripts/similarity.mjs` (nach `npm run build`).

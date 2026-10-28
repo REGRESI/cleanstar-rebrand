@@ -7,7 +7,7 @@ import sharp from 'sharp'
 const OUT = 'public/images/scrub'
 mkdirSync(OUT, { recursive: true })
 const S = 192 // 2× für Kacheln bis 96 CSS-Pixel
-const paper = { r: 236, g: 231, b: 220, alpha: 1 }
+const paper = { r: 237, g: 241, b: 245, alpha: 1 } // kühles Hellgrau-Blau (Fläche)
 
 // Feierabend: Ausschnitt mit Arbeitsplätzen und Abendlicht im Fenster
 const fa = sharp('bilder/hero/hero-feierabend.jpg')

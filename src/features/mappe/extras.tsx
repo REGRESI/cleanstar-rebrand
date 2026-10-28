@@ -57,8 +57,7 @@ function MorgenInner({ side, folio, play }: PageProps) {
 /* ------------------------------------------------------------------ Pergament, Vorderseite (rechts, über der Morgen-Seite) */
 /** Papier wie Transparentpapier: milchig, leicht faserig, darunter scheint die nächste Seite durch */
 const vellum: CSSProperties = {
-  background:
-    'radial-gradient(120% 80% at 30% 20%, rgba(255,255,255,0.18), transparent 60%), repeating-linear-gradient(97deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 7px), rgba(244,241,234,0.64)',
+  background: 'url(/mappe/shade/pergament.png) 0 0 / 100% 100% no-repeat',
   boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.35), inset 0 0 60px rgba(255,255,255,0.18)',
 }
 
@@ -72,7 +71,8 @@ export function PergamentVorne({ side, folio }: PageProps) {
       <div style={{ ...PHOTO, opacity: 0.86, mixBlendMode: 'multiply' }} className="overflow-hidden">
         <PageImg id="before-office" width={1024} />
       </div>
-      <p className="t-label absolute text-ink" style={{ right: 56, top: (PHOTO.top as number) + (PHOTO.height as number) + 18 }}>
+      {/* Beschriftung oben, genau über der Zeile der Morgen-Seite darunter: kein Widerspruch in der Durchsicht */}
+      <p className="t-label absolute bg-[#f4f1ea] pr-3 text-ink" style={{ left: 56, top: 66 }}>
         Am Abend, 18:30 Uhr
       </p>
       <p data-hint className="t-meta absolute text-ink" style={{ right: 56, bottom: 48 }}>
@@ -89,10 +89,7 @@ export function PergamentHinten({ side, folio }: PageProps) {
     <div className="relative overflow-hidden" style={{ width: PAGE_W, height: PAGE_H }}>
       {!is3d && <VorherIntro side={side} folio={folio - 2} play={false} />}
       <div className="absolute inset-0" style={vellum} />
-      {/* Von hinten gesehen: das Bild spiegelverkehrt und blasser */}
-      <div style={{ ...PHOTO, opacity: 0.38, mixBlendMode: 'multiply', transform: 'scaleX(-1)' }} className="overflow-hidden">
-        <PageImg id="before-office" width={640} />
-      </div>
+      {/* Rückseite ohne Bild: Unter dem Pergament scheint nur die Einleitung ruhig durch, nichts überlagert sich */}
     </div>
   )
 }
@@ -315,7 +312,7 @@ export function Notizen({ side, folio }: PageProps) {
     <Sheet side={side} folio={folio} label="Notizen">
       <p className="t-label mb-5">Notizen</p>
       <p className={cn(body, 'max-w-[34ch] text-[14px]')}>Platz für Ihre Fragen zur Besichtigung. Wir gehen sie vor Ort gemeinsam durch.</p>
-      <div aria-hidden className="mt-8 flex-1" style={{ backgroundImage: 'repeating-linear-gradient(to bottom, transparent 0 33px, rgba(14,16,19,0.13) 33px 34px)' }} />
+      <div aria-hidden className="mt-8 flex-1" style={{ backgroundImage: 'url(/mappe/shade/linien.png)', backgroundSize: '8px 34px' }} />
     </Sheet>
   )
 }
@@ -386,9 +383,9 @@ export function GrundrissGross() {
   return (
     <div className="relative overflow-hidden bg-[#f5f2eb] text-ink" style={{ width: WIDE_W, height: PAGE_H }}>
       {/* Knickkanten */}
-      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-[rgba(40,30,15,0.12)] to-transparent" />
+      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-[url(/mappe/shade/knick-a.png)] bg-[length:100%_100%]" />
       <div aria-hidden className="pointer-events-none absolute inset-y-0 left-[600px] w-px bg-[rgba(40,30,15,0.08)]" />
-      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-[560px] w-10 bg-gradient-to-r from-transparent to-[rgba(40,30,15,0.06)]" />
+      <div aria-hidden className="pointer-events-none absolute inset-y-0 left-[560px] w-10 bg-[url(/mappe/shade/knick-b.png)] bg-[length:100%_100%]" />
       <div className="flex items-baseline justify-between px-14 pt-14">
         <p className="t-label">Grundriss, ausgeklappt</p>
         <button type="button" onClick={() => setFold(false)} className="t-label text-ink hover:text-blue">
@@ -446,7 +443,7 @@ export function Notizzettel({ name }: { name: string }) {
       <div
         className="relative px-5 pt-6 pb-5 shadow-[0_10px_18px_-10px_rgba(30,25,15,0.45),0_1px_2px_rgba(30,25,15,0.18)]"
         style={{
-          background: 'repeating-linear-gradient(0deg, rgba(120,100,40,0.035) 0 1px, transparent 1px 3px), linear-gradient(160deg, #fff6c8, #f8eaa6)',
+          background: '#f8eaa6 url(/mappe/shade/zettel.png) 0 0 / 100% 100% no-repeat',
         }}
       >
         {/* Klebestreifen */}
@@ -461,7 +458,7 @@ export function Notizzettel({ name }: { name: string }) {
         <span
           aria-hidden
           className="absolute right-0 bottom-0 size-0 transition-[width,height] duration-500 ease-cs group-hover:size-7"
-          style={{ background: 'linear-gradient(135deg, #f8eaa6 0%, #f8eaa6 48%, #d9cb86 50%, rgba(40,30,10,0.18) 52%, transparent 70%)' }}
+          style={{ background: 'url(/mappe/shade/zettel-ecke.png) 0 0 / 100% 100% no-repeat' }}
         />
       </div>
     </div>

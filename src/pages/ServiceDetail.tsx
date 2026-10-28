@@ -10,7 +10,7 @@ import { Accordion } from '@/components/ui/Accordion'
 import { RevealText } from '@/components/ui/RevealText'
 import { Picture } from '@/components/ui/Picture'
 import { Button } from '@/components/ui/Button'
-import { FeatureColumns, InlineLinks, LinkRows, NumberedRows } from '@/components/ui/Editorial'
+import { FeatureColumns, LinkRows, NumberedRows, PlaceGrid } from '@/components/ui/Editorial'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { FinalCta } from '@/components/home/FinalCta'
 import { BeforeAfter } from '@/features/slider/BeforeAfter'
@@ -217,51 +217,51 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      <section className="on-dark section bg-night text-paper">
+      <section className="section" aria-label="Checkliste zum Herunterladen">
         <div className="container-site">
-          <LeadMagnet dark />
+          <LeadMagnet />
         </div>
       </section>
 
-      {/* Interne Verlinkung: Orte, Ratgeber, weitere Leistungen; danach „Auf einen Blick“ als Schluss */}
-      <section className="section pb-16! lg:pb-20!" aria-label="Weiterlesen">
-        <div className="container-site grid-site gap-y-16">
-          <div className="col-span-12 lg:col-span-4">
-            <h2 id="near-title" className="t-label">
-              {s.name} in Ihrer Nähe
-            </h2>
-            <InlineLinks
-              className="mt-6"
-              items={(main ? officeCities.map((c) => ({ to: `/bueroreinigung/${c.slug}`, label: `Büroreinigung ${c.name}` })) : [])
-                .concat(
-                  locations
-                    .filter((l) => l.focus.some((f) => f.service === s.slug) && !(main && officeCities.some((c) => c.slug === l.slug)))
-                    .slice(0, main ? 8 : 12)
-                    .map((l) => ({ to: `/einzugsgebiet/${l.slug}`, label: `${s.name} ${shortName(l)}` })),
-                )
-                .concat([{ to: '/einzugsgebiet', label: 'Alle Orte im Ortenaukreis' }])}
-            />
-          </div>
-          <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-            <h2 className="t-label">Aus dem Ratgeber</h2>
-            <LinkRows
-              className="mt-6"
-              items={guides
-                .filter((g) => g.category === 'unternehmen')
-                .slice(0, 4)
-                .map((g) => ({ to: `/ratgeber/${g.slug}`, label: g.title }))}
-            />
-          </div>
-          <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-            <h2 id="more-title" className="t-label">
-              Weitere Leistungen
-            </h2>
-            <LinkRows className="mt-6" items={services.filter((x) => x.slug !== s.slug).map((x) => ({ to: `/leistungen/${x.slug}`, label: x.name }))} />
+      {/* Interne Verlinkung: Orte als ausgewogenes Raster, darunter Ratgeber und weitere Leistungen */}
+      <section className="section bg-surface" aria-labelledby="near-title">
+        <div className="container-site">
+          <h2 id="near-title" className="t-h3">
+            {s.name} in Ihrer Nähe
+          </h2>
+          <PlaceGrid
+            className="mt-8 lg:mt-10"
+            items={(main ? officeCities.map((c) => ({ to: `/bueroreinigung/${c.slug}`, label: `Büroreinigung ${c.name}` })) : [])
+              .concat(
+                locations
+                  .filter((l) => l.focus.some((f) => f.service === s.slug) && !(main && officeCities.some((c) => c.slug === l.slug)))
+                  .slice(0, main ? 6 : 11)
+                  .map((l) => ({ to: `/einzugsgebiet/${l.slug}`, label: `${s.name} ${shortName(l)}` })),
+              )
+              .concat([{ to: '/einzugsgebiet', label: 'Alle Orte im Ortenaukreis' }])}
+          />
+          <div className="grid-site mt-16 gap-y-12 lg:mt-20">
+            <div className="col-span-12 md:col-span-6">
+              <h2 className="t-label">Aus dem Ratgeber</h2>
+              <LinkRows
+                className="mt-6"
+                items={guides
+                  .filter((g) => g.category === 'unternehmen')
+                  .slice(0, 4)
+                  .map((g) => ({ to: `/ratgeber/${g.slug}`, label: g.title }))}
+              />
+            </div>
+            <div className="col-span-12 md:col-span-6">
+              <h2 id="more-title" className="t-label">
+                Weitere Leistungen
+              </h2>
+              <LinkRows className="mt-6" items={services.filter((x) => x.slug !== s.slug).map((x) => ({ to: `/leistungen/${x.slug}`, label: x.name }))} />
+            </div>
           </div>
         </div>
       </section>
 
-      <Answer>{`CleanStar übernimmt die ${s.name} für Unternehmen in Offenburg und im ganzen Ortenaukreis. ${s.short}`}</Answer>
+      <Answer className="pt-20 sm:pt-28 lg:pt-36">{`CleanStar übernimmt die ${s.name} für Unternehmen in Offenburg und im ganzen Ortenaukreis. ${s.short}`}</Answer>
       <FinalCta headline={`Bereit für eine ${s.name}, um die Sie sich nicht kümmern müssen?`} />
     </>
   )

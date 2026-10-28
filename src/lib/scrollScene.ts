@@ -24,6 +24,8 @@ export function useScrollScene(ref: RefObject<HTMLElement | null>, apply: (t: nu
       animation: gsap.to({}, { duration: 1 }),
       onUpdate: (self) => apply(self.progress),
     })
+    // sofort den richtigen Stand zeigen (z. B. nach einem Neuladen mitten im Abschnitt)
+    apply(st.progress)
     return () => st.kill()
     // apply ist pro Abschnitt fest (arbeitet nur auf DOM-Elementen), daher nur einmal einrichten
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,4 +52,12 @@ export function paintWords(words: HTMLElement[], x: number, last: Float32Array, 
     }
   }
   return last
+}
+
+/**
+ * Buchstabe-für-Buchstabe-Färbung: setzt --p (0 bis 1) je Buchstabe. soft = Breite des weichen Übergangs in
+ * Buchstaben (6 bis 10 wirkt wie ein gleichmäßiges Wischen, nicht wie einzelnes Aufploppen).
+ */
+export function paintLetters(letters: HTMLElement[], x: number, last: Float32Array, soft = 8) {
+  return paintWords(letters, x, last, soft)
 }

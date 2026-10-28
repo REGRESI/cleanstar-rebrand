@@ -221,6 +221,8 @@ export const images = {
     label: 'Qualitätskontrolle: Hand mit Tablet-Checkliste prüft Schreibtischkante, 16:9',
     prompt:
       'Quality inspection in a clean office: a hand holding a tablet with a checklist while another hand runs a white glove along a desk edge, crisp focus, cool light, calm and precise mood',
+    // Kopf liegt am oberen Bildrand: Ausschnitt oben verankern, damit Kopf und Gesicht in jedem Format vollständig bleiben
+    position: '58% 0%',
     usedOn: 'Qualitätsgarantie',
   }),
   inspection: img({
