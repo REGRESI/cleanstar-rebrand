@@ -195,9 +195,6 @@ html.lenis body {
   }
 
   /* ---- Links ---- */
-  .on-dark .link {
-    color: var(--color-blue-on-dark);
-  }
   /* Textlink mit Pfeil: Unterstrich zieht sich beim Überfahren zurück und zeichnet sich neu */
   .tlink {
     position: relative;
@@ -417,12 +414,6 @@ html.lenis body {
     background: var(--color-paper);
     color: var(--color-ink);
     box-shadow: inset 0 0 0 1px var(--color-paper);
-  }
-  .on-dark .text-ink-2 {
-    color: var(--color-muted-dark);
-  }
-  .on-dark .text-danger {
-    color: #ff9a8f;
   }
   .field option {
     color: var(--color-ink);
@@ -1433,6 +1424,26 @@ footer[data-no-top] {
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.85);
   }
 }
+/* Handy-Leiste über dunklen Abschnitten: dunkles Glas mit heller Schrift */
+.mobile-bar[data-dark] {
+  background-color: var(--color-night);
+  border-top-color: var(--color-line-dark);
+}
+.mobile-bar[data-dark] > div {
+  --tw-divide-opacity: 1;
+}
+.mobile-bar[data-dark] > div > * {
+  border-color: var(--color-line-dark);
+}
+.mobile-bar[data-dark] :is(a, button):not(.bg-blue) {
+  color: var(--color-paper);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .mobile-bar[data-dark] {
+    background-color: rgb(10 26 51 / 0.74);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+}
 /* Lichtreflexion: ein weicher, heller Streifen, der beim Scrollen langsam durch das Glas wandert */
 .glass-glint {
   position: absolute;
@@ -1464,10 +1475,10 @@ footer[data-no-top] {
   inset: 1px 0 0;
   background: var(--color-paper);
   transform: translateX(101%);
-  transition: transform 1s var(--ease-cs) calc(var(--i, 0) * 0.12s);
+  transition: transform 0.9s var(--ease-cs) calc(var(--i, 0) * 0.1s);
   pointer-events: none;
 }
-.js-motion [data-reveal]:not([data-revealed]).row-reveal .row-mask {
+.js-motion .row-reveal:not([data-open]) .row-mask {
   transform: translateX(0);
 }
 
@@ -1521,4 +1532,35 @@ footer[data-no-top] {
 .maplibregl-ctrl-attrib {
   font-family: var(--font-sans);
   font-size: 0.6875rem;
+}
+
+/* Auf dunklen Flächen gedämpfter Text hell genug (außerhalb der Ebenen, damit es die Hilfsklassen schlägt).
+   Helle Karten innerhalb dunkler Abschnitte behalten die dunkle Schrift. */
+.on-dark .text-ink-2 {
+  color: var(--color-muted-dark);
+}
+.on-dark .text-danger {
+  color: #ff9a8f;
+}
+.on-dark .text-muted,
+.on-dark .caption {
+  color: var(--color-muted-dark);
+}
+.on-dark .link {
+  color: var(--color-blue-on-dark);
+}
+.on-dark .link:hover {
+  color: var(--color-paper);
+}
+.on-dark :is(.bg-paper, .bg-surface, .bg-white) .text-ink-2 {
+  color: var(--color-ink-2);
+}
+.on-dark :is(.bg-paper, .bg-surface, .bg-white) :is(.text-muted, .caption) {
+  color: var(--color-muted);
+}
+.on-dark :is(.bg-paper, .bg-surface, .bg-white) .link {
+  color: var(--color-blue);
+}
+.on-dark :is(.bg-paper, .bg-surface, .bg-white) .text-danger {
+  color: var(--color-danger);
 }

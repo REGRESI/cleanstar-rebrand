@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { useCallbackRequest } from '@/features/callback/Callback'
@@ -14,13 +15,37 @@ export function MobileBar() {
   const partner = useLocation().pathname.startsWith('/partner')
   // Auf der Startseite erst nach dem Hero-Einstieg zeigen (kein doppelter Call-to-Action)
   const heroVisible = useHeroVisible()
+  // Über dunklen Abschnitten dunkles Glas, sonst wirkt die helle Leiste dort grau
+  const bar = useRef<HTMLDivElement>(null)
+  const [dark, setDark] = useState(false)
+  useEffect(() => {
+    let raf = 0
+    const check = () => {
+      raf = 0
+      const el = bar.current
+      if (!el) return
+      const under = document.elementsFromPoint(innerWidth / 2, innerHeight - 28).find((n) => !el.contains(n))
+      setDark(!!under?.closest('.on-dark'))
+    }
+    const onScroll = () => (raf ||= requestAnimationFrame(check))
+    check()
+    addEventListener('scroll', onScroll, { passive: true })
+    addEventListener('resize', onScroll)
+    return () => {
+      removeEventListener('scroll', onScroll)
+      removeEventListener('resize', onScroll)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
   if (isOpen || callback.isOpen) return null
   return (
     <div
+      ref={bar}
+      data-dark={dark || undefined}
       aria-hidden={heroVisible || undefined}
       inert={heroVisible}
       className={cn(
-        'glass fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-[transform,opacity] duration-500 ease-cs lg:hidden',
+        'glass mobile-bar fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-[transform,opacity] duration-500 ease-cs lg:hidden',
         heroVisible && 'pointer-events-none translate-y-full opacity-0',
       )}
     >

@@ -191,7 +191,7 @@ export function DotList({ items, className }: { items: { to: string; label: Reac
     <ul className={cn('text-[1.0625rem] leading-[2]', className)}>
       {items.map((it, i) => (
         <li key={it.to} className="inline">
-          <Link to={it.to} className="ulink text-ink">
+          <Link to={it.to} className="ulink whitespace-nowrap text-ink">
             {it.label}
           </Link>
           {i < items.length - 1 && (

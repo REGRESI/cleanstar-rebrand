@@ -75,13 +75,24 @@ function Line({ steps }: { steps: Step[] }) {
 }
 
 function Rows({ steps }: { steps: Step[] }) {
+  const list = useRef<HTMLOListElement>(null)
+  // Jede Zeile deckt sich auf, sobald sie ins Bild kommt (eigener Auslöser, ohne auf andere Einblendungen zu warten)
+  useEffect(() => {
+    const el = list.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (es) => es.forEach((e) => e.isIntersecting && (e.target.setAttribute('data-open', ''), io.unobserve(e.target))),
+      { rootMargin: '0px 0px -8% 0px' },
+    )
+    el.querySelectorAll('li').forEach((li) => io.observe(li))
+    return () => io.disconnect()
+  }, [])
   return (
-    <ol className="mt-16 border-b border-line lg:mt-24">
+    <ol ref={list} className="mt-16 border-b border-line lg:mt-24">
       {steps.map((s, i) => (
         <li
           key={s.title}
           className="row-reveal relative grid grid-cols-1 gap-x-8 gap-y-2 border-t border-line py-7 lg:grid-cols-12 lg:py-9"
-          data-reveal
           style={{ '--i': i % 3 } as CSSProperties}
         >
           <p className="font-medium tabular-nums text-[2.25rem] leading-none tracking-[-0.04em] text-blue lg:col-span-2 lg:text-[3rem]">{pad(i + 1)}</p>
