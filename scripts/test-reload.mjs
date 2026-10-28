@@ -1,4 +1,4 @@
-/* global document, window, getComputedStyle -- Code in page.evaluate läuft im Browser */
+/* global document, window-- Code in page.evaluate läuft im Browser */
 // Neuladen-Test für den Scroll-Text der Startseite: 20 Mal neu laden (Desktop und Handy), jeweils an eine zufällige
 // Stelle im Abschnitt scrollen und prüfen, dass die Färbung zur Scrollposition passt und beim Weiterscrollen mitläuft.
 // Aufruf: B=http://localhost:4177 node scripts/test-reload.mjs
