@@ -58,7 +58,7 @@ async function desktop(browser) {
     const dir = side === 'right' ? -1 : 1
     await p.mouse.move(x0, y)
     // wie eine echte Hand: kurz ankommen, dann drücken (zwei Bilder, damit die Seite die Zeigerposition verarbeitet hat)
-    await p.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
+    await p.evaluate(() => new Promise((r) => window.requestAnimationFrame(() => window.requestAnimationFrame(r))))
     await p.mouse.down()
     // Wischweg mit der Seitenbreite skaliert (gut eine Seitenbreite, wie mit der Hand)
     const steps = Math.ceil((b.width * 1.15) / 40)
