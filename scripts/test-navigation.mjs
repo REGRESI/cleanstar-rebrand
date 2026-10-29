@@ -4,7 +4,7 @@
 // Für Desktop (1440 px) und Mobile (390 px):
 // 1. jede Seite aus der Sitemap öffnen und ganz nach unten scrollen,
 // 2. dort jeden internen Link ohne Anker anklicken (Kopfzeile, Fußzeile, Inhalt, auf Mobile auch das Menü),
-// 3. nach dem Wechsel prüfen, dass window.scrollY höchstens 2 px beträgt (nach 500 ms und nach 1500 ms).
+// 3. sobald die neue Seite aufgebaut ist, prüfen, dass window.scrollY höchstens 2 px beträgt (nach 500 ms und nach 1500 ms).
 // Zusätzlich: Zurück/Vor im Browser stellt die vorherige Position wieder her, nie eine falsche.
 //
 // Aufruf: npm run build && npx serve dist -l 4176
@@ -107,6 +107,7 @@ async function runDevice(browser, label, opts) {
           await ready(page)
         }
         const from = await scrollToBottom(page)
+        const view0 = await page.evaluate(() => document.documentElement.dataset.view)
         let clicked
         if (l.menu) {
           // Die Kopfzeile blendet sich beim Herunterscrollen aus und erscheint beim Hochscrollen wieder
@@ -138,6 +139,8 @@ async function runDevice(browser, label, opts) {
             page.locator('[role=dialog]').first().waitFor({ timeout: 4000 }),
           ]).catch(() => {})
           await page.waitForLoadState('domcontentloaded')
+          // Gemessen wird ab dem Moment, in dem die neue Seite aufgebaut ist (bis dahin zeigt der Browser die alte Seite)
+          await page.waitForFunction((v) => document.documentElement.dataset.view !== v, view0, { timeout: 4000 }).catch(() => {})
         }
         const [y1, y2] = await measureTop(page)
         const at = norm(new URL(page.url()).pathname)

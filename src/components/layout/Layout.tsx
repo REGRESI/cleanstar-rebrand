@@ -117,6 +117,8 @@ function Shell() {
   // Läuft als Layout-Effekt, also nachdem die neue Seite gerendert ist, aber bevor sie zu sehen ist.
   useLayoutEffect(() => {
     currentKey.current = key
+    // Kennzeichen „neue Seite ist aufgebaut“ (der Navigationstest misst die Position erst ab hier)
+    document.documentElement.dataset.view = key
     const initial = initialNav.current
     initialNav.current = false
     if (initial && !hash) return
