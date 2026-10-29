@@ -9,7 +9,7 @@ const { chromium } = createRequire(import.meta.url)('playwright')
 const B = process.env.B || 'http://localhost:4177'
 const STILLS = [
   ['start', 0.02],
-  ['clean', 0.47],
+  ['clean', 0.38],
   ['check', 0.79],
   ['morning', 0.985],
 ]

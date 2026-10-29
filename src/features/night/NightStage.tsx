@@ -18,7 +18,7 @@ import type { NightWorld, Quality } from './world'
 
 export const STILLS = [
   { id: 'start', p: 0.02, label: '18:00' },
-  { id: 'clean', p: 0.47, label: '20:45' },
+  { id: 'clean', p: 0.38, label: '20:30' },
   { id: 'check', p: 0.79, label: '21:45' },
   { id: 'morning', p: 0.985, label: '7:00' },
 ] as const
