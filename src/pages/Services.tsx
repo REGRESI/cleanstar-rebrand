@@ -3,7 +3,7 @@ import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
 import { Collage } from '@/components/ui/Collage'
 import { WipeScene } from '@/components/scenes/WipeScene'
-import { ServicesGrid } from '@/components/home/ServicesGrid'
+import { ServiceChapters } from '@/components/services/ServiceChapters'
 import { FinalCta } from '@/components/home/FinalCta'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
@@ -50,7 +50,7 @@ export default function Services() {
           </>
         }
       />
-      <ServicesGrid heading={false} />
+      <ServiceChapters />
       <WipeScene />
       <section className="section bg-surface" aria-labelledby="incl-title">
         <div className="container-site">

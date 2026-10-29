@@ -4,7 +4,7 @@ import { formatNumber, formatEuroRange } from '@/lib/format'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { PerEmployee } from './PerEmployee'
 
-function Range({
+export function Range({
   label,
   value,
   onChange,

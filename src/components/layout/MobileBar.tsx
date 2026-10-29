@@ -45,7 +45,7 @@ export function MobileBar() {
       aria-hidden={heroVisible || undefined}
       inert={heroVisible}
       className={cn(
-        'glass mobile-bar fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-[transform,opacity] duration-500 ease-cs lg:hidden',
+        'glass mobile-bar fixed inset-x-0 [view-transition-name:mobile-bar] bottom-0 z-40 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-[transform,opacity] duration-500 ease-cs lg:hidden',
         heroVisible && 'pointer-events-none translate-y-full opacity-0',
       )}
     >

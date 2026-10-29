@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Minus, Plus, Loader2 } from 'lucide-react'
 import { quoteSchema, defaultQuote, stepFields, stepTitles, objectTypes, specialAreas, intervals, timeSlots, extras, type QuoteData } from './schema'
 import { useQuote } from './QuoteContext'
+import { readWay, ways } from '@/features/office/officeWay'
 import { monthlyRange, perEmployeeDay, pricing, hourlyRateNetMin, hourlyRateNetMax } from '@/content/pricing'
 import { PerEmployee } from '@/features/cost/PerEmployee'
 import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
@@ -136,7 +137,11 @@ export default function Configurator({ variant = 'page', onDone }: { variant?: '
   // Zwischenstand laden und Vorauswahl übernehmen
   useEffect(() => {
     const data = load()
-    reset(prefill ? { ...data, objectType: prefill } : data)
+    // Gewählter Weg auf der Startseite („Ihr Büro“): Objektgröße als Startwert, solange nichts Eigenes eingetragen ist
+    const way = ways.find((w) => w.id === readWay())
+    const fresh = JSON.stringify(data) === JSON.stringify(defaultQuote)
+    const base = way && fresh ? { ...data, ...way.preset } : data
+    reset(prefill ? { ...base, objectType: prefill } : base)
   }, [prefill, reset])
 
   // Zwischenstand speichern

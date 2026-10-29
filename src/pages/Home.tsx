@@ -1,8 +1,10 @@
 import { Suspense, type ReactNode } from 'react'
 import { Hero } from '@/components/home/Hero'
 import { ScrollStory } from '@/components/home/ScrollStory'
+import { OfficeWays } from '@/components/home/OfficeWays'
 import { ProblemSolution } from '@/components/home/ProblemSolution'
 import { ServicesGrid } from '@/components/home/ServicesGrid'
+import { CostTeaser } from '@/components/home/CostTeaser'
 import { Proof } from '@/components/home/Proof'
 import { Founders } from '@/components/home/Founders'
 import { AreaTeaser } from '@/components/home/AreaTeaser'
@@ -38,6 +40,7 @@ export default function Home() {
       <Hero />
       <Chunk>
         <ScrollStory />
+        <OfficeWays />
         <ImageBand id="evening-clean" />
       </Chunk>
       <Chunk>
@@ -45,6 +48,7 @@ export default function Home() {
       </Chunk>
       <Chunk>
         <ServicesGrid />
+        <CostTeaser />
       </Chunk>
       <Chunk>
         <Proof />

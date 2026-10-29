@@ -70,7 +70,7 @@ export function Header() {
 
   return (
     // Nur die Leiste wird verschoben: Ein transformierter <header> wäre Bezugsrahmen für das feste Vollbild-Menü
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 [view-transition-name:site-header]">
       <div
         ref={bar}
         className={cn(

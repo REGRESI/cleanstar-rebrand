@@ -16,6 +16,8 @@ import { EASE_CS_ARRAY } from '@/lib/ease'
 import { inlineMarkTones, markSectionTones } from '@/lib/tones'
 import { setupCurtains } from '@/lib/curtains'
 
+const hasViewTransitions = typeof document !== 'undefined' && 'startViewTransition' in document
+
 const Configurator = lazy(() => import('@/features/configurator/Configurator'))
 
 function QuoteModal() {
@@ -208,11 +210,13 @@ function Shell() {
       </a>
       {!immersive && <Header />}
       <main id="main" tabIndex={-1} className="outline-none">
+        {/* Seitenwechsel: mit View Transitions übernimmt der Browser (siehe main.tsx und index.css), sonst öffnet sich
+            der neue Inhalt hier per clip-path von unten */}
         <motion.div
           key={pathname}
-          initial={first.current || prefersReducedMotion() ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, ease: EASE_CS_ARRAY }}
+          initial={first.current || prefersReducedMotion() || hasViewTransitions ? false : { clipPath: 'inset(100% 0% 0% 0%)', y: 24 }}
+          animate={{ clipPath: 'inset(0% 0% 0% 0%)', y: 0, transitionEnd: { clipPath: 'none' } }}
+          transition={{ duration: 0.6, ease: EASE_CS_ARRAY }}
         >
           <Outlet />
         </motion.div>

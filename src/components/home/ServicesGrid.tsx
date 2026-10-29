@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
+import { WaterImage } from '@/features/water/WaterImage'
 import { Button } from '@/components/ui/Button'
 import { services } from '@/content/services'
 import { home } from '@/content/site'
 import { cn } from '@/lib/cn'
+import { orderServices, useOfficeWay } from '@/features/office/officeWay'
 
 const featuredAreas = ['Arbeitsplätze und Besprechung', 'Teeküche und Sanitär', 'Böden und Papierkörbe']
 
@@ -19,7 +21,12 @@ const featuredAreas = ['Arbeitsplätze und Besprechung', 'Teeküche und Sanitär
 export function ServicesGrid({ heading = true }: { heading?: boolean }) {
   const Title = heading ? 'h3' : 'h2'
   const featured = services.find((s) => s.featured) ?? services[0]
-  const rest = services.filter((s) => s !== featured)
+  // Mit gewähltem Weg (Startseite, „Ihr Büro“) stehen die passenden Leistungen zuerst
+  const [way] = useOfficeWay()
+  const rest = orderServices(
+    services.filter((s) => s !== featured),
+    way,
+  )
   const [active, setActive] = useState(0)
 
   return (
@@ -29,15 +36,16 @@ export function ServicesGrid({ heading = true }: { heading?: boolean }) {
 
         {/* Kernleistung: großer Abschnitt mit randlosem Foto */}
         <div className={cn('grid-site gap-y-8', heading && 'mt-16 lg:mt-24')}>
-          <Link to={`/leistungen/${featured.slug}`} className="group col-span-12 block" aria-label={`${featured.name}: Leistungsverzeichnis ansehen`}>
+          <WaterImage id={featured.image} className="col-span-12">
+          <Link to={`/leistungen/${featured.slug}`} className="group block" aria-label={`${featured.name}: Leistungsverzeichnis ansehen`}>
             <Picture
               id={featured.image}
               reveal
               aspect="aspect-[4/5] sm:aspect-[3/2] lg:aspect-[21/9]"
               sizes="(min-width:1600px) 1472px, 100vw"
-              className="[&_img]:transition-transform [&_img]:duration-[1200ms] [&_img]:ease-cs group-hover:[&_img]:scale-[1.02]"
             />
           </Link>
+          </WaterImage>
           <div className="col-span-12 lg:col-span-6">
             <Title className="t-h2">
               <Link to={`/leistungen/${featured.slug}`} className="ulink">
@@ -96,8 +104,10 @@ export function ServicesGrid({ heading = true }: { heading?: boolean }) {
             <div className="sticky top-28">
               <div className="relative aspect-[4/5] overflow-hidden bg-surface">
                 {rest.map((s, i) => (
-                  <div key={s.slug} aria-hidden className={cn('absolute inset-0 transition-opacity duration-700 ease-cs', active === i ? 'opacity-100' : 'opacity-0')}>
-                    <Picture id={s.image} compact aspect="h-full w-full" sizes="33vw" />
+                  <div key={s.slug} aria-hidden className={cn('absolute inset-0 transition-opacity duration-700 ease-cs', active === i ? 'opacity-100' : 'pointer-events-none opacity-0')}>
+                    <WaterImage id={s.image} className="size-full">
+                      <Picture id={s.image} compact aspect="h-full w-full" sizes="33vw" />
+                    </WaterImage>
                   </div>
                 ))}
               </div>

@@ -9,6 +9,7 @@ import { Todo } from '@/components/ui/Todo'
 import { RevealText } from '@/components/ui/RevealText'
 import { FeatureColumns } from '@/components/ui/Editorial'
 import { FinalCta } from '@/components/home/FinalCta'
+import { FounderLetter } from '@/components/ui/FounderLetter'
 import { FoundersScene } from '@/components/scenes/FoundersScene'
 import { Collage } from '@/components/ui/Collage'
 import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
@@ -158,6 +159,8 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      <FounderLetter />
 
       <section className="section" aria-labelledby="values-title">
         <div className="container-site">

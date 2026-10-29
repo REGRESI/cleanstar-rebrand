@@ -5,6 +5,7 @@ import { home } from '@/content/site'
 import { company } from '@/content/company'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { useQuote, type ObjectType } from '@/features/configurator/QuoteContext'
+import { useOfficeWay } from '@/features/office/officeWay'
 
 const types: { id: ObjectType; label: string }[] = [
   { id: 'buero', label: 'Büro' },
@@ -16,6 +17,7 @@ const types: { id: ObjectType; label: string }[] = [
 /** Abschluss auf dunklem Grund: kostenlose Besichtigung, Ansprechpartner, 24/7, direkter Einstieg in den Konfigurator. */
 export function FinalCta({ headline = home.finalCta.headline }: { headline?: string }) {
   const { open } = useQuote()
+  const [way] = useOfficeWay()
   return (
     <section className="on-dark section bg-night text-paper" aria-labelledby="cta-title">
       <div className="container-site">
@@ -32,6 +34,7 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
             <p className="t-lead text-paper" data-reveal>
               {home.finalCta.text}
             </p>
+            {way && <p className="mt-5 text-paper">{way.cta}</p>}
             <div className="mt-10" data-reveal>
               <QuoteButton size="lg" arrow>
                 Kostenlose Besichtigung

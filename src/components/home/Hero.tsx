@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import hero from 'virtual:hero-frames'
 import { RevealText } from '@/components/ui/RevealText'
 import { Sparkle } from '@/components/ui/Sparkle'
@@ -46,6 +46,61 @@ function MobileFullImage({ src }: { src: string }) {
   )
 }
 
+type Tod = 'abend' | 'morgen'
+
+/** Schlichter Umschalter „Am Abend · Am Morgen“ (wirkt nur auf das Startbild) */
+function DaySwitch({ value, onChange }: { value: Tod; onChange: (t: Tod) => void }) {
+  return (
+    <div role="group" aria-label="Stimmung des Startbilds" className="fade-up-now mt-8 flex items-center gap-3 text-[0.875rem] lg:mt-10" style={{ ['--d' as string]: '0.75s' }}>
+      {(['abend', 'morgen'] as const).map((t, i) => (
+        <span key={t} className="flex items-center gap-3">
+          {i > 0 && (
+            <span aria-hidden className="text-paper/60">
+              ·
+            </span>
+          )}
+          <button
+            type="button"
+            aria-pressed={value === t}
+            onClick={() => onChange(t)}
+            className={cn('ulink py-1.5 transition-colors', value === t ? 'text-paper' : 'text-paper/70 hover:text-paper')}
+          >
+            {t === 'abend' ? 'Am Abend' : 'Am Morgen'}
+          </button>
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/**
+ * Ebene mit der jeweils anderen Stimmung über dem Startbild. Beim Umschalten deckt sie sich von links nach rechts auf,
+ * entlang der Kante wandert ein schmales Licht (eine weiche, helle Linie, kein Verlauf). Rückweg ebenso.
+ */
+const DayLayer = forwardRef<HTMLDivElement, { base: Tod; tod: Tod | null; mobile: boolean }>(function DayLayer({ base, tod, mobile }, ref) {
+  const other: Tod = base === 'abend' ? 'morgen' : 'abend'
+  const shown = tod === other
+  // Bild erst laden, wenn jemand den Schalter benutzt (kein Einfluss auf den Seitenaufbau)
+  const [used, setUsed] = useState(false)
+  useEffect(() => {
+    if (tod) setUsed(true)
+  }, [tod])
+  if (!used) return <div ref={ref} aria-hidden className="pointer-events-none absolute inset-0" />
+  const src = other === 'morgen' ? hero.still[mobile ? 'morgen-m' : 'morgen-d'] : hero.still[mobile ? 'aussen-m' : 'aussen-d']
+  return (
+    <div ref={ref} aria-hidden className="pointer-events-none absolute inset-0">
+      <div className="photo hero-stage absolute overflow-hidden" style={{ ['--fw' as string]: `${FRAME_W}px`, ['--fh' as string]: `${FRAME_H}px` }}>
+        <div className="day-wipe absolute inset-0" data-on={shown || undefined}>
+          <img src={src} alt="" decoding="async" className="absolute inset-0 size-full object-cover max-md:object-[40%_50%]" />
+        </div>
+        <div className="absolute inset-0 [container-type:inline-size]">
+          <span className="day-edge" data-on={shown || undefined} />
+        </div>
+      </div>
+    </div>
+  )
+})
+
 function slowConnection() {
   const c = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
   return !!c && (c.saveData === true || /(^|-)2g$/.test(c.effectiveType ?? ''))
@@ -70,6 +125,9 @@ export function Hero() {
   const shade = useRef<HTMLDivElement>(null)
   const [mode, setMode] = useState<Mode | null>(null)
   const [step, setStep] = useState(0)
+  // Startbild: am Abend (Gebäude, Feierabend) oder am Morgen (sauberes Büro). Wirkt nur vor dem Scrollen.
+  const [tod, setTod] = useState<'abend' | 'morgen' | null>(null)
+  const dayLayer = useRef<HTMLDivElement>(null)
 
   // Modus festlegen (nur im Browser)
   useEffect(() => {
@@ -100,6 +158,8 @@ export function Hero() {
       // danach weicht er, und das Video wirkt hell und klar
       if (shade.current) shade.current.style.opacity = String(Math.min(1, Math.max(0, 1 - (p - 0.1) / 0.06)))
       if (outro.current) outro.current.style.opacity = String(Math.max(0, (p - OUTRO) / (1 - OUTRO)))
+      // Gewählte Stimmung weicht, sobald die Scroll-Sequenz läuft
+      if (dayLayer.current) dayLayer.current.style.opacity = String(Math.max(0, 1 - p / 0.06))
       setStep(sp < 0.33 ? 0 : sp < 0.9 ? 1 : 2)
     },
   })
@@ -178,6 +238,9 @@ export function Hero() {
             )}
           </div>
 
+          {/* Umschalter Abend/Morgen: die jeweils andere Stimmung liegt als eigene Ebene über Startbild und Video */}
+          <DayLayer ref={dayLayer} base={morning ? 'morgen' : 'abend'} tod={tod} mobile={isMobile} />
+
           {/* Lesbarkeit: ruhige Abdunklung, dazu ein Verlauf von unten hinter dem gesamten Textblock */}
           <div ref={shade} aria-hidden className="pointer-events-none absolute inset-0">
             <div className="absolute inset-0 bg-night/20" />
@@ -211,6 +274,7 @@ export function Hero() {
                   oder anrufen: {company.phone.display}
                 </a>
               </div>
+              <DaySwitch value={tod ?? (morning ? 'morgen' : 'abend')} onChange={setTod} />
             </div>
           </div>
 

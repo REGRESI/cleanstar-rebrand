@@ -13,6 +13,18 @@
         setTimeout(function () { if (!window.__csReady) d.classList.remove("js-motion") }, 10000)
       })()
     </script>
+    <style>
+      /* Preloader (nur erster Aufruf je Sitzung): Logo-Symbol, Glanz-Stern funkelt einmal, Zähler „% sauber“, dann öffnet sich die Fläche nach oben */
+      #pl{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:#f7f9fb;color:#0b1220;pointer-events:none;clip-path:inset(0 0 0 0);transition:clip-path .7s cubic-bezier(.65,0,.15,1)}
+      #pl.open{clip-path:inset(0 0 100% 0)}
+      #pl .in{display:flex;flex-direction:column;align-items:center;gap:22px;transition:transform .7s cubic-bezier(.65,0,.15,1),opacity .4s}
+      #pl.open .in{transform:translateY(-40px);opacity:0}
+      #pl svg{width:76px;height:auto;overflow:visible}
+      #pl .star{transform-box:fill-box;transform-origin:50% 50%;animation:pl-star .9s cubic-bezier(.2,.7,.1,1) .25s both}
+      @keyframes pl-star{0%{transform:scale(.55) rotate(-25deg);opacity:.2}55%{transform:scale(1.18) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+      #pl p{margin:0;font:500 13px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;font-variant-numeric:tabular-nums;color:#4a5566}
+      #pl b{display:inline-block;min-width:3ch;text-align:right;font-weight:500;color:#0b1220}
+    </style>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
@@ -20,6 +32,41 @@
     <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body>
+    <div id="pl" aria-hidden="true" hidden>
+      <div class="in">
+        <svg viewBox="100 410 200 205">
+          <path d="M248 540 V474 a12 12 0 0 0 -5-9.8 L187 424 a14 14 0 0 0 -16 0 L117 463 a12 12 0 0 0 -5 9.8 V556 a10 10 0 0 0 10 10 H160" fill="none" stroke="#00b2f8" stroke-width="19" stroke-linejoin="round"/>
+          <path d="M172 422.5 L117 463 a12 12 0 0 0 -5 9.8 V554 a12 12 0 0 0 12 12 H196" fill="none" stroke="#0086f6" stroke-width="19" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M190 556.5 C205 558 214 562 226 566 C214 570 205 574 190 575.5Z" fill="#0060f4"/>
+          <g class="star" fill="#0021f2" stroke="#f7f9fb" stroke-width="5" paint-order="stroke">
+            <path fill-rule="evenodd" d="M246 503C251.64 545.16 261.04 557.56 293 565 261.04 570.28 251.64 579.08 246 609 239.52 579.08 228.72 570.28 192 565 228.72 557.56 239.52 545.16 246 503ZM246 535C248.76 555.4 253.36 561.4 269 565 253.36 567.52 248.76 571.72 246 586 242.88 571.72 237.68 567.52 220 565 237.68 561.4 242.88 555.4 246 535Z"/>
+          </g>
+        </svg>
+        <p><b>0</b>% sauber</p>
+      </div>
+    </div>
+    <script>
+      ;(function () {
+        var el = document.getElementById("pl")
+        try {
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || sessionStorage.getItem("cs-pl")) return el.remove()
+          sessionStorage.setItem("cs-pl", "1")
+        } catch (e) { return el.remove() }
+        el.hidden = false
+        var n = el.querySelector("b"), t0 = performance.now(), loaded = false, MIN = 700, MAX = 1200
+        addEventListener("load", function () { loaded = true })
+        ;(function tick(now) {
+          var t = now - t0
+          // Dauer: so lange wie das echte Laden, mindestens 0,7 s, höchstens 1,2 s
+          var end = loaded ? Math.max(MIN, Math.min(t, MAX)) : MAX
+          var k = Math.min(1, t / end), e = 1 - Math.pow(1 - k, 3)
+          n.textContent = Math.round(e * 100)
+          if (k < 1) return requestAnimationFrame(tick)
+          el.classList.add("open")
+          setTimeout(function () { el.remove() }, 800)
+        })(t0)
+      })()
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

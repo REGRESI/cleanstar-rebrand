@@ -18,7 +18,7 @@ walk(dist)
 
 // PDF-Erzeugung (jsPDF) erst beim Klick laden: vite-react-ssg setzt für alle dynamischen Imports
 // einer Seite modulepreload-Links. Die schweren PDF-Bausteine nehmen wir wieder heraus.
-const lazyOnly = /<link rel="modulepreload"[^>]*href="\/assets\/(summaryPdf|yearPlanPdf|jspdf\.es\.min|html2canvas\.esm|purify\.es|index\.es)-[^"]+\.js">/g
+const lazyOnly = /<link rel="modulepreload"[^>]*href="\/assets\/(summaryPdf|yearPlanPdf|scopePdf|jspdf\.es\.min|html2canvas\.esm|purify\.es|index\.es)-[^"]+\.js">/g
 // Ebenso die Karte (MapLibre) im Einzugsgebiet: sie lädt erst bei der ersten Interaktion. Ohne diesen Schritt stünden
 // 286 KB Skript als Vorladen und ihr Stylesheet render-blockierend im HTML. Vite lädt Skript und CSS beim Import selbst nach.
 const mapOnly = /<link [^>]*href="\/assets\/(LiveMap|browser)-[^"]+\.(js|css)"[^>]*>/g
