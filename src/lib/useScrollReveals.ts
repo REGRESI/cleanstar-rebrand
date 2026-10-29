@@ -21,6 +21,7 @@ export function useScrollReveals(key: string) {
     if (prefersReducedMotion()) return
     let ctx: gsap.Context | null = null
     let t = 0
+    let t2 = 0
     // Erst im Leerlauf starten, damit das Hydrieren nicht blockiert wird
     const cancel = onIdle(() => {
       ctx = gsap.context(() => {
@@ -79,10 +80,34 @@ export function useScrollReveals(key: string) {
         })
       })
       t = window.setTimeout(() => ScrollTrigger.refresh(), 300)
+      // Späte Layoutänderungen (Hero-Sequenz, nachgeladene Abschnitte, Vorhänge) noch einmal abfangen
+      t2 = window.setTimeout(() => ScrollTrigger.refresh(), 2500)
     })
+    const onLoad = () => window.setTimeout(() => ScrollTrigger.refresh(), 100)
+    if (document.readyState !== 'complete') window.addEventListener('load', onLoad, { once: true })
+    // Ändert sich die Höhe des Inhalts später (nachgeladene Abschnitte, Bilder, Vorhänge), stimmen die Startpunkte
+    // nicht mehr; dann einmal gebündelt neu berechnen. Sonst bleiben Einblendungen nach einem Sprung (Anker, Zurück) aus.
+    let lastH = 0
+    let r = 0
+    const main = document.getElementById('main')
+    const ro =
+      main && 'ResizeObserver' in window
+        ? new ResizeObserver(([e]) => {
+            const h = Math.round(e.contentRect.height)
+            if (Math.abs(h - lastH) < 2) return
+            lastH = h
+            window.clearTimeout(r)
+            r = window.setTimeout(() => ScrollTrigger.refresh(), 250)
+          })
+        : null
+    if (main) ro?.observe(main)
     return () => {
       cancel()
       window.clearTimeout(t)
+      window.clearTimeout(t2)
+      window.clearTimeout(r)
+      window.removeEventListener('load', onLoad)
+      ro?.disconnect()
       ctx?.revert()
     }
   }, [key])
