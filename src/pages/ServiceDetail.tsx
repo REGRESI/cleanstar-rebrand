@@ -1,4 +1,7 @@
 import { useParams } from 'react-router-dom'
+import { ScrubStatement } from '@/components/ui/ScrubStatement'
+import { serviceStatements, wipes } from '@/content/statements'
+import { ProblemSolution } from '@/components/home/ProblemSolution'
 import { getService, services } from '@/content/services'
 import { home } from '@/content/site'
 import { Seo } from '@/components/ui/Seo'
@@ -59,6 +62,7 @@ export default function ServiceDetail() {
       <Answer question={serviceAnswer(s).question} bottom="pb-16 sm:pb-20 lg:pb-24">
         {serviceAnswer(s).text}
       </Answer>
+      {serviceStatements[s.slug] && <ScrubStatement {...serviceStatements[s.slug]} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />}
 
       {/* Die vier Punkte: einheitliche Spalten mit Haarlinie, auf allen Leistungsseiten gleich */}
       <section className="section-tight" aria-label="Das zeichnet uns aus">
@@ -66,6 +70,9 @@ export default function ServiceDetail() {
           <FeatureColumns items={s.highlights} titleAs="h2" />
         </div>
       </section>
+
+      {/* Vorher/nachher im Wisch-Effekt (Büroreinigung) */}
+      {s.slug === 'bueroreinigung' && <ProblemSolution id="office-wipe" {...wipes.bueroreinigung} />}
 
       {/* Leistungsverzeichnis */}
       <section className="section" aria-labelledby="scope-title">
@@ -228,7 +235,7 @@ export default function ServiceDetail() {
       </section>
 
       {/* Interne Verlinkung: Orte als ausgewogenes Raster, darunter Ratgeber und weitere Leistungen */}
-      <section className="section bg-surface" aria-labelledby="near-title">
+      <section className="on-dark tone-dark section bg-night text-paper" aria-labelledby="near-title">
         <div className="container-site">
           <h2 id="near-title" className="t-h3">
             {s.name} in Ihrer Nähe

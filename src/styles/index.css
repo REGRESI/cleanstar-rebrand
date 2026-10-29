@@ -167,6 +167,10 @@ html.lenis body {
   .section {
     padding-block: clamp(6rem, 3.5rem + 9vw, 12rem);
   }
+  /* Abstand oben wie zwischen zwei Abschnitten, für Blöcke ohne eigenes .section */
+  .section-top {
+    padding-top: clamp(6rem, 3.5rem + 9vw, 12rem);
+  }
   .section-tight {
     padding-block: clamp(4rem, 2.5rem + 5vw, 7.5rem);
   }
@@ -870,6 +874,14 @@ footer[data-no-top] {
   letter-spacing: -0.03em;
   font-weight: 500;
 }
+/* Kernsatz einer Unterseite im Färbe-Effekt (ScrubStatement): wie der Scroll-Text der Startseite, aber nicht stehend */
+.statement-text {
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 3.25rem);
+  line-height: 1.16;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+
 /* Bildkacheln im Fließtext: Platz ist immer reserviert (kein Springen des Textes). Die Zeile behält ihre Höhe,
    die Kachel ragt nur optisch darüber hinaus, damit alle Zeilen gleichen Abstand haben. */
 .story-tile-wrap {
@@ -1563,6 +1575,62 @@ footer[data-no-top] {
 }
 .on-dark :is(.bg-paper, .bg-surface, .bg-white) .text-danger {
   color: var(--color-danger);
+}
+
+/* Hauptnavigation: Unterstrich wächst beim Überfahren von links, bleibt bei der aktiven Seite stehen */
+.navlink {
+  position: relative;
+}
+.navlink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s var(--ease-cs);
+}
+.navlink:hover::after,
+.navlink:focus-visible::after,
+.navlink.is-open::after,
+.navlink[aria-current='page']::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Vollbild-Menü: Beim Antippen färbt sich der Punkt Buchstabe für Buchstabe ein (wie der Färbe-Effekt) */
+.menu-l {
+  transition: color 0.25s var(--ease-cs);
+  transition-delay: calc(var(--i, 0) * 22ms);
+}
+.menu-item.is-tapped .menu-l {
+  color: var(--color-blue-on-dark);
+}
+
+/* Slogan aus Partikeln (Footer): Text erst unsichtbar, blendet ein, sobald die Partikel ihn geformt haben */
+.particle-text {
+  transition: opacity 0.8s var(--ease-cs);
+}
+.particle-text[data-state='idle'] {
+  opacity: 0;
+}
+
+/* Abschnitte, die für den Hell-Dunkel-Rhythmus dunkel gestellt werden, deren Bausteine aber für hellen Grund gebaut sind:
+   Linien, Schrift und Unterstreichungen auf Navy umstellen */
+.tone-dark .border-line {
+  border-color: var(--color-line-dark);
+}
+.tone-dark .text-ink {
+  color: var(--color-paper);
+}
+.tone-dark .decoration-line-strong {
+  text-decoration-color: rgb(247 249 251 / 0.4);
+}
+.tone-dark .hover\:decoration-ink:hover {
+  text-decoration-color: var(--color-paper);
 }
 
 /* Leistungsmappe im Lesemodus: Tisch und Deko treten zurück, das Buch bleibt ausgespart (keine Verläufe) */

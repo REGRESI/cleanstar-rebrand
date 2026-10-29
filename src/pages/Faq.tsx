@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { ScrubStatement } from '@/components/ui/ScrubStatement'
+import { statements } from '@/content/statements'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { answers } from '@/content/answers'
@@ -39,6 +41,7 @@ export default function Faq() {
       <Answer question={answers.faq.question} bottom="pb-16 sm:pb-20 lg:pb-24">
         {answers.faq.text}
       </Answer>
+      <ScrubStatement {...statements.faq} id="statement-title" className="pt-6 pb-0 sm:pt-8 lg:pt-12" />
       <section className="pt-12 pb-24 lg:pt-16 lg:pb-40">
         <div className="container-site grid-site gap-y-12">
           <aside className="col-span-12 lg:col-span-3">

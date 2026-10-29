@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { Logo } from '@/components/ui/Logo'
 import { HomeLink } from '@/components/ui/HomeLink'
-import { ScrubText } from '@/components/ui/ScrubText'
+import { ParticleSlogan } from '@/components/ui/ParticleSlogan'
 import { Sparkle } from '@/components/ui/Sparkle'
 import { company } from '@/content/company'
 import { services } from '@/content/services'
@@ -62,9 +62,9 @@ function Column({ title, children, className }: { title: ReactNode; children: Re
 }
 
 /**
- * Fußbereich auf tiefem Marken-Navy (durchgehend mit dem dunklen Abschluss darüber): Text Klarweiß, Links gedämpftes
- * Hellblau. Der Slogan färbt sich beim Hineinscrollen Buchstabe für Buchstabe, „müssen.“ endet im Logo-Blau, danach
- * funkeln einmal zwei, drei kleine Sterne. Darunter das Logo groß und einfarbig in Klarweiß.
+ * Fußbereich auf eigenem, tiefem Marken-Navy (#0A1A33), klar abgesetzt vom hellen Abschluss darüber: Text Klarweiß,
+ * Links gedämpftes Hellblau. Der Slogan formt sich beim Hineinscrollen aus Lichtpartikeln, „müssen.“ steht im
+ * Logo-Blau, danach funkeln einmal zwei, drei kleine Sterne. Darunter das Logo groß und einfarbig in Klarweiß.
  */
 export function Footer() {
   const year = new Date().getFullYear()
@@ -154,13 +154,13 @@ export function Footer() {
 
         {/* Schluss: die Leitidee in der Display-Schrift, darunter das Logo groß und einfarbig */}
         <div className="mt-24 grid-site gap-y-10 border-t border-line-dark pt-16 lg:mt-36 lg:pt-24">
-          <ScrubText as="p" text={brand.promiseSet} accentLast={1} start="top 92%" end="top 50%" className="t-display col-span-12" onComplete={() => setShine(true)}>
+          <ParticleSlogan text={brand.promiseSet} accentLast={1} className="col-span-12" onComplete={() => setShine(true)}>
             <span className="relative inline-block w-0 align-top">
               <Sparkle play={shine} className="absolute top-[0.05em] left-[0.05em] size-[0.42em]" />
               <Sparkle play={shine} delay={0.18} tone="#00CAF9" className="absolute top-[-0.32em] left-[0.42em] size-[0.24em]" />
               <Sparkle play={shine} delay={0.34} tone="#0060F4" className="absolute top-[0.36em] left-[0.5em] size-[0.18em]" />
             </span>
-          </ScrubText>
+          </ParticleSlogan>
           <div className="col-span-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10" data-reveal>
             <QuoteButton variant="link" className="text-lg text-paper">
               Kostenlose Besichtigung anfragen

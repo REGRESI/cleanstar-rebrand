@@ -1,4 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
+import { ScrubStatement } from '@/components/ui/ScrubStatement'
+import { statements } from '@/content/statements'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
@@ -71,6 +73,7 @@ export default function Partner() {
         </p>
       </PageHero>
 
+      <ScrubStatement {...statements.partner} id="statement-title" />
       <Chunk>
         <ProblemSolution id="partner-problems" eyebrow={page.problems.eyebrow} headline={page.problems.headline} lead={page.problems.lead} items={page.problems.items} />
       </Chunk>
@@ -248,7 +251,7 @@ export default function Partner() {
         />
       </Chunk>
       <Chunk>
-        <Answer className="pt-20 sm:pt-28 lg:pt-36">
+        <Answer className="section-top">
           Das CleanStar-Partnerprogramm richtet sich an Reinigungsfirmen und Gründer in ganz Deutschland, die mit erprobten Abläufen, Vorlagen und Werkzeugen aus unserem Betrieb in
           Offenburg arbeiten möchten. Konditionen klären wir im persönlichen Gespräch.
         </Answer>

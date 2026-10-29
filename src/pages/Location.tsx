@@ -170,7 +170,7 @@ export default function Location() {
         </nav>
       )}
       <Answer
-        className={nearby.length > 0 ? undefined : 'pt-20 sm:pt-28 lg:pt-36'}
+        dark
         facts={[
           ['Ort', `${l.name}, ${company.serviceArea}`],
           ['Fahrzeit', hq ? 'Unser Sitz' : `ca. ${l.minutes} Minuten ab Offenburg`],

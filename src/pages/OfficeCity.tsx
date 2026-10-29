@@ -134,7 +134,7 @@ export default function OfficeCity() {
           />
         </div>
       </nav>
-      <Answer>{c.answer}</Answer>
+      <Answer dark>{c.answer}</Answer>
       <FinalCta headline={`Büroreinigung in ${c.name}: Lernen wir uns kennen.`} />
     </>
   )

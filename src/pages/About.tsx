@@ -207,7 +207,9 @@ export default function About() {
         </div>
       </section>
       <PartnerTeaser className="pt-20 pb-12 sm:pt-28 lg:pt-36 lg:pb-14" />
-      <Answer>{`CleanStar wurde ${company.foundedYear} in Offenburg von Nico Schütterle, Lino Resham und Eknoor Singh gegründet. Die drei Gesellschafter führen den Betrieb selbst und sind direkt für Kunden erreichbar.`}</Answer>
+      <Answer
+        dark
+      >{`CleanStar wurde ${company.foundedYear} in Offenburg von Nico Schütterle, Lino Resham und Eknoor Singh gegründet. Die drei Gesellschafter führen den Betrieb selbst und sind direkt für Kunden erreichbar.`}</Answer>
       <FinalCta />
     </>
   )

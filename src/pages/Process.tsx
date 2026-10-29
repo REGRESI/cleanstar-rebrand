@@ -1,4 +1,6 @@
 import { NightClock } from '@/components/scenes/NightClock'
+import { ScrubStatement } from '@/components/ui/ScrubStatement'
+import { statements } from '@/content/statements'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { answers } from '@/content/answers'
@@ -60,7 +62,8 @@ export default function Process() {
           breadcrumbSchema(trail),
           howToSchema({
             name: 'So beauftragen Sie CleanStar mit der Büroreinigung',
-            description: 'Von der Anfrage bis zur laufenden Reinigung in sechs Schritten: Anfrage, kostenlose Besichtigung, Angebot in 48 Stunden, fester Start, erster Monat ohne Risiko, Qualitätskontrolle.',
+            description:
+              'Von der Anfrage bis zur laufenden Reinigung in sechs Schritten: Anfrage, kostenlose Besichtigung, Angebot in 48 Stunden, fester Start, erster Monat ohne Risiko, Qualitätskontrolle.',
             path: '/ablauf',
             steps: processSteps.map((st) => ({ name: st.title, text: st.text })),
           }),
@@ -86,6 +89,7 @@ export default function Process() {
       <Answer question={answers.ablauf.question} bottom="pb-16 sm:pb-20 lg:pb-24">
         {answers.ablauf.text}
       </Answer>
+      <ScrubStatement {...statements.ablauf} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
       <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" />
       <NightClock />
       <section className="section bg-surface" aria-labelledby="details-title">

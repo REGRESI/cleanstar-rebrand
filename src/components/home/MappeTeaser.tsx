@@ -4,7 +4,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 /** Hinweis auf die Leistungsmappe: ruhiges Standbild des geschlossenen Buchs auf dem Tisch, Link zum Blättern */
 export function MappeTeaser() {
   return (
-    <section className="section bg-surface" aria-labelledby="mappe-title">
+    <section className="on-dark section bg-night text-paper" aria-labelledby="mappe-title">
       <div className="container-site grid-site gap-y-12 lg:items-center">
         <div className="col-span-12 lg:col-span-5">
           <SectionHeading

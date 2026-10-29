@@ -4,7 +4,7 @@ import { home } from '@/content/site'
 /** Werkzeuge und Ratgeber auf der Startseite: eine schlichte, gut lesbare Zeile mit Links in normaler Textgröße. */
 export function ToolsLine() {
   return (
-    <nav aria-label={home.tools.label} className="container-site pb-24 lg:pb-32">
+    <nav aria-label={home.tools.label} className="container-site section-tight">
       <div className="grid-site gap-y-4 border-y border-line py-6">
         <h2 className="col-span-12 text-[1.0625rem] font-medium text-ink lg:col-span-3">{home.tools.label}</h2>
         <ul className="col-span-12 flex flex-wrap gap-x-7 gap-y-2 lg:col-span-9">

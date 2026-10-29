@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties } from 'react'
+import { useRef, type CSSProperties, type ReactNode } from 'react'
 import { Picture } from '@/components/ui/Picture'
 import type { ImageId } from '@/content/images'
 import { paintLetters, span, spanEase, useScrollScene } from '@/lib/scrollScene'
@@ -18,7 +18,21 @@ const START = [
   { dx: '58%', dy: '20%', rot: '3.5deg' },
 ]
 
-export function FoundersScene({ founders }: { founders: { name?: string | null; image: string }[] }) {
+/**
+ * Wird auf Über uns und auf der Startseite verwendet (gleiche Gestaltung und Animation).
+ * eyebrow: kleine Zeile über „Drei Gründer.“; after: Inhalt unter der Aussage (Startseite: Link zu Über uns)
+ */
+export function FoundersScene({
+  founders,
+  eyebrow = 'Über uns',
+  after,
+  className,
+}: {
+  founders: { name?: string | null; image: string }[]
+  eyebrow?: string
+  after?: ReactNode
+  className?: string
+}) {
   const outer = useRef<HTMLElement>(null)
   const last = useRef<Float32Array | null>(null)
 
@@ -34,10 +48,10 @@ export function FoundersScene({ founders }: { founders: { name?: string | null; 
   })
 
   return (
-    <section ref={outer} className="scene" style={{ '--scene-run': '170svh', '--scene-run-m': '120svh' } as CSSProperties} aria-labelledby="founders-intro">
+    <section ref={outer} className={className ? `scene ${className}` : 'scene'} style={{ '--scene-run': '170svh', '--scene-run-m': '120svh' } as CSSProperties} aria-labelledby="founders-intro">
       <div className="scene-stage">
         <div className="founders-stage container-site flex w-full flex-col items-center text-center">
-          <p className="t-label">Über uns</p>
+          <p className="t-label">{eyebrow}</p>
           <p className="t-h1 mt-3">Drei Gründer.</p>
           <ul className="founders-row mx-auto mt-6 lg:mt-10">
             {founders.map((f, i) => (
@@ -62,6 +76,7 @@ export function FoundersScene({ founders }: { founders: { name?: string | null; 
               </span>
             ))}
           </h2>
+          {after}
         </div>
       </div>
     </section>

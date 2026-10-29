@@ -70,7 +70,7 @@ export default function Guides() {
         </Fragment>
       ))}
 
-      <section aria-labelledby="tools-title" className="section">
+      <section aria-labelledby="tools-title" className="on-dark tone-dark section bg-night text-paper">
         <div className="container-site">
           <SectionHeading
             layout="rail"

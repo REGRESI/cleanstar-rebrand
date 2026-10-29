@@ -1,4 +1,6 @@
 import { Seo } from '@/components/ui/Seo'
+import { ScrubStatement } from '@/components/ui/ScrubStatement'
+import { statements } from '@/content/statements'
 import { PageHero } from '@/components/ui/PageHero'
 import { answers } from '@/content/answers'
 import { Answer } from '@/components/ui/Answer'
@@ -54,9 +56,10 @@ export default function Services() {
       <Answer question={answers.leistungen.question} bottom="pb-16 sm:pb-20 lg:pb-24">
         {answers.leistungen.text}
       </Answer>
+      <ScrubStatement {...statements.leistungen} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
       <ServiceChapters />
       <WipeScene />
-      <section className="section bg-surface" aria-labelledby="incl-title">
+      <section className="on-dark tone-dark section bg-night text-paper" aria-labelledby="incl-title">
         <div className="container-site">
           <SectionHeading
             scrub

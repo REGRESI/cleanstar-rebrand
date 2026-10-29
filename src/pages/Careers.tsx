@@ -1,4 +1,6 @@
 import { Seo } from '@/components/ui/Seo'
+import { ScrubStatement } from '@/components/ui/ScrubStatement'
+import { statements } from '@/content/statements'
 import { PageHero } from '@/components/ui/PageHero'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Collage } from '@/components/ui/Collage'
@@ -43,6 +45,7 @@ export default function Careers() {
           </Button>
         }
       />
+      <ScrubStatement {...statements.karriere} id="statement-title" className="pb-0" />
       <section className="section" aria-labelledby="why-title">
         <div className="container-site">
           <SectionHeading scrub layout="rail" eyebrow="Warum CleanStar" title="Was Sie bei uns erwartet." id="why-title" />

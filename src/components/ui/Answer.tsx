@@ -27,6 +27,7 @@ export function Answer({
   facts,
   extraFacts = [],
   question,
+  dark,
 }: {
   children: ReactNode
   className?: string
@@ -37,6 +38,8 @@ export function Answer({
   extraFacts?: Fact[]
   /** Antwort-zuerst-Block unter dem Seitenkopf: die Hauptfrage der Seite als Überschrift */
   question?: string
+  /** Schlussblock auf Navy (z. B. wenn der Abschluss darunter hell ist und sonst zu viele helle Abschnitte folgen) */
+  dark?: boolean
 }) {
   const list = [...extraFacts, ...(facts ?? baseFacts())]
   // Antwort zuerst: direkt unter dem Seitenkopf, mit der Frage der Seite als Überschrift
@@ -64,26 +67,35 @@ export function Answer({
         </div>
       </section>
     )
+  const body = (
+    <div className={cn('grid-site gap-y-8 border-t pt-8 lg:pt-10', dark ? 'border-line-dark' : 'border-line')}>
+      <h2 id="answer-title" className="t-h3 col-span-12 lg:col-span-4">
+        Auf einen Blick
+      </h2>
+      <div className="col-span-12 lg:col-span-7 lg:col-start-6">
+        <p data-answer className={cn('t-lead max-w-[52ch]', dark ? 'text-paper' : 'text-ink')}>
+          {children}
+        </p>
+        <dl className={cn('mt-8 border-t lg:mt-10', dark ? 'border-line-dark' : 'border-line')}>
+          {list.map(([k, v]) => (
+            <div key={k} className={cn('grid grid-cols-1 gap-x-6 gap-y-0.5 border-b py-3 sm:grid-cols-[10rem_1fr]', dark ? 'border-line-dark' : 'border-line')}>
+              <dt className={cn('text-[0.9375rem]', dark ? 'text-muted-dark' : 'text-muted')}>{k}</dt>
+              <dd className={cn('text-[1rem]', dark ? 'text-paper' : 'text-ink')}>{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  )
+  if (dark)
+    return (
+      <section aria-labelledby="answer-title" className={cn('on-dark section bg-night text-paper', className)}>
+        <div className="container-site">{body}</div>
+      </section>
+    )
   return (
     <section aria-labelledby="answer-title" className={cn('container-site', bottom, className)}>
-      <div className="grid-site gap-y-8 border-t border-line pt-8 lg:pt-10">
-        <h2 id="answer-title" className="t-h3 col-span-12 lg:col-span-4">
-          Auf einen Blick
-        </h2>
-        <div className="col-span-12 lg:col-span-7 lg:col-start-6">
-          <p data-answer className="t-lead max-w-[52ch] text-ink">
-            {children}
-          </p>
-          <dl className="mt-8 border-t border-line lg:mt-10">
-            {list.map(([k, v]) => (
-              <div key={k} className="grid grid-cols-1 gap-x-6 gap-y-0.5 border-b border-line py-3 sm:grid-cols-[10rem_1fr]">
-                <dt className="text-[0.9375rem] text-muted">{k}</dt>
-                <dd className="text-[1rem] text-ink">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
+      {body}
     </section>
   )
 }

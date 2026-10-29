@@ -1,4 +1,7 @@
 import { useEffect, useRef } from 'react'
+import { ScrubStatement } from '@/components/ui/ScrubStatement'
+import { statements, wipes } from '@/content/statements'
+import { ProblemSolution } from '@/components/home/ProblemSolution'
 import { noOrphan } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
@@ -57,15 +60,17 @@ export default function Guarantee() {
       <Answer question={answers.garantie.question} bottom="pb-16 sm:pb-20 lg:pb-24">
         {answers.garantie.text}
       </Answer>
+      <ScrubStatement {...statements.garantie} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
 
       <GuaranteeChecks />
+
+      <ProblemSolution id="guarantee-wipe" {...wipes.garantie} />
 
       <ImageBand id="after-office" />
 
       <section className="on-dark section bg-night text-paper" aria-labelledby="complaint-title">
         <div className="container-site">
           <SectionHeading
-            scrub
             layout="split"
             eyebrow="Reklamation"
             title="Wenn etwas fehlt: ein Anruf genügt."

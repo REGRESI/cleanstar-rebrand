@@ -1,4 +1,6 @@
 import { Seo } from '@/components/ui/Seo'
+import { ScrubStatement } from '@/components/ui/ScrubStatement'
+import { statements } from '@/content/statements'
 import { PageHero } from '@/components/ui/PageHero'
 import { places } from '@/content/places'
 import { Answer } from '@/components/ui/Answer'
@@ -31,6 +33,7 @@ export default function Area() {
         lead="Unser Sitz ist in Offenburg, mitten im Kreis. Von hier aus sind wir schnell bei Ihnen, ob in Kehl am Rhein, in Achern im Norden oder in Haslach im Kinzigtal."
         actions={<QuoteButton size="lg" arrow />}
       />
+      <ScrubStatement {...statements.einzugsgebiet} id="statement-title" className="pt-10 pb-0 sm:pt-14 lg:pt-20" />
       <section className="section-tight" aria-labelledby="map-title">
         <div className="container-site">
           <h2 id="map-title" className="sr-only">
@@ -52,7 +55,7 @@ export default function Area() {
           </p>
         </div>
       </section>
-      <Answer className="pt-20 sm:pt-28 lg:pt-36">{`CleanStar reinigt Büros und Gewerbeflächen in ${places.length} Orten im Ortenaukreis, von Rheinau im Norden bis Ettenheim und Rust im Süden und Wolfach im Kinzigtal. Unser Sitz ist in Offenburg.`}</Answer>
+      <Answer className="section-top">{`CleanStar reinigt Büros und Gewerbeflächen in ${places.length} Orten im Ortenaukreis, von Rheinau im Norden bis Ettenheim und Rust im Süden und Wolfach im Kinzigtal. Unser Sitz ist in Offenburg.`}</Answer>
       <FinalCta />
     </>
   )

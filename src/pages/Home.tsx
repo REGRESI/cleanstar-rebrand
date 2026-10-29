@@ -41,7 +41,7 @@ export default function Home() {
       <Hero />
       <Chunk>
         <ScrollStory />
-        <Answer question={answers.home.question} className="pt-16 sm:pt-20" bottom="pb-4">
+        <Answer question={answers.home.question} className="section-top" bottom="pb-4">
           {answers.home.text}
         </Answer>
         <OfficeWays />

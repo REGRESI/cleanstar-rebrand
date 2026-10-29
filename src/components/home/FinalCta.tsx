@@ -13,12 +13,16 @@ const types: { id: ObjectType; label: string }[] = [
   { id: 'sonstiges', label: 'Sonstiges' },
 ]
 
-/** Abschluss auf dunklem Grund: kostenlose Besichtigung, Ansprechpartner, 24/7, direkter Einstieg in den Konfigurator. */
-export function FinalCta({ headline = home.finalCta.headline }: { headline?: string }) {
+/**
+ * Abschluss auf heller Fläche (der Footer darunter ist dunkel und setzt sich klar ab): kostenlose Besichtigung,
+ * Ansprechpartner, 24/7, direkter Einstieg in den Konfigurator.
+ * tone: Fläche, passend zum Abschnitt davor (nie dieselbe Fläche wie direkt darüber)
+ */
+export function FinalCta({ headline = home.finalCta.headline, tone = 'surface' }: { headline?: string; tone?: 'surface' | 'paper' }) {
   const { open } = useQuote()
   const [way] = useOfficeWay()
   return (
-    <section className="on-dark section bg-night text-paper" aria-labelledby="cta-title">
+    <section className={tone === 'surface' ? 'section bg-surface text-ink' : 'section bg-paper text-ink'} aria-labelledby="cta-title">
       <div className="container-site">
         <div className="grid-site gap-y-6">
           <span aria-hidden data-reveal-rule className="rule col-span-12 mb-2 lg:mb-6" />
@@ -30,15 +34,15 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
 
         <div className="grid-site mt-12 gap-y-14 lg:mt-20">
           <div className="col-span-12 lg:col-span-5 lg:col-start-4">
-            <p className="t-lead text-paper" data-reveal>
+            <p className="t-lead text-ink" data-reveal>
               {home.finalCta.text}
             </p>
-            {way && <p className="mt-5 text-paper">{way.cta}</p>}
+            {way && <p className="mt-5 text-ink">{way.cta}</p>}
             <div className="mt-10" data-reveal>
               <QuoteButton size="lg" arrow>
                 Kostenlose Besichtigung
               </QuoteButton>
-              <p className="mt-4 font-medium tabular-nums text-[0.75rem] text-muted-dark">
+              <p className="mt-4 font-medium tabular-nums text-[0.75rem] text-muted">
                 Kostenlos und unverbindlich.
               </p>
             </div>
@@ -50,10 +54,10 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
                     <button
                       type="button"
                       onClick={() => open(t.id)}
-                      className="flex min-h-13 w-full items-center justify-between gap-3 px-4 py-3 text-left text-paper shadow-[inset_0_0_0_1px_var(--color-line-dark)] transition-shadow duration-300 hover:shadow-[inset_0_0_0_1px_var(--color-paper)]"
+                      className="flex min-h-13 w-full items-center justify-between gap-3 px-4 py-3 text-left text-ink shadow-[inset_0_0_0_1px_var(--color-line-strong)] transition-shadow duration-300 hover:shadow-[inset_0_0_0_1px_var(--color-ink)]"
                     >
                       {t.label}
-                      <span aria-hidden className="font-medium tabular-nums text-[0.75rem] text-muted-dark">
+                      <span aria-hidden className="font-medium tabular-nums text-[0.75rem] text-muted">
                         →
                       </span>
                     </button>
@@ -63,8 +67,8 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
             </div>
           </div>
           <div className="col-span-12 space-y-10 lg:col-span-3 lg:col-start-10" data-reveal>
-            <ContactPerson dark compact title="Ihr Ansprechpartner für das Erstgespräch" />
-            <RiskFreeSeal dark label="Laufzeit und Kündigung auf einen Blick" />
+            <ContactPerson compact title="Ihr Ansprechpartner für das Erstgespräch" />
+            <RiskFreeSeal label="Laufzeit und Kündigung auf einen Blick" />
           </div>
         </div>
       </div>

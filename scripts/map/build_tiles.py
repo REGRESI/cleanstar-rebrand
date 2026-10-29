@@ -3,7 +3,9 @@
 # Die Karte wird über GitHub Pages ausgeliefert: kein fremder Kartendienst, keine Besucherdaten an Dritte.
 #
 # Ebenen:  mask (außerhalb des Kreises), county (Ortenaukreis), admin (Gemeindegrenzen), border (Staatsgrenze),
-#          landuse (Siedlungsflächen), water (Flächen), waterway (Flüsse, Kanäle), roads (Straßen nach Klasse), rail
+#          cover (Landbedeckung: Wald, Felder, Wiesen, Obst, Reben, Feuchtgebiete), landuse (Siedlungsflächen),
+#          water (Flächen), waterway (Flüsse, Kanäle), roads (Straßen nach Klasse), rail
+# Das Relief kommt aus einem eigenen Höhenmodell (scripts/map/build_dem.py).
 # Zoom 7 bis 13, darüber vergrößert MapLibre selbst.
 # Aufruf: python3 scripts/map/build_tiles.py
 import gzip
@@ -48,17 +50,17 @@ def read(name, cols):
 
 t0 = time.time()
 area = box(W, S, E, N)
-features = {k: [] for k in ['mask', 'county', 'admin', 'border', 'landuse', 'water', 'waterway', 'roads', 'rail']}
-# (Ebene, Geometrie, Eigenschaften, kleinster Zoom)
+features = {k: [] for k in ['mask', 'county', 'admin', 'border', 'cover', 'landuse', 'water', 'waterway', 'roads', 'rail']}
+# (Ebene, Geometrie, Eigenschaften, kleinster Zoom, größter Zoom)
 
 
-def add(layer, geom, props, minzoom):
+def add(layer, geom, props, minzoom, maxzoom=99):
     if geom is None or geom.is_empty:
         return
     geom = geom.intersection(area)
     if geom.is_empty:
         return
-    features[layer].append((merc(geom), props, minzoom))
+    features[layer].append((merc(geom), props, minzoom, maxzoom))
 
 
 # Verwaltungsgrenzen
@@ -76,6 +78,43 @@ add('border', de.boundary, {}, ZMIN)
 for r in read('landuse.parquet', ['subtype', 'class', 'geometry']):
     if r['subtype'] in ('residential', 'developed') and r['geometry'].geom_type in ('Polygon', 'MultiPolygon'):
         add('landuse', r['geometry'], {'kind': r['subtype']}, 10)
+
+# Landbedeckung: einzelne Flächen ab Zoom 11, darunter je Art zusammengefasst und vereinfacht (kleine Kacheln)
+COVER = {
+    ('forest', 'forest'): 'forest',
+    ('forest', 'wood'): 'forest',
+    ('shrub', 'scrub'): 'scrub',
+    ('shrub', 'heath'): 'scrub',
+    ('grass', 'grassland'): 'meadow',
+    ('grass', 'grass'): 'meadow',
+    ('wetland', 'wetland'): 'wetland',
+    ('agriculture', 'meadow'): 'meadow',
+    ('managed', 'grass'): 'meadow',
+    ('agriculture', 'farmland'): 'field',
+    ('horticulture', 'orchard'): 'orchard',
+    ('horticulture', 'vineyard'): 'vineyard',
+}
+groups = {}
+for name in ('land.parquet', 'landuse.parquet'):
+    for r in read(name, ['subtype', 'class', 'geometry']):
+        kind = COVER.get((r['subtype'], r['class']))
+        g = r['geometry']
+        if kind and g.geom_type in ('Polygon', 'MultiPolygon'):
+            g = shapely.make_valid(g)
+            add('cover', g, {'kind': kind}, 11)
+            groups.setdefault(kind, []).append(g)
+for kind, gs in groups.items():
+    # Vereinfachen kann Flächen ungültig machen: danach jeweils reparieren. Zusammenfassen in Gittern (spart Speicher)
+    parts = shapely.make_valid(shapely.simplify(np.array(gs, dtype=object), 0.0002))
+    cells = {}
+    for g in parts:
+        c = g.centroid
+        cells.setdefault((int(c.x * 10), int(c.y * 10)), []).append(g)
+    merged = shapely.union_all([shapely.union_all(v) for v in cells.values()])
+    print(' ', kind, len(gs), 'Flächen zusammengefasst', round(time.time() - t0), 's')
+    # Wald schon in der Übersicht, Felder und Wiesen ab Zoom 9
+    add('cover', shapely.make_valid(shapely.simplify(merged, 0.0006)), {'kind': kind}, 7 if kind == 'forest' else 9, 10)
+print('Landbedeckung', {k: len(v) for k, v in groups.items()}, round(time.time() - t0), 's')
 
 # Gewässer: Flächen (Rhein, Seen, Altrheinarme) und Linien (Flüsse, Kanäle, Bäche erst nah)
 for r in read('water.parquet', ['subtype', 'class', 'geometry']):
@@ -102,7 +141,7 @@ for r in read('segments.parquet', ['subtype', 'class', 'geometry']):
 print('Daten gelesen', {k: len(v) for k, v in features.items()}, round(time.time() - t0), 's')
 
 # Räumliche Indizes je Ebene
-index = {k: (shapely.STRtree([g for g, _, _ in v]) if v else None) for k, v in features.items()}
+index = {k: (shapely.STRtree([f[0] for f in v]) if v else None) for k, v in features.items()}
 
 WORLD = 2 * math.pi * R
 
@@ -137,8 +176,8 @@ for z in range(ZMIN, ZMAX + 1):
                     continue
                 out = []
                 for i in index[name].query(clip):
-                    g, props, mz = feats[i]
-                    if z < mz:
+                    g, props, mz, xz = feats[i]
+                    if z < mz or z > xz:
                         continue
                     c = shapely.clip_by_rect(g, *clip.bounds)
                     if c.is_empty:
