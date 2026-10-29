@@ -1610,6 +1610,134 @@ footer[data-no-top] {
   color: var(--color-blue-on-dark);
 }
 
+/* ==========================================================================
+   Signatur-Szene „Eine Nacht in Ihrem Büro“ (NightStage)
+   Langer Scrollweg, darin eine stehende Bühne; Texte als HTML über der Szene.
+   ========================================================================== */
+.night {
+  position: relative;
+  height: 620svh;
+  background: var(--color-night);
+}
+@media (max-width: 767px) {
+  .night {
+    height: 540svh;
+  }
+}
+.night-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  color: var(--color-paper);
+}
+.night-intro,
+.night-outro {
+  position: absolute;
+  inset-inline: 0;
+  bottom: clamp(5rem, 12svh, 9rem);
+  text-shadow: 0 1px 24px rgb(10 26 51 / 0.45);
+}
+.night-intro .t-label,
+.night-outro .t-label {
+  color: rgb(247 249 251 / 0.85);
+}
+.night-ruler {
+  position: absolute;
+  right: clamp(1rem, 3vw, 3rem);
+  top: 50%;
+  translate: 0 -50%;
+  display: grid;
+  justify-items: end;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: rgb(247 249 251 / 0.8);
+}
+.night-ruler-time {
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  color: var(--color-paper);
+}
+.night-ruler-track {
+  position: relative;
+  width: 1px;
+  height: min(40svh, 18rem);
+  background: rgb(247 249 251 / 0.25);
+}
+.night-ruler-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--color-paper);
+  transform-origin: top;
+}
+.night-ruler-ends {
+  display: grid;
+  gap: 0.25rem;
+  justify-items: end;
+}
+.night-lines {
+  position: absolute;
+  left: clamp(1rem, 4vw, 3rem);
+  bottom: clamp(5.5rem, 10svh, 7rem);
+  width: min(34rem, calc(100% - 6rem));
+}
+.night-lines li {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: clamp(1.125rem, 0.95rem + 0.6vw, 1.5rem);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 18px rgb(10 26 51 / 0.6);
+  transition: opacity 0.2s linear;
+}
+.night-lines .t-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: rgb(247 249 251 / 0.8);
+}
+.night-lines strong {
+  font-weight: 500;
+}
+.night-skip {
+  position: absolute;
+  right: clamp(1rem, 3vw, 3rem);
+  bottom: clamp(5.5rem, 10svh, 7rem);
+  font-size: 0.875rem;
+  color: rgb(247 249 251 / 0.85);
+  text-decoration: underline;
+  text-underline-offset: 0.28em;
+  transition: opacity 0.4s;
+}
+@media (max-width: 767px) {
+  .night-ruler {
+    top: 5.5rem;
+    translate: none;
+  }
+  .night-ruler-track {
+    height: 22svh;
+  }
+  .night-lines {
+    width: calc(100% - 2rem);
+    bottom: 6.5rem;
+  }
+  .night-skip {
+    bottom: auto;
+    top: 5.5rem;
+    left: 1rem;
+    right: auto;
+  }
+}
+/* Reduzierte Bewegung: Standbilder bleiben stehen, keine Übergänge */
+@media (prefers-reduced-motion: reduce) {
+  .night-lines li {
+    transition: none;
+  }
+}
+
 /* Slogan aus Partikeln (Footer): Text erst unsichtbar, blendet ein, sobald die Partikel ihn geformt haben */
 .particle-text {
   transition: opacity 0.8s var(--ease-cs);

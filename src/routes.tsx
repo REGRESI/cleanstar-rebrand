@@ -60,6 +60,7 @@ export const routes: RouteRecord[] = [
       // Interne Übersicht des Design-Systems (noindex, nicht verlinkt, nicht in der Sitemap)
       { path: 'mappe-link', lazy: page(() => import('@/pages/MappeLink')) },
       { path: 'styleguide', lazy: page(() => import('@/pages/Styleguide')) },
+      { path: 'labor/nacht', lazy: page(() => import('@/pages/LabNight')) },
       { path: '404', lazy: page(() => import('@/pages/NotFound')) },
       { path: '*', lazy: page(() => import('@/pages/NotFound')) },
     ],

@@ -1,5 +1,7 @@
 import { Suspense, type ReactNode } from 'react'
 import { Hero } from '@/components/home/Hero'
+import { NightHero } from '@/features/night/NightHero'
+import { features } from '@/content/features'
 import { ScrollStory } from '@/components/home/ScrollStory'
 import { OfficeWays } from '@/components/home/OfficeWays'
 import { ProblemSolution } from '@/components/home/ProblemSolution'
@@ -38,9 +40,12 @@ export default function Home() {
         ogType="start"
         schema={[organizationSchema(), localBusinessSchema(), ...personSchemas(), websiteSchema(), faqSchema(faqs.filter((f) => f.featured && !f.todo))]}
       />
-      <Hero />
+      {/* Signatur-Szene nach Freigabe (features.signatureScene): ersetzt Scroll-Video und Scroll-Text, die dieselbe
+          Geschichte erzählen (Wir kommen, wenn Sie gehen; am Morgen ist alles sauber) */}
+      {features.signatureScene ? <NightHero /> : <Hero />}
       <Chunk>
-        <ScrollStory />
+        {!features.signatureScene && <ScrollStory />}
+        {features.signatureScene && <span id="nach-der-nacht" />}
         <Answer question={answers.home.question} className="section-top" bottom="pb-4">
           {answers.home.text}
         </Answer>

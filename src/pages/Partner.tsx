@@ -251,13 +251,14 @@ export default function Partner() {
         />
       </Chunk>
       <Chunk>
-        <Answer className="section-top">
+        <Answer dark>
           Das CleanStar-Partnerprogramm richtet sich an Reinigungsfirmen und Gründer in ganz Deutschland, die mit erprobten Abläufen, Vorlagen und Werkzeugen aus unserem Betrieb in
           Offenburg arbeiten möchten. Konditionen klären wir im persönlichen Gespräch.
         </Answer>
       </Chunk>
       <Chunk>
-        <section className="on-dark section bg-night text-paper" aria-labelledby="pcta-title">
+        {/* Abschluss hell, damit sich der dunkle Footer klar absetzt; der rechtliche Hinweis gehört mit hinein */}
+        <section className="section bg-surface text-ink" aria-labelledby="pcta-title">
           <div className="container-site grid-site gap-y-10 lg:items-end">
             <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
             <div className="col-span-12 lg:col-span-8">
@@ -273,19 +274,15 @@ export default function Partner() {
               <Button href="#bewerbung" size="lg" arrow onClick={(e) => (e.preventDefault(), toForm())}>
                 Zur Partneranfrage
               </Button>
-              <a href={company.phone.href} className="ulink text-[1.75rem] font-medium tracking-[-0.03em] text-paper">
+              <a href={company.phone.href} className="ulink text-[1.75rem] font-medium tracking-[-0.03em] text-ink">
                 {company.phone.display}
               </a>
             </div>
+            <p className="measure col-span-12 mt-10 border-t border-line pt-6 font-medium tabular-nums text-[0.75rem] leading-relaxed text-muted">
+              {page.legalNote}
+              <Todo title="Rechtlichen Hinweis anwaltlich prüfen lassen">anwaltlich prüfen</Todo>
+            </p>
           </div>
-        </section>
-      </Chunk>
-      <Chunk>
-        <section aria-label="Rechtlicher Hinweis" className="py-12">
-          <p className="container-site measure font-medium tabular-nums text-[0.75rem] leading-relaxed text-muted">
-            {page.legalNote}
-            <Todo title="Rechtlichen Hinweis anwaltlich prüfen lassen">anwaltlich prüfen</Todo>
-          </p>
         </section>
       </Chunk>
     </>
