@@ -61,35 +61,65 @@ const vellum: CSSProperties = {
   boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.35), inset 0 0 60px rgba(255,255,255,0.18)',
 }
 
+/**
+ * Kopf und Fuß des Pergaments sind fast deckend (eigene Kopfzeile, eigene Seitenzahl): Durch das Pergament scheint
+ * nur das Bildfenster in der Mitte, nie Text der Seite darunter. So widerspricht sich nichts in der Durchsicht.
+ */
+const BAND = 'absolute inset-x-0 text-ink'
+// fest als rgba: so übernimmt auch das Abfotografieren der Textur die Deckkraft zuverlässig
+const BAND_BG = 'rgba(243, 240, 233, 0.97)'
+function VellumHead({ side, children, height = 212 }: { side: PageProps['side']; children?: React.ReactNode; height?: number }) {
+  return (
+    <div className={BAND} style={{ top: 0, height, backgroundColor: BAND_BG }}>
+      <div className={cn('flex items-baseline justify-between px-14 pt-14 t-label', side === 'left' ? 'flex-row' : 'flex-row-reverse')}>
+        <span>CleanStar</span>
+        <span>Leistungsmappe</span>
+      </div>
+      <div className="px-14 pt-10">{children}</div>
+    </div>
+  )
+}
+function VellumFoot({ side, folio, children, top = 548 }: { side: PageProps['side']; folio: number; children?: React.ReactNode; top?: number }) {
+  return (
+    <div className={cn(BAND, 'flex flex-col justify-end px-14 pb-12')} style={{ top, bottom: 0, backgroundColor: BAND_BG }}>
+      {children}
+      <div className={cn('mt-6 t-meta', side === 'left' ? 'text-left' : 'text-right')}>{folio}</div>
+    </div>
+  )
+}
+
 export function PergamentVorne({ side, folio }: PageProps) {
-  const { is3d } = useMappe()
   return (
     <div className="relative overflow-hidden" style={{ width: PAGE_W, height: PAGE_H }}>
-      {/* In der flachen Mappe und im PDF fehlt die echte Durchsicht: Die Seite darunter wird mitgezeichnet */}
-      {!is3d && <MorgenInner side={side} folio={folio + 2} play={false} />}
+      {/* Die Durchsicht wird mitgezeichnet (3D, flache Mappe und PDF gleich): darunter die Morgen-Seite */}
+      <MorgenInner side={side} folio={folio + 2} play={false} />
       <div className="absolute inset-0" style={vellum} />
       <div style={{ ...PHOTO, opacity: 0.86, mixBlendMode: 'multiply' }} className="overflow-hidden">
         <PageImg id="before-office" width={1024} />
       </div>
-      {/* Beschriftung oben, genau über der Zeile der Morgen-Seite darunter: kein Widerspruch in der Durchsicht */}
-      <p className="t-label absolute bg-[#f4f1ea] pr-3 text-ink" style={{ left: 56, top: 66 }}>
-        Am Abend, 18:30 Uhr
-      </p>
-      <p data-hint className="t-meta absolute text-ink" style={{ right: 56, bottom: 48 }}>
-        Pergament umblättern
-      </p>
+      <VellumHead side={side}>
+        <p className="t-label mb-5 text-ink">Am Abend, 18:30 Uhr</p>
+        <h2 className={h2}>So sieht es nach Feierabend aus.</h2>
+      </VellumHead>
+      <VellumFoot side={side} folio={folio}>
+        <p className={cn(body, 'max-w-[38ch]')}>Benutzte Tassen, Papiere, verschobene Stühle. Darunter sehen Sie denselben Raum am nächsten Morgen.</p>
+        <p data-hint className="t-meta mt-4 text-ink">
+          Pergament umblättern
+        </p>
+      </VellumFoot>
     </div>
   )
 }
 
 /* ------------------------------------------------------------------ Pergament, Rückseite (links, über der Einleitung) */
 export function PergamentHinten({ side, folio }: PageProps) {
-  const { is3d } = useMappe()
   return (
     <div className="relative overflow-hidden" style={{ width: PAGE_W, height: PAGE_H }}>
-      {!is3d && <VorherIntro side={side} folio={folio - 2} play={false} />}
+      <VorherIntro side={side} folio={folio - 2} play={false} />
       <div className="absolute inset-0" style={vellum} />
-      {/* Rückseite ohne Bild: Unter dem Pergament scheint nur die Einleitung ruhig durch, nichts überlagert sich */}
+      {/* Rückseite ohne Bild: In der Mitte scheint die Einleitung ruhig durch, Kopf und Seitenzahl gehören dem Pergament */}
+      <VellumHead side={side} height={96} />
+      <VellumFoot side={side} folio={folio} top={650} />
     </div>
   )
 }

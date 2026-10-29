@@ -5,7 +5,7 @@
 // (a) 20 Wischgesten: 10 vor, 10 zurück. Nach jeder Geste muss die Seitenzahl um genau eine Doppelseite bzw. Seite wechseln.
 // (b) Auf jeder Seite jedes Bedienelement bedienen (Klick, Ziehen, Tippen). Die Seitenzahl muss gleich bleiben.
 //     Ausnahme mit eigener Prüfung: Einträge im Inhaltsverzeichnis springen zur richtigen Seite.
-// (c) Ein Tippen in der Seitenmitte blättert nie.
+// (c) Mobil: Ein Tippen in der Seitenmitte blättert nie. Desktop: Ein Klick auf die Buchhälfte blättert genau eine Doppelseite.
 //
 // Aufruf: npm run build && npx serve dist -l 4176
 //         B=http://localhost:4176 node scripts/test-mappe.mjs        (ONLY=desktop oder ONLY=mobile)
@@ -44,15 +44,23 @@ async function desktop(browser) {
   await p.mouse.click(720, 450)
   await settle()
 
+  // freie Stelle am unteren Rand (Bedienelemente wie das Inhaltsverzeichnis blockieren das Blättern absichtlich)
+  const freeY = (x, b) =>
+    p.evaluate(
+      ([xx, top, h, block]) => [0.95, 0.97, 0.985, 0.9, 0.08].map((f) => top + h * f).find((yy) => !document.elementFromPoint(xx, yy)?.closest(block)) ?? top + h * 0.985,
+      [x, b.y, b.height, BLOCK],
+    )
   // (a) Wischen: an der Unterkante der Seite (Fußzeile, keine Bedienelemente)
   const swipe = async (side) => {
     const b = await p.locator(`[data-page-slot="${side}"]`).boundingBox()
-    const y = b.y + b.height * 0.95
     const x0 = side === 'right' ? b.x + b.width * 0.75 : b.x + b.width * 0.25
+    const y = await freeY(x0, b)
     const dir = side === 'right' ? -1 : 1
     await p.mouse.move(x0, y)
     await p.mouse.down()
-    for (let k = 1; k <= 12; k++) await p.mouse.move(x0 + dir * k * 40, y)
+    // Wischweg mit der Seitenbreite skaliert (gut eine Seitenbreite, wie mit der Hand)
+    const steps = Math.ceil((b.width * 1.15) / 40)
+    for (let k = 1; k <= steps; k++) await p.mouse.move(x0 + dir * k * 40, y)
     await p.mouse.up()
     await settle()
   }
@@ -69,13 +77,18 @@ async function desktop(browser) {
     ok(after === before - 2, `Desktop Wischen zurück ${i + 1}: ${before} → ${after}`)
   }
 
-  // (c) Tippen in der Seitenmitte
+  // (c) Klick auf die rechte Buchhälfte blättert vor, auf die linke zurück (je genau eine Doppelseite)
   {
-    const before = await counter(p)
+    const before = num(await counter(p))
     const b = await p.locator('[data-page-slot="right"]').boundingBox()
-    await p.mouse.click(b.x + b.width * 0.5, b.y + b.height * 0.93)
-    await p.waitForTimeout(1500)
-    ok((await counter(p)) === before, `Desktop Tippen Seitenmitte blättert: ${before} → ${await counter(p)}`)
+    await p.mouse.click(b.x + b.width * 0.5, await freeY(b.x + b.width * 0.5, b))
+    await settle()
+    const mid = num(await counter(p))
+    ok(mid === before + 2, `Desktop Klick rechte Hälfte: ${before} → ${mid}`)
+    const l = await p.locator('[data-page-slot="left"]').boundingBox()
+    await p.mouse.click(l.x + l.width * 0.5, await freeY(l.x + l.width * 0.5, l))
+    await settle()
+    ok(num(await counter(p)) === before, `Desktop Klick linke Hälfte: ${mid} → ${await counter(p)}`)
   }
 
   // zurück zum Anfang

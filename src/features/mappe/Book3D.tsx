@@ -393,10 +393,10 @@ function Pen({ x, z, rot }: { x: number; z: number; rot: number }) {
 /* ------------------------------------------------------------------------------------------ Buch */
 
 function Leaf({ bus, index, geom }: { bus: SceneBus; index: number; geom: THREE.BufferGeometry }) {
-  // Pergament: durchscheinend (Alpha aus der Textur), wird nach den übrigen Blättern gezeichnet
+  // Pergament: Die Durchsicht ist in die Textur gezeichnet (Seite darunter inklusive). Ohne Textur halb durchscheinend.
   const light = bus.light.has(index + 1)
-  const front = useMemo(() => Object.assign(pageMaterial(THREE.FrontSide), light ? { transparent: true, depthWrite: false } : {}), [light])
-  const back = useMemo(() => Object.assign(pageMaterial(THREE.BackSide), light ? { transparent: true, depthWrite: false } : {}), [light])
+  const front = useMemo(() => Object.assign(pageMaterial(THREE.FrontSide), light ? { transparent: true } : {}), [light])
+  const back = useMemo(() => Object.assign(pageMaterial(THREE.BackSide), light ? { transparent: true } : {}), [light])
   useFrame(() => {
     const ft = bus.textures[index * 2] ?? null
     const bt = bus.textures[index * 2 + 1] ?? null
@@ -410,7 +410,10 @@ function Leaf({ bus, index, geom }: { bus: SceneBus; index: number; geom: THREE.
     }
     front.color.set(ft ? '#ffffff' : '#f5f2eb')
     back.color.set(bt ? '#ffffff' : '#f5f2eb')
-    if (light && !ft) front.opacity = back.opacity = 0.5
+    if (light) {
+      front.opacity = ft ? 1 : 0.5
+      back.opacity = bt ? 1 : 0.5
+    }
   })
   return (
     <group>
@@ -581,6 +584,8 @@ function Book({ bus, onOpen }: { bus: SceneBus; onOpen: () => void }) {
     if (group.current) {
       group.current.position.x = (-COVER_W / 2) * (1 - bus.open)
       group.current.position.y = bus.hoverBook * 0.012
+      // geschlossen liegt das Buch leicht schräg auf dem Tisch, geöffnet exakt waagerecht
+      group.current.rotation.y = -0.07 * (1 - bus.open)
     }
     if (shadow.current) {
       const w = COVER_W * (1 + bus.open) + 2 * PW * bus.fold
@@ -738,15 +743,19 @@ function Rig({ bus }: { bus: SceneBus }) {
     const fov = ((camera as THREE.PerspectiveCamera).fov * Math.PI) / 180
     const fit = (w: number, h: number) => Math.max(h / 2 / Math.tan(fov / 2), w / 2 / Math.tan(fov / 2) / aspect)
     const closed = fit(aspect > 1.2 ? 4.4 : COVER_W / 0.6, COVER_H / 0.58)
-    // Ausgeklappt: Kamera zoomt leicht heraus und rückt zur Mitte der vier Seitenbreiten
-    const open = fit((2 * COVER_W + 2 * PW * bus.fold) / 0.66, COVER_H / 0.74) * 1.02
+    // Lesemodus: Die Doppelseite füllt rund 85 % der Breite (in der Höhe Platz für Kopf- und Bedienleiste).
+    // Ausgeklappt zoomt die Kamera heraus und rückt zur Mitte der vier Seitenbreiten.
+    const open = fit((2 * COVER_W + 2 * PW * bus.fold) / 0.85, COVER_H / 0.8)
     const e = bus.open * bus.open * (3 - 2 * bus.open)
     const dist = closed + (open - closed) * e
     const cx = PW * bus.fold
-    const tiltBase = THREE.MathUtils.degToRad(12)
-    const ax = tiltBase + THREE.MathUtils.degToRad(-bus.tilt.y)
-    const ay = THREE.MathUtils.degToRad(bus.tilt.x)
-    camera.position.set(cx + Math.sin(ay) * dist * Math.cos(ax), Math.cos(ax) * dist, Math.sin(ax) * dist)
+    // Geschlossen schräg von vorn (Atmosphäre), geöffnet senkrecht von oben: keine sichtbare Perspektive, keine Neigung zur Maus
+    const tiltBase = THREE.MathUtils.degToRad(12) * (1 - e)
+    const ax = tiltBase + THREE.MathUtils.degToRad(-bus.tilt.y) * (1 - e)
+    const ay = THREE.MathUtils.degToRad(bus.tilt.x) * (1 - e)
+    // „Oben“ im Bild ist die hintere Tischkante; so bleibt die Ausrichtung auch senkrecht von oben eindeutig
+    camera.up.set(0, 0, -1)
+    camera.position.set(cx + Math.sin(ay) * dist * Math.cos(ax), Math.cos(ax) * dist, Math.sin(ax) * dist + 0.02)
     camera.lookAt(cx, 0, 0.02)
   })
   return null

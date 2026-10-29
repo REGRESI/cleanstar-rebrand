@@ -782,8 +782,8 @@ const pages: MappePage[] = [
   { id: 'grundriss', title: 'Was wird bei Ihnen gereinigt?', Component: Grundriss },
   // Doppelseite mit Pergament: links die Einleitung, rechts das Pergament über dem Morgen-Foto
   { id: 'vorher', title: 'Am Abend und am Morgen', Component: VorherIntro },
-  { id: 'pergament', title: 'Pergament: das Büro am Abend', Component: PergamentVorne, textureOnly: true, transparent: true, light: true },
-  { id: 'pergament-rueck', title: 'Pergament, Rückseite', Component: PergamentHinten, textureOnly: true, transparent: true, light: true },
+  { id: 'pergament', title: 'Pergament: das Büro am Abend', Component: PergamentVorne, textureOnly: true, light: true },
+  { id: 'pergament-rueck', title: 'Pergament, Rückseite', Component: PergamentHinten, textureOnly: true, light: true },
   { id: 'morgen', title: 'Das Büro am Morgen', Component: Morgen },
   { id: 'uhr', title: 'Was passiert, während Sie schlafen', Component: Uhr },
   { id: 'nacht', title: 'Ablauf der Nacht', Component: Nachtablauf },

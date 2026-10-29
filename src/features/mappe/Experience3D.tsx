@@ -48,6 +48,41 @@ function halves(c: HTMLCanvasElement): [HTMLCanvasElement, HTMLCanvasElement] {
 }
 
 const indexOf = (id: string) => mappePages.findIndex((p) => p.id === id)
+
+/** Maus oder Trackpad (kein Finger) */
+const finePointer = () => typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches
+
+/** Pfeil-Zeiger für vor und zurück (schwarz mit weißem Rand, auf hellem und dunklem Papier lesbar) */
+const arrowCursor = (d: string, fallback: string) =>
+  `url("data:image/svg+xml,${encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='white' fill-opacity='0.92'/><path d='${d}' fill='none' stroke='%230b1220' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>`,
+  ).replace(/%2523/g, '%23')}") 16 16, ${fallback}`
+const CURSOR_NEXT = arrowCursor('M10 16h12m-5-5 5 5-5 5', 'e-resize')
+const CURSOR_PREV = arrowCursor('M22 16H10m5-5-5 5 5 5', 'w-resize')
+
+/** Umriss des aufgeschlagenen Buchs als Aussparung (evenodd) für die Abdunkel-Ebene */
+function bookHull(l: [number, number][] | null, r: [number, number][] | null, w: [number, number][] | null) {
+  // Nur eine Seite sichtbar (Anfang oder Ende): Die Innenseite des Einbands gehört trotzdem zum Buch
+  const shift = (p: [number, number], dx: number): [number, number] => [p[0] + dx, p[1]]
+  const pts =
+    r && l
+      ? [l[0], (w ?? r)[1], (w ?? r)[2], l[3]]
+      : r
+        ? [shift(r[0], r[0][0] - r[1][0]), (w ?? r)[1], (w ?? r)[2], shift(r[3], r[3][0] - r[2][0])]
+        : l
+          ? [l[0], shift(l[1], l[1][0] - l[0][0]), shift(l[2], l[2][0] - l[3][0]), l[3]]
+          : null
+  if (!pts) return null
+  const m = 10
+  const [a, b, c, d] = pts
+  const poly = [
+    [a[0] - m, a[1] - m],
+    [b[0] + m, b[1] - m],
+    [c[0] + m, c[1] + m],
+    [d[0] - m, d[1] + m],
+  ]
+  return `polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, ${poly.map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(', ')}, ${(poly[0][0]).toFixed(1)}px ${(poly[0][1]).toFixed(1)}px)`
+}
 const spreadOf = (i: number) => Math.floor((i + 1) / 2)
 
 /**
@@ -72,6 +107,9 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
   const [foldOpen, setFoldOpen] = useState(false)
   const [wideOn, setWideOn] = useState(false)
   const [hoverZone, setHoverZone] = useState<Side | null>(null)
+  const foldOpenRef = useRef(false)
+  foldOpenRef.current = foldOpen
+  const dim = useRef<HTMLDivElement>(null)
   const stage = useRef<HTMLDivElement>(null)
   const soundRef = useRef(sound)
   soundRef.current = sound
@@ -239,6 +277,13 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
       if (!l && r) minX = r[0][0] - (r[1][0] - r[0][0])
       if (prevBtn.current) prevBtn.current.style.transform = `translate(${Math.max(12, minX - 64)}px, ${cy - 22}px)`
       if (nextBtn.current) nextBtn.current.style.transform = `translate(${Math.min(window.innerWidth - 56, maxX + 20)}px, ${cy - 22}px)`
+      // Lesemodus: Tisch und Deko treten zurück (abgedunkelt, unscharf), ausgespart bleibt nur das Buch
+      if (dim.current) {
+        const e = bus.open * bus.open * (3 - 2 * bus.open)
+        const hull = bookHull(l, r, w)
+        dim.current.style.opacity = hull ? String(e) : '0'
+        if (hull) dim.current.style.clipPath = hull
+      }
       if (s !== wasStill) {
         wasStill = s
         setStill(s)
@@ -265,6 +310,38 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
     return () => io.disconnect()
   }, [bus])
 
+  // Mausrad und Trackpad (waagerecht wie senkrecht) blättern im aufgeschlagenen Buch. Eine Schwelle sammelt die
+  // Bewegung, danach ruht das Rad kurz, damit eine Geste nie mehrere Seiten auf einmal springt.
+  // Am Anfang bzw. Ende des Buchs scrollt das Rad wie gewohnt die Seite weiter.
+  useEffect(() => {
+    const el = stage.current
+    if (!el) return
+    let sum = 0
+    let lockUntil = 0
+    let lastT = 0
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey || spreadRef.current < 0 || foldOpenRef.current) return
+      if ((e.target as HTMLElement)?.closest?.('[data-scrollable], textarea, select')) return
+      const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+      const dir = d > 0 ? 1 : -1
+      if (dir > 0 ? spreadRef.current >= maxSpread : spreadRef.current <= 0) return
+      e.preventDefault()
+      const now = performance.now()
+      if (now < lockUntil) return
+      // nach einer Pause oder bei Richtungswechsel neu sammeln
+      if (now - lastT > 450 || (sum !== 0 && Math.sign(sum) !== dir)) sum = 0
+      lastT = now
+      sum += e.deltaMode === 1 ? d * 16 : d
+      if (Math.abs(sum) >= 70) {
+        sum = 0
+        lockUntil = now + 650
+        step(dir)
+      }
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [step, spreadRef, maxSpread])
+
   // Pfeiltasten (nicht, solange ein Eingabefeld oder die Uhr den Fokus hat)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -289,7 +366,8 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
     const pageW = Math.abs(g[1][0] - g[0][0]) || 400
     const x0 = e.clientX
     const y0 = e.clientY
-    const inZone = zoneAt(side, e.clientX, e.clientY)
+    // Am Desktop (Maus, Trackpad) blättert ein Klick auf die ganze Buchhälfte, mit dem Finger nur der Außenrand
+    const inZone = finePointer() || zoneAt(side, e.clientX, e.clientY)
     let active = false
     let cancelled = false
     const samples: [number, number][] = [[x0, e.timeStamp]]
@@ -337,9 +415,12 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
   }
   const onPageHover = (side: Side, e: RPointerEvent<HTMLDivElement>) => {
     const canTurn = side === 'right' ? spreadRef.current < maxSpread : spreadRef.current > 0
-    const on = canTurn && !foldOpen && !(e.target as HTMLElement).closest(BLOCK) && zoneAt(side, e.clientX, e.clientY)
-    e.currentTarget.style.cursor = on ? (side === 'right' ? 'e-resize' : 'w-resize') : ''
-    const z = on ? side : hoverZone === side ? null : hoverZone
+    const free = canTurn && !foldOpen && !(e.target as HTMLElement).closest(BLOCK)
+    const edge = free && zoneAt(side, e.clientX, e.clientY)
+    const on = free && (finePointer() || edge)
+    e.currentTarget.style.cursor = on ? (side === 'right' ? CURSOR_NEXT : CURSOR_PREV) : ''
+    // Die Ecke hebt sich nur am Außenrand an
+    const z = edge ? side : hoverZone === side ? null : hoverZone
     if (z !== hoverZone) setHoverZone(z)
   }
 
@@ -417,8 +498,10 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
     'pointer-events-auto absolute top-0 left-0 grid size-11 place-items-center rounded-full bg-paper/85 text-ink shadow-[0_6px_18px_-8px_rgba(0,0,0,0.5)] backdrop-blur transition-opacity duration-300 hover:bg-paper disabled:pointer-events-none disabled:opacity-0'
   return (
     <Ctx.Provider value={ctx}>
-      <div ref={stage} className="absolute inset-0">
+      {/* Aufgeschlagen gehört das Mausrad dem Buch (Lenis lässt es dann in Ruhe) */}
+      <div ref={stage} className="absolute inset-0" data-lenis-prevent-wheel={spread >= 0 || undefined}>
         <Scene3D bus={bus} active={inView} onOpen={() => goTo(spreadRef.current < 0 ? 0 : spreadRef.current)} />
+        <div ref={dim} aria-hidden className="mappe-dim pointer-events-none absolute inset-0" style={{ opacity: 0 }} />
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           {slot(left, 'left', leftEl)}
           {slot(right, 'right', rightEl)}
@@ -443,6 +526,23 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
           <svg viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
             <path d="M7.5 4.5 13 10l-5.5 5.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
+        </button>
+        {/* Schließen: zurück in die Tisch-Ansicht */}
+        <button
+          type="button"
+          onClick={() => goTo(-1)}
+          className={cn(
+            'pointer-events-auto absolute top-24 right-4 flex h-11 items-center gap-2 rounded-full bg-paper/90 pr-4 pl-3 text-[0.875rem] font-medium text-ink shadow-[0_6px_18px_-8px_rgba(0,0,0,0.5)] backdrop-blur transition-opacity duration-300 hover:bg-paper sm:right-8',
+            spread >= 0 ? 'opacity-100' : 'pointer-events-none opacity-0',
+          )}
+          aria-hidden={spread < 0 || undefined}
+          tabIndex={spread < 0 ? -1 : 0}
+          data-mappe-close
+        >
+          <svg viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+            <path d="m5 5 10 10M15 5 5 15" strokeLinecap="round" />
+          </svg>
+          Buch schließen
         </button>
         {!ready && (
           <div className="absolute inset-x-0 bottom-28 flex flex-col items-center gap-3" role="status" aria-live="polite">
