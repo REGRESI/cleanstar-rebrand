@@ -81,7 +81,7 @@ function bookHull(l: [number, number][] | null, r: [number, number][] | null, w:
     [c[0] + m, c[1] + m],
     [d[0] - m, d[1] + m],
   ]
-  return `polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, ${poly.map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(', ')}, ${(poly[0][0]).toFixed(1)}px ${(poly[0][1]).toFixed(1)}px)`
+  return `polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, ${poly.map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(', ')}, ${poly[0][0].toFixed(1)}px ${poly[0][1].toFixed(1)}px)`
 }
 const spreadOf = (i: number) => Math.floor((i + 1) / 2)
 
@@ -370,6 +370,8 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
     const inZone = finePointer() || zoneAt(side, e.clientX, e.clientY)
     let active = false
     let cancelled = false
+    // Wischt jemand, während noch eine Blätter-Animation läuft, wird daraus ein normales Umblättern (Puffer)
+    let queued = false
     const samples: [number, number][] = [[x0, e.timeStamp]]
     const move = (ev: PointerEvent) => {
       const dx = ev.clientX - x0
@@ -378,8 +380,11 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
         if (Math.abs(dy) > SWIPE_MIN && Math.abs(dy) > Math.abs(dx)) cancelled = true
         else if (Math.abs(dx) > SWIPE_MIN && Math.abs(dx) > Math.abs(dy) * 1.2) {
           const ok = side === 'right' ? dx < 0 && spreadRef.current < maxSpread : dx > 0 && spreadRef.current > 0
-          if (!ok || bus.anims.size > 0) cancelled = true
-          else active = true
+          if (!ok) cancelled = true
+          else if (bus.anims.size > 0) {
+            cancelled = true
+            queued = true
+          } else active = true
         }
       }
       if (!active) return
@@ -396,6 +401,8 @@ export default function Experience3D({ sound, onReady, onNav, shared }: { sound:
         const [a, b] = [samples[0], samples[samples.length - 1]]
         const vx = b[1] > a[1] ? (b[0] - a[0]) / (b[1] - a[1]) : 0
         drag(side, null, vx)
+      } else if (queued && Math.abs(ev.clientX - x0) > pageW * 0.25) {
+        step(side === 'right' ? 1 : -1)
       } else if (!cancelled && inZone && Math.hypot(ev.clientX - x0, ev.clientY - y0) < SWIPE_MIN) {
         step(side === 'right' ? 1 : -1)
       }
