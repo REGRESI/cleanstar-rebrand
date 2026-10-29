@@ -57,14 +57,8 @@ async function desktop(browser) {
     const y = await freeY(x0, b)
     const dir = side === 'right' ? -1 : 1
     await p.mouse.move(x0, y)
-    if (process.env.DEBUG)
-      console.error(
-        side,
-        await p.evaluate(([xx, yy]) => {
-          const e = document.elementFromPoint(xx, yy)
-          return `${e?.tagName}.${String(e?.className).slice(0, 60)} slot=${e?.closest('[data-page-slot]')?.getAttribute('data-page-slot')}`
-        }, [x0, y]),
-      )
+    // wie eine echte Hand: kurz ankommen, dann drücken (zwei Bilder, damit die Seite die Zeigerposition verarbeitet hat)
+    await p.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
     await p.mouse.down()
     // Wischweg mit der Seitenbreite skaliert (gut eine Seitenbreite, wie mit der Hand)
     const steps = Math.ceil((b.width * 1.15) / 40)
