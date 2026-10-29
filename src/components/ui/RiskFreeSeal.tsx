@@ -9,14 +9,25 @@ import { cn } from '@/lib/cn'
  * variant="badge": eine Zeile (Konfigurator, Abschluss)
  * variant="card": kurzer Absatz mit Haarlinie (Ablauf)
  */
-export function RiskFreeSeal({ variant = 'badge', dark, className }: { variant?: 'badge' | 'card'; dark?: boolean; className?: string }) {
+export function RiskFreeSeal({
+  variant = 'badge',
+  dark,
+  className,
+  label,
+}: {
+  variant?: 'badge' | 'card'
+  dark?: boolean
+  className?: string
+  /** eigene Formulierung (gleiche Aussage), damit sie pro Seite nicht mehrfach wörtlich steht */
+  label?: string
+}) {
   const [open, setOpen] = useState(false)
   const c = company.contract
 
   const trigger =
     variant === 'badge' ? (
       <button type="button" onClick={() => setOpen(true)} className={cn('text-left leading-snug', dark ? 'text-paper' : 'text-ink', className)} aria-haspopup="dialog">
-        <span className="block font-medium">{c.riskFree}.</span>
+        <span className="block font-medium">{label ?? c.riskFree}.</span>
         <span className={cn('ulink mt-1 inline-block text-[0.875rem]', dark ? 'text-link-dark hover:text-paper' : 'text-muted')}>Vertragsbedingungen ansehen</span>
       </button>
     ) : (

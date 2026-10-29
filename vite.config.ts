@@ -140,6 +140,8 @@ export default defineConfig(({ mode }) => {
       dirStyle: 'nested',
       formatting: 'none',
       script: 'async',
+      // Beasties kennt die View-Transition-Selektoren nicht (die Regeln stehen weiter im vollen Stylesheet): nur Fehler melden
+      beastiesOptions: { logLevel: 'error' },
       includedRoutes(paths: string[]) {
         return paths.filter((p) => !p.includes(':') && p !== '*')
       },

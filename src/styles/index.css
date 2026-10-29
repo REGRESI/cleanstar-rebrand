@@ -1665,3 +1665,8 @@ footer[data-no-top] {
   clip-path: inset(-20% -5% -20% 0);
   transition: clip-path 1.2s cubic-bezier(0.45, 0.05, 0.35, 1) var(--sd, 0s);
 }
+
+/* Sichtbare Buchstaben-Kopie ohne Text im Dokument (die lesbare Fassung steht einmal daneben, sr-only) */
+.scrub-ghost::before {
+  content: attr(data-c);
+}

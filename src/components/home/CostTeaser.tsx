@@ -136,7 +136,7 @@ export function CostTeaser() {
             </div>
 
             <p className="mt-10 text-[0.875rem] text-ink-2">
-              Unverbindliche Richtwerte bei {pricing.hourlyRateGrossMin} bis {pricing.hourlyRateGrossMax} € brutto je Mitarbeiterstunde. Wie viele Stunden Ihr Objekt wirklich braucht, sehen wir bei der kostenlosen Besichtigung.
+              Unverbindliche Richtwerte auf Basis unseres Stundensatzes. Wie viele Stunden Ihr Objekt wirklich braucht, sehen wir bei der kostenlosen Besichtigung.
             </p>
             <Link to="/angebote-vergleichen" className="tlink mt-6 text-ink">
               Zum vollständigen Angebotsvergleich

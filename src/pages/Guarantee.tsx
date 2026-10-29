@@ -120,7 +120,7 @@ export default function Guarantee() {
 
       <Answer>
         Die Qualitätsgarantie von CleanStar bedeutet: Passt etwas nicht, reinigen wir kostenlos nach und klären die Ursache mit dem Team. Dazu kommen eigene Qualitätskontrollen,
-        ein fester Ansprechpartner und eine Ersatzkraft bei Ausfall.
+        eine Person, die Sie direkt erreichen, und Vertretung, wenn jemand aus dem Team ausfällt.
       </Answer>
       <FinalCta />
     </>

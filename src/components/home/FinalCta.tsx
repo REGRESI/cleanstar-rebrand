@@ -2,7 +2,6 @@ import { RevealText } from '@/components/ui/RevealText'
 import { ContactPerson } from '@/components/ui/ContactPerson'
 import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
 import { home } from '@/content/site'
-import { company } from '@/content/company'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { useQuote, type ObjectType } from '@/features/configurator/QuoteContext'
 import { useOfficeWay } from '@/features/office/officeWay'
@@ -40,7 +39,7 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
                 Kostenlose Besichtigung
               </QuoteButton>
               <p className="mt-4 font-medium tabular-nums text-[0.75rem] text-muted-dark">
-                Kostenlos und unverbindlich. Antwort innerhalb von {company.promises.responseHours} Stunden.
+                Kostenlos und unverbindlich.
               </p>
             </div>
             <div className="mt-12" data-reveal>
@@ -65,7 +64,7 @@ export function FinalCta({ headline = home.finalCta.headline }: { headline?: str
           </div>
           <div className="col-span-12 space-y-10 lg:col-span-3 lg:col-start-10" data-reveal>
             <ContactPerson dark compact title="Ihr Ansprechpartner für das Erstgespräch" />
-            <RiskFreeSeal dark />
+            <RiskFreeSeal dark label="Laufzeit und Kündigung auf einen Blick" />
           </div>
         </div>
       </div>

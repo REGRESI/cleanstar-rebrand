@@ -11,7 +11,7 @@ export const baseFacts = (): Fact[] => [
   ['Einzugsgebiet', company.serviceArea],
   ['Erreichbarkeit', 'Rund um die Uhr, Antwort innerhalb von 24 Stunden'],
   ['Stundensatz', `${pricing.hourlyRateGrossMin} bis ${pricing.hourlyRateGrossMax} € brutto je Mitarbeiterstunde`],
-  ['Vertrag', company.contract.riskFree + ', danach ein Monat zum Ende des Folgemonats'],
+  ['Vertrag', 'Im ersten Monat ohne Frist, danach ein Monat zum Ende des Folgemonats'],
 ]
 
 /**

@@ -23,7 +23,7 @@ function Words({ text, cls }: { text: string; cls: string }) {
         <Fragment key={i}>
           {i > 0 && ' '}
           <span className="whitespace-nowrap">
-            <Letters text={w} className={cls} />
+            <Letters text={w} className={cls} ghost />
           </span>
         </Fragment>
       ))}

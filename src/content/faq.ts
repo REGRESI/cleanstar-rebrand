@@ -64,7 +64,7 @@ export const faqs: Faq[] = [
     category: 'Qualität und Sicherheit',
     featured: true,
     q: 'Was passiert, wenn etwas nicht sauber ist?',
-    a: 'Sie melden es Ihrem festen Ansprechpartner. Wir reinigen kostenlos nach und klären die Ursache mit dem Team, damit es nicht wieder vorkommt. Den genauen Ablauf finden Sie auf unserer Seite zur Qualitätsgarantie.',
+    a: 'Sie melden es der Person, die Sie bei uns betreut. Wir reinigen kostenlos nach und klären die Ursache mit dem Team, damit es nicht wieder vorkommt. Den genauen Ablauf finden Sie auf unserer Seite zur Qualitätsgarantie.',
   },
   {
     category: 'Qualität und Sicherheit',

@@ -22,7 +22,8 @@ type Token = { kind: 'word'; text: string; blue?: boolean } | Img
 
 const TEXT =
   'Wenn Ihr Team Feierabend macht [feierabend], kommen wir. Mit Ihrem Schlüssel [schluessel], nach festem Plan und mit einem Team, das Ihr Büro kennt [team]. Fällt jemand aus, ist trotzdem jemand da. Und am Morgen wartet ein sauberes Büro [kaffee].'
-const FINAL = 'Sauber. Ohne dass Sie nachfragen müssen.'
+// Pointe in Blau. Die Leitidee selbst steht nur im Hero und im Footer, hier dieselbe Aussage mit anderen Worten.
+const FINAL = 'Jeden Morgen. Ohne Erinnerung, ohne Nachfrage.'
 
 const ALT: Record<Img['img'], string> = {
   feierabend: 'Großraumbüro am Abend nach Feierabend',
@@ -167,7 +168,7 @@ export function ScrollStory() {
             <QuoteButton size="lg" arrow>
               Kostenlose Besichtigung
             </QuoteButton>
-            <RiskFreeSeal className="text-[0.9375rem]" />
+            <RiskFreeSeal className="text-[0.9375rem]" label="Im ersten Monat ohne Frist kündbar" />
           </div>
         </div>
       </div>

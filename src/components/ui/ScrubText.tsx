@@ -8,14 +8,20 @@ import { cn } from '@/lib/cn'
  * Buchstaben eines Wortes als einzelne Spans (für den Färbeeffekt). Das Wort bleibt eine Einheit, Umbrüche ändern
  * sich nicht. Für Screenreader steht der Text daneben einmal am Stück (siehe ScrubText).
  */
-export function Letters({ text, className }: { text: string; className?: string }) {
+export function Letters({ text, className, ghost }: { text: string; className?: string; ghost?: boolean }) {
   return (
     <>
-      {Array.from(text).map((ch, i) => (
-        <span key={i} data-l className={cn('scrub-l', className)}>
-          {ch}
-        </span>
-      ))}
+      {Array.from(text).map((ch, i) =>
+        // ghost: Buchstabe nur gezeichnet (CSS ::before), nicht als Text im Dokument. Für die sichtbare Kopie neben
+        // einer Fassung für Screenreader, damit der Text für Suchmaschinen nur einmal im HTML steht.
+        ghost ? (
+          <span key={i} data-l data-c={ch} className={cn('scrub-l scrub-ghost', className)} />
+        ) : (
+          <span key={i} data-l className={cn('scrub-l', className)}>
+            {ch}
+          </span>
+        ),
+      )}
     </>
   )
 }
@@ -87,7 +93,7 @@ export function ScrubText({
           <Fragment key={i}>
             {i > 0 && words[i - 1] !== '\n' && ' '}
             <span className={cn('whitespace-nowrap', i >= words.length - accentLast && 'scrub-accent')}>
-              <Letters text={w} />
+              <Letters text={w} ghost />
             </span>
           </Fragment>
         ),
