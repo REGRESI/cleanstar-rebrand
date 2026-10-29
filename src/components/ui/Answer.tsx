@@ -26,6 +26,7 @@ export function Answer({
   bottom = 'pb-20 sm:pb-28 lg:pb-36',
   facts,
   extraFacts = [],
+  question,
 }: {
   children: ReactNode
   className?: string
@@ -34,8 +35,35 @@ export function Answer({
   facts?: Fact[]
   /** Seitenbezogene Fakten vor den Standardfakten */
   extraFacts?: Fact[]
+  /** Antwort-zuerst-Block unter dem Seitenkopf: die Hauptfrage der Seite als Überschrift */
+  question?: string
 }) {
   const list = [...extraFacts, ...(facts ?? baseFacts())]
+  // Antwort zuerst: direkt unter dem Seitenkopf, mit der Frage der Seite als Überschrift
+  if (question)
+    return (
+      <section aria-labelledby="answer-title" className={cn('container-site', bottom, className)}>
+        <div className="grid-site gap-y-10 border-t border-line pt-8 lg:pt-10">
+          <div className="col-span-12 lg:col-span-7">
+            <p className="t-label">Kurz beantwortet</p>
+            <h2 id="answer-title" className="t-h3 mt-3 max-w-[24ch]">
+              {question}
+            </h2>
+            <p data-answer className="mt-6 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-ink-2 sm:text-[1.125rem]">
+              {children}
+            </p>
+          </div>
+          <dl className="col-span-12 self-start border-t border-line lg:col-span-4 lg:col-start-9">
+            {list.map(([k, v]) => (
+              <div key={k} className="border-b border-line py-3">
+                <dt className="text-[0.875rem] text-muted">{k}</dt>
+                <dd className="mt-0.5 text-[1rem] text-ink">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+    )
   return (
     <section aria-labelledby="answer-title" className={cn('container-site', bottom, className)}>
       <div className="grid-site gap-y-8 border-t border-line pt-8 lg:pt-10">

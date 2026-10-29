@@ -2,7 +2,11 @@ import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
 import { CleaningCheck } from '@/features/check/CleaningCheck'
 import { checkQuestions } from '@/content/check'
-import { breadcrumbSchema } from '@/lib/schema'
+import { breadcrumbSchema, webAppSchema } from '@/lib/schema'
+import { AuthorBox } from '@/components/ui/AuthorBox'
+import { pageMeta } from '@/content/pageMeta'
+
+const meta = pageMeta['/reinigungs-check']
 
 const trail = [
   { name: 'Startseite', path: '/' },
@@ -16,7 +20,10 @@ export default function CleaningCheckPage() {
         title="Reinigungs-Check: Büroreinigung testen"
         description={`Wie gut ist Ihre aktuelle Büroreinigung? ${checkQuestions.length} kurze Fragen, zwei Minuten, mit Auswertung und konkreten Hinweisen. Ohne Anmeldung, nichts wird gespeichert.`}
         path="/reinigungs-check"
-        schema={[breadcrumbSchema(trail)]}
+        schema={[
+          webAppSchema({ name: 'Reinigungs-Check', description: 'Kurzer Test der aktuellen Büroreinigung mit Auswertung und Hinweisen.', path: '/reinigungs-check', ...meta }),
+          breadcrumbSchema(trail),
+        ]}
       />
       <PageHero
         trail={trail}
@@ -28,6 +35,7 @@ export default function CleaningCheckPage() {
         <div className="container-site grid-site">
           <div className="col-span-12 lg:col-span-8 lg:col-start-4">
             <CleaningCheck />
+            <AuthorBox label="Werkzeug von" author={meta.author} published={meta.published} modified={meta.modified} className="mt-20" />
           </div>
         </div>
       </section>

@@ -89,6 +89,8 @@ export function PageImg({ id, width = 640, className, style }: { id: ImageId; wi
     <img
       src={`${import.meta.env.BASE_URL}images/${spec.file}-${width}.webp`}
       alt={spec.alt}
+      width={width}
+      height={Math.round((width * Number(spec.ratio.split(':')[1])) / Number(spec.ratio.split(':')[0]))}
       decoding="sync"
       draggable={false}
       className={cn('photo block size-full object-cover', className)}

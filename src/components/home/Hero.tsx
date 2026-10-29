@@ -38,6 +38,8 @@ function MobileFullImage({ src }: { src: string }) {
       src={src}
       alt=""
       aria-hidden
+      width={941}
+      height={1672}
       decoding="async"
       fetchPriority="low"
       onLoad={() => setReady(true)}
@@ -91,7 +93,7 @@ const DayLayer = forwardRef<HTMLDivElement, { base: Tod; tod: Tod | null; mobile
     <div ref={ref} aria-hidden className="pointer-events-none absolute inset-0">
       <div className="photo hero-stage absolute overflow-hidden" style={{ ['--fw' as string]: `${FRAME_W}px`, ['--fh' as string]: `${FRAME_H}px` }}>
         <div className="day-wipe absolute inset-0" data-on={shown || undefined}>
-          <img src={src} alt="" decoding="async" className="absolute inset-0 size-full object-cover max-md:object-[40%_50%]" />
+          <img src={src} alt="" width={mobile ? 941 : 1918} height={mobile ? 1672 : 1080} decoding="async" className="absolute inset-0 size-full object-cover max-md:object-[40%_50%]" />
         </div>
         <div className="absolute inset-0 [container-type:inline-size]">
           <span className="day-edge" data-on={shown || undefined} />
@@ -199,6 +201,8 @@ export function Hero() {
               <img
                 src={hero.desktop[0] ?? hero.still['aussen-d']}
                 alt={morning ? home.hero.imageAltMorning : home.hero.imageAlt}
+                width={FRAME_W}
+                height={FRAME_H}
                 fetchPriority="high"
                 decoding="async"
                 // Handy: Hochformat-Foto, leicht nach links verschoben, damit das ganze Gebäude sichtbar bleibt

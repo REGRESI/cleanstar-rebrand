@@ -3,6 +3,7 @@ import { getService, services } from '@/content/services'
 import { home } from '@/content/site'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { serviceAnswer } from '@/content/answers'
 import { Answer } from '@/components/ui/Answer'
 import { ImageBand } from '@/components/ui/ImageBand'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -55,6 +56,9 @@ export default function ServiceDetail() {
           </>
         }
       />
+      <Answer question={serviceAnswer(s).question} bottom="pb-16 sm:pb-20 lg:pb-24">
+        {serviceAnswer(s).text}
+      </Answer>
 
       {/* Die vier Punkte: einheitliche Spalten mit Haarlinie, auf allen Leistungsseiten gleich */}
       <section className="section-tight" aria-label="Das zeichnet uns aus">
@@ -234,7 +238,7 @@ export default function ServiceDetail() {
             items={(main ? officeCities.map((c) => ({ to: `/bueroreinigung/${c.slug}`, label: `Büroreinigung ${c.name}` })) : [])
               .concat(
                 locations
-                  .filter((l) => l.focus.some((f) => f.service === s.slug) && !(main && officeCities.some((c) => c.slug === l.slug)))
+                  .filter((l) => l.page && l.focus.some((f) => f.service === s.slug) && !(main && officeCities.some((c) => c.slug === l.slug)))
                   .slice(0, main ? 6 : 11)
                   .map((l) => ({ to: `/einzugsgebiet/${l.slug}`, label: `${s.name} ${shortName(l)}` })),
               )
@@ -261,7 +265,6 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      <Answer className="pt-20 sm:pt-28 lg:pt-36">{`CleanStar übernimmt die ${s.name} für Unternehmen in Offenburg und im ganzen Ortenaukreis. ${s.short}`}</Answer>
       <FinalCta headline={`Bereit für eine ${s.name}, um die Sie sich nicht kümmern müssen?`} />
     </>
   )

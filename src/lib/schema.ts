@@ -2,10 +2,82 @@ import { company } from '@/content/company'
 import { places as locations } from '@/content/places'
 import { services } from '@/content/services'
 import { pricing } from '@/content/pricing'
+import { images, IMAGE_WIDTHS, type ImageId } from '@/content/images'
 import type { Service } from '@/content/services'
 import type { Faq } from '@/content/faq'
 
 const url = (path: string) => company.siteUrl + (path === '/' ? '/' : path.replace(/\/?$/, '/'))
+
+/** Feste Kennungen, über die sich die Schema-Blöcke gegenseitig verweisen */
+export const ORG_ID = `${company.siteUrl}/#organization`
+export const BUSINESS_ID = `${company.siteUrl}/#business`
+const slug = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/ä/g, 'ae')
+    .replace(/ö/g, 'oe')
+    .replace(/ü/g, 'ue')
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]+/g, '-')
+export const personId = (i: number) => `${company.siteUrl}/ueber-uns/#${slug(company.founders[i]?.name ?? 'person')}`
+const sameAs = () => [company.profiles.google, company.profiles.linkedin, ...company.profiles.others].filter((u) => u.trim() !== '')
+const imageUrl = (id: string) => `${company.siteUrl}/images/${images[id as ImageId].file}-${IMAGE_WIDTHS[Math.min(2, IMAGE_WIDTHS.length - 1)]}.webp`
+
+/** Das Unternehmen als Organisation (eigene @id). LocalBusiness, Personen und Artikel verweisen darauf. */
+export function organizationSchema() {
+  const links = sameAs()
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': ORG_ID,
+    name: company.name,
+    legalName: company.legalName,
+    alternateName: company.shortName,
+    url: `${company.siteUrl}/`,
+    logo: { '@type': 'ImageObject', url: `${company.siteUrl}/logo.png` },
+    ...(company.foundedYear ? { foundingDate: String(company.foundedYear) } : {}),
+    foundingLocation: { '@type': 'Place', name: company.seat },
+    founder: company.founders.filter((f) => f.name).map((_, i) => ({ '@id': personId(i) })),
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: company.address.street,
+      postalCode: company.address.zip,
+      addressLocality: company.address.city,
+      addressRegion: 'Baden-Württemberg',
+      addressCountry: 'DE',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: company.phone.international,
+      email: company.email,
+      contactType: 'customer service',
+      areaServed: 'DE',
+      availableLanguage: 'de',
+    },
+    ...(links.length ? { sameAs: links } : {}),
+  }
+}
+
+/** Die Gründer als Personen (Name, Rolle, Bild, Arbeitgeber) */
+export function personSchemas() {
+  return company.founders
+    .map((f, i) =>
+      f.name
+        ? {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            '@id': personId(i),
+            name: f.name,
+            jobTitle: f.role.replace('Gründer · ', 'Gründer, '),
+            description: f.bio,
+            image: imageUrl(f.image),
+            worksFor: { '@id': ORG_ID },
+            url: `${company.siteUrl}/ueber-uns/`,
+          }
+        : null,
+    )
+    .filter((x): x is NonNullable<typeof x> => x !== null)
+}
 
 /**
  * Unternehmen als LocalBusiness. Hinweis: „CleaningService“ ist kein Typ von schema.org, deshalb
@@ -13,12 +85,13 @@ const url = (path: string) => company.siteUrl + (path === '/' ? '/' : path.repla
  */
 export function localBusinessSchema() {
   const hours = company.openingHours
-  const sameAs = [company.profiles.google, ...company.profiles.others].filter((u) => u.trim() !== '')
+  const links = sameAs()
   return {
     '@context': 'https://schema.org',
     '@type': ['LocalBusiness', 'ProfessionalService'],
     additionalType: 'https://www.wikidata.org/wiki/Q1229410',
-    '@id': `${company.siteUrl}/#business`,
+    '@id': BUSINESS_ID,
+    parentOrganization: { '@id': ORG_ID },
     name: company.name,
     legalName: company.legalName,
     alternateName: company.shortName,
@@ -34,7 +107,7 @@ export function localBusinessSchema() {
     ...(company.vatId ? { vatID: company.vatId } : {}),
     ...(company.foundedYear ? { foundingDate: String(company.foundedYear) } : {}),
     foundingLocation: { '@type': 'Place', name: company.seat },
-    founder: company.founders.filter((f) => f.name).map((f) => ({ '@type': 'Person', name: f.name, jobTitle: f.role.replace('Gründer · ', 'Gründer, ') })),
+    founder: company.founders.filter((f) => f.name).map((f, i) => ({ '@type': 'Person', '@id': personId(i), name: f.name, jobTitle: f.role.replace('Gründer · ', 'Gründer, ') })),
     address: {
       '@type': 'PostalAddress',
       streetAddress: company.address.street,
@@ -88,7 +161,7 @@ export function localBusinessSchema() {
         itemOffered: { '@type': 'Service', name: sv.name, description: sv.seoDescription },
       })),
     },
-    ...(sameAs.length ? { sameAs } : {}),
+    ...(links.length ? { sameAs: links } : {}),
   }
 }
 
@@ -106,7 +179,17 @@ export function websiteSchema() {
 }
 
 /** Ratgeber-Artikel */
-export function articleSchema(a: { title: string; description: string; path: string; published: string; modified: string; author: string; authorRole: string; image: string }) {
+export function articleSchema(a: {
+  title: string
+  description: string
+  path: string
+  published: string
+  modified: string
+  author: string
+  authorRole: string
+  image: string
+  authorIndex?: number
+}) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -118,8 +201,8 @@ export function articleSchema(a: { title: string; description: string; path: str
     datePublished: a.published,
     dateModified: a.modified,
     inLanguage: 'de-DE',
-    author: { '@type': 'Person', name: a.author, jobTitle: a.authorRole, worksFor: { '@id': `${company.siteUrl}/#business` } },
-    publisher: { '@id': `${company.siteUrl}/#business` },
+    author: { '@type': 'Person', ...(a.authorIndex !== undefined ? { '@id': personId(a.authorIndex) } : {}), name: a.author, jobTitle: a.authorRole, worksFor: { '@id': ORG_ID } },
+    publisher: { '@id': ORG_ID },
   }
 }
 
@@ -136,7 +219,8 @@ export function howToSchema(h: { name: string; description: string; path: string
 }
 
 /** Werkzeug/Rechner auf der Website */
-export function webAppSchema(a: { name: string; description: string; path: string }) {
+export function webAppSchema(a: { name: string; description: string; path: string; author?: number; published?: string; modified?: string }) {
+  const f = a.author !== undefined ? company.founders[a.author] : undefined
   return {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
@@ -144,10 +228,14 @@ export function webAppSchema(a: { name: string; description: string; path: strin
     description: a.description,
     url: url(a.path),
     applicationCategory: 'BusinessApplication',
-    operatingSystem: 'Browser',
+    operatingSystem: 'Alle (im Browser)',
+    inLanguage: 'de-DE',
     isAccessibleForFree: true,
     offers: { '@type': 'Offer', price: 0, priceCurrency: 'EUR' },
-    provider: { '@id': `${company.siteUrl}/#business` },
+    ...(f?.name ? { author: { '@type': 'Person', '@id': personId(a.author!), name: f.name, jobTitle: f.role.replace('Gründer · ', 'Gründer, ') } } : {}),
+    publisher: { '@id': ORG_ID },
+    ...(a.published ? { datePublished: a.published } : {}),
+    ...(a.modified ? { dateModified: a.modified } : {}),
   }
 }
 

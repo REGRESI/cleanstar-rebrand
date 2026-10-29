@@ -1,5 +1,5 @@
 // Nach dem Live-Build: sitemap.xml, 404.html und .htaccess erzeugen
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, unlinkSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, unlinkSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
 
 const SITE = 'https://www.cleanstar-dienstleistungen.de' // muss zu company.ts → siteUrl passen
@@ -48,6 +48,25 @@ ${urls.map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${today}</lastmod><prio
 `
 writeFileSync(join(dist, 'sitemap.xml'), xml)
 
+// Zusammengeführte Ortsseiten: Orte ohne eigene Seite (page: true fehlt in places.ts) leiten auf die Einzugsgebiet-Seite.
+// GitHub Pages kann keine echten 301: Meta-Refresh plus Canonical und noindex. Für Cloudflare Pages und Apache
+// stehen echte 301-Regeln in _redirects bzw. .htaccess.
+const placesSrc = readFileSync('src/content/places.ts', 'utf8')
+const merged = [...placesSrc.matchAll(/\{ slug: '([^']+)'([^}]*)\}/g)].filter((m) => !/page: true/.test(m[2])).map((m) => m[1])
+for (const slug of merged) {
+  const target = `/einzugsgebiet/#ort-${slug}`
+  const dir = join(dist, 'einzugsgebiet', slug)
+  mkdirSync(dir, { recursive: true })
+  writeFileSync(
+    join(dir, 'index.html'),
+    `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Einzugsgebiet | CleanStar</title><link rel="canonical" href="${SITE}/einzugsgebiet/"><meta name="robots" content="noindex, follow"><meta http-equiv="refresh" content="0; url=${target}"></head><body><p>Diese Seite ist umgezogen: <a href="${target}">Einzugsgebiet von CleanStar</a>.</p></body></html>\n`,
+  )
+}
+writeFileSync(
+  join(dist, '_redirects'),
+  merged.map((slug) => `/einzugsgebiet/${slug} /einzugsgebiet/ 301\n/einzugsgebiet/${slug}/ /einzugsgebiet/ 301`).join('\n') + '\n',
+)
+
 // 404-Seite für normales Webhosting
 if (existsSync(join(dist, '404/index.html'))) writeFileSync(join(dist, '404.html'), readFileSync(join(dist, '404/index.html')))
 
@@ -63,6 +82,8 @@ DirectorySlash On
   # https erzwingen
   RewriteCond %{HTTPS} off
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # zusammengeführte Ortsseiten
+${merged.map((slug) => `  RewriteRule ^einzugsgebiet/${slug}/?$ /einzugsgebiet/ [L,R=301]`).join('\n')}
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -95,4 +116,4 @@ if (process.env.PAGES === '1') {
   if (missing.length) throw new Error('noindex fehlt auf: ' + missing.join(', '))
   console.log(`✓ Vorschau-Build: noindex auf ${pages.length} Seiten, robots.txt Disallow, Passwort-Sperre`)
 }
-console.log(`✓ sitemap.xml (${urls.length} Seiten), 404.html, .htaccess`)
+console.log(`✓ sitemap.xml (${urls.length} Seiten), 404.html, .htaccess, ${merged.length} Weiterleitungen (zusammengeführte Ortsseiten)`)

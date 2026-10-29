@@ -33,3 +33,6 @@ export function noOrphan(text: string, maxChars = 18) {
   const pair = text.slice(j + 1)
   return pair.length <= maxChars ? text.slice(0, i) + NBSP + text.slice(i + 1) : text
 }
+
+/** Datum lang auf Deutsch, z. B. „29. Oktober 2026“ (ISO-Datum ohne Uhrzeit) */
+export const formatDate = (iso: string) => new Date(iso + 'T12:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })

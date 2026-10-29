@@ -2,7 +2,7 @@ import type { RouteRecord } from 'vite-react-ssg'
 import { Layout } from '@/components/layout/Layout'
 import Home from '@/pages/Home'
 import { services } from '@/content/services'
-import { places } from '@/content/places'
+import { pagePlaces } from '@/content/places'
 
 const page = (loader: () => Promise<{ default: React.ComponentType }>) => async () => ({ Component: (await loader()).default })
 
@@ -30,7 +30,7 @@ export const routes: RouteRecord[] = [
       {
         path: 'einzugsgebiet/:ort',
         lazy: page(() => import('@/pages/Location')),
-        getStaticPaths: () => places.map((l) => `einzugsgebiet/${l.slug}`),
+        getStaticPaths: () => pagePlaces.map((l) => `einzugsgebiet/${l.slug}`),
       },
       {
         path: 'bueroreinigung/:ort',

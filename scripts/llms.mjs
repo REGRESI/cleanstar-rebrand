@@ -49,7 +49,14 @@ ${officeCities.map((c) => `- [Büroreinigung ${c.name}](${U(`/bueroreinigung/${c
 ## Einzugsgebiet
 
 - [Einzugsgebiet mit Karte](${U('/einzugsgebiet')}): alle ${locations.length} Orte mit Fahrzeit ab Offenburg
-${locations.map((l) => `- [Reinigungsfirma ${shortName(l)}](${U(`/einzugsgebiet/${l.slug}`)}): ${l.minutes === 0 ? 'Sitz von CleanStar' : `ca. ${l.minutes} Minuten ab Offenburg`}`).join('\n')}
+${locations
+  .filter((l) => l.page)
+  .map((l) => `- [Reinigungsfirma ${shortName(l)}](${U(`/einzugsgebiet/${l.slug}`)}): ${l.minutes === 0 ? 'Sitz von CleanStar' : `ca. ${l.minutes} Minuten ab Offenburg`}`)
+  .join('\n')}
+- Weitere Orte (auf der Einzugsgebiet-Seite): ${locations
+  .filter((l) => !l.page)
+  .map((l) => `${shortName(l)} (ca. ${l.minutes} Min.)`)
+  .join(', ')}
 
 ## Ratgeber
 
@@ -124,6 +131,7 @@ ${faqs
 ## Orte im Einzugsgebiet
 
 ${locations
+  .filter((l) => l.page)
   .map(
     (l) => `### ${l.name}
 

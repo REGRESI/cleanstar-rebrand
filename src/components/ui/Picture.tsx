@@ -44,13 +44,16 @@ export function Picture({ id, className, ratio, aspect: aspectOverride, sizes = 
   const revealCls = reveal === 'now' ? 'img-up-now' : undefined
   const dataAttrs = reveal === true ? { 'data-reveal-img': '' } : {}
 
+  // Maße fürs HTML (gegen Layoutverschiebungen): Seitenverhältnis des Fotos, die Darstellung bestimmt weiter CSS
+  const [rw, rh] = (ratio && ratio in ratioClass ? ratio : spec.ratio).split(':').map(Number)
+  const dims = { width: 1024, height: Math.round((1024 * rh) / rw) }
   let media
   // Vorschau-Datei: eingebettete, stark komprimierte WebP-Version
   const inlineSrc = __PREVIEW__ && spec.available ? previewImages[spec.file] : undefined
   if (inlineSrc) {
     media = (
       <div className={cn('photo block overflow-hidden', aspect, rounded, revealCls, className)} {...dataAttrs}>
-        <img src={inlineSrc} alt={spec.alt} loading={priority ? 'eager' : 'lazy'} decoding="async" className="size-full object-cover" style={{ objectPosition }} />
+        <img src={inlineSrc} alt={spec.alt} {...dims} loading={priority ? 'eager' : 'lazy'} decoding="async" className="size-full object-cover" style={{ objectPosition }} />
       </div>
     )
   } else if (spec.available && !__PREVIEW__) {
@@ -62,6 +65,7 @@ export function Picture({ id, className, ratio, aspect: aspectOverride, sizes = 
         <img
           src={`${import.meta.env.BASE_URL}images/${spec.file}-1024.webp`}
           alt={spec.alt}
+          {...dims}
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"

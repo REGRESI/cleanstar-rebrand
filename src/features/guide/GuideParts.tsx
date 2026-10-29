@@ -1,3 +1,4 @@
+import { formatDate } from '@/lib/format'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
@@ -11,7 +12,7 @@ import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { Button } from '@/components/ui/Button'
 import { checkQuestions } from '@/content/check'
 
-export const formatDate = (iso: string) => new Date(iso + 'T12:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })
+export { formatDate } from '@/lib/format'
 
 /** Autor, Datum und Lesedauer */
 export function GuideMeta({ g, author }: { g: Guide; author: Person }) {
@@ -25,7 +26,7 @@ export function GuideMeta({ g, author }: { g: Guide; author: Person }) {
         </span>
       </span>
       <span className="t-meta">
-        <time dateTime={g.modified}>{formatDate(g.modified)}</time> · {readingMinutes(g)}
+        Zuletzt aktualisiert am <time dateTime={g.modified}>{formatDate(g.modified)}</time> · {readingMinutes(g)}
         {'\u00A0'}Min. Lesezeit
       </span>
     </div>

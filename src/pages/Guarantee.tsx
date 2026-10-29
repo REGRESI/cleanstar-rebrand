@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { noOrphan } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { answers } from '@/content/answers'
 import { Answer } from '@/components/ui/Answer'
 import { ImageBand } from '@/components/ui/ImageBand'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -53,6 +54,9 @@ export default function Guarantee() {
         image="quality-check"
         actions={<QuoteButton size="lg" arrow />}
       />
+      <Answer question={answers.garantie.question} bottom="pb-16 sm:pb-20 lg:pb-24">
+        {answers.garantie.text}
+      </Answer>
 
       <GuaranteeChecks />
 
@@ -118,10 +122,6 @@ export default function Guarantee() {
         </div>
       </section>
 
-      <Answer>
-        Die Qualitätsgarantie von CleanStar bedeutet: Passt etwas nicht, reinigen wir kostenlos nach und klären die Ursache mit dem Team. Dazu kommen eigene Qualitätskontrollen,
-        eine Person, die Sie direkt erreichen, und Vertretung, wenn jemand aus dem Team ausfällt.
-      </Answer>
       <FinalCta />
     </>
   )

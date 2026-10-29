@@ -15,8 +15,9 @@ import { Seo } from '@/components/ui/Seo'
 import { Answer } from '@/components/ui/Answer'
 import { ImageBand } from '@/components/ui/ImageBand'
 import { home } from '@/content/site'
+import { answers } from '@/content/answers'
 import { faqs } from '@/content/faq'
-import { faqSchema, localBusinessSchema, websiteSchema } from '@/lib/schema'
+import { faqSchema, localBusinessSchema, organizationSchema, personSchemas, websiteSchema } from '@/lib/schema'
 
 /** Eigene Suspense-Grenzen: React hydriert die Abschnitte in kleinen Häppchen (weniger Blocking Time). */
 const Chunk = ({ children }: { children: ReactNode }) => <Suspense fallback={null}>{children}</Suspense>
@@ -35,11 +36,14 @@ export default function Home() {
         description={home.seoDescription}
         path="/"
         ogType="start"
-        schema={[localBusinessSchema(), websiteSchema(), faqSchema(faqs.filter((f) => f.featured && !f.todo))]}
+        schema={[organizationSchema(), localBusinessSchema(), ...personSchemas(), websiteSchema(), faqSchema(faqs.filter((f) => f.featured && !f.todo))]}
       />
       <Hero />
       <Chunk>
         <ScrollStory />
+        <Answer question={answers.home.question} className="pt-16 sm:pt-20" bottom="pb-4">
+          {answers.home.text}
+        </Answer>
         <OfficeWays />
         <ImageBand id="evening-clean" />
       </Chunk>
@@ -55,8 +59,7 @@ export default function Home() {
         <Founders />
         <AreaTeaser />
         <MappeTeaser />
-        {/* Schlussblock vor dem Abschluss: Zusammenfassung und Werkzeuge in einer Zeile */}
-        <Answer bottom="pb-10 sm:pb-12 lg:pb-14">{home.answer}</Answer>
+        {/* Schlussblock vor dem Abschluss: Werkzeuge in einer Zeile */}
         <ToolsLine />
       </Chunk>
       <Chunk>

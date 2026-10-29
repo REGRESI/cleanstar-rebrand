@@ -1,5 +1,6 @@
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { answers } from '@/content/answers'
 import { Answer } from '@/components/ui/Answer'
 import { Collage } from '@/components/ui/Collage'
 import { WipeScene } from '@/components/scenes/WipeScene'
@@ -50,6 +51,9 @@ export default function Services() {
           </>
         }
       />
+      <Answer question={answers.leistungen.question} bottom="pb-16 sm:pb-20 lg:pb-24">
+        {answers.leistungen.text}
+      </Answer>
       <ServiceChapters />
       <WipeScene />
       <section className="section bg-surface" aria-labelledby="incl-title">
@@ -78,10 +82,6 @@ export default function Services() {
           </div>
         </div>
       </section>
-      <Answer className="pt-20 sm:pt-28 lg:pt-36">
-        CleanStar bietet Unternehmen im Ortenaukreis Büroreinigung, Unterhaltsreinigung, Fensterreinigung, Treppenhausreinigung, Hallenreinigung und Hygienereinigung aus einer
-        Hand, mit einem festen Ansprechpartner für alle Leistungen.
-      </Answer>
       <FinalCta />
     </>
   )

@@ -26,6 +26,16 @@ export default function SwitchPage() {
           a: 'Die Kündigungsvorlage ist eine neutrale, übliche Formulierung, aber keine Rechtsberatung. Prüfen Sie Frist und Form in Ihrem Vertrag und lassen Sie sich im Zweifel beraten.',
         },
       ]}
+      howTo={{
+        name: 'Wechseltermin der Reinigungsfirma berechnen',
+        steps: [
+          { name: 'Vertragsart wählen', text: 'Wählen Sie, ob Ihr Vertrag unbefristet läuft oder eine feste Laufzeit hat.' },
+          { name: 'Kündigungsfrist eintragen', text: 'Tragen Sie die Frist aus Ihrem Vertrag ein und den Termin, zu dem gekündigt werden kann, etwa zum Monatsende.' },
+          { name: 'Spätestes Kündigungsdatum ablesen', text: 'Der Rechner zeigt, bis wann die Kündigung beim bisherigen Anbieter eingehen muss.' },
+          { name: 'Kündigung versenden', text: 'Kopieren Sie die neutrale Kündigungsvorlage, ergänzen Sie Ihre Angaben und senden Sie sie fristgerecht.' },
+          { name: 'Neuen Anbieter starten', text: 'Der neue Anbieter beginnt am Tag nach dem letzten Reinigungstag, ohne Lücke in der Reinigung.' },
+        ],
+      }}
       links={[
         { to: '/ratgeber/reinigungsfirma-wechseln', label: 'Ratgeber: Reinigungsfirma wechseln' },
         { to: '/angebote-vergleichen', label: 'Angebote vergleichen' },

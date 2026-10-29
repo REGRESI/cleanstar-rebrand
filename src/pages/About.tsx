@@ -16,7 +16,7 @@ import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
 import { company } from '@/content/company'
 import { values } from '@/content/site'
 import type { ImageId } from '@/content/images'
-import { breadcrumbSchema } from '@/lib/schema'
+import { breadcrumbSchema, organizationSchema, personSchemas } from '@/lib/schema'
 
 /** Wer ist wofür zuständig? who = Index in company.founders */
 const responsibilities = [
@@ -42,7 +42,7 @@ export default function About() {
         title="Über uns: Gründer von CleanStar"
         description="Die Gründer von CleanStar aus Offenburg: Nico Schütterle, Lino Resham und Eknoor Singh. Wer wofür zuständig ist, was uns wichtig ist und wie wir arbeiten."
         path="/ueber-uns"
-        schema={[breadcrumbSchema(trail)]}
+        schema={[organizationSchema(), ...personSchemas(), breadcrumbSchema(trail)]}
       />
       <PageHero
         trail={trail}

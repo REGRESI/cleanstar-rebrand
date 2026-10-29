@@ -8,6 +8,7 @@ import { Markdown, headings } from '@/features/guide/Markdown'
 import { GuideCard, GuideCtaBox, GuideDownload, GuideMeta, ShareButtons, formatDate } from '@/features/guide/GuideParts'
 import { absoluteUrl, articleSchema, breadcrumbSchema, faqSchema, howToSchema } from '@/lib/schema'
 import { noOrphan } from '@/lib/format'
+import { AuthorBox } from '@/components/ui/AuthorBox'
 import NotFound from './NotFound'
 
 export default function GuideArticle() {
@@ -42,6 +43,7 @@ export default function GuideArticle() {
             modified: g.modified,
             author: author.name ?? company.name,
             authorRole: author.role.replace('Gründer · ', 'Gründer, '),
+            authorIndex: g.author,
             image: `${company.siteUrl}/og/ratgeber.png`,
           }),
           breadcrumbSchema(trail),
@@ -125,6 +127,8 @@ export default function GuideArticle() {
               oder Steuerberatung.
             </p>
           </section>
+
+          <AuthorBox author={g.author} published={g.published} modified={g.modified} className="mt-12" />
 
           <div className="mt-12 border-t border-line pt-6">
             <ShareButtons title={g.title} url={url} />

@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import { getLocation, locations, shortName } from '@/content/locations'
 import { locationExtra } from '@/content/locationsExtra'
 import { pricing } from '@/content/pricing'
@@ -25,6 +25,8 @@ export default function Location() {
   const { ort = '' } = useParams()
   const l = getLocation(ort)
   if (!l) return <NotFound />
+  // Orte ohne eigene Seite stehen gesammelt auf der Einzugsgebiet-Seite (alte Adressen leiten dorthin weiter)
+  if (!l.page) return <Navigate to={`/einzugsgebiet#ort-${l.slug}`} replace />
   const short = shortName(l)
   const path = `/einzugsgebiet/${l.slug}`
   const trail = [
@@ -37,7 +39,7 @@ export default function Location() {
   const extra = locationExtra[l.slug]
   const faqs = [l.faq, ...(extra?.faqs ?? [])]
   const office = getService('bueroreinigung')!
-  const nearby = l.nearby.map((s) => getLocation(s)).filter(Boolean)
+  const nearby = l.nearby.map((s) => getLocation(s)).filter((n) => n?.page)
   const city = officeCities.find((c) => c.slug === l.slug)
 
   return (

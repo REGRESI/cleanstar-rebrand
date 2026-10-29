@@ -20,6 +20,8 @@ export function KeyOverlays({ activeKey, variant }: { activeKey: string | null; 
             src={variant === 'm' ? (k.m ?? k.d) : k.d}
             alt=""
             aria-hidden
+            width={1918}
+            height={1080}
             decoding="async"
             onLoad={() => setReady((r) => ({ ...r, [k.name]: true }))}
             className={cn(

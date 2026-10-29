@@ -1,6 +1,8 @@
 import { NightClock } from '@/components/scenes/NightClock'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
+import { answers } from '@/content/answers'
+import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
 import { ProcessTimeline } from '@/components/home/ProcessTimeline'
@@ -8,7 +10,8 @@ import { FinalCta } from '@/components/home/FinalCta'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { Button } from '@/components/ui/Button'
 import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
-import { breadcrumbSchema } from '@/lib/schema'
+import { breadcrumbSchema, howToSchema } from '@/lib/schema'
+import { processSteps } from '@/content/site'
 import { SwitchCalculator } from '@/features/tools/SwitchCalculator'
 import { RevealText } from '@/components/ui/RevealText'
 
@@ -53,7 +56,15 @@ export default function Process() {
         title="Ablauf: So arbeiten wir zusammen"
         description="Anfrage, kostenlose Besichtigung, Angebot in 48 Stunden, fester Start und regelmäßige Kontrolle: So läuft die Zusammenarbeit mit CleanStar aus Offenburg ab."
         path="/ablauf"
-        schema={[breadcrumbSchema(trail)]}
+        schema={[
+          breadcrumbSchema(trail),
+          howToSchema({
+            name: 'So beauftragen Sie CleanStar mit der Büroreinigung',
+            description: 'Von der Anfrage bis zur laufenden Reinigung in sechs Schritten: Anfrage, kostenlose Besichtigung, Angebot in 48 Stunden, fester Start, erster Monat ohne Risiko, Qualitätskontrolle.',
+            path: '/ablauf',
+            steps: processSteps.map((st) => ({ name: st.title, text: st.text })),
+          }),
+        ]}
       />
       <PageHero
         trail={trail}
@@ -72,6 +83,9 @@ export default function Process() {
           </>
         }
       />
+      <Answer question={answers.ablauf.question} bottom="pb-16 sm:pb-20 lg:pb-24">
+        {answers.ablauf.text}
+      </Answer>
       <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" />
       <NightClock />
       <section className="section bg-surface" aria-labelledby="details-title">

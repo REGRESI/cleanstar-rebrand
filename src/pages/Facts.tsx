@@ -6,7 +6,11 @@ import { hourlyRateNetMax, hourlyRateNetMin, pricing } from '@/content/pricing'
 import { formatEuro2Range, noOrphan } from '@/lib/format'
 import { Seo } from '@/components/ui/Seo'
 import { PageHero } from '@/components/ui/PageHero'
-import { breadcrumbSchema, faqSchema, localBusinessSchema } from '@/lib/schema'
+import { answers } from '@/content/answers'
+import { Answer } from '@/components/ui/Answer'
+import { breadcrumbSchema, faqSchema, localBusinessSchema, ORG_ID, absoluteUrl } from '@/lib/schema'
+import { pageMeta } from '@/content/pageMeta'
+import { formatDate } from '@/lib/format'
 
 const trail = [
   { name: 'Startseite', path: '/' },
@@ -73,6 +77,7 @@ export function factGroups() {
 
 export default function Facts() {
   const groups = factGroups()
+  const meta = pageMeta['/fakten']
   const faqs = [
     { q: 'Was ist CleanStar?', a: groups[0].facts[0] + ' ' + groups[0].facts[1] },
     { q: 'Wo arbeitet CleanStar?', a: groups[4].facts[0] },
@@ -85,7 +90,22 @@ export default function Facts() {
         title="CleanStar auf einen Blick: Fakten"
         description="CleanStar auf einen Blick: Reinigungsfirma aus Offenburg, gegründet 2024, Büroreinigung im Ortenaukreis, 35 bis 45 € brutto pro Stunde, 24/7 erreichbar."
         path="/fakten"
-        schema={[localBusinessSchema(), breadcrumbSchema(trail), faqSchema(faqs)]}
+        schema={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: 'CleanStar auf einen Blick',
+            url: absoluteUrl('/fakten'),
+            datePublished: meta.published,
+            dateModified: meta.modified,
+            inLanguage: 'de-DE',
+            about: { '@id': ORG_ID },
+            publisher: { '@id': ORG_ID },
+          },
+          localBusinessSchema(),
+          breadcrumbSchema(trail),
+          faqSchema(faqs),
+        ]}
       />
       <PageHero
         trail={trail}
@@ -93,9 +113,12 @@ export default function Facts() {
         title="CleanStar auf einen Blick."
         lead="Alle wichtigen Angaben zu unserem Unternehmen in klaren Sätzen: wer wir sind, was wir machen, wo wir arbeiten, was es kostet und wie Sie uns erreichen."
       />
+      <Answer question={answers.fakten.question} bottom="pb-16 sm:pb-20 lg:pb-24">
+        {answers.fakten.text}
+      </Answer>
       <div className="container-site grid-site gap-y-16 pb-24 lg:pb-40">
         <p className="t-label col-span-12 lg:col-span-3">
-          Stand: {new Date().toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })}. Diese Seite wird aus denselben Daten erzeugt wie Impressum und Angebote.
+          Zuletzt aktualisiert am <time dateTime={meta.modified}>{formatDate(meta.modified)}</time>. Diese Seite wird aus denselben Daten erzeugt wie Impressum und Angebote.
         </p>
         <div className="col-span-12 space-y-16 lg:col-span-8 lg:col-start-5">
           {groups.map((g, gi) => (

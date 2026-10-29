@@ -72,6 +72,8 @@ export const company = {
    */
   profiles: {
     google: '' as string,
+    /** LinkedIn-Seite des Unternehmens */
+    linkedin: '' as string,
     others: [] as string[],
   },
 

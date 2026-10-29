@@ -40,7 +40,12 @@ export function AreaMap({ className }: { className?: string }) {
     return cleanup
   }, [])
 
-  const open = (p: Location) => navigate(`/einzugsgebiet/${p.slug}`)
+  const open = (p: Location) => {
+    // Orte mit eigener Seite öffnen diese; die übrigen zeigen nach dem Flug Name und Fahrzeit in der Kartenmitte
+    if (p.page) return navigate(`/einzugsgebiet/${p.slug}`)
+    const r = frame.current?.getBoundingClientRect()
+    setActive({ p, xy: r ? [r.width / 2, r.height / 2] : null })
+  }
   const [HX, HY] = proj(hq.lat, hq.lng)
 
   return (
@@ -62,8 +67,8 @@ export function AreaMap({ className }: { className?: string }) {
             <path d={toPath(OUTLINE)} fill="var(--color-paper)" stroke="var(--color-ink)" strokeOpacity="0.4" strokeWidth="1" />
             {locations.map((l) => {
               const [x, y] = proj(l.lat, l.lng)
-              // Steht die echte Karte, sind die Punkte nur noch Bild (nicht mehr fokussierbar)
-              if (ready) return <circle key={l.slug} cx={x} cy={y} r={l.major ? 4 : 3} fill="var(--color-blue)" />
+              // Steht die echte Karte (oder hat der Ort keine eigene Seite), sind die Punkte nur Bild
+              if (ready || !l.page) return <circle key={l.slug} cx={x} cy={y} r={l.major ? 4 : 3} fill="var(--color-blue)" />
               return (
                 <a
                   key={l.slug}
@@ -103,33 +108,55 @@ export function AreaMap({ className }: { className?: string }) {
       <div className="lg:col-span-4">
         <p className="t-label mb-4">{locations.length} Orte · Fahrzeit ab Offenburg</p>
         <ul className="grid grid-cols-2 gap-x-6 border-t border-line lg:grid-cols-1 xl:grid-cols-2">
-          {locations.map((l) => (
-            <li key={l.slug} className="border-b border-line">
-              <Link
-                to={`/einzugsgebiet/${l.slug}`}
-                onMouseEnter={() => api.current?.highlight(l.slug)}
-                onMouseLeave={() => api.current?.highlight(null)}
-                onFocus={() => api.current?.highlight(l.slug)}
-                onBlur={() => api.current?.highlight(null)}
-                onClick={(e) => {
-                  // Mit geladener Karte: erst der Vogelflug, dann die Ortsseite
-                  if (!api.current || e.metaKey || e.ctrlKey || e.shiftKey) return
-                  e.preventDefault()
-                  // Karte erst ins Bild holen, wenn sie kaum sichtbar ist; der Flug startet danach
-                  const r = frame.current?.getBoundingClientRect()
-                  const visible = r ? Math.min(r.bottom, innerHeight) - Math.max(r.top, 0) > r.height * 0.6 : true
-                  if (!visible) frame.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-                  window.setTimeout(() => api.current?.fly(l), visible ? 0 : 700)
-                }}
-                className={cn('flex items-baseline justify-between gap-x-3 py-2.5 text-[0.9375rem] transition-colors', active?.p.slug === l.slug ? 'text-blue' : 'text-ink')}
-              >
+          {locations.map((l) => {
+            const on = active?.p.slug === l.slug
+            const inner = (
+              <>
                 <span>{shortName(l)}</span>
-                <span className={cn('shrink-0 font-medium tabular-nums text-[0.75rem]', active?.p.slug === l.slug ? 'text-blue' : 'text-muted')}>
-                  {l.minutes === 0 ? 'Sitz' : `${l.minutes} Min.`}
-                </span>
-              </Link>
-            </li>
-          ))}
+                <span className={cn('shrink-0 font-medium tabular-nums text-[0.75rem]', on ? 'text-blue' : 'text-muted')}>{l.minutes === 0 ? 'Sitz' : `${l.minutes} Min.`}</span>
+              </>
+            )
+            const cls = cn('flex w-full items-baseline justify-between gap-x-3 py-2.5 text-left text-[0.9375rem] transition-colors', on ? 'text-blue' : 'text-ink')
+            const hover = {
+              onMouseEnter: () => api.current?.highlight(l.slug),
+              onMouseLeave: () => api.current?.highlight(null),
+              onFocus: () => api.current?.highlight(l.slug),
+              onBlur: () => api.current?.highlight(null),
+            }
+            const flyTo = (e: { preventDefault: () => void }) => {
+              // Mit geladener Karte: erst der Vogelflug, dann die Ortsseite (bzw. Name und Fahrzeit)
+              if (!api.current) return false
+              e.preventDefault()
+              // Karte erst ins Bild holen, wenn sie kaum sichtbar ist; der Flug startet danach
+              const r = frame.current?.getBoundingClientRect()
+              const visible = r ? Math.min(r.bottom, innerHeight) - Math.max(r.top, 0) > r.height * 0.6 : true
+              if (!visible) frame.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+              window.setTimeout(() => api.current?.fly(l), visible ? 0 : 700)
+              return true
+            }
+            return (
+              <li key={l.slug} id={`ort-${l.slug}`} className="scroll-mt-28 border-b border-line">
+                {l.page ? (
+                  <Link
+                    to={`/einzugsgebiet/${l.slug}`}
+                    {...hover}
+                    onClick={(e) => {
+                      if (e.metaKey || e.ctrlKey || e.shiftKey) return
+                      flyTo(e)
+                    }}
+                    className={cls}
+                  >
+                    {inner}
+                  </Link>
+                ) : (
+                  // Ort ohne eigene Seite: Karte fliegt hin und zeigt Name und Fahrzeit
+                  <button type="button" {...hover} onClick={(e) => flyTo(e) || setActive({ p: l, xy: null })} className={cls} aria-label={`${l.name}, ${l.minutes} Minuten ab Offenburg, auf der Karte zeigen`}>
+                    {inner}
+                  </button>
+                )}
+              </li>
+            )
+          })}
         </ul>
       </div>
     </div>

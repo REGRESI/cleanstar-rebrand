@@ -1,17 +1,19 @@
 // Ähnlichkeit der Ortsseiten: Fließtext je Seite aus dist/ (Hauptinhalt ohne Kopf, Fuß, Navigation),
 // Wort-Shingles (5 Wörter), Jaccard-Ähnlichkeit für jedes Paar. Ortsnamen werden neutralisiert, damit ein bloß
 // ausgetauschter Name nicht als Unterschied zählt.
-// Aufruf: node scripts/similarity.mjs [Schwelle, Standard 0.35]
+// Aufruf: node scripts/similarity.mjs [Schwelle, Standard 0.30]
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { places } from './similarity-places.mjs'
 
-const LIMIT = Number(process.argv[2] ?? 0.35)
+const LIMIT = Number(process.argv[2] ?? 0.3)
 const names = places.flatMap((p) => [p.name, p.name.replace(' im Kinzigtal', '')]).sort((a, b) => b.length - a.length)
 const text = (slug) => {
   const f = `dist/einzugsgebiet/${slug}/index.html`
   if (!existsSync(f)) return ''
   let h = readFileSync(f, 'utf8')
-  h = h.slice(h.indexOf('<main'), h.indexOf('</main>'))
+  // per Streaming nachgereichte Abschnitte gehören zum Inhalt
+  const streamed = [...h.matchAll(/<div hidden id="S:\d+">([\s\S]*?)<\/div><script>\$RC\(/g)].map((m) => m[1]).join(' ')
+  h = h.slice(h.indexOf('<main'), h.indexOf('</main>')) + ' ' + streamed
   h = h.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<nav[\s\S]*?<\/nav>|<section[^>]*aria-labelledby="cta-title"[\s\S]*$/g, ' ')
   let t = h.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;|&#\d+;/g, ' ')
   for (const n of names) t = t.split(n).join(' ORT ')
@@ -29,6 +31,8 @@ const shingles = (w) => {
 const slugs = readdirSync('dist/einzugsgebiet', { withFileTypes: true })
   .filter((d) => d.isDirectory())
   .map((d) => d.name)
+  // Weiterleitungen (zusammengeführte Orte) zählen nicht
+  .filter((s) => !readFileSync(`dist/einzugsgebiet/${s}/index.html`, 'utf8').includes('http-equiv="refresh"'))
 const sets = Object.fromEntries(slugs.map((s) => [s, shingles(text(s))]))
 const pairs = []
 for (let i = 0; i < slugs.length; i++)

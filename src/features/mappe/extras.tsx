@@ -306,6 +306,8 @@ export function Nachtablauf({ side, folio }: PageProps) {
               key={k}
               src={a.file}
               alt=""
+              width={1280}
+              height={720}
               draggable={false}
               decoding="sync"
               className="photo absolute inset-0 size-full object-cover transition-opacity duration-700 ease-cs"

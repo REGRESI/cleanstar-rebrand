@@ -33,7 +33,7 @@ export default function OfficeCity() {
   ]
   const office = getService('bueroreinigung')!
   const ex = monthlyRange(c.example.staff, c.example.hours, c.example.visits)
-  const nearby = loc.nearby.map((s) => getLocation(s)).filter((l) => !!l)
+  const nearby = loc.nearby.map((s) => getLocation(s)).filter((l): l is NonNullable<typeof l> => !!l?.page)
 
   return (
     <>

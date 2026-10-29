@@ -308,7 +308,7 @@ export default function FlatBook({
 
 /** Buchdecke flach: Leinen in Marineblau, außen mit geprägtem Logo (und persönlicher Prägung) */
 function Board({ kind, coverUrl }: { kind: 'cover' | 'inner' | 'back'; coverUrl: string }) {
-  if (kind === 'cover') return <img src={coverUrl} alt="" className="block size-full object-cover" draggable={false} />
+  if (kind === 'cover') return <img src={coverUrl} alt="" width={1100} height={1540} className="block size-full object-cover" draggable={false} />
   return (
     <div className="relative size-full" style={{ backgroundImage: `url(/mappe/leinen.webp)`, backgroundSize: '192px', backgroundColor: '#1d2a44' }}>
       {kind === 'back' && (

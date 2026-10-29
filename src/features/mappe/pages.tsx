@@ -422,7 +422,7 @@ function Ablauf({ play, side, folio, snapshot }: PageProps) {
       <p className="t-label mb-5">So läuft es ab</p>
       <h2 className={h2}>{home.hero.sequenceTitle}.</h2>
       <div className="relative mt-7 aspect-[16/9] overflow-hidden bg-night">
-        <img src="/mappe/nacht-poster.webp" alt="" draggable={false} className="photo absolute inset-0 size-full object-cover" />
+        <img src="/mappe/nacht-poster.webp" alt="" width={960} height={540} draggable={false} className="photo absolute inset-0 size-full object-cover" />
         {!snapshot && <video ref={ref} src="/mappe/nacht.mp4" muted playsInline loop preload="none" aria-hidden className="photo absolute inset-0 size-full object-cover" />}
       </div>
       <ol className="mt-6 border-t border-line">
@@ -746,6 +746,8 @@ function Rueckseite({ side, folio }: PageProps) {
       >
         <img
           src="/mappe/visitenkarte.webp"
+          width={1024}
+          height={751}
           alt=""
           draggable={false}
           className="w-[300px] transition-transform duration-500 ease-cs group-hover:-translate-y-1 group-hover:-rotate-1"

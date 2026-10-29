@@ -4,7 +4,9 @@ import { PageHero } from '@/components/ui/PageHero'
 import { Answer } from '@/components/ui/Answer'
 import { FaqBlock } from '@/components/ui/FaqBlock'
 import { InlineLinks } from '@/components/ui/Editorial'
-import { breadcrumbSchema, faqSchema, webAppSchema } from '@/lib/schema'
+import { breadcrumbSchema, faqSchema, howToSchema, webAppSchema } from '@/lib/schema'
+import { AuthorBox } from '@/components/ui/AuthorBox'
+import { pageMeta } from '@/content/pageMeta'
 
 export interface ToolPageProps {
   path: string
@@ -19,6 +21,8 @@ export interface ToolPageProps {
   sources?: { title: string; publisher: string; url: string; stand: string }[]
   links: { to: string; label: string }[]
   ogType?: OgType
+  /** Schritt-für-Schritt-Anleitung (HowTo-Schema) */
+  howTo?: { name: string; steps: { name: string; text: string }[] }
   children: ReactNode
 }
 
@@ -29,6 +33,7 @@ export function ToolPage(p: ToolPageProps) {
     { name: 'Ratgeber', path: '/ratgeber' },
     { name: p.name, path: p.path },
   ]
+  const meta = pageMeta[p.path]
   return (
     <>
       <Seo
@@ -36,11 +41,21 @@ export function ToolPage(p: ToolPageProps) {
         description={p.description}
         path={p.path}
         ogType={p.ogType ?? 'tool'}
-        schema={[webAppSchema({ name: p.name, description: p.description, path: p.path }), breadcrumbSchema(trail), faqSchema(p.faqs)]}
+        schema={[
+          webAppSchema({ name: p.name, description: p.description, path: p.path, ...meta }),
+          breadcrumbSchema(trail),
+          faqSchema(p.faqs),
+          ...(p.howTo ? [howToSchema({ name: p.howTo.name, description: p.description, path: p.path, steps: p.howTo.steps })] : []),
+        ]}
       />
       <PageHero trail={trail} eyebrow={p.eyebrow} title={p.title} lead={p.lead} />
       <section aria-label={p.name} className="section-tight">
         <div className="container-site">{p.children}</div>
+        {meta && (
+          <div className="container-site mt-16 lg:mt-24">
+            <AuthorBox label="Werkzeug von" author={meta.author} published={meta.published} modified={meta.modified} className="max-w-3xl" />
+          </div>
+        )}
       </section>
       <FaqBlock className="section bg-surface" title="Fragen zum Werkzeug" id="tool-faq" items={p.faqs.map((f) => ({ title: f.q, content: f.a }))}>
         {p.sources && (

@@ -48,7 +48,7 @@ export function HeroMobileSequence({ onFailed }: { onFailed: () => void }) {
         </h2>
 
         <div className="photo relative mt-7 aspect-video w-full overflow-hidden bg-surface">
-          <img src={hero.mobile[0]} alt="" aria-hidden loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover" />
+          <img src={hero.mobile[0]} alt="" aria-hidden width={1280} height={721} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover" />
           <canvas ref={canvas} aria-hidden className={cn('absolute inset-0 size-full object-cover transition-opacity duration-300', seq.drawn ? 'opacity-100' : 'opacity-0')} />
           {seq.load && <KeyOverlays activeKey={seq.activeKey} variant="m" />}
           {/* Morgen: kurze Glanzpunkte auf den Tischen, einmalig */}
