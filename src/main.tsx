@@ -16,10 +16,12 @@ const createRouter: typeof createBrowserRouter = (r, opts) => {
   const navigate = router.navigate.bind(router)
   const vt = typeof document !== 'undefined' && 'startViewTransition' in document && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
   router.navigate = ((to: Parameters<typeof navigate>[0], o?: Parameters<typeof navigate>[1]) =>
-    // Seiten mit WebGL-Bühne (Karte, Leistungsmappe) wechseln ohne Übergang: Das Abbild der Bühne kostet Zeit
-    typeof to === 'number' || !vt || document.querySelector('.maplibregl-canvas, [data-page-slot]')
+    typeof to === 'number' || !vt
       ? navigate(to as never, o)
-      : navigate(to, { ...o, viewTransition: o?.viewTransition ?? true })) as typeof router.navigate
+      : // Seiten mit Karte wechseln ohne Übergang (das Abbild der WebGL-Karte kostet Zeit), dafür sofort gerendert
+        document.querySelector('.maplibregl-canvas')
+        ? navigate(to, { ...o, flushSync: true })
+        : navigate(to, { ...o, viewTransition: o?.viewTransition ?? true })) as typeof router.navigate
   return router
 }
 
