@@ -151,10 +151,14 @@ function Shell() {
     }
     const inputs = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const
     function stopGuard() {
+      document.documentElement.style.overflowAnchor = ''
       inputs.forEach((e) => window.removeEventListener(e, onInput))
       window.removeEventListener('scroll', onScroll)
     }
     const guard = (ms: number) => {
+      // Die Position setzen wir hier selbst: keine Scroll-Verankerung des Browsers, wenn darüber noch Abschnitte
+      // nachwachsen (z. B. Platzhalter für angeheftete Abschnitte), sonst springt die Seite kurz um deren Höhe
+      document.documentElement.style.overflowAnchor = 'none'
       inputs.forEach((e) => window.addEventListener(e, onInput, { passive: true }))
       window.addEventListener('scroll', onScroll, { passive: true })
       timers.push(window.setTimeout(stopGuard, ms))
