@@ -88,6 +88,7 @@ export function useScrollReveals(key: string) {
     // Ändert sich die Höhe des Inhalts später (nachgeladene Abschnitte, Bilder, Vorhänge), stimmen die Startpunkte
     // nicht mehr; dann einmal gebündelt neu berechnen. Sonst bleiben Einblendungen nach einem Sprung (Anker, Zurück) aus.
     let lastH = 0
+    const since = performance.now()
     let r = 0
     const main = document.getElementById('main')
     const ro =
@@ -96,6 +97,8 @@ export function useScrollReveals(key: string) {
             const h = Math.round(e.contentRect.height)
             if (Math.abs(h - lastH) < 2) return
             lastH = h
+            // direkt nach einem Seitenwechsel stellt das Layout die Scrollposition wieder her: nicht dazwischenfunken
+            if (performance.now() - since < 1800) return
             window.clearTimeout(r)
             r = window.setTimeout(() => ScrollTrigger.refresh(), 250)
           })
