@@ -1,6 +1,7 @@
 // Nach dem Live-Build: sitemap.xml, 404.html und .htaccess erzeugen
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, unlinkSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
+import { createHash } from 'node:crypto'
 
 const SITE = 'https://www.cleanstar-dienstleistungen.de' // muss zu company.ts → siteUrl passen
 const dist = 'dist'
@@ -53,7 +54,8 @@ writeFileSync(join(dist, 'sitemap.xml'), xml)
 // stehen echte 301-Regeln in _redirects bzw. .htaccess.
 const placesSrc = readFileSync('src/content/places.ts', 'utf8')
 const merged = [...placesSrc.matchAll(/\{ slug: '([^']+)'([^}]*)\}/g)].filter((m) => !/page: true/.test(m[2])).map((m) => m[1])
-for (const slug of merged) {
+// Auf Cloudflare Pages (CF_PAGES=1 im Build) gelten nur die echten 301 aus _redirects, keine Ersatzseiten
+for (const slug of process.env.CF_PAGES ? [] : merged) {
   const target = `/einzugsgebiet/#ort-${slug}`
   const dir = join(dist, 'einzugsgebiet', slug)
   mkdirSync(dir, { recursive: true })
@@ -65,6 +67,52 @@ for (const slug of merged) {
 writeFileSync(
   join(dist, '_redirects'),
   merged.map((slug) => `/einzugsgebiet/${slug} /einzugsgebiet/ 301\n/einzugsgebiet/${slug}/ /einzugsgebiet/ 301`).join('\n') + '\n',
+)
+
+// Sicherheits-Header für Cloudflare Pages (_headers). GitHub Pages ignoriert die Datei.
+// Inline-Skripte (Startskript, Streaming von React, Farbmarken) sind per SHA-256 freigegeben, nicht per unsafe-inline.
+const scriptHashes = new Set()
+for (const page of pages) {
+  const html = readFileSync(join(dist, page, 'index.html'), 'utf8')
+  for (const m of html.matchAll(/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/g))
+    if (m[1].trim()) scriptHashes.add(`'sha256-${createHash('sha256').update(m[1]).digest('base64')}'`)
+}
+const csp = [
+  "default-src 'self'",
+  `script-src 'self' ${[...scriptHashes].join(' ')}`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self' data:",
+  "connect-src 'self' data: blob: https://api.web3forms.com https://formspree.io",
+  "worker-src 'self' blob:",
+  "media-src 'self'",
+  'frame-src https://cal.com https://app.cal.com',
+  "frame-ancestors 'none'",
+  "form-action 'self' https://api.web3forms.com https://formspree.io",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "manifest-src 'self'",
+  'upgrade-insecure-requests',
+].join('; ')
+writeFileSync(
+  join(dist, '_headers'),
+  `/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: ${csp}
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/*
+  Cache-Control: public, max-age=2592000
+
+/map/*
+  Cache-Control: public, max-age=2592000
+`,
 )
 
 // 404-Seite für normales Webhosting
@@ -116,4 +164,4 @@ if (process.env.PAGES === '1') {
   if (missing.length) throw new Error('noindex fehlt auf: ' + missing.join(', '))
   console.log(`✓ Vorschau-Build: noindex auf ${pages.length} Seiten, robots.txt Disallow, Passwort-Sperre`)
 }
-console.log(`✓ sitemap.xml (${urls.length} Seiten), 404.html, .htaccess, ${merged.length} Weiterleitungen (zusammengeführte Ortsseiten)`)
+console.log(`✓ sitemap.xml (${urls.length} Seiten), 404.html, .htaccess, _headers (${scriptHashes.size} Skript-Hashes), _redirects, ${merged.length} Weiterleitungen (zusammengeführte Ortsseiten)`)
