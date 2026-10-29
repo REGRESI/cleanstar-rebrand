@@ -7,3 +7,7 @@ dist-preview
 .lighthouse
 site-check/
 scripts/map/.data/
+
+# Rohaufnahmen der Szenen-Standbilder und Videoframes
+public/night/.raw/
+docs/signatur-szene/.frames-*/
