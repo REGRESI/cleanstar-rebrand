@@ -1,5 +1,5 @@
 import { ViteReactSSG } from 'vite-react-ssg'
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, matchRoutes } from 'react-router-dom'
 import { routes } from './routes'
 import './styles/index.css'
 
@@ -22,6 +22,20 @@ const createRouter: typeof createBrowserRouter = (r, opts) => {
         document.querySelector('.maplibregl-canvas')
         ? navigate(to, { ...o, flushSync: true })
         : navigate(to, { ...o, viewTransition: o?.viewTransition ?? true })) as typeof router.navigate
+  // Seitencode vorladen, sobald ein interner Link berührt, überfahren oder fokussiert wird: Der Wechsel wartet dann
+  // nicht auf den Download (der Browser lädt jedes Modul nur einmal, der Router nutzt danach dieselbe Datei)
+  const done = new Set<string>()
+  const preload = (e: Event) => {
+    const a = (e.target as Element | null)?.closest?.('a[href^="/"]')
+    const path = a?.getAttribute('href')?.split(/[?#]/)[0]
+    if (!path || done.has(path)) return
+    done.add(path)
+    matchRoutes(router.routes, path)?.forEach((m) => {
+      const lazy = (m.route as { lazy?: () => Promise<unknown> }).lazy
+      lazy?.().catch(() => done.delete(path))
+    })
+  }
+  ;['pointerover', 'touchstart', 'focusin'].forEach((t) => document.addEventListener(t, preload, { passive: true }))
   return router
 }
 
