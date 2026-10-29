@@ -1631,19 +1631,25 @@ footer[data-no-top] {
   overflow: hidden;
   color: var(--color-paper);
 }
+/* Einstieg (18:00) und Schluss (7:00) liegen auf hellem Himmel und hellem Modell: Text in Tinte */
 .night-intro,
 .night-outro {
   position: absolute;
   inset-inline: 0;
   bottom: clamp(5rem, 12svh, 9rem);
-  text-shadow: 0 1px 24px rgb(10 26 51 / 0.45);
+  color: var(--color-ink);
+  text-shadow: 0 1px 28px rgb(247 249 251 / 0.6);
 }
 .night-intro .t-label,
 .night-outro .t-label {
-  color: rgb(247 249 251 / 0.85);
+  color: var(--color-ink-2);
 }
 .night-ruler {
   position: absolute;
+  padding: 0.9rem 0.8rem;
+  background: rgb(10 26 51 / 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   right: clamp(1rem, 3vw, 3rem);
   top: 50%;
   translate: 0 -50%;
@@ -1688,6 +1694,11 @@ footer[data-no-top] {
   bottom: 0;
   left: 0;
   right: 0;
+  /* ruhige Glasfläche: lesbar über hellen und dunklen Stellen der Szene */
+  padding: 1rem 1.25rem 1.1rem;
+  background: rgb(10 26 51 / 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   font-size: clamp(1.125rem, 0.95rem + 0.6vw, 1.5rem);
   line-height: 1.35;
   letter-spacing: -0.01em;

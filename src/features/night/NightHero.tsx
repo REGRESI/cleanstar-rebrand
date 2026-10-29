@@ -12,9 +12,9 @@ export function NightHero({ next = 'nach-der-nacht' }: { next?: string }) {
       onSkipTo={next}
       intro={
         <div className="container-site">
-          <h1 id="night-title" className="max-w-[16ch]">
+          <h1 id="night-title">
             <span className="t-label block">{home.hero.kicker}</span>
-            <span className="t-display mt-4 block whitespace-pre-line">{home.hero.headline}</span>
+            <span className="t-display mt-4 block max-w-[14ch] whitespace-pre-line">{home.hero.headline}</span>
           </h1>
           <p className="t-lead mt-6 max-w-[34ch]">Eine Nacht in Ihrem Büro. Scrollen Sie, wir zeigen Ihnen, was passiert, wenn Sie gehen.</p>
         </div>
