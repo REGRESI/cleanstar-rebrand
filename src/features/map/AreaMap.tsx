@@ -23,9 +23,21 @@ export function AreaMap({ className }: { className?: string }) {
   useEffect(() => {
     const el = frame.current
     if (!el) return
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && (setLoad(true), io.disconnect()), { rootMargin: '400px' })
+    // Die echte Karte erst laden, wenn sie in der Nähe des sichtbaren Bereichs ist UND der Besuch interagiert
+    // (Scrollen, Zeiger, Tippen, Taste). So blockiert MapLibre nicht den ersten Seitenaufbau.
+    let near = false
+    let active = false
+    const go = () => near && active && (setLoad(true), cleanup())
+    const io = new IntersectionObserver(([e]) => ((near = e.isIntersecting), go()), { rootMargin: '400px' })
+    const EVENTS = ['pointermove', 'pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'] as const
+    const onUse = () => ((active = true), go())
+    EVENTS.forEach((t) => addEventListener(t, onUse, { passive: true, once: true }))
+    function cleanup() {
+      io.disconnect()
+      EVENTS.forEach((t) => removeEventListener(t, onUse))
+    }
     io.observe(el)
-    return () => io.disconnect()
+    return cleanup
   }, [])
 
   const open = (p: Location) => navigate(`/einzugsgebiet/${p.slug}`)
@@ -50,6 +62,8 @@ export function AreaMap({ className }: { className?: string }) {
             <path d={toPath(OUTLINE)} fill="var(--color-paper)" stroke="var(--color-ink)" strokeOpacity="0.4" strokeWidth="1" />
             {locations.map((l) => {
               const [x, y] = proj(l.lat, l.lng)
+              // Steht die echte Karte, sind die Punkte nur noch Bild (nicht mehr fokussierbar)
+              if (ready) return <circle key={l.slug} cx={x} cy={y} r={l.major ? 4 : 3} fill="var(--color-blue)" />
               return (
                 <a
                   key={l.slug}

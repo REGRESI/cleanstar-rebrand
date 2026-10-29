@@ -26,6 +26,11 @@ const devices = [
 const sitemap = await (await fetch(B + '/sitemap.xml')).text()
 let pages = [...sitemap.matchAll(/<loc>https?:\/\/[^/]+(\/[^<]*)<\/loc>/g)].map((m) => m[1])
 if (process.env.ONLY) pages = pages.filter((p) => p === process.env.ONLY)
+// Teilläufe, z. B. SHARD=2/4: nur jede vierte Seite ab der zweiten (für kurze, unterbrechbare Läufe)
+if (process.env.SHARD) {
+  const [k, n] = process.env.SHARD.split('/').map(Number)
+  pages = pages.filter((_, i) => i % n === k - 1)
+}
 if (!pages.length) throw new Error('Keine Seiten in der Sitemap gefunden: ' + B)
 
 const norm = (p) => p.replace(/\/+$/, '') || '/'
@@ -195,7 +200,7 @@ async function runDevice(browser, label, opts) {
 const browser = await chromium.launch()
 let total = 0
 const all = []
-const results = await Promise.all(devices.map(([label, opts]) => runDevice(browser, label, opts).then((r) => [label, r])))
+const results = await Promise.all(devices.filter(([label]) => !process.env.DEVICE || label === process.env.DEVICE).map(([label, opts]) => runDevice(browser, label, opts).then((r) => [label, r])))
 for (const [label, { tests, failures }] of results) {
   total += tests
   all.push(...failures)
