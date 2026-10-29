@@ -22,6 +22,23 @@ Art-Director-Review aller neuen Elemente bei 1440 × 900 und 390 × 844 (Bildfol
 
 Alle Elemente erneut bei 1440 und 390 px aufgenommen: keine neuen Befunde. Die drei Wege erscheinen nach einem Sprung korrekt, Pergamentseiten ohne Überlagerung, Preloader nicht mehr im HTML.
 
+## Abschluss-Prüfung
+
+| Befund | Ursache | Behebung |
+| --- | --- | --- |
+| Lighthouse mobil Startseite nur 41 bis 49 (LCP 37 s, CLS 0,55), sobald der Preloader läuft | Das Werkzeug für kritisches CSS entfernte die Preloader-Stile, weil der Preloader erst per Skript entsteht. Er erschien ungestaltet im Seitenfluss, schob die Seite um rund 450 px nach unten und verschwand dann | Stile werden mit dem Preloader per Skript angelegt. Danach 94 und 93 (LCP 2,7 s, CLS 0), gemessen mit aktivem Preloader (frische Sitzung) |
+| Navigationstest: nach dem Verlassen des Einzugsgebiets stand die neue Seite erst nach rund 1 s oben | Der Browser fotografiert für den Seitenübergang die WebGL-Karte, das dauert | Seiten mit Karte wechseln ohne Übergang, aber sofort gerendert |
+| Navigationstest: vereinzelt alte Position kurz nach dem Klick | Der Code der Zielseite wurde erst beim Klick geladen | Seitencode wird geladen, sobald ein Link berührt, überfahren oder fokussiert wird. Der Test misst ab dem Moment, in dem die neue Seite aufgebaut ist (Kennzeichen `data-view`), vorher zeigt der Browser noch die alte Seite |
+| Zurück zur Startseite (mobil) sprang kurz 844 px zu weit | Scroll-Verankerung des Browsers, während oben ein Platzhalter für einen angehefteten Abschnitt entsteht | Verankerung ist während der Wiederherstellung aus |
+| Leistungsmappe: Wischen kurz nach dem Blättern ging verloren | Drag wurde während einer laufenden Animation verworfen | Wird jetzt als Umblättern gepuffert. Test drückt nach dem Ansetzen zwei Bilder später, wie eine Hand |
+
+## Testergebnisse
+
+- Navigationstest: 5202 von 5202 Prüfungen bestanden (53 Seiten, Desktop und Mobil, Kopf, Fuß, Inhalt, Menü, Zurück/Vor)
+- Mappen-Test: Desktop 80 von 80 (dreimal hintereinander), Mobil 67 von 67
+- Neuladen-Test: 40 von 40
+- Lighthouse mobil Startseite: 94 / 100 / 100 / 100 (zweiter Lauf 93), LCP 2,7 s, CLS 0, TBT 58 ms
+
 ## Messwerte
 
 - Wortvielfalt Startseite (Typ-Token-Verhältnis): vorher 0,293 (1508 Wörter, inklusive doppelter Buchstaben-Kopien), nachher 0,516 (847 Wörter)
