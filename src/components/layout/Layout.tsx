@@ -75,7 +75,12 @@ function Shell() {
   const positions = useRef(new Map<string, number>())
   const currentKey = useRef(key)
   useEffect(() => {
-    const save = () => positions.current.set(currentKey.current, window.scrollY)
+    // Nur speichern, wenn Verlauf und angezeigte Seite übereinstimmen: Zwischen Zurück/Vor (Adresse schon neu) und dem
+    // Aufbau der neuen Seite würde sonst die Position der einen Seite unter dem Eintrag der anderen gespeichert
+    const save = () => {
+      const k = (window.history.state as { key?: string } | null)?.key ?? 'default'
+      if (k === currentKey.current) positions.current.set(currentKey.current, window.scrollY)
+    }
     window.addEventListener('scroll', save, { passive: true })
     return () => window.removeEventListener('scroll', save)
   }, [])

@@ -243,6 +243,13 @@ function curvedFlight(map: maplibregl.Map, to: [number, number], o: { zoom: numb
   requestAnimationFrame(step)
 }
 
+/** Läuft WebGL ohne Grafikhardware (z. B. SwiftShader, llvmpipe)? */
+function softwareGL() {
+  const gl = document.createElement('canvas').getContext('webgl')
+  const info = gl?.getExtension('WEBGL_debug_renderer_info')
+  return !!info && /swiftshader|llvmpipe|software|basic render/i.test(String(gl!.getParameter(info.UNMASKED_RENDERER_WEBGL)))
+}
+
 let protocolAdded = false
 
 export default function LiveMap({
@@ -297,9 +304,10 @@ export default function LiveMap({
       },
     })
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
-    // Echtes 3D-Gelände (leicht überhöht, damit Schwarzwald und Rheinebene lesbar werden) und ein ruhiger Himmel am Horizont
+    // Echtes 3D-Gelände (leicht überhöht, damit Schwarzwald und Rheinebene lesbar werden) und ein ruhiger Himmel am Horizont.
+    // Ohne Grafikhardware (Software-Rendering) nur die Schummerung: 3D-Gelände wäre dort zu langsam
     map.once('style.load', () => {
-      map.setTerrain({ source: 'dem', exaggeration: 1.35 })
+      if (!softwareGL()) map.setTerrain({ source: 'dem', exaggeration: 1.35 })
       map.setSky({
         'sky-color': '#dbe6f1',
         'horizon-color': '#eef3f8',
