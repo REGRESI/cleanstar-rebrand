@@ -85,7 +85,13 @@ fs.mkdirSync('site-check', { recursive: true })
     'robots.txt erlaubt Indexierung, Sitemap auf www',
   )
   const sitemap = await (await fetch(B + '/sitemap.xml')).text()
-  ok((sitemap.match(/<loc>https:\/\/www\.cleanstar-dienstleistungen\.de\//g) || []).length > 70, 'Sitemap mit www-Adressen (inkl. Ratgeber und Orte)')
+  // 53 Seiten seit der Zusammenlegung der Ortsseiten (12 statt 34)
+  ok(
+    (sitemap.match(/<loc>https:\/\/www\.cleanstar-dienstleistungen\.de\//g) || []).length > 45 &&
+      sitemap.includes('/ratgeber/bueroreinigung-kosten/') &&
+      sitemap.includes('/einzugsgebiet/offenburg/'),
+    'Sitemap mit www-Adressen (inkl. Ratgeber und Orte)',
+  )
   ok(/GPTBot[\s\S]*ClaudeBot[\s\S]*PerplexityBot[\s\S]*Google-Extended/.test(robots), 'robots.txt erlaubt KI-Crawler')
   const llms = await fetch(B + '/llms.txt')
   ok(llms.ok && (await llms.text()).startsWith('# CleanStar'), 'llms.txt erreichbar')
