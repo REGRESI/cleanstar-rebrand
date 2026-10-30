@@ -11,6 +11,8 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { Button } from '@/components/ui/Button'
 import { breadcrumbSchema } from '@/lib/schema'
+import { features } from '@/content/features'
+import { SparkPortal } from '@/components/services/SparkPortal'
 
 const trail = [
   { name: 'Startseite', path: '/' },
@@ -54,6 +56,7 @@ export default function Services() {
       />
       <ScrubStatement {...statements.leistungen} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
       <ServiceChapters />
+      {features.sparkPortal && <SparkPortal />}
       <section className="on-dark tone-dark section bg-night text-paper" aria-labelledby="incl-title">
         <div className="container-site">
           <SectionHeading

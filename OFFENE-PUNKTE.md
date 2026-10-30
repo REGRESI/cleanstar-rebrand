@@ -34,6 +34,10 @@ neutralen Text oder blendet die Stelle aus.
 - **Kostenvergleich eigenes Personal:** Annahmen in `src/content/pricing.ts` (Lohnnebenkosten, Ausfalltage) mit Steuerberatung oder Lohnbüro abgleichen.
 - **Fahrzeiten** auf der Seite Einzugsgebiet sind ungefähre Werte.
 
+## Bilder
+
+- **Funken-Portal Vorher/Nachher (Seite Leistungen) ist gebaut, aber ausgeschaltet** (`features.sparkPortal: false` in `src/content/features.ts`, Ansicht auf /labor/portal, noindex). Grund: `vorher-buero` und `nachher-buero` sind nicht deckungsgleich. Die Architektur (Fenster, Decke, Säule) lässt sich zur Deckung bringen, die Möbel rechts stehen aber an anderen Stellen; im wachsenden Kreis springen die Tische sichtbar. Benötigt wird ein Bildpaar vom Stativ aus exakt derselben Position (gleiche Brennweite, gleicher Ausschnitt, nur Zustand und Licht verschieden). Danach Schalter auf `true` setzen.
+
 ## Karriere
 
 - **Stellen bestätigen:** Beide Stellen (Reinigungskraft, Objektleitung) stehen online. Bitte bestätigen und Stundenumfang sowie Vergütung ergänzen oder eine Stelle mit `enabled: false` ausblenden (`src/content/site.ts`, `jobs`).

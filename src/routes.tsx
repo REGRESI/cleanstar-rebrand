@@ -61,6 +61,7 @@ export const routes: RouteRecord[] = [
       { path: 'mappe-link', lazy: page(() => import('@/pages/MappeLink')) },
       { path: 'styleguide', lazy: page(() => import('@/pages/Styleguide')) },
       { path: 'labor/nacht', lazy: page(() => import('@/pages/LabNight')) },
+      { path: 'labor/portal', lazy: page(() => import('@/pages/LabPortal')) },
       { path: '404', lazy: page(() => import('@/pages/NotFound')) },
       { path: '*', lazy: page(() => import('@/pages/NotFound')) },
     ],

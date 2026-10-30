@@ -3284,3 +3284,44 @@ button:hover > .seal .seal-ring {
     translate: -50% 0;
   }
 }
+
+/* Funken-Portal (SparkPortal.tsx, hinter features.sparkPortal): Nachher-Bild als Kreis-Ausschnitt über dem Vorher-Bild */
+.sp-run {
+  height: 260svh;
+}
+.sp-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+.sp-after {
+  position: absolute;
+  inset: 0;
+  clip-path: circle(0 at 50% 55%);
+}
+.sp-stage:not([data-ready]) .sp-after {
+  visibility: hidden;
+}
+.sp-star,
+.sp-spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: drop-shadow(0 0 10px rgb(0 202 249 / 0.8));
+}
+.sp-spark {
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+}
+.sp-head {
+  position: absolute;
+  inset: 0 0 auto;
+  padding-top: clamp(5rem, 12svh, 8rem);
+  color: var(--color-paper);
+  text-shadow: 0 2px 24px rgb(10 26 51 / 0.55);
+}
+.sp-head :where(h2, h2 *) {
+  color: var(--color-paper);
+}
