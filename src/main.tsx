@@ -11,8 +11,15 @@ if (typeof window !== 'undefined') (window as Window & { __csReady?: boolean }).
  * der alte Inhalt gleitet nach oben weg, der neue öffnet sich von unten). Zurück/Vor im Browser bleibt ohne Übergang.
  * Ohne View Transitions übernimmt Framer Motion im Layout. Bei reduzierter Bewegung kein Übergang.
  */
+// vite-react-ssg hängt an jede Route einen Loader, der beim internen Wechsel JSON-Dateien mit dem Build-Hash im Namen
+// lädt (ohne Prüfung der Antwort). Wir nutzen keine Loader: Nach einem neuen Deploy fehlten diese Dateien in einer noch
+// offenen alten Seite, GitHub Pages lieferte die 404-Seite und .json() scheiterte („The string did not match the
+// expected pattern“). Deshalb werden die Loader hier entfernt.
+type AnyRoute = { loader?: unknown; children?: AnyRoute[] }
+const withoutLoaders = <T extends AnyRoute>(rs: T[]): T[] => rs.map((x) => ({ ...x, loader: undefined, children: x.children && withoutLoaders(x.children) }))
+
 const createRouter: typeof createBrowserRouter = (r, opts) => {
-  const router = createBrowserRouter(r, opts)
+  const router = createBrowserRouter(withoutLoaders(r as AnyRoute[]) as typeof r, opts)
   const navigate = router.navigate.bind(router)
   const vt = typeof document !== 'undefined' && 'startViewTransition' in document && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
   router.navigate = ((to: Parameters<typeof navigate>[0], o?: Parameters<typeof navigate>[1]) =>

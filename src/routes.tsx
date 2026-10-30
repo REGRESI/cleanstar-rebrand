@@ -1,5 +1,6 @@
 import type { RouteRecord } from 'vite-react-ssg'
 import { Layout } from '@/components/layout/Layout'
+import { RouteError } from '@/components/layout/RouteError'
 import Home from '@/pages/Home'
 import { services } from '@/content/services'
 import { pagePlaces } from '@/content/places'
@@ -14,6 +15,8 @@ export const routes: RouteRecord[] = [
   {
     path: '/',
     element: <Layout />,
+    // Gestaltete Fehlerseite; fehlender Code einer alten Version lädt die Zieladresse einmal vollständig neu
+    errorElement: <RouteError />,
     entry: 'src/components/layout/Layout.tsx',
     children: [
       { index: true, Component: Home, entry: 'src/pages/Home.tsx' },

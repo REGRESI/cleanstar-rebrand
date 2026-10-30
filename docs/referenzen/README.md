@@ -15,11 +15,13 @@ Jeder Ordner ist eine Bildfolge in zeitlicher Reihenfolge (01, 02, …), aufgeno
 - `09-footer`: letztes Bild wird zum Streifen oben, darunter dunkle Vollfläche mit großer Telefonnummer mittig, darunter klein Adresse und Rechtliches.
 - `10-button-roll`: Text-Link-Hover. Buchstaben rollen einzeln nach oben weg, gleiche Zeile rollt von unten nach, gestaffelt von links. Unterstrich zieht nach rechts raus, kommt links wieder.
 - `12-fliessend-a` und `12-fliessend-b`: der NORMALE Abschnittswechsel, das Wichtigste überhaupt. Keine harte Kante zwischen Abschnitten: Die Hintergrundfarbe ist eine durchgehende Fläche, auf der die Inhalte schwimmen. Alter Inhalt blendet nach oben aus, neuer blendet gestaffelt ein. Bilder starten klein (eingerückt) und wachsen beim Scrollen zur vollen Breite, laufen mit leichter Parallax durch, danach liegt wieder die Farbfläche darunter. Farbwechsel (Blau zu Creme) passieren weich über einen längeren Scrollweg bzw. hinter einem Vollbild.
+- `13-wolken-uebergang`: DER Wolken-Übergang. Helle Fläche mit Inhalt, von unten steigt eine Schicht echter, plastischer Wolken auf (oben weich in die Hintergrundfarbe auslaufend). Die Wolken decken kurz ab, ziehen dann nach oben weg und lösen sich auf, darunter liegt das Landschaftsfoto gestochen scharf und fest. Kein Nebelschleier auf dem Foto.
 - `11-kreis-button`: runder Button. Ruhe: offener Kreisbogen, dreht langsam. Hover: Kreis schließt sich, Text rollt.
 
 ## terminal/ (terminal-industries.com)
 - `01-hero-zerfall`: filmisches Bild zerfällt beim Scrollen in Partikel und wird zur Linienzeichnung, dazu getippter Text.
 - `02-text-farbwelle`: Fließtext färbt sich scroll-gesteuert Buchstabe für Buchstabe (grau, Akzent, dunkel).
+- `04-linie-komet`: feine graue Linie mit runden 90-Grad-Kurven läuft durch den Abschnitt (hinter dem Text), ein leuchtender Punkt mit weichem Lichthof und kurzem Schweif fährt die Linie entlang, immer wieder.
 - `03-karten`: Karten-Karussell, Reiter-Karten, Rechner-Karte.
 
 ## learnwithzero/ (learnwithzero.com)
@@ -36,4 +38,5 @@ Jeder Ordner ist eine Bildfolge in zeitlicher Reihenfolge (01, 02, …), aufgeno
 - `03-faecher-karten`: Karten liegen unten wie ein Fächer. Beim Scrollen fächern sie auf, eine hebt sich in die Mitte und wird groß, die anderen fliegen weg. Freigestellte Objekte schweben mit Parallax drumherum.
 - `04-schwebende-karten`: Viele blasse, leicht unscharfe Karten schweben in verschiedenen Tiefen. Immer eine ist scharf im Fokus mit Schatten, der Fokus wandert beim Scrollen und mit der Maus.
 - `05-begriffswolke`: Viele Begriffe in verschiedenen Größen und Helligkeiten treiben langsam. Hover macht einen Begriff zur dunklen Pille mit kleiner Info-Karte.
+- `07-papier-reveal` (plus `detail-kante-*`): DER Abschnittswechsel von Shopify. Der helle Abschnitt ist wie ein Blatt Papier, das nach oben weggeschoben wird. Seine Unterkante ist unregelmäßig gerissen, mit hellem Faserrand und leichtem Schatten. Darunter liegt der nächste Abschnitt (Vollbild) FEST, er wird freigelegt, nicht hochgeschoben. Danach steigt das riesige Kapitelwort über dem Bild auf.
 - `06-kapitel-wort`: Riesiges Kapitelwort steigt über einem Vollbild auf, darunter Untertitel mit Schreibschrift-Anfangsbuchstabe, Objekte fliegen aus der Szene.

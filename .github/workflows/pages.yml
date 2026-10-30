@@ -33,11 +33,42 @@ jobs:
       - name: Live-Version bauen
         run: npm run build
 
+      - name: Deploy-Test (alte Seite offen, neue Version, Klick) in Chromium und WebKit
+        run: |
+          npm i --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+          node scripts/test-deploy.mjs
+
       - name: Prüfen, dass Domain-Datei dabei ist und nichts gesperrt ist
         run: |
           test "$(cat dist/CNAME)" = "www.cleanstar-dienstleistungen.de"
           if grep -l 'content="noindex' dist/index.html dist/leistungen/index.html; then echo "::error::noindex gefunden"; exit 1; fi
           if grep -q 'cs-gate' dist/index.html; then echo "::error::Passwort-Sperre gefunden"; exit 1; fi
+
+      # Noch offene Seiten der vorigen Version laden beim nächsten Klick Code- und Datendateien mit altem Hash-Namen.
+      # Deshalb bleiben diese Dateien aus dem bisherigen gh-pages-Stand erhalten und werden erst nach 30 Tagen
+      # aufgeräumt (Liste mit dem Datum, seit dem eine Datei nicht mehr zur aktuellen Version gehört: .alte-dateien.tsv).
+      - name: Dateien der vorigen Versionen behalten (30 Tage)
+        run: |
+          if git clone -q --depth 1 -b gh-pages "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" old 2>/dev/null; then
+            now=$(date +%s)
+            touch old/.alte-dateien.tsv
+            : > dist/.alte-dateien.tsv
+            kept=0
+            while IFS= read -r f; do
+              [ -e "dist/$f" ] && continue
+              since=$(awk -F'\t' -v f="$f" '$1==f{print $2; exit}' old/.alte-dateien.tsv)
+              since=${since:-$now}
+              if [ $((now - since)) -lt 2592000 ]; then
+                mkdir -p "dist/$(dirname "$f")"
+                cp "old/$f" "dist/$f"
+                printf '%s\t%s\n' "$f" "$since" >> dist/.alte-dateien.tsv
+                kept=$((kept + 1))
+              fi
+            done < <(cd old && { find assets static-loader-data -type f 2>/dev/null; ls static-loader-data-manifest-*.json 2>/dev/null; })
+            echo "Dateien früherer Versionen behalten: $kept" >> "$GITHUB_STEP_SUMMARY"
+            rm -rf old
+          fi
 
       - name: In gh-pages veröffentlichen
         run: |
