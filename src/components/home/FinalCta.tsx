@@ -41,8 +41,18 @@ export function FinalCta({ headline = home.finalCta.headline, tone = 'surface', 
             </div>
           </div>
         ) : (
-          <div className="col-span-12 lg:col-span-5 lg:col-start-8 lg:justify-self-end">
-            <RiskFreeSeal label="Laufzeit und Kündigung auf einen Blick" />
+          <div className="col-span-12 lg:col-span-5 lg:col-start-8">
+            <dl className="card-shadow rounded-[14px] bg-paper px-7 py-4 sm:px-9">
+              {home.finalCta.facts.map((f) => (
+                <div key={f.value} className="flex items-baseline gap-6 border-b border-line py-6">
+                  <dt className="w-[3.6ch] shrink-0 text-[clamp(2.25rem,1.6rem+1.6vw,3.25rem)] leading-none font-medium tracking-[-0.04em] tabular-nums text-blue">{f.value}</dt>
+                  <dd className="text-ink-2">{f.label}</dd>
+                </div>
+              ))}
+              <div className="py-6">
+                <RiskFreeSeal label="Laufzeit und Kündigung auf einen Blick" />
+              </div>
+            </dl>
           </div>
         )}
       </div>

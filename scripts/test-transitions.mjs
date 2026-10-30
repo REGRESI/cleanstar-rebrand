@@ -133,7 +133,8 @@ const textBoxes = () => {
       if (bg && (bg.length < 4 || Number(bg[3]) === 1) && Number(cs.opacity) === 1) break
     }
     if (!e || e === document.body) return false
-    return e.contains(a.el) !== e.contains(b.el)
+    // eine deckende Fläche liegt über mindestens einem der beiden Texte (z. B. oberste Karte eines Stapels)
+    return !(e.contains(a.el) && e.contains(b.el))
   }
   // Paare prüfen (Elemente in Vorfahr-Beziehung sind gewollt verschachtelt)
   const bad = []

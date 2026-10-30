@@ -94,7 +94,7 @@ export function MomentHeading({
         const r = writeCap(capEl, cap, strokes, color, () => el.setAttribute('data-pen', 'done'))
         if (!r) return el.removeAttribute('data-pen')
         pen = r
-        el.style.setProperty('--pen-d', `${(r.duration * 0.82).toFixed(2)}s`)
+        el.style.setProperty('--pen-d', `${(r.duration * 0.5).toFixed(2)}s`)
       })
     }
     // rückwärts nur, wenn sie zu sehen war (sonst bliebe der Ruhezustand „idle“)
@@ -115,7 +115,7 @@ export function MomentHeading({
       return stop
     }
     // bei jedem Durchqueren: hinein erscheinen, hinaus (in beide Richtungen) rückwärts verschwinden
-    const off = replay(el, show, hide, { start: 'top 82%', end: 'bottom -14%' })
+    const off = replay(el, show, hide, { start: 'top 92%', end: 'bottom -14%' })
     return () => {
       stop()
       off()
