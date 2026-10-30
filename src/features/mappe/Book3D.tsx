@@ -871,6 +871,12 @@ export function useBookControls(bus: SceneBus, pages: number, onTurn?: () => voi
   // Läuft etwas (Blättern, Ziehen, Ausklappseite offen)? Dann wird gepuffert; eine offene Ausklappseite klappt zuerst ein
   const busy = useCallback(() => {
     if (bus.fold > 0.01) bus.foldTarget = 0
+    // abgelaufene Animationen austragen (sonst erst, wenn die Szene das Blatt im nächsten Bild wieder liest)
+    const now = performance.now()
+    for (const [i, a] of bus.anims) if (now - a.start >= a.dur) {
+      bus.anims.delete(i)
+      bus.progress[i] = a.to
+    }
     return bus.anims.size > 0 || !!bus.drag || bus.fold > 0.01
   }, [bus])
 
