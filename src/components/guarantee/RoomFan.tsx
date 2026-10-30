@@ -1,160 +1,296 @@
-import { useEffect, useRef, useState } from 'react'
-import { Check } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent } from 'react'
+import { Briefcase, Check, Coffee, ConciergeBell, DoorOpen, Droplets, Footprints, Monitor, Presentation, RotateCcw, type LucideIcon } from 'lucide-react'
 import { zones, freqLabel, type Zone } from '@/content/floorplan'
-import { ScrollTrigger } from '@/lib/gsap'
-import { prefersReducedMotion } from '@/lib/env'
-import { span } from '@/lib/scrollScene'
-import { EASE_CS } from '@/lib/ease'
+import { useReducedMotion } from '@/lib/env'
+import { cn } from '@/lib/cn'
 
 /**
- * Fächer der Raum-Karten (Prinzip aus Shopify Editions „Fächer-Karten“), Seite Qualitätsgarantie:
- * Je Raum aus dem Muster-Leistungsverzeichnis eine Karte (Raumname, vier Prüfpunkte mit Haken, Intervall). Die Karten
- * liegen als Fächer am unteren Rand, fächern beim Scrollen auf, nacheinander hebt sich jede groß in die Mitte (die
- * anderen weichen zurück), zum Schluss liegen alle ordentlich nebeneinander mit dem Stempel „Kontrolliert nach
- * Checkliste“. Drumherum schweben die freigestellten Mappe-Objekte in zwei Tiefenebenen, hinter den Karten und
- * abseits der Überschrift. Handy: Stapel, die oberste Karte hebt sich ab und legt sich zur Seite.
- * An die Scrollposition gekoppelt (auch rückwärts). Reduzierte Bewegung: Karten nebeneinander mit Stempel.
+ * Raum-Karten zum Anfassen (Seite Qualitätsgarantie, „Jeder Raum hat seine Checkliste.“): Je Raum aus dem Muster-
+ * Leistungsverzeichnis eine Karte. Sie liegen als leicht aufgefächerter Stapel.
+ * Desktop: Überfahren fächert weiter auf, die Karte unter der Maus hebt sich (Neigung zur Maus, weicher Schatten).
+ * Klick: Die Karte fliegt groß in die Mitte und dreht sich um (vorne Raum, Symbol, Intervall; hinten die Checkliste,
+ * deren Haken sich nacheinander setzen). Zweiter Klick oder Escape legt sie zurück.
+ * Ziehen (Maus oder Finger): Karte vom Stapel ziehen und zur Seite werfen (federnd), die nächste liegt oben; „Stapel neu
+ * mischen“ holt alle zurück. Handy: Wischen nach links oder rechts legt die oberste Karte weg, Tippen dreht sie um.
+ * Tastatur: Pfeiltasten wechseln die oberste Karte, Enter dreht um. Alle Inhalte stehen zusätzlich als Liste im HTML.
+ * Reduzierte Bewegung: Karten nebeneinander mit Checkliste.
  */
-const intervalOf = (z: Zone) => [...new Set(z.tasks.map((t) => freqLabel(t.freq, 'taeglich')))].join(' · ')
+const ICONS: Record<string, LucideIcon> = {
+  arbeitsplaetze: Monitor,
+  besprechung: Presentation,
+  kueche: Coffee,
+  sanitaer: Droplets,
+  flur: DoorOpen,
+  empfang: ConciergeBell,
+  einzelbueros: Briefcase,
+  treppenhaus: Footprints,
+}
+const intervalOf = (z: Zone) => [...new Set(z.tasks.map((t) => freqLabel(t.freq, 'taeglich')))]
 
-const OBJECTS = [
-  { src: '/images/deko/objekt-schluessel.webp', w: 420, h: 388, cls: 'rf-obj-a', depth: 1 },
-  { src: '/images/deko/objekt-kaffee.webp', w: 418, h: 420, cls: 'rf-obj-b', depth: 2 },
-  { src: '/images/deko/objekt-visitenkarte.webp', w: 420, h: 308, cls: 'rf-obj-c', depth: 2 },
-  { src: '/images/deko/objekt-pflanze.webp', w: 420, h: 398, cls: 'rf-obj-d', depth: 1 },
-]
-
-type Pose = { x: number; y: number; r: number; s: number; o: number }
-const mix = (a: Pose, b: Pose, t: number): Pose => ({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, r: a.r + (b.r - a.r) * t, s: a.s + (b.s - a.s) * t, o: a.o + (b.o - a.o) * t })
+type Drag = { id: number; x0: number; y0: number; dx: number; dy: number; t: number; vx: number; moved: boolean }
 
 export function RoomFan() {
-  const run = useRef<HTMLDivElement>(null)
-  const stage = useRef<HTMLDivElement>(null)
-  const [still, setStill] = useState(false)
-  const [stamp, setStamp] = useState(false)
+  const reduced = useReducedMotion()
+  const n = zones.length
+  // Reihenfolge des Stapels: das letzte Element liegt oben
+  const [order, setOrder] = useState<number[]>(() => zones.map((_, i) => n - 1 - i))
+  const [gone, setGone] = useState<Record<number, number>>({})
+  const [open, setOpen] = useState<number | null>(null)
+  const [hover, setHover] = useState<{ id: number; rx: number; ry: number } | null>(null)
+  const [spread, setSpread] = useState(false)
+  const [drag, setDrag] = useState<Drag | null>(null)
+  const dragRef = useRef<Drag | null>(null)
 
+  const stack = order.filter((i) => gone[i] === undefined)
+  const top = stack[stack.length - 1]
+
+  const throwAway = useCallback((id: number, dir: number) => {
+    setOpen(null)
+    setGone((g) => ({ ...g, [id]: dir }))
+  }, [])
+  const reshuffle = () => {
+    setOpen(null)
+    setGone({})
+    setOrder((o) => {
+      const a = [...o]
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[a[i], a[j]] = [a[j], a[i]]
+      }
+      return a
+    })
+  }
+
+  // Escape legt die offene Karte zurück
   useEffect(() => {
-    const el = run.current
-    const st0 = stage.current
-    if (!el || !st0) return
-    if (prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
-      setStill(true)
-      setStamp(true)
+    if (open === null) return
+    const k = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(null)
+    window.addEventListener('keydown', k)
+    return () => window.removeEventListener('keydown', k)
+  }, [open])
+
+  const onKey = (e: React.KeyboardEvent) => {
+    if (top === undefined) return
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      e.preventDefault()
+      setOpen(null)
+      // oberste Karte nach unten bzw. unterste nach oben
+      setOrder((o) => {
+        const rest = o.filter((i) => gone[i] === undefined)
+        const others = o.filter((i) => gone[i] !== undefined)
+        const r = e.key === 'ArrowRight' ? [rest[rest.length - 1], ...rest.slice(0, -1)] : [...rest.slice(1), rest[0]]
+        return [...others, ...r]
+      })
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      setOpen((o) => (o === top ? null : top))
+    }
+  }
+
+  const down = (id: number, e: RPointerEvent<HTMLButtonElement>) => {
+    if (open !== null ? id !== open : id !== top) return
+    e.currentTarget.setPointerCapture(e.pointerId)
+    const d = { id, x0: e.clientX, y0: e.clientY, dx: 0, dy: 0, t: e.timeStamp, vx: 0, moved: false }
+    dragRef.current = d
+    setDrag(d)
+  }
+  const move = (e: RPointerEvent<HTMLButtonElement>) => {
+    const d = dragRef.current
+    if (!d) return
+    const dx = e.clientX - d.x0
+    const dy = e.clientY - d.y0
+    const dt = Math.max(1, e.timeStamp - d.t)
+    const nd = { ...d, dx, dy, vx: (dx - d.dx) / dt, t: e.timeStamp, moved: d.moved || Math.hypot(dx, dy) > 8 }
+    dragRef.current = nd
+    if (nd.moved && open === null) setDrag(nd)
+  }
+  const up = (id: number) => {
+    const d = dragRef.current
+    dragRef.current = null
+    setDrag(null)
+    if (!d) return
+    if (d.moved && open === null) {
+      // weit oder schnell genug: zur Seite werfen, sonst federt die Karte zurück
+      if (Math.abs(d.dx) > 110 || Math.abs(d.vx) > 0.6) throwAway(id, Math.sign(d.dx || d.vx) || 1)
       return
     }
-    const cards = Array.from(st0.querySelectorAll<HTMLElement>('[data-card]'))
-    const objs = Array.from(st0.querySelectorAll<HTMLElement>('[data-obj]'))
-    const n = cards.length
-    const apply = (p: number) => {
-      const W = st0.clientWidth
-      const H = st0.clientHeight
-      const cw = cards[0].offsetWidth
-      const ch = cards[0].offsetHeight
-      const mobile = W < 768
-      const open = EASE_CS(span(p, 0.06, 0.24))
-      const g = EASE_CS(span(p, 0.86, 0.98))
-      const seq0 = 0.24
-      const seq1 = 0.86
-      const d = (seq1 - seq0) / n
-      cards.forEach((c, i) => {
-        // Fächer: Drehpunkt unter dem unteren Rand, Winkel öffnen sich
-        const k = i - (n - 1) / 2
-        const spread = (mobile ? 2.5 : 4) + open * (mobile ? 3.5 : 7)
-        const a = (k * spread * Math.PI) / 180
-        const R = H * 0.95
-        const px = W / 2
-        const py = H + R * 0.62 - open * H * 0.12
-        let pose: Pose = mobile
-          ? // Handy: Stapel in der Mitte, leicht versetzt
-            { x: W / 2 - cw / 2 + k * 2, y: H * 0.5 - ch / 2 + 40 - i * 3, r: k * 1.2, s: 0.92, o: 1 }
-          : { x: px + Math.sin(a) * R - cw / 2, y: py - Math.cos(a) * R - ch / 2, r: (a * 180) / Math.PI, s: 0.8, o: 1 }
-        // nacheinander: die Karte hebt sich groß in die Mitte (Handy: hebt sich ab und legt sich zur Seite)
-        const c0 = seq0 + i * d
-        const up = EASE_CS(span(p, c0, c0 + d * 0.45))
-        const down = EASE_CS(span(p, c0 + d * 0.75, c0 + d * 1.05))
-        if (mobile) {
-          const aside: Pose = { x: -cw * 0.42 + i * 3, y: H * 0.62 - ch / 2 + i * 4, r: -14 + i * 1.5, s: 0.58, o: 1 }
-          const lifted: Pose = { x: W / 2 - cw / 2, y: H * 0.46 - ch / 2, r: 0, s: 1.02, o: 1 }
-          pose = mix(mix(pose, lifted, up), aside, down)
-        } else {
-          const lifted: Pose = { x: W / 2 - cw / 2, y: H * 0.55 - ch / 2, r: 0, s: 1.18, o: 1 }
-          pose = mix(pose, lifted, up * (1 - down))
-          // die übrigen treten zurück, solange eine Karte oben ist
-          const active = Math.max(0, Math.min(n - 1, Math.floor((p - seq0) / d)))
-          if (p > seq0 && p < seq1 && i !== active) pose = { ...pose, y: pose.y + 30 }
-          // Ende: alle ordentlich nebeneinander (vier Spalten, zwei Reihen)
-          const cols = 4
-          const head = st0.querySelector<HTMLElement>('.rf-head')
-          const top = Math.max(H * 0.22, head ? head.offsetTop + (head.offsetParent as HTMLElement).offsetTop + head.offsetHeight + 28 : 0)
-          const gs = Math.min(0.72, (W - 120) / cols / cw, (H - top - 30 - 22) / 2 / ch)
-          const gx = W / 2 - ((cols * cw * gs + (cols - 1) * 22) / 2) + (i % cols) * (cw * gs + 22) - (cw * (1 - gs)) / 2
-          const gy = top + Math.floor(i / cols) * (ch * gs + 22) - (ch * (1 - gs)) / 2
-          pose = mix(pose, { x: gx, y: gy, r: 0, s: gs, o: 1 }, g)
-        }
-        c.style.transform = `translate3d(${pose.x.toFixed(1)}px, ${pose.y.toFixed(1)}px, 0) rotate(${pose.r.toFixed(2)}deg) scale(${pose.s.toFixed(3)})`
-        c.style.opacity = pose.o.toFixed(3)
-        // die gerade gehobene Karte liegt oben
-        c.style.zIndex = String(up > 0.01 && down < 0.99 ? 50 : mobile ? n - i : i)
-      })
-      objs.forEach((o, j) => {
-        const depth = Number(o.dataset.obj)
-        o.style.transform = `translate3d(0, ${((0.5 - p) * depth * 90).toFixed(1)}px, 0) rotate(${((p - 0.5) * depth * (j % 2 ? 10 : -10)).toFixed(2)}deg)`
-      })
-      setStamp(g > 0.92 || (mobile && p > 0.9))
-      st0.setAttribute('data-ready', '')
-    }
-    const st = ScrollTrigger.create({ trigger: el, start: 'top top', end: 'bottom bottom', scrub: 0.35, onUpdate: (x) => apply(x.progress), onRefresh: (x) => apply(x.progress) })
-    apply(st.progress)
-    return () => {
-      st.kill()
-      st0.removeAttribute('data-ready')
-    }
-  }, [])
+    setOpen((o) => (o === id ? null : id))
+  }
 
-  const heading = (
-    <div className="rf-head">
-      <p className="t-label">Prüfpunkte je Raum</p>
-      <h2 id="fan-title" className="t-h2 mt-4 max-w-[16ch]">
-        Jeder Raum hat seine Checkliste.
-      </h2>
-    </div>
-  )
+  const tilt = (id: number, e: RPointerEvent<HTMLButtonElement>) => {
+    if (e.pointerType !== 'mouse' || dragRef.current) return
+    const r = e.currentTarget.getBoundingClientRect()
+    setHover({ id, rx: ((e.clientY - r.top) / r.height - 0.5) * -10, ry: ((e.clientX - r.left) / r.width - 0.5) * 12 })
+  }
 
-  return (
-    <section className="relative bg-paper" aria-labelledby="fan-title">
-      <div ref={run} className={still ? 'section' : 'rf-run'}>
-        <div ref={stage} className={still ? 'container-site' : 'rf-stage'}>
-          {!still && (
-            <div aria-hidden className="pointer-events-none absolute inset-0">
-              {OBJECTS.map((o) => (
-                <img key={o.src} data-obj={o.depth} src={o.src} alt="" width={o.w} height={o.h} loading="lazy" decoding="async" className={`rf-obj ${o.cls}`} />
-              ))}
-            </div>
-          )}
-          <div className={still ? '' : 'container-site relative z-[60] pt-24 lg:pt-28'}>{heading}</div>
-          <ul className={still ? 'mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4' : 'rf-cards'} aria-label="Räume und Prüfpunkte">
+  if (reduced)
+    return (
+      <section className="section bg-paper" aria-labelledby="fan-title">
+        <div className="container-site">
+          <Heading />
+          <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {zones.map((z) => (
-              <li key={z.id} data-card className="rf-card">
-                <p className="text-[1.25rem] leading-tight font-medium tracking-[-0.015em] text-ink">{z.name}</p>
-                <ul className="mt-4 space-y-2">
-                  {z.tasks.slice(0, 4).map((t) => (
-                    <li key={t.task} className="flex gap-2.5 text-[0.875rem] leading-[1.35] text-ink-2">
-                      <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-blue text-white">
-                        <Check className="size-3" strokeWidth={2.75} aria-hidden />
-                      </span>
-                      {t.task}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-4 border-t border-line pt-3 font-medium text-[0.75rem] tracking-[0.02em] text-muted">{intervalOf(z)}</p>
+              <li key={z.id} className="rf-static">
+                <CardBack z={z} on />
               </li>
             ))}
           </ul>
-          <p className={stamp ? 'rf-stamp is-on' : 'rf-stamp'} aria-hidden={!stamp}>
-            Kontrolliert nach Checkliste
-          </p>
+        </div>
+      </section>
+    )
+
+  return (
+    <section className="section overflow-x-clip bg-paper" aria-labelledby="fan-title">
+      <div className="container-site grid-site gap-y-10 lg:items-center">
+        <div className="col-span-12 lg:col-span-4">
+          <Heading />
+          <p className="mt-6 max-w-[34ch] text-ink-2">Klicken oder tippen Sie eine Karte an, um die Prüfpunkte zu sehen. Ziehen Sie eine Karte zur Seite, liegt die nächste oben.</p>
+          <button type="button" className="tlink mt-8 inline-flex items-center gap-2" onClick={reshuffle}>
+            <RotateCcw className="size-4" aria-hidden />
+            Stapel neu mischen
+          </button>
+        </div>
+        <div className="col-span-12 lg:col-span-8">
+          <div
+            className={cn('rf-stage', spread && 'is-spread', open !== null && 'is-open')}
+            role="group"
+            aria-label="Raum-Karten: Pfeiltasten wechseln die oberste Karte, Enter dreht sie um"
+            tabIndex={0}
+            onKeyDown={onKey}
+            onPointerEnter={(e) => e.pointerType === 'mouse' && setSpread(true)}
+            onPointerLeave={() => {
+              setSpread(false)
+              setHover(null)
+            }}
+          >
+            {open !== null && <button type="button" tabIndex={-1} aria-label="Karte zurücklegen" className="rf-backdrop" onClick={() => setOpen(null)} />}
+            {order.map((id) => {
+              const z = zones[id]
+              const k = stack.indexOf(id)
+              const isGone = gone[id] !== undefined
+              const isOpen = open === id
+              const isDrag = drag?.id === id && drag.moved
+              const fromTop = stack.length - 1 - k
+              const mid = (stack.length - 1) / 2
+              const fan = spread ? 6.5 : 2.4
+              const step = spread ? 30 : 7
+              const h = hover?.id === id && !isOpen && !isGone
+              let style: CSSProperties
+              if (isGone) style = { '--x': `${gone[id] * 130}%`, '--y': '-6%', '--r': `${gone[id] * 24}deg`, '--s': '0.9', opacity: 0, zIndex: 1 } as CSSProperties
+              else if (isOpen) style = { '--x': '0px', '--y': '-3%', '--r': '0deg', '--s': 'var(--open-s)', zIndex: 60 } as CSSProperties
+              else if (isDrag && drag) style = { '--x': `${drag.dx}px`, '--y': `${drag.dy * 0.5}px`, '--r': `${drag.dx * 0.06}deg`, '--s': '1.03', zIndex: 50, transition: 'none' } as CSSProperties
+              else
+                style = {
+                  '--x': `${(k - mid) * step}px`,
+                  '--y': `${fromTop * (spread ? 2 : 5) - (h ? 26 : 0)}px`,
+                  '--r': `${(k - mid) * fan}deg`,
+                  '--s': h ? '1.04' : '1',
+                  '--rx': h ? `${hover.rx}deg` : '0deg',
+                  '--ry': h ? `${hover.ry}deg` : '0deg',
+                  zIndex: 10 + k,
+                } as CSSProperties
+              const Icon = ICONS[z.id] ?? Monitor
+              return (
+                <button
+                  key={z.id}
+                  type="button"
+                  className={cn('rf-card', isOpen && 'is-open', h && 'is-lift', isGone && 'is-gone')}
+                  style={style}
+                  tabIndex={-1}
+                  aria-hidden={isGone || (id !== top && !isOpen)}
+                  aria-pressed={isOpen}
+                  aria-label={`${z.name}: Checkliste ${isOpen ? 'schließen' : 'anzeigen'}`}
+                  onPointerDown={(e) => down(id, e)}
+                  onPointerMove={(e) => {
+                    move(e)
+                    tilt(id, e)
+                  }}
+                  onPointerUp={() => up(id)}
+                  onPointerCancel={() => {
+                    dragRef.current = null
+                    setDrag(null)
+                  }}
+                  onPointerLeave={() => setHover((v) => (v?.id === id ? null : v))}
+                >
+                  <span className="rf-inner">
+                    <span className="rf-face rf-front">
+                      <Icon className="size-10 text-blue" strokeWidth={1.4} aria-hidden />
+                      <span className="mt-auto block text-[1.5rem] leading-tight font-medium tracking-[-0.02em] text-ink">{z.name}</span>
+                      <span className="mt-3 flex flex-wrap gap-1.5">
+                        {intervalOf(z).map((f) => (
+                          <span key={f} className="rf-chip">
+                            {f}
+                          </span>
+                        ))}
+                      </span>
+                      <span className="rf-hint">{z.tasks.length} Prüfpunkte · antippen</span>
+                    </span>
+                    <span className="rf-face rf-back">
+                      <CardBack z={z} on={isOpen} />
+                    </span>
+                  </span>
+                </button>
+              )
+            })}
+            {stack.length === 0 && (
+              <div className="rf-empty">
+                <p className="text-ink-2">Alle Karten liegen zur Seite.</p>
+                <button type="button" className="btn btn-primary mt-5" onClick={reshuffle}>
+                  Stapel neu mischen
+                </button>
+              </div>
+            )}
+          </div>
+          {/* Dieselben Inhalte als Liste (Screenreader, Suchmaschinen) */}
+          <div className="sr-only">
+            {zones.map((z) => (
+              <div key={z.id}>
+                <h3>{z.name}</h3>
+                <ul>
+                  {z.tasks.map((t) => (
+                    <li key={t.task}>
+                      {t.task}, {freqLabel(t.freq, 'taeglich')}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
+  )
+}
+
+function Heading() {
+  return (
+    <>
+      <p className="t-label">Prüfpunkte je Raum</p>
+      <h2 id="fan-title" className="t-h2 mt-5 max-w-[14ch]">
+        Jeder Raum hat seine Checkliste.
+      </h2>
+    </>
+  )
+}
+
+/** Rückseite: Checkliste, die Haken setzen sich nacheinander, sobald die Karte offen ist */
+function CardBack({ z, on }: { z: Zone; on: boolean }) {
+  return (
+    <span className={cn('block', on && 'is-on')}>
+      <span className="block text-[1.125rem] font-medium tracking-[-0.015em] text-ink">{z.name}</span>
+      <span className="mt-3 block space-y-2">
+        {z.tasks.map((t, i) => (
+          <span key={t.task} className="rf-check flex gap-2.5 text-[0.8125rem] leading-[1.3] text-ink-2" style={{ '--i': i } as CSSProperties}>
+            <span className="rf-tick mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-blue text-white">
+              <Check className="size-3" strokeWidth={2.75} aria-hidden />
+            </span>
+            <span>
+              {t.task}
+              <span className="block text-[0.6875rem] text-muted">{freqLabel(t.freq, 'taeglich')}</span>
+            </span>
+          </span>
+        ))}
+      </span>
+    </span>
   )
 }
