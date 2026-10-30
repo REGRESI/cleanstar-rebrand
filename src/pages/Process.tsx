@@ -85,9 +85,6 @@ export default function Process() {
           </>
         }
       />
-      <Answer question={answers.ablauf.question} bottom="pb-16 sm:pb-20 lg:pb-24">
-        {answers.ablauf.text}
-      </Answer>
       <ScrubStatement {...statements.ablauf} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
       <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" />
       <section className="section bg-surface" aria-labelledby="details-title">
@@ -142,6 +139,9 @@ export default function Process() {
           </div>
         </div>
       </section>
+      <Answer question={answers.ablauf.question}>
+        {answers.ablauf.text}
+      </Answer>
       <FinalCta />
     </>
   )

@@ -38,9 +38,6 @@ export default function Faq() {
         title="Was Geschäftsführer uns vorher fragen."
         lead="Alles, was Sie vor der Zusammenarbeit wissen möchten. Ihre Frage ist nicht dabei? Rufen Sie uns an oder schreiben Sie uns."
       />
-      <Answer question={answers.faq.question} bottom="pb-16 sm:pb-20 lg:pb-24">
-        {answers.faq.text}
-      </Answer>
       <ScrubStatement {...statements.faq} id="statement-title" className="pt-6 pb-0 sm:pt-8 lg:pt-12" />
       <section className="pt-12 pb-24 lg:pt-16 lg:pb-40">
         <div className="container-site grid-site gap-y-10">
@@ -79,6 +76,9 @@ export default function Faq() {
           </div>
         </div>
       </section>
+      <Answer question={answers.faq.question}>
+        {answers.faq.text}
+      </Answer>
       <FinalCta />
     </>
   )

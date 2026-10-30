@@ -52,9 +52,6 @@ export default function Services() {
           </>
         }
       />
-      <Answer question={answers.leistungen.question} bottom="pb-16 sm:pb-20 lg:pb-24">
-        {answers.leistungen.text}
-      </Answer>
       <ScrubStatement {...statements.leistungen} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
       <ServiceChapters />
       <section className="on-dark tone-dark section bg-night text-paper" aria-labelledby="incl-title">
@@ -83,6 +80,9 @@ export default function Services() {
           </div>
         </div>
       </section>
+      <Answer question={answers.leistungen.question}>
+        {answers.leistungen.text}
+      </Answer>
       <FinalCta />
     </>
   )

@@ -48,7 +48,7 @@ export default function Home() {
       </Chunk>
       <Chunk>
         <ProblemSolution />
-        <PlantMoment id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." />
+        <PlantMoment eyebrow="Ihr Team" id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." />
         <Founders />
         <Proof />
       </Chunk>

@@ -59,6 +59,7 @@ const textBoxes = () => {
   const vh = innerHeight
   const vw = innerWidth
   const covers = []
+  // Verdeckende Flächen: Kopfzeile, Handy-Leiste und stehende (sticky) Bildflächen mit eigenem Hintergrund
   for (const el of document.querySelectorAll('header > div, .mobile-bar, [data-fixed-cover]')) {
     const r = el.getBoundingClientRect()
     const cs = getComputedStyle(el)
@@ -69,6 +70,8 @@ const textBoxes = () => {
       const cs = getComputedStyle(e)
       if (cs.display === 'none' || cs.visibility === 'hidden' || Number(cs.opacity) < 0.15) return false
       if (e.classList.contains('sr-only')) return false
+      // Inhalt eingeklappter Aufklapper wird nicht gezeichnet
+      if (e.tagName === 'DETAILS' && !e.open && !el.closest('summary')) return false
       if (cs.clipPath && cs.clipPath !== 'none' && /inset\(0px 100%|circle\(0px/.test(cs.clipPath)) return false
     }
     return true

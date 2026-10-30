@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react'
 import { company } from '@/content/company'
 import { pricing } from '@/content/pricing'
+import { Check, Clock, Euro, FileText, Map as MapIcon, MapPin, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { Roll } from './Roll'
 
 export type Fact = [label: string, value: ReactNode]
 
@@ -14,88 +16,88 @@ export const baseFacts = (): Fact[] => [
   ['Vertrag', 'Im ersten Monat ohne Frist, danach ein Monat zum Ende des Folgemonats'],
 ]
 
+/** Linien-Icon je Fakt (nach Stichwort im Label) */
+function FactIcon({ label }: { label: string }) {
+  const l = label.toLowerCase()
+  const Icon = /sitz|ort|adresse/.test(l)
+    ? MapPin
+    : /einzug|gebiet|fahr/.test(l)
+      ? MapIcon
+      : /erreich|antwort|zeit/.test(l)
+        ? Clock
+        : /satz|preis|kosten|€/.test(l)
+          ? Euro
+          : /vertrag|kündig|lauf/.test(l)
+            ? FileText
+            : /gefragt|leist/.test(l)
+              ? Sparkles
+              : Check
+  return <Icon aria-hidden className="size-5 text-ink" strokeWidth={1.4} />
+}
+
+/** Erster Satz als kurze Antwort, der Rest zum Aufklappen (Text bleibt vollständig im HTML) */
+function splitAnswer(children: ReactNode): [ReactNode, ReactNode] {
+  if (typeof children !== 'string') return [children, null]
+  const m = children.match(/^(.+?[.!?])\s+(.+)$/s)
+  return m ? [m[1], m[2]] : [children, null]
+}
+
 /**
- * „Auf einen Blick“: ruhiger Steckbrief am Seitenende. Links die Überschrift, rechts ein bis zwei Sätze, die ohne
- * Kontext verständlich sind (Suchmaschinen und KI-Systeme zitieren genau solche Sätze), darunter eine kleine
- * Faktenliste mit Haarlinien. Seiten können eigene Fakten voranstellen oder die Liste ersetzen.
- * Abstand oben bestimmt die Seite (`className`), je nachdem, was davor steht.
+ * „Kurz beantwortet“ bzw. „Auf einen Blick“: oben klein die Frage, darunter der erste Satz als große, kurze Antwort,
+ * dann die Fakten als Kacheln (Linien-Icon, kleines Label, großer Wert; Desktop drei, Handy zwei je Zeile). Der übrige
+ * Text steht unter „Ausführlich lesen“ (im HTML vorhanden, nur eingeklappt). Je Seite höchstens einmal, weiter unten.
+ * Suchmaschinen und KI-Systeme zitieren genau solche Sätze, deshalb bleibt der Text vollständig.
  */
 export function Answer({
   children,
   className,
-  bottom = 'pb-20 sm:pb-28 lg:pb-36',
   facts,
   extraFacts = [],
   question,
-  dark,
 }: {
   children: ReactNode
   className?: string
+  /** früher: Abstand unten; die Abstände bestimmt jetzt der Abschnitt selbst */
   bottom?: string
   /** Ersetzt die Standardfakten */
   facts?: Fact[]
   /** Seitenbezogene Fakten vor den Standardfakten */
   extraFacts?: Fact[]
-  /** Antwort-zuerst-Block unter dem Seitenkopf: die Hauptfrage der Seite als Überschrift */
+  /** Die Hauptfrage der Seite (sonst „Auf einen Blick“) */
   question?: string
-  /** Schlussblock auf Navy (z. B. wenn der Abschluss darunter hell ist und sonst zu viele helle Abschnitte folgen) */
+  /** früher: Navy-Fläche; der Block steht jetzt immer hell */
   dark?: boolean
 }) {
   const list = [...extraFacts, ...(facts ?? baseFacts())]
-  // Antwort zuerst: direkt unter dem Seitenkopf, mit der Frage der Seite als Überschrift
-  if (question)
-    return (
-      <section aria-labelledby="answer-title" className={cn('container-site', bottom, className)}>
-        <div className="grid-site gap-y-10 border-t border-line pt-8 lg:pt-10">
-          <div className="col-span-12 lg:col-span-7">
-            <p className="t-label">Kurz beantwortet</p>
-            <h2 id="answer-title" className="t-h3 mt-3 max-w-[24ch]">
-              {question}
-            </h2>
-            <p data-answer className="mt-6 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-ink-2 sm:text-[1.125rem]">
-              {children}
-            </p>
-          </div>
-          <dl className="col-span-12 self-start border-t border-line lg:col-span-4 lg:col-start-9">
-            {list.map(([k, v]) => (
-              <div key={k} className="border-b border-line py-3">
-                <dt className="text-[0.875rem] text-muted">{k}</dt>
-                <dd className="mt-0.5 text-[1rem] text-ink">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-    )
-  const body = (
-    <div className={cn('grid-site gap-y-8 border-t pt-8 lg:pt-10', dark ? 'border-line-dark' : 'border-line')}>
-      <h2 id="answer-title" className="t-h3 col-span-12 lg:col-span-4">
-        Auf einen Blick
-      </h2>
-      <div className="col-span-12 lg:col-span-7 lg:col-start-6">
-        <p data-answer className={cn('t-lead max-w-[52ch]', dark ? 'text-paper' : 'text-ink')}>
-          {children}
+  const [lead, more] = splitAnswer(children)
+  return (
+    <section aria-labelledby="answer-title" className={cn('section bg-paper text-ink', className)}>
+      <div className="container-site">
+        <p className="t-label">{question ? 'Kurz beantwortet' : 'Auf einen Blick'}</p>
+        <h2 id="answer-title" className="mt-3 text-[1rem] font-medium text-ink-2">
+          {question ?? 'Das Wichtigste in Kürze'}
+        </h2>
+        <p data-answer className="t-h3 mt-5 max-w-[30ch]">
+          {lead}
         </p>
-        <dl className={cn('mt-8 border-t lg:mt-10', dark ? 'border-line-dark' : 'border-line')}>
+        <dl className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
           {list.map(([k, v]) => (
-            <div key={k} className={cn('grid grid-cols-1 gap-x-6 gap-y-0.5 border-b py-3 sm:grid-cols-[10rem_1fr]', dark ? 'border-line-dark' : 'border-line')}>
-              <dt className={cn('text-[0.9375rem]', dark ? 'text-muted-dark' : 'text-muted')}>{k}</dt>
-              <dd className={cn('text-[1rem]', dark ? 'text-paper' : 'text-ink')}>{v}</dd>
+            <div key={k} className="answer-tile">
+              <FactIcon label={k} />
+              <dt className="mt-4 text-[0.8125rem] text-muted">{k}</dt>
+              <dd className="mt-1 text-[1rem] leading-[1.35] font-medium tracking-[-0.01em] text-ink sm:text-[1.125rem]">{v}</dd>
             </div>
           ))}
         </dl>
+        {more && (
+          <details className="answer-more mt-10">
+            <summary>
+              <Roll text="Ausführlich lesen" />
+            </summary>
+            <p className="measure mt-5 text-[1.0625rem] leading-[1.7] text-ink-2">{more}</p>
+          </details>
+        )}
       </div>
-    </div>
-  )
-  if (dark)
-    return (
-      <section aria-labelledby="answer-title" className={cn('on-dark section bg-night text-paper', className)}>
-        <div className="container-site">{body}</div>
-      </section>
-    )
-  return (
-    <section aria-labelledby="answer-title" className={cn('container-site', bottom, className)}>
-      {body}
     </section>
   )
 }

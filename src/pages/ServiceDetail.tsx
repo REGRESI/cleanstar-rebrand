@@ -60,9 +60,6 @@ export default function ServiceDetail() {
           </>
         }
       />
-      <Answer question={serviceAnswer(s).question} bottom="pb-16 sm:pb-20 lg:pb-24">
-        {serviceAnswer(s).text}
-      </Answer>
       {serviceStatements[s.slug] && <ScrubStatement {...serviceStatements[s.slug]} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />}
 
       {/* Die vier Punkte: einheitliche Spalten mit Haarlinie, auf allen Leistungsseiten gleich */}
@@ -217,6 +214,9 @@ export default function ServiceDetail() {
       )}
 
       {/* FAQ */}
+      <Answer question={serviceAnswer(s).question}>
+        {serviceAnswer(s).text}
+      </Answer>
       <section className="section bg-surface" aria-labelledby="sfaq-title">
         <div className="container-site grid-site gap-y-10">
           <span aria-hidden className="rule col-span-12 mb-4" />

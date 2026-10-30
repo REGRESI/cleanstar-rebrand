@@ -11,7 +11,7 @@ import { span } from '@/lib/scrollScene'
  * ein kurzer Satz. Freigestellte Pflanzen rahmen zwei gegenüberliegende Ecken und bewegen sich leicht gegenläufig
  * (Parallaxe), immer innerhalb des Abschnitts.
  */
-export function PlantMoment({ title, text, id }: { title: string; text: string; id: string }) {
+export function PlantMoment({ title, text, id, eyebrow }: { title: string; text: string; id: string; eyebrow?: string }) {
   const root = useRef<HTMLElement>(null)
   useEffect(() => {
     const el = root.current
@@ -29,7 +29,7 @@ export function PlantMoment({ title, text, id }: { title: string; text: string; 
       <img data-plant="a" src="/images/deko/pflanze-ecke.webp" alt="" aria-hidden width={884} height={840} loading="lazy" decoding="async" className="plant plant-a" />
       <img data-plant="b" src="/images/deko/pflanze-ecke.webp" alt="" aria-hidden width={884} height={840} loading="lazy" decoding="async" className="plant plant-b" />
       <div className="container-site relative flex min-h-[86svh] flex-col items-center justify-center py-32 text-center">
-        <p className="t-label">Ihr Team</p>
+        {eyebrow && <p className="t-label">{eyebrow}</p>}
         <MomentHeading id={id} text={title} className="mt-6" capStyle={{ ['--cap-gap' as string]: '0.16em' }} />
         <p className="t-lead mt-8 max-w-[40ch] text-ink-2">{text}</p>
       </div>

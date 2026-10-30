@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import type { ImageId } from '@/content/images'
 import { MomentHeading, MomentGlow } from '@/components/ui/MomentHeading'
 import { Picture } from '@/components/ui/Picture'
 import { home } from '@/content/site'
@@ -15,13 +16,27 @@ import { span } from '@/lib/scrollScene'
  * zu sehen, dann Bild und Kreis mit Titel.
  * Reduzierte Bewegung oder ohne JavaScript: normaler Abschnitt ohne Maske.
  */
-const EDGE = 'BÜROREINIGUNG IM ORTENAUKREIS'
-
-export function Arrival() {
+export function Arrival({
+  title = 'Wir kommen,\nwenn Sie gehen.',
+  edge: EDGE = 'BÜROREINIGUNG IM ORTENAUKREIS',
+  image,
+  id = 'arrive-title',
+  children,
+}: {
+  title?: string
+  /** Satz an der Kreiskante (Versalien) */
+  edge?: string
+  /** Unterseiten: Foto, über dem der Kreis aufsteigt; ohne: das letzte Bild des Heros (Startseite, überlappt den Hero) */
+  image?: ImageId
+  id?: string
+  /** Inhalt unter der Überschrift; ohne: Satz und versetzte Bilder der Startseite */
+  children?: ReactNode
+}) {
+  const overlap = !image
   const run = useRef<HTMLDivElement>(null)
   const stage = useRef<HTMLDivElement>(null)
   const layer = useRef<HTMLDivElement>(null)
-  const title = useRef<HTMLDivElement>(null)
+  const titleEl = useRef<HTMLDivElement>(null)
   const rest = useRef<HTMLDivElement>(null)
   const track = useRef<SVGPathElement>(null)
   const label = useRef<SVGTextElement>(null)
@@ -41,7 +56,7 @@ export function Arrival() {
     let played = false
     const apply = (t: number) => {
       const st = layer.current
-      if (!st || !title.current || !rest.current) return
+      if (!st || !titleEl.current || !rest.current) return
       const W = st.clientWidth
       const H = st.clientHeight
       // Mittelpunkt unter der Unterkante (k · r); Endradius deckt auch die oberen Ecken
@@ -56,7 +71,7 @@ export function Arrival() {
       const top = cy - r
       const finalTop = H * (W < 768 ? 0.13 : 0.15)
       const y = Math.max(finalTop, top + H * 0.1)
-      title.current.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
+      titleEl.current.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
       if (!played && t > 0.08) {
         played = true
         setPlay(true)
@@ -91,7 +106,7 @@ export function Arrival() {
       onLeaveBack: () => show(false),
     })
     function show(on: boolean) {
-      if (stage.current) stage.current.style.visibility = on ? 'visible' : 'hidden'
+      if (stage.current) stage.current.style.visibility = on || !overlap ? 'visible' : 'hidden'
     }
     apply(st.progress)
     show(st.scroll() >= st.start)
@@ -99,11 +114,16 @@ export function Arrival() {
   }, [])
 
   return (
-    <section className="arrive relative" aria-labelledby="arrive-title" data-tone="surface">
+    <section className={overlap ? 'arrive is-overlap relative' : 'arrive relative'} aria-labelledby={id} data-tone="surface">
       <div ref={run} className="arrive-run">
         <div ref={stage} className="arrive-stage sticky top-0 h-[100svh] overflow-hidden">
           {/* Hintergrund: das letzte Bild des Heros (Navy mit Bildfenster, wie dort) */}
-          {!still && (
+          {!still && image && (
+            <div aria-hidden className="photo absolute inset-0">
+              <Picture id={image} aspect="absolute inset-0 size-full" sizes="100vw" />
+            </div>
+          )}
+          {!still && !image && (
             <div aria-hidden className="absolute inset-0 bg-night">
               <div className="hero-box is-pinned photo absolute overflow-hidden">
                 <picture>
@@ -125,23 +145,25 @@ export function Arrival() {
                 </textPath>
               </text>
             </svg>
-            <div ref={title} className="absolute inset-x-0 top-0 will-change-transform" style={still ? { transform: 'translate3d(0, 15svh, 0)' } : undefined}>
+            <div ref={titleEl} className="absolute inset-x-0 top-0 will-change-transform" style={still ? { transform: 'translate3d(0, 15svh, 0)' } : undefined}>
               <div className="container-site text-center">
-                <MomentHeading id="arrive-title" text={"Wir kommen,\nwenn Sie gehen."} play={play} vanish={false} className="mx-auto w-fit" />
+                <MomentHeading id={id} text={title} play={play} vanish={false} className="mx-auto w-fit" />
               </div>
             </div>
             <div ref={rest} className="absolute inset-x-0 bottom-0 top-[44svh] sm:top-[46svh]" style={still ? undefined : { opacity: 0 }}>
-              <div className="container-site grid h-full grid-cols-12 gap-x-5 lg:gap-x-8">
-                <p className="t-lead col-span-12 text-center text-ink-2 sm:col-span-10 sm:col-start-2 lg:col-span-6 lg:col-start-4">{home.promise.statement}</p>
-                <div className="arrive-cards col-span-12 mt-6 lg:col-span-10 lg:col-start-2">
-                  <div className="card-shadow arrive-card overflow-hidden rounded-[10px]">
-                    <Picture id="evening-clean" aspect="size-full" sizes="(min-width:1024px) 34vw, 60vw" />
-                  </div>
-                  <div className="card-shadow arrive-card overflow-hidden rounded-[10px]">
-                    <Picture id="team-work" aspect="size-full" sizes="(min-width:1024px) 30vw, 55vw" />
+              {children ?? (
+                <div className="container-site grid h-full grid-cols-12 gap-x-5 lg:gap-x-8">
+                  <p className="t-lead col-span-12 text-center text-ink-2 sm:col-span-10 sm:col-start-2 lg:col-span-6 lg:col-start-4">{home.promise.statement}</p>
+                  <div className="arrive-cards col-span-12 mt-6 lg:col-span-10 lg:col-start-2">
+                    <div className="card-shadow arrive-card overflow-hidden rounded-[10px]">
+                      <Picture id="evening-clean" aspect="size-full" sizes="(min-width:1024px) 34vw, 60vw" />
+                    </div>
+                    <div className="card-shadow arrive-card overflow-hidden rounded-[10px]">
+                      <Picture id="team-work" aspect="size-full" sizes="(min-width:1024px) 30vw, 55vw" />
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

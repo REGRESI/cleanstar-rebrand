@@ -1,11 +1,11 @@
 import { Seo } from '@/components/ui/Seo'
+import { CloudsReveal } from '@/components/home/Moments'
 import { ScrubStatement } from '@/components/ui/ScrubStatement'
 import { statements } from '@/content/statements'
 import { PageHero } from '@/components/ui/PageHero'
 import { places } from '@/content/places'
 import { Answer } from '@/components/ui/Answer'
 import { RevealText } from '@/components/ui/RevealText'
-import { ImageBand } from '@/components/ui/ImageBand'
 import { AreaMap } from '@/features/map/AreaMap'
 import { FinalCta } from '@/components/home/FinalCta'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
@@ -33,6 +33,7 @@ export default function Area() {
         lead="Unser Sitz ist in Offenburg, mitten im Kreis. Von hier aus sind wir schnell bei Ihnen, ob in Kehl am Rhein, in Achern im Norden oder in Haslach im Kinzigtal."
         actions={<QuoteButton size="lg" arrow />}
       />
+      <CloudsReveal />
       <ScrubStatement {...statements.einzugsgebiet} id="statement-title" className="pt-10 pb-0 sm:pt-14 lg:pt-20" />
       <section className="section-tight" aria-labelledby="map-title">
         <div className="container-site">
@@ -42,7 +43,6 @@ export default function Area() {
           <AreaMap />
         </div>
       </section>
-      <ImageBand id="region" />
       <section className="on-dark section bg-night text-paper" aria-labelledby="why-local-title">
         <div className="container-site grid-site gap-y-8 lg:items-end">
           <div className="col-span-12 lg:col-span-6">

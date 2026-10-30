@@ -1,28 +1,58 @@
-import { useId, useState } from 'react'
+import { useId, useLayoutEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { Modal } from '@/components/ui/Modal'
 import { company } from '@/content/company'
 import { cn } from '@/lib/cn'
 
-/** Typografisches Siegel: Kreis aus kleiner Versalschrift um eine große „1“ (erster Monat). Rein dekorativ. */
-export function SealMark({ className, dark, text: label = 'Erster Monat · jederzeit kündbar · ohne Frist · ' }: { className?: string; dark?: boolean; text?: string }) {
+/**
+ * „1“-Siegel: Kreis in Markenblau mit großer weißer „1“, außen ein Textring in gleichmäßig gesperrten Versalien, der
+ * den Kreis genau einmal füllt (textPath mit textLength, keine Lücke, keine Überlappung). Der Ring dreht sich sehr
+ * langsam (eine Umdrehung in 40 s), beim Überfahren hält er an. Klein (small) ohne Ring, nur Kreis mit „1“.
+ * Rein dekorativ (aria-hidden).
+ */
+// geschützte Leerzeichen: SVG würde das Leerzeichen am Ende sonst entfernen und der Ring hätte eine Lücke
+const RING = 'ERSTER\u00A0MONAT\u00A0·\u00A0JEDERZEIT\u00A0KÜNDBAR\u00A0·\u00A0'
+const R = 48
+const CIRC = 2 * Math.PI * R
+
+export function SealMark({ className, dark, small }: { className?: string; dark?: boolean; small?: boolean; text?: string }) {
   const id = useId().replace(/:/g, '')
+  const tp = useRef<SVGTextPathElement>(null)
+  // Abstand gleichmäßig auf alle n Zwischenräume verteilen, auch auf die Naht am Anfang:
+  // SVG verteilt textLength nur auf n−1 Zwischenräume, daher L = W + (Umfang − W) · (n − 1) / n
+  useLayoutEffect(() => {
+    const el = tp.current
+    if (!el) return
+    const fit = () => {
+      el.removeAttribute('textLength')
+      const w = (el.parentNode as SVGTextElement).getComputedTextLength()
+      const n = Array.from(RING).length
+      if (w > 0 && w < CIRC) el.setAttribute('textLength', (w + ((CIRC - w) * (n - 1)) / n).toFixed(2))
+    }
+    fit()
+    document.fonts?.ready.then(fit)
+  }, [])
   const ink = dark ? 'var(--color-paper)' : 'var(--color-ink)'
-  const accent = dark ? 'var(--color-blue-on-dark)' : 'var(--color-blue)'
+  const fill = dark ? 'var(--color-blue-on-dark)' : 'var(--color-blue)'
+  const one = dark ? 'var(--color-night)' : '#fff'
   return (
-    <svg viewBox="0 0 120 120" aria-hidden className={className}>
+    <svg viewBox={small ? '22 22 76 76' : '0 0 120 120'} aria-hidden className={cn('seal', className)}>
       <defs>
-        <path id={`seal-${id}`} d="M60 60 m-46 0 a46 46 0 1 1 92 0 a46 46 0 1 1 -92 0" />
+        <path id={`seal-${id}`} d={`M60 ${60 - R} a${R} ${R} 0 1 1 -0.001 0`} />
       </defs>
-      <circle cx="60" cy="60" r="34" fill="none" stroke={accent} strokeWidth="1" opacity="0.6" />
-      <text fontSize="8.6" letterSpacing="0.2" fill={ink} style={{ fontFamily: 'var(--font-sans)', fontWeight: 500 }}>
-        <textPath href={`#seal-${id}`} startOffset="0" textLength="286" lengthAdjust="spacing">
-          {label}
-        </textPath>
-      </text>
-      <text x="60" y="61" textAnchor="middle" dominantBaseline="central" fontSize="46" fontWeight="500" letterSpacing="-2" fill={ink}>
+      <circle cx="60" cy="60" r="34" fill={fill} />
+      <text x="60" y="62" textAnchor="middle" dominantBaseline="central" fontSize="44" fontWeight="500" letterSpacing="-1" fill={one} style={{ fontFamily: 'var(--font-sans)' }}>
         1
       </text>
+      {!small && (
+        <g className="seal-ring">
+          <text fontSize="11.2" fill={ink} style={{ fontFamily: 'var(--font-sans)', fontWeight: 500 }}>
+            <textPath ref={tp} href={`#seal-${id}`} startOffset="0" textLength={CIRC.toFixed(2)} lengthAdjust="spacing">
+              {RING}
+            </textPath>
+          </text>
+        </g>
+      )}
     </svg>
   )
 }
@@ -55,7 +85,7 @@ export function RiskFreeSeal({
         className={cn('group inline-flex items-center gap-4 text-left leading-snug', dark ? 'text-paper' : 'text-ink', className)}
         aria-haspopup="dialog"
       >
-        <SealMark dark={dark} className="size-16 shrink-0 transition-transform duration-[1200ms] ease-cs group-hover:rotate-[20deg]" />
+        <SealMark dark={dark} small className="size-12 shrink-0" />
         <span>
           <span className="block font-medium">{label ?? c.riskFree}.</span>
           <span className={cn('ulink mt-1 inline-block text-[0.875rem]', dark ? 'text-link-dark hover:text-paper' : 'text-muted')}>Vertragsbedingungen ansehen</span>
@@ -72,7 +102,7 @@ export function RiskFreeSeal({
         )}
         aria-haspopup="dialog"
       >
-        <SealMark dark={dark} className="size-28 shrink-0 transition-transform duration-[1200ms] ease-cs group-hover:rotate-[20deg] sm:size-36" />
+        <SealMark dark={dark} className="size-32 shrink-0 sm:size-40" />
         <span className="block min-w-0">
           <span className="t-label block">Ohne Risiko starten</span>
           <span className="t-h3 mt-3 block">{c.riskFree}</span>
@@ -91,7 +121,7 @@ export function RiskFreeSeal({
       {trigger}
       <Modal open={open} onClose={() => setOpen(false)} title="Vertragsbedingungen">
         <div className="p-7 sm:p-10">
-          <SealMark className="size-24" />
+          <SealMark className="size-28" />
           <h2 className="t-h3 mt-6">{c.riskFree}.</h2>
           <p className="mt-3 leading-relaxed text-ink-2">Sie sollen uns erst an der Arbeit messen, bevor Sie sich binden. Deshalb gilt für jeden neuen Vertrag:</p>
           <ul className="mt-8 border-t border-line">

@@ -45,19 +45,7 @@ function Shell() {
     // iOS zeigt :active-Stile (Rückmeldung beim Tippen) nur, wenn ein touchstart-Listener existiert
     const noop = () => {}
     document.addEventListener('touchstart', noop, { passive: true })
-    // Roll-System auf Touch-Geräten: Beim Antippen rollt der Text einmal, die Aktion läuft sofort (keine Verzögerung)
-    const onTap = (e: PointerEvent) => {
-      if (e.pointerType === 'mouse') return
-      const host = (e.target as Element | null)?.closest?.('a, button')
-      if (!host || !host.querySelector('.roll')) return
-      host.classList.remove('is-roll')
-      void (host as HTMLElement).offsetWidth
-      host.classList.add('is-roll')
-      window.setTimeout(() => host.classList.remove('is-roll'), 700)
-    }
-    document.addEventListener('pointerdown', onTap, { passive: true })
     return () => {
-      document.removeEventListener('pointerdown', onTap)
       document.removeEventListener('touchstart', noop)
       cancel()
       stopSmoothScroll()

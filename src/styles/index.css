@@ -1565,17 +1565,28 @@ footer[data-no-top] {
 }
 
 /* ==========================================================================
-   ROLL-SYSTEM (Roll.tsx): Buttons, Menüpunkte, Text-Links. Zwei gleiche Zeilen; die obere rollt weg, die untere
-   nach. Nur Keyframes beim Eintreten: Nach dem Verlassen steht wieder die obere Zeile an derselben Stelle, ohne Sprung.
+   ROLL-SYSTEM (Roll.tsx, Referenz era/10): zwei gleiche Zeilen in einem Behälter mit fester Höhe (eine Zeile) und
+   overflow hidden. Beim Überfahren und bei Tastatur-Fokus rollt jeder Buchstabe der oberen Zeile um 100 % nach oben,
+   die untere rückt von unten nach; 15 ms Versatz je Buchstabe, 450 ms, cubic-bezier(0.7, 0, 0.2, 1). Keine Unschärfe,
+   keine Skalierung, kein Farbsprung. Nur beim Eintreten: Danach steht wieder die obere Zeile, ohne Sprung.
+   Touch: kein Roll, nur die Aktion.
    ========================================================================== */
 .roll {
   position: relative;
   display: inline-block;
+  height: 1.2em;
   overflow: hidden;
-  vertical-align: top;
-  padding-block: 0.12em;
-  margin-block: -0.12em;
-  line-height: inherit;
+  line-height: 1.2;
+  vertical-align: bottom;
+}
+.roll-a,
+.roll-b {
+  display: block;
+  white-space: nowrap;
+}
+.roll-b {
+  position: absolute;
+  inset: 0 0 auto 0;
 }
 .roll-c {
   display: inline-block;
@@ -1583,72 +1594,46 @@ footer[data-no-top] {
 .roll-c::before {
   content: attr(data-c);
 }
-.roll-b {
-  position: absolute;
-  inset: 0.12em 0 auto 0;
-  visibility: hidden;
+.roll-b .roll-c {
+  transform: translateY(100%);
 }
 @keyframes roll-out {
-  0% {
-    transform: translateY(0) scaleY(1);
+  from {
+    transform: translateY(0);
   }
-  45% {
-    transform: translateY(-60%) scaleY(1.35);
-  }
-  100% {
-    transform: translateY(-130%) scaleY(1);
+  to {
+    transform: translateY(-100%);
   }
 }
 @keyframes roll-in {
-  0% {
-    transform: translateY(130%) scaleY(1);
+  from {
+    transform: translateY(100%);
   }
-  55% {
-    transform: translateY(55%) scaleY(1.35);
-  }
-  100% {
-    transform: translateY(0) scaleY(1);
+  to {
+    transform: translateY(0);
   }
 }
-@media (hover: hover) {
-  :is(a, button, label):hover > .roll .roll-a .roll-c,
-  :is(a, button, label):hover > * > .roll .roll-a .roll-c,
-  :is(a, button, label):hover > * > * > .roll .roll-a .roll-c {
-    animation: roll-out 0.5s var(--ease-cs) both;
-    animation-delay: calc(var(--i) * 22ms);
+@media (hover: hover) and (pointer: fine) {
+  :is(a, button, summary, label):hover .roll .roll-a .roll-c {
+    animation: roll-out 0.45s cubic-bezier(0.7, 0, 0.2, 1) both;
+    animation-delay: calc(var(--i) * 15ms);
   }
-  :is(a, button, label):hover > .roll .roll-b,
-  :is(a, button, label):hover > * > .roll .roll-b,
-  :is(a, button, label):hover > * > * > .roll .roll-b {
-    visibility: visible;
-  }
-  :is(a, button, label):hover > .roll .roll-b .roll-c,
-  :is(a, button, label):hover > * > .roll .roll-b .roll-c,
-  :is(a, button, label):hover > * > * > .roll .roll-b .roll-c {
-    animation: roll-in 0.5s var(--ease-cs) both;
-    animation-delay: calc(var(--i) * 22ms);
+  :is(a, button, summary, label):hover .roll .roll-b .roll-c {
+    animation: roll-in 0.45s cubic-bezier(0.7, 0, 0.2, 1) both;
+    animation-delay: calc(var(--i) * 15ms);
   }
 }
-:is(a, button):focus-visible .roll .roll-a .roll-c,
-.is-roll .roll .roll-a .roll-c {
-  animation: roll-out 0.5s var(--ease-cs) both;
-  animation-delay: calc(var(--i) * 22ms);
+:is(a, button, summary):focus-visible .roll .roll-a .roll-c {
+  animation: roll-out 0.45s cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation-delay: calc(var(--i) * 15ms);
 }
-:is(a, button):focus-visible .roll .roll-b,
-.is-roll .roll .roll-b {
-  visibility: visible;
-}
-:is(a, button):focus-visible .roll .roll-b .roll-c,
-.is-roll .roll .roll-b .roll-c {
-  animation: roll-in 0.5s var(--ease-cs) both;
-  animation-delay: calc(var(--i) * 22ms);
+:is(a, button, summary):focus-visible .roll .roll-b .roll-c {
+  animation: roll-in 0.45s cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation-delay: calc(var(--i) * 15ms);
 }
 @media (prefers-reduced-motion: reduce) {
   .roll .roll-c {
     animation: none !important;
-  }
-  .roll .roll-b {
-    visibility: hidden !important;
   }
 }
 
@@ -1770,11 +1755,33 @@ footer[data-no-top] {
 .tab-card.is-white {
   --tab-bg: #fff;
 }
+.tab-card:has(> .tab-label)::before,
+.tab-card:has(> .tab-label)::after {
+  display: none;
+}
+/* Beschriftung IST der Reiter: Breite folgt dem Text (nichts ragt heraus), weiche Kehle rechts daneben */
 .tab-label {
   position: absolute;
-  left: 1.25rem;
-  bottom: calc(100% + 0.25rem);
-  z-index: 1;
+  left: 0;
+  bottom: calc(100% - 1px);
+  display: flex;
+  align-items: center;
+  max-width: calc(100% - var(--tab-r) - 0.5rem);
+  height: calc(var(--tab-h) + 1px);
+  padding: 0.15rem 1.1rem 0;
+  border-radius: var(--tab-r) var(--tab-r) 0 0;
+  background: var(--tab-bg);
+  white-space: nowrap;
+  overflow: visible;
+}
+.tab-label::after {
+  content: '';
+  position: absolute;
+  left: calc(100% - 0.5px);
+  bottom: 0;
+  width: var(--tab-r);
+  height: var(--tab-r);
+  background: radial-gradient(circle at 100% 0, transparent calc(var(--tab-r) - 0.5px), var(--tab-bg) var(--tab-r));
 }
 
 /* Zählwerk: Ziffern rollen zum neuen Wert (Kostenrechner) */
@@ -2240,12 +2247,12 @@ footer[data-no-top] {
   height: 220svh;
 }
 /* Überlappt das Ende des Heros: Die Bühne liegt genau dort, wo der gepinnte Hero beim Loslassen steht (gleiches Bild) */
-.js-motion .arrive {
+.js-motion .arrive.is-overlap {
   z-index: 2;
   margin-top: -100svh;
 }
 @media (prefers-reduced-motion: reduce) {
-  .js-motion .arrive {
+  .js-motion .arrive.is-overlap {
     margin-top: 0;
   }
 }
@@ -2494,5 +2501,62 @@ footer[data-no-top] {
   }
   .clouds-layer {
     display: none;
+  }
+}
+
+/* Kurz beantwortet (Answer.tsx): Fakten als Kacheln, Rest zum Aufklappen */
+.answer-tile {
+  border-radius: 12px;
+  background: #fff;
+  padding: 1.25rem;
+  box-shadow: 0 18px 40px -28px rgb(10 26 51 / 0.35);
+}
+@media (min-width: 640px) {
+  .answer-tile {
+    padding: 1.5rem;
+  }
+}
+.answer-more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 500;
+  padding-bottom: 0.2em;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+}
+.answer-more summary::-webkit-details-marker {
+  display: none;
+}
+.answer-more summary::after {
+  content: '+';
+  font-weight: 400;
+  transition: transform 0.3s var(--ease-cs);
+}
+.answer-more[open] summary::after {
+  transform: rotate(45deg);
+}
+
+/* „1“-Siegel: Textring dreht sehr langsam, Überfahren hält an */
+.seal-ring {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+.js-motion .seal-ring {
+  animation: seal-turn 40s linear infinite;
+}
+.seal:hover .seal-ring,
+button:hover > .seal .seal-ring {
+  animation-play-state: paused;
+}
+@keyframes seal-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js-motion .seal-ring {
+    animation: none;
   }
 }

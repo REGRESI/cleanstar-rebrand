@@ -47,7 +47,7 @@ export function CheckpointView() {
         <p className="t-label">Prüfpunkte</p>
         <AnimatedText as="h2" id="checkpoints-title" text="Jeder Arbeitsplatz, Punkt für Punkt." className="t-h2 mt-5 max-w-[18ch]" />
         <div className="mt-14 lg:mt-20 lg:grid lg:grid-cols-12 lg:gap-x-8">
-          <div className="sticky top-16 z-10 -mx-5 bg-paper px-5 pt-2 pb-4 sm:mx-0 sm:px-0 lg:top-28 lg:col-span-7 lg:col-start-6 lg:row-start-1 lg:self-start lg:bg-transparent lg:p-0">
+          <div data-fixed-cover className="sticky top-16 z-10 -mx-5 bg-paper px-5 pt-2 pb-4 sm:mx-0 sm:px-0 lg:top-28 lg:col-span-7 lg:col-start-6 lg:row-start-1 lg:self-start lg:bg-transparent lg:p-0">
             <div>
               <div className="card-shadow relative aspect-video overflow-hidden rounded-[14px] bg-night">
                 <picture>

@@ -2,8 +2,7 @@ import { Fragment, type CSSProperties } from 'react'
 
 /**
  * Text, der beim Überfahren und bei Tastatur-Fokus rollt (Referenz: ERA): Jeder Buchstabe rollt einzeln nach oben weg,
- * dieselbe Zeile rollt von unten nach, gestaffelt von links (22 ms je Buchstabe), dabei kurz leicht gestreckt.
- * Auf dem Handy rollt es beim Antippen einmal (Klasse is-roll, gesetzt in Layout.tsx), ohne die Aktion zu verzögern.
+ * dieselbe Zeile rollt von unten nach, gestaffelt von links (15 ms je Buchstabe). Auf Touch-Geräten kein Roll.
  * Der lesbare Text steht einmal im Dokument, beide sichtbaren Zeilen sind gezeichnet (aria-hidden).
  */
 export function Roll({ text, className }: { text: string; className?: string }) {

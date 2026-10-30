@@ -113,9 +113,6 @@ export default function Facts() {
         title="CleanStar auf einen Blick."
         lead="Alle wichtigen Angaben zu unserem Unternehmen in klaren Sätzen: wer wir sind, was wir machen, wo wir arbeiten, was es kostet und wie Sie uns erreichen."
       />
-      <Answer question={answers.fakten.question} bottom="pb-16 sm:pb-20 lg:pb-24">
-        {answers.fakten.text}
-      </Answer>
       <div className="container-site grid-site gap-y-16 pb-24 lg:pb-40">
         <p className="t-label col-span-12 lg:col-span-3">
           Zuletzt aktualisiert am <time dateTime={meta.modified}>{formatDate(meta.modified)}</time>. Diese Seite wird aus denselben Daten erzeugt wie Impressum und Angebote.
@@ -156,6 +153,9 @@ export default function Facts() {
           </nav>
         </div>
       </div>
+      <Answer question={answers.fakten.question}>
+        {answers.fakten.text}
+      </Answer>
     </>
   )
 }

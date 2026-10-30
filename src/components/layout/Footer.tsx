@@ -76,7 +76,7 @@ export function Footer() {
       {/* Letztes Bild: steht, bis der Footer es zum Streifen zusammenschiebt */}
       <div className="ftr-run" aria-hidden>
         <div className="ftr-img photo sticky top-0 overflow-hidden">
-          <Picture id="after-office" aspect="absolute inset-0 size-full" sizes="100vw" />
+          <Picture id="team-work" aspect="absolute inset-0 size-full" sizes="100vw" />
         </div>
       </div>
 

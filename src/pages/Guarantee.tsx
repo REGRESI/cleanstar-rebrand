@@ -14,6 +14,7 @@ import { FinalCta } from '@/components/home/FinalCta'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { RevealText } from '@/components/ui/RevealText'
 import { complaintSteps } from '@/content/site'
+import { PlantMoment } from '@/components/home/Moments'
 import { GuaranteeChecks } from '@/components/scenes/GuaranteeChecks'
 import { company } from '@/content/company'
 import { breadcrumbSchema } from '@/lib/schema'
@@ -57,12 +58,10 @@ export default function Guarantee() {
         image="quality-check"
         actions={<QuoteButton size="lg" arrow />}
       />
-      <Answer question={answers.garantie.question} bottom="pb-16 sm:pb-20 lg:pb-24">
-        {answers.garantie.text}
-      </Answer>
       <ScrubStatement {...statements.garantie} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
 
       <GuaranteeChecks />
+      <PlantMoment id="guarantee-moment" title="Geprüft, bevor Sie es merken." text="Wir prüfen vorher, regelmäßig und nach Checkliste. Fehlt etwas, reinigen wir kostenlos nach." />
 
       <ProblemSolution id="guarantee-wipe" {...wipes.garantie} />
 
@@ -127,6 +126,9 @@ export default function Guarantee() {
         </div>
       </section>
 
+      <Answer question={answers.garantie.question}>
+        {answers.garantie.text}
+      </Answer>
       <FinalCta />
     </>
   )

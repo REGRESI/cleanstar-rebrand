@@ -10,6 +10,7 @@ import { RevealText } from '@/components/ui/RevealText'
 import { FeatureColumns } from '@/components/ui/Editorial'
 import { FinalCta } from '@/components/home/FinalCta'
 import { FounderLetter } from '@/components/ui/FounderLetter'
+import { Arrival } from '@/components/home/Arrival'
 import { FoundersScene } from '@/components/scenes/FoundersScene'
 import { Collage } from '@/components/ui/Collage'
 import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
@@ -160,6 +161,11 @@ export default function About() {
         </div>
       </section>
 
+      <Arrival image="team-work" id="about-moment" title={'Drei Gründer.\nEin Versprechen.'} edge="GEGRÜNDET IN OFFENBURG">
+        <div className="container-site text-center">
+          <p className="t-lead mx-auto max-w-[40ch] text-ink-2">Nico Schütterle, Lino Resham und Eknoor Singh führen den Betrieb selbst und sind direkt für Sie erreichbar.</p>
+        </div>
+      </Arrival>
       <FounderLetter />
 
       <section className="section" aria-labelledby="values-title">
