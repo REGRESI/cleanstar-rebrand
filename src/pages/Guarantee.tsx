@@ -21,6 +21,7 @@ import { breadcrumbSchema } from '@/lib/schema'
 import { gsap } from '@/lib/gsap'
 import { useReducedMotion } from '@/lib/env'
 import { CallbackButton } from '@/features/callback/Callback'
+import { RoomFan } from '@/components/guarantee/RoomFan'
 
 const trail = [
   { name: 'Startseite', path: '/' },
@@ -125,6 +126,8 @@ export default function Guarantee() {
           </div>
         </div>
       </section>
+
+      <RoomFan />
 
       <Answer question={answers.garantie.question}>
         {answers.garantie.text}

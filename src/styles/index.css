@@ -3167,3 +3167,120 @@ button:hover > .seal .seal-ring {
   position: relative;
   height: auto;
 }
+
+/* Fächer der Raum-Karten (RoomFan.tsx): Lage, Drehung und Größe je Karte setzt das Script aus der Scrollposition */
+.rf-run {
+  height: 320svh;
+}
+.rf-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+.rf-cards {
+  position: absolute;
+  inset: 0;
+}
+.rf-card {
+  list-style: none;
+  padding: 1.25rem 1.3rem 1.1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow:
+    0 30px 60px -36px rgb(10 26 51 / 0.38),
+    0 10px 22px -16px rgb(10 26 51 / 0.2);
+}
+.rf-cards > .rf-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 17rem;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.rf-stage:not([data-ready]) .rf-cards > .rf-card {
+  visibility: hidden;
+}
+.rf-obj {
+  position: absolute;
+  height: auto;
+  filter: drop-shadow(0 18px 22px rgb(10 26 51 / 0.16));
+}
+.rf-obj[data-obj='2'] {
+  filter: blur(1.5px) drop-shadow(0 18px 22px rgb(10 26 51 / 0.12));
+  opacity: 0.8;
+}
+/* abseits der Überschrift (oben links) und der Kartenmitte */
+.rf-obj-a {
+  top: 14%;
+  right: 6%;
+  width: clamp(5rem, 9vw, 8.5rem);
+}
+.rf-obj-b {
+  top: 52%;
+  left: 3%;
+  width: clamp(4.5rem, 7vw, 7rem);
+}
+.rf-obj-c {
+  top: 40%;
+  right: 2%;
+  width: clamp(5rem, 8vw, 7.5rem);
+}
+.rf-obj-d {
+  bottom: 6%;
+  left: 12%;
+  width: clamp(5rem, 8vw, 8rem);
+}
+.rf-stamp {
+  display: inline-block;
+  padding: 0.55rem 1.1rem;
+  border: 2px solid var(--color-blue);
+  border-radius: 10px;
+  color: var(--color-blue);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: rotate(-6deg);
+}
+.rf-stage .rf-stamp {
+  position: absolute;
+  z-index: 70;
+  right: max(1.5rem, 8vw);
+  bottom: 9svh;
+  background: rgb(247 249 251 / 0.9);
+  opacity: 0;
+  transform: rotate(-6deg) scale(1.6);
+  transition:
+    opacity 0.35s var(--ease-cs),
+    transform 0.45s var(--ease-cs);
+}
+.rf-stage .rf-stamp.is-on {
+  opacity: 1;
+  transform: rotate(-6deg) scale(1);
+}
+.section .rf-stamp {
+  margin-top: 2.5rem;
+}
+@media (max-width: 767px) {
+  .rf-cards > .rf-card {
+    width: min(17rem, 78vw);
+  }
+  .rf-obj-a {
+    top: 22%;
+    right: 4%;
+  }
+  .rf-obj-b,
+  .rf-obj-c,
+  .rf-obj-d {
+    display: none;
+  }
+  .rf-stage .rf-stamp {
+    left: 50%;
+    right: auto;
+    bottom: 6svh;
+    translate: -50% 0;
+  }
+}
