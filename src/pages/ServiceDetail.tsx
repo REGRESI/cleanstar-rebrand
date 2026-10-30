@@ -5,7 +5,7 @@ import { ProblemSolution } from '@/components/home/ProblemSolution'
 import { getService, services } from '@/content/services'
 import { home } from '@/content/site'
 import { Seo } from '@/components/ui/Seo'
-import { PageHero } from '@/components/ui/PageHero'
+import { ChapterHero } from '@/components/ui/ChapterHero'
 import { serviceAnswer } from '@/content/answers'
 import { Answer } from '@/components/ui/Answer'
 import { ImageBand } from '@/components/ui/ImageBand'
@@ -45,21 +45,16 @@ export default function ServiceDetail() {
   return (
     <>
       <Seo title={s.seoTitle} description={s.seoDescription} path={path} ogType="leistung" schema={[serviceSchema(s, path), breadcrumbSchema(trail), faqSchema(s.faqs)]} />
-      <PageHero
-        trail={trail}
-        eyebrow={s.name}
-        title={s.headline}
-        lead={s.intro}
-        image={s.image}
-        actions={
-          <>
-            <QuoteButton size="lg" arrow />
-            <Button to="/kontakt#besichtigung" variant="link">
-              Besichtigung buchen
-            </Button>
-          </>
-        }
-      />
+      {/* Kapitel-Wort: Leistungsname steigt riesig über dem Foto auf und wird zur Seitenüberschrift */}
+      <ChapterHero trail={trail} word={s.name} line={s.headline} image={s.image}>
+        <p className="t-lead text-ink">{s.intro}</p>
+        <div className="btn-row mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
+          <QuoteButton size="lg" arrow />
+          <Button to="/kontakt#besichtigung" variant="link">
+            Besichtigung buchen
+          </Button>
+        </div>
+      </ChapterHero>
       {serviceStatements[s.slug] && <ScrubStatement {...serviceStatements[s.slug]} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />}
 
       {/* Die vier Punkte: einheitliche Spalten mit Haarlinie, auf allen Leistungsseiten gleich */}

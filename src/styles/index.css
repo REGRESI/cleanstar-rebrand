@@ -2860,3 +2860,90 @@ button:hover > .seal .seal-ring {
     display: none;
   }
 }
+
+/* Kapitel-Wort (ChapterHero.tsx): Endzustand ist ein gewöhnlicher Seitenkopf; mit Bewegung steht die Bühne still,
+   das Foto liegt als Ebene darüber und zieht sich zur Bildkarte zusammen */
+.chapter-head {
+  padding-top: 7rem;
+}
+.chapter-word {
+  width: fit-content;
+  font-size: clamp(2.25rem, 1.3rem + 2.6vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+  white-space: nowrap;
+  transform-origin: 0 0;
+  color: color-mix(in srgb, var(--color-ink) calc(var(--ink, 1) * 100%), #fff);
+}
+.chapter-sub {
+  margin-top: 1.1rem;
+  max-width: 30ch;
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-size: clamp(1.5rem, 1.05rem + 1.5vw, 2.4rem);
+  line-height: 1.12;
+  color: color-mix(in srgb, #12306e calc(var(--ink, 1) * 100%), #fff);
+}
+.chapter-cap {
+  font-family: 'Pinyon Script', cursive;
+  font-size: 1.9em;
+  line-height: 0;
+  margin-right: 0.1em;
+  vertical-align: -0.18em;
+}
+.chapter-card {
+  margin-top: 2.25rem;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 14px;
+}
+@media (min-width: 640px) {
+  .chapter-head {
+    padding-top: 8.5rem;
+  }
+  .chapter-card {
+    aspect-ratio: 21 / 9;
+  }
+}
+.chapter-layer {
+  display: none;
+}
+.chapter-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(10 26 51 / 0.72) 0%, rgb(10 26 51 / 0.35) 45%, rgb(10 26 51 / 0) 75%);
+  opacity: var(--shade, 1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion .chapter-run {
+    height: 220svh;
+  }
+  .js-motion .chapter-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+  }
+  .js-motion .chapter-head {
+    display: flex;
+    flex-direction: column;
+    height: 100svh;
+    padding-bottom: 5svh;
+    z-index: 1;
+  }
+  .js-motion .chapter-card {
+    flex: 1 1 auto;
+    min-height: 0;
+    aspect-ratio: auto;
+    visibility: hidden;
+  }
+  .js-motion .chapter-layer {
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+  /* bis das Skript die Anfangslage gesetzt hat: Wort und Kernsatz verborgen (kein Sprung) */
+  .js-motion .chapter-run:not([data-ready]) :is(.chapter-word, .chapter-sub) {
+    visibility: hidden;
+  }
+}
