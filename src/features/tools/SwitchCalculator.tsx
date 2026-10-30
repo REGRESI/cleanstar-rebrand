@@ -122,7 +122,8 @@ Mit freundlichen Grüßen
 
   return (
     <div className="grid grid-cols-1 gap-x-8 gap-y-14 lg:grid-cols-12">
-      <div className="space-y-8 border-t border-line pt-8 lg:col-span-5">
+      {/* Eingaben stehen neben den langen Ergebnissen (Vorlage) still, statt eine leere Spalte zu hinterlassen */}
+      <div className="space-y-8 border-t border-line pt-8 lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
         <h2 className="t-label">Ihr aktueller Vertrag</h2>
         <Segmented
           label="Vertragsart"

@@ -52,7 +52,7 @@ export default function About() {
         lead="Keine Hotline, keine Zentrale, kein wechselndes Personal. Sie sprechen mit den Gründern selbst, und das Team in Ihrem Büro bleibt dasselbe."
       />
 
-      <FoundersScene founders={founders} />
+      <FoundersScene founders={founders} eyebrow="Die Gründer" />
 
       <section className="section pt-0!" aria-labelledby="founders-title">
         <div className="container-site">
@@ -164,6 +164,15 @@ export default function About() {
       <Arrival image="team-work" id="about-moment" title={'Drei Gründer.\nEin Versprechen.'} edge="GEGRÜNDET IN OFFENBURG">
         <div className="container-site text-center">
           <p className="t-lead mx-auto max-w-[40ch] text-ink-2">Nico Schütterle, Lino Resham und Eknoor Singh führen den Betrieb selbst und sind direkt für Sie erreichbar.</p>
+          {/* versetztes Bildpaar wie auf der Startseite (48 % und 34 %, siehe .arrive-cards) */}
+          <div className="arrive-cards mt-5 text-left lg:mt-6">
+            <div className="card-shadow arrive-card overflow-hidden rounded-[10px]">
+              <Picture id="team-briefing" aspect="size-full" sizes="(min-width:1024px) 34vw, 90vw" />
+            </div>
+            <div className="card-shadow arrive-card overflow-hidden rounded-[10px]">
+              <Picture id="inspection" aspect="size-full" sizes="(min-width:1024px) 26vw, 55vw" />
+            </div>
+          </div>
         </div>
       </Arrival>
       <FounderLetter />

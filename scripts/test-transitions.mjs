@@ -155,7 +155,7 @@ async function momentClash(page, i) {
     if (!st) {
       st = document.createElement('style')
       st.id = 'mo-chk'
-      st.textContent = '.moment-glow{display:none!important}[data-chk=base] .mo-c,[data-chk=base] .moment-cap,[data-chk=cap] .mo-c,[data-chk=txt] .moment-cap{visibility:hidden!important}*{animation-play-state:paused!important}'
+      st.textContent = '.moment-glow{display:none!important}img,picture,canvas,video{visibility:hidden!important}[data-chk=base] .mo-c,[data-chk=base] .moment-cap,[data-chk=cap] .mo-c,[data-chk=txt] .moment-cap{visibility:hidden!important}*{animation-play-state:paused!important}'
       document.head.appendChild(st)
     }
     const r = m.getBoundingClientRect()
