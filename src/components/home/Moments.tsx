@@ -5,13 +5,14 @@ import type { ImageId } from '@/content/images'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { liteMotion } from '@/lib/motionBudget'
 import { span } from '@/lib/scrollScene'
+import { cn } from '@/lib/cn'
 
 /**
  * Übergang B „Pflanzen-Abschnitt“ (Referenz: ERA, era/03): ruhige helle Fläche, mittig eine Moment-Überschrift und
  * ein kurzer Satz. Freigestellte Pflanzen rahmen zwei gegenüberliegende Ecken und bewegen sich leicht gegenläufig
  * (Parallaxe), immer innerhalb des Abschnitts.
  */
-export function PlantMoment({ title, text, id, eyebrow }: { title: string; text: string; id: string; eyebrow?: string }) {
+export function PlantMoment({ title, text, id, eyebrow, className }: { title: string; text: string; id: string; eyebrow?: string; className?: string }) {
   const root = useRef<HTMLElement>(null)
   useEffect(() => {
     const el = root.current
@@ -24,7 +25,7 @@ export function PlantMoment({ title, text, id, eyebrow }: { title: string; text:
     return () => ctx.revert()
   }, [])
   return (
-    <section ref={root} className="plant-moment relative overflow-hidden bg-paper" aria-labelledby={id}>
+    <section ref={root} className={cn('plant-moment relative overflow-hidden bg-paper', className)} aria-labelledby={id}>
       <MomentGlow />
       <img data-plant="a" src="/images/deko/pflanze-ecke.webp" alt="" aria-hidden width={884} height={840} loading="lazy" decoding="async" className="plant plant-a" />
       <img data-plant="b" src="/images/deko/pflanze-ecke.webp" alt="" aria-hidden width={884} height={840} loading="lazy" decoding="async" className="plant plant-b" />

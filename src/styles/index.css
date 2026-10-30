@@ -2792,3 +2792,71 @@ button:hover > .seal .seal-ring {
   filter: none;
   animation: none;
 }
+
+/* Abzieher-Kante (ProblemSolution.tsx, Squeegee): Navy-Auslauf, darunter der nächste Abschnitt, Wasserfilm an der Kante */
+.squeegee-tail {
+  display: none;
+}
+.squeegee-film {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 3;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion .squeegee-tail {
+    display: block;
+    height: 80svh;
+  }
+  .js-motion .squeegee + .squeegee-under {
+    position: relative;
+    z-index: 1;
+    margin-top: -80svh;
+  }
+  /* Der helle Abschnitt liegt ganz unter dem Auslauf (sonst schöbe sich der Auslauf über den Abschnitt danach) */
+  .js-motion .squeegee + .squeegee-under > .container-site {
+    min-height: 88svh;
+  }
+}
+.squeegee-glint {
+  animation: sq-glint 2.6s ease-in-out infinite;
+}
+@keyframes sq-glint {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.squeegee-drop {
+  animation-name: sq-drop;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.7, 1);
+  animation-iteration-count: infinite;
+}
+@keyframes sq-drop {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--len, 1400px), 6px);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .squeegee-film {
+    display: none;
+  }
+}

@@ -48,8 +48,8 @@ export default function Home() {
         <CostTeaser />
       </Chunk>
       <Chunk>
-        <ProblemSolution />
-        <PlantMoment eyebrow="Ihr Team" id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." />
+        <ProblemSolution squeegee />
+        <PlantMoment className="squeegee-under" eyebrow="Ihr Team" id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." />
         <Founders />
         <Proof />
         <ProcessTimeline />
