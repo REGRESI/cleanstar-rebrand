@@ -111,11 +111,14 @@ export function TaskCloud() {
   const [active, setActive] = useState<number | null>(null)
   const [asList, setAsList] = useState(false)
   const [pos, setPos] = useState<{ desk: { x: number; y: number }[]; mob: { x: number; y: number }[] }>({ desk: DESK, mob: MOB })
+  // Die Wolke entsteht erst im Browser und nur für die passende Breite (die Fläche hat eine feste Höhe, nichts
+  // verschiebt sich); vorgerendert steht nur die Liste nach Räumen. Spart rund 250 Elemente im HTML.
+  const [view, setView] = useState<'desk' | 'mob' | null>(null)
 
   // Im Browser mit den gemessenen Breiten neu verteilen (die Wolke ist dabei noch unsichtbar)
   useLayoutEffect(() => {
     const el = box.current
-    if (!el || asList) return
+    if (!el || asList || !view) return
     const field = [...el.querySelectorAll<HTMLElement>('.tc-field')].find((f) => f.offsetParent !== null)
     if (!field) return
     const run = () => {
@@ -127,11 +130,12 @@ export function TaskCloud() {
     run()
     // nach dem Laden der Schrift stimmen die Breiten erst genau
     document.fonts?.ready.then(run)
-  }, [asList])
+  }, [asList, view])
 
   useEffect(() => {
     const el = box.current
     if (!el) return
+    setView(window.matchMedia('(max-width: 767px)').matches ? 'mob' : 'desk')
     if (prefersReducedMotion()) {
       setAsList(true)
       return
@@ -199,8 +203,8 @@ export function TaskCloud() {
         </div>
         <div className="col-span-12 lg:col-span-8">
           <div ref={box} className={cn('tc', asList && 'is-list')}>
-            {!asList && cloud(pos.desk, 'max-md:hidden')}
-            {!asList && cloud(pos.mob, 'md:hidden')}
+            {!asList && view === 'desk' && cloud(pos.desk, 'max-md:hidden')}
+            {!asList && view === 'mob' && cloud(pos.mob, 'md:hidden')}
             {/* Dieselben Aufgaben nach Räumen (Screenreader immer, sichtbar als Liste) */}
             <div className={asList ? 'tc-list' : 'sr-only'}>
               {zones.map((z) => (

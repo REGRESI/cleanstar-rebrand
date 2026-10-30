@@ -141,7 +141,10 @@ export default defineConfig(({ mode }) => {
       formatting: 'none',
       script: 'async',
       // Beasties kennt die View-Transition-Selektoren nicht (die Regeln stehen weiter im vollen Stylesheet): nur Fehler melden
-      beastiesOptions: { logLevel: 'error' },
+      // Regeln des Bewegungsmodus für den ersten Bildschirm (.js-motion setzt erst das Skript im Kopf) immer einbetten: Beasties sieht die
+      // Klasse im vorgerenderten HTML nicht und ließe sie weg; das volle Stylesheet steht am Ende von <body>, ohne diese
+      // Regeln zeigte der erste Frame z. B. den Kapitel-Kopf ohne Laufstrecke (Layout-Verschiebung)
+      beastiesOptions: { logLevel: 'error', allowRules: [/\.js-motion \.(chapter|hero)-/] },
       includedRoutes(paths: string[]) {
         return paths.filter((p) => !p.includes(':') && p !== '*')
       },
