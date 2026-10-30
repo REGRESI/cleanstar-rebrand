@@ -107,7 +107,7 @@ export function AreaMap({ className }: { className?: string }) {
 
       <div className="lg:col-span-4">
         <p className="t-label mb-4">{locations.length} Orte · Fahrzeit ab Offenburg</p>
-        <ul className="grid grid-cols-2 gap-x-6 border-t border-line lg:grid-cols-1 xl:grid-cols-2">
+        <ul className="grid grid-cols-2 gap-x-4 border-t border-line min-[380px]:gap-x-6 lg:grid-cols-1 xl:grid-cols-2">
           {locations.map((l) => {
             const on = active?.p.slug === l.slug
             const inner = (

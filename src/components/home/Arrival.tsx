@@ -111,7 +111,7 @@ export function Arrival({
     apply(st.progress)
     show(st.scroll() >= st.start)
     return () => st.kill()
-  }, [])
+  }, [EDGE.length, overlap])
 
   return (
     <section className={overlap ? 'arrive is-overlap relative' : 'arrive relative'} aria-labelledby={id} data-tone="surface">

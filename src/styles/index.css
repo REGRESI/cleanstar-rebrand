@@ -338,6 +338,12 @@ html.lenis body {
     padding: 0.875rem 1.75rem;
     font-size: 1.0625rem;
   }
+  @media (max-width: 374px) {
+    .btn-lg {
+      padding-inline: 1.125rem;
+      font-size: 1rem;
+    }
+  }
 
   /* ---- Haarlinien ---- */
   .rule {
@@ -494,15 +500,16 @@ html.lenis body {
   font-weight: 500;
 }
 
+/* Untergrenzen mit vw: Lange Wörter (Treppenhausreinigung, Datenschutzerklärung) passen auch bei 320 px in die Zeile */
 @utility t-h1 {
-  font-size: clamp(2.25rem, 1.3rem + 2.6vw, 3.75rem);
+  font-size: clamp(min(2.25rem, 9vw), 1.3rem + 2.6vw, 3.75rem);
   line-height: 1.02;
   letter-spacing: -0.035em;
   font-weight: 500;
 }
 
 @utility t-h2 {
-  font-size: clamp(2rem, 1.2rem + 2.2vw, 3.5rem);
+  font-size: clamp(min(2rem, 8.2vw), 1.2rem + 2.2vw, 3.5rem);
   line-height: 1.06;
   letter-spacing: -0.03em;
   font-weight: 500;
@@ -2481,6 +2488,7 @@ footer[data-no-top] {
 /* Übergang D: Wolken lösen sich über dem Bild der Region auf */
 .clouds-run {
   height: 190svh;
+  overflow-x: clip;
 }
 .clouds-stage {
   height: 100svh;

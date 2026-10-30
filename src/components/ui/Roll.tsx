@@ -4,8 +4,13 @@ import { Fragment, type CSSProperties } from 'react'
  * Text, der beim Überfahren und bei Tastatur-Fokus rollt (Referenz: ERA): Jeder Buchstabe rollt einzeln nach oben weg,
  * dieselbe Zeile rollt von unten nach, gestaffelt von links (15 ms je Buchstabe). Auf Touch-Geräten kein Roll.
  * Der lesbare Text steht einmal im Dokument, beide sichtbaren Zeilen sind gezeichnet (aria-hidden).
+ * Lange Beschriftungen (ganze Sätze) rollen nicht: Die Roll-Zeile kann nicht umbrechen und stünde auf schmalen
+ * Bildschirmen über den Rand.
  */
+const MAX = 32
+
 export function Roll({ text, className }: { text: string; className?: string }) {
+  if (text.length > MAX) return <span className={className}>{text}</span>
   let i = 0
   const line = (
     <>

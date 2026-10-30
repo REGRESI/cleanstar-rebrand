@@ -245,7 +245,6 @@ export function Hero() {
 
   useEffect(() => {
     if (pinned) apply(lastP.current)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pinned, isMobile, engine])
 
   // WebGL nach dem Laden der Seite (Startbild und Bedienung zuerst)
