@@ -15,6 +15,13 @@ import { cn } from '@/lib/cn'
  * Der Text steht einmal normal im HTML (sr-only), die gezeichneten Teile sind aria-hidden.
  * Position des Großbuchstabens je Überschrift über --cap-x / --cap-y / --cap-s feinjustierbar.
  */
+/** Ruhefarbe je Buchstabe: von tiefem Navy-Blau zu sattem Markenblau (als feste Farbe, damit die Welle sauber überblendet) */
+function tone(x: number) {
+  const a = [0x12, 0x30, 0x6e]
+  const b = [0x24, 0x53, 0xcf]
+  return '#' + a.map((v, i) => Math.round(v + (b[i] - v) * x).toString(16).padStart(2, '0')).join('')
+}
+
 export function MomentHeading({
   text,
   as = 'h2',
@@ -87,7 +94,7 @@ export function MomentHeading({
         if (w === '\n') return <br key={k} />
         const letters = Array.from(w).map((ch, j) => {
           const x = i++ / Math.max(1, n - 1)
-          return <span key={j} className="mo-c" data-c={ch} style={{ '--x': x.toFixed(3) } as CSSProperties} />
+          return <span key={j} className="mo-c" data-c={ch} style={{ '--x': x.toFixed(3), color: tone(x) } as CSSProperties} />
         })
         return (
           <Fragment key={k}>

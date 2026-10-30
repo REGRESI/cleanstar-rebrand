@@ -1,18 +1,26 @@
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/Button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { MomentHeading } from '@/components/ui/MomentHeading'
 import { places, shortName } from '@/content/places'
 import { home } from '@/content/site'
 import { company } from '@/content/company'
 
 /** Einzugsgebiet kompakt: Kennzahlen und die größeren Orte als Tabelle mit Fahrzeit, Link zur Karte. */
-export function AreaTeaser() {
+export function AreaTeaser({ moment }: { moment?: string }) {
   const maxMin = Math.max(...places.map((p) => p.minutes))
   const major = places.filter((p) => p.major)
   return (
-    <section className="section" aria-labelledby="area-title">
+    <section className={moment ? 'relative section bg-paper' : 'section'} aria-labelledby="area-title">
       <div className="container-site">
-        <SectionHeading layout="rail" eyebrow={home.area.eyebrow} title={home.area.headline} id="area-title" />
+        {moment ? (
+          <div className="text-center">
+            <p className="t-label">{home.area.eyebrow}</p>
+            <MomentHeading id="area-title" text={moment} className="mx-auto mt-6 w-fit" capStyle={{ ['--cap-gap' as string]: '0.14em' }} />
+          </div>
+        ) : (
+          <SectionHeading layout="rail" eyebrow={home.area.eyebrow} title={home.area.headline} id="area-title" />
+        )}
         <div className="grid-site mt-16 gap-y-12 lg:mt-24">
           <div className="col-span-12 grid grid-cols-2 gap-x-5 lg:col-span-5 lg:col-start-4 lg:gap-x-8">
             <div className="border-t border-line pt-6">

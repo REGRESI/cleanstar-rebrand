@@ -2135,7 +2135,6 @@ footer[data-no-top] {
 }
 .mo-c {
   display: inline-block;
-  color: color-mix(in oklab, #12306e calc((1 - var(--x, 0)) * 100%), #2453cf);
 }
 .moment-cap {
   display: inline-block;
@@ -2163,22 +2162,27 @@ footer[data-no-top] {
   0% {
     opacity: 0;
     transform: translateY(20px) scaleY(1.9);
-    filter: blur(7px) brightness(1.9);
-    color: #c4efff;
+    filter: blur(7px);
+    color: #d6f3ff;
+    text-shadow: 0 0 22px rgb(150 215 255 / 0.95);
   }
   45% {
     opacity: 1;
     transform: translateY(2px) scaleY(1.12);
-    filter: blur(1.5px) brightness(1.35);
-    color: #6fc3ff;
+    filter: blur(1.5px);
+    color: #78c6ff;
+    text-shadow: 0 0 14px rgb(150 215 255 / 0.6);
+  }
+  100% {
+    text-shadow: 0 0 0 rgb(150 215 255 / 0);
   }
 }
 @keyframes mo-cap {
   0% {
     opacity: 0;
     clip-path: inset(-1.2em 100% -1.2em -1.2em);
-    filter: blur(6px) brightness(1.8);
-    color: #9fdcff;
+    filter: blur(6px);
+    color: #a8e0ff;
   }
   20% {
     opacity: 1;
@@ -2287,4 +2291,208 @@ footer[data-no-top] {
 }
 :root:not(.js-motion) .arrive-stage {
   position: relative;
+}
+
+/* Slogan aus Partikeln (Footer): Text erst unsichtbar, blendet ein, sobald die Partikel ihn geformt haben */
+.particle-text {
+  transition: opacity 0.8s var(--ease-cs);
+}
+.particle-text[data-state='idle'] {
+  opacity: 0;
+}
+
+/* Seitenende (Footer.tsx): Bild steht, der Footer schiebt sich darüber, bis nur ein Streifen oben bleibt */
+.ftr-run {
+  height: 100svh;
+}
+.ftr-img {
+  height: 100svh;
+}
+.js-motion .ftr-run {
+  height: 180svh;
+}
+.js-motion .ftr-body {
+  margin-top: -80svh;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js-motion .ftr-run,
+  .ftr-run {
+    height: 40svh;
+  }
+  .ftr-img {
+    position: relative;
+    height: 40svh;
+  }
+  .js-motion .ftr-body {
+    margin-top: 0;
+  }
+}
+:root:not(.js-motion) .ftr-run,
+:root:not(.js-motion) .ftr-img {
+  height: 40svh;
+}
+.ftr-phone {
+  font-size: clamp(2.5rem, 1rem + 6.4vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* Übergang C: Leistungen als Horizontal-Scroll (ServicesHorizontal.tsx) */
+.svh-track {
+  width: max-content;
+  will-change: transform;
+}
+.svh-title {
+  width: min(46rem, 84vw);
+  padding-left: max(1.25rem, calc((100vw - 100rem) / 2 + 3rem));
+  margin-right: 6vw;
+}
+.svh-title-text {
+  font-size: clamp(3rem, 1rem + 6.6vw, 8.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+.svh-panel {
+  width: min(66rem, 80vw);
+  margin-right: 5vw;
+}
+.svh-panel:last-child {
+  margin-right: 10vw;
+}
+.svh-link {
+  display: grid;
+  grid-template-columns: 58% 1fr;
+  gap: 3rem;
+  align-items: end;
+}
+.svh-photo {
+  position: relative;
+  display: block;
+  height: min(64svh, 40rem);
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 40px 80px -40px rgb(10 26 51 / 0.35);
+  transform: translate3d(calc((1 - var(--k, 1)) * 22%), 0, 0) scale(calc(0.74 + var(--k, 1) * 0.26));
+  transform-origin: 0 100%;
+}
+.svh-photo img {
+  transition: transform 0.9s var(--ease-cs);
+}
+.svh-link:hover .svh-photo img,
+.svh-link:focus-visible .svh-photo img {
+  transform: scale(1.045);
+}
+.svh-text {
+  display: block;
+  padding-bottom: 0.5rem;
+  opacity: calc(0.2 + var(--k, 1) * 0.8);
+}
+.svh-arrow svg {
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.svh-link:hover .svh-arrow svg {
+  transform: translateX(4px);
+}
+@media (max-width: 767px) {
+  .svh-title {
+    width: 86vw;
+    margin-right: 8vw;
+  }
+  .svh-panel {
+    width: 84vw;
+    margin-right: 6vw;
+  }
+  .svh-link {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .svh-photo {
+    height: 38svh;
+    transform-origin: 0 50%;
+  }
+}
+
+/* Die vier Ärgernisse (ProblemSolution.tsx): Lichtkante wischt das Problem weg, --w von 0 bis 1 */
+.ps-problem {
+  position: relative;
+  color: var(--color-paper);
+}
+.ps-problem-text {
+  display: block;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgb(247 249 251 / calc(var(--w, 0) * 0.9));
+  -webkit-mask-image: linear-gradient(90deg, rgb(0 0 0 / 0.38) calc(var(--w, 0) * 104% - 4%), #000 calc(var(--w, 0) * 104% + 2%));
+  mask-image: linear-gradient(90deg, rgb(0 0 0 / 0.38) calc(var(--w, 0) * 104% - 4%), #000 calc(var(--w, 0) * 104% + 2%));
+}
+.ps-edge {
+  position: absolute;
+  top: -0.25rem;
+  bottom: -0.25rem;
+  left: calc(var(--w, 0) * 100%);
+  width: 2px;
+  background: #fff;
+  box-shadow:
+    0 0 12px 2px rgb(141 166 255 / 0.7),
+    0 0 40px 8px rgb(141 166 255 / 0.22);
+  opacity: calc(min(var(--w, 0) * 12, 1) * min((1 - var(--w, 0)) * 12, 1));
+  pointer-events: none;
+}
+
+/* Übergang B: Pflanzen in zwei Ecken (Moments.tsx) */
+.plant {
+  position: absolute;
+  width: clamp(14rem, 34vw, 34rem);
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 30px 40px rgb(10 26 51 / 0.12));
+}
+.plant-a {
+  left: clamp(-11rem, -14vw, -5rem);
+  top: clamp(-11rem, -12vw, -5rem);
+}
+.plant-b {
+  right: clamp(-11rem, -14vw, -5rem);
+  bottom: clamp(-11rem, -12vw, -5rem);
+  transform: rotate(180deg);
+}
+@media (max-width: 767px) {
+  .plant {
+    width: 13rem;
+  }
+  .plant-a {
+    left: -6.5rem;
+    top: -6rem;
+  }
+  .plant-b {
+    right: -6.5rem;
+    bottom: -6rem;
+  }
+}
+
+/* Übergang D: Wolken lösen sich über dem Bild der Region auf */
+.clouds-run {
+  height: 190svh;
+}
+.clouds-stage {
+  height: 100svh;
+}
+.clouds-layer {
+  position: absolute;
+  inset: -6% -10%;
+  width: 120%;
+  height: 112%;
+  max-width: none;
+  object-fit: cover;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .clouds-run,
+  .clouds-stage {
+    height: 60svh;
+  }
+  .clouds-layer {
+    display: none;
+  }
 }

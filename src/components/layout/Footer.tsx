@@ -3,7 +3,9 @@ import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { Logo } from '@/components/ui/Logo'
 import { HomeLink } from '@/components/ui/HomeLink'
-import { AnimatedText } from '@/components/ui/AnimatedText'
+import { ParticleSlogan } from '@/components/ui/ParticleSlogan'
+import { Picture } from '@/components/ui/Picture'
+import { Roll } from '@/components/ui/Roll'
 import { company } from '@/content/company'
 import { services } from '@/content/services'
 import { places, shortName } from '@/content/places'
@@ -55,138 +57,117 @@ function Column({ title, children, className }: { title: ReactNode; children: Re
   return (
     <nav aria-label={typeof title === 'string' ? title : undefined} className={cn('border-t border-line-dark pt-5', className)}>
       <h2 className="t-label">{title}</h2>
-      <ul className="mt-5 space-y-2.5 text-[0.9375rem]">{children}</ul>
+      <ul className="mt-4 space-y-2 text-[0.9375rem]">{children}</ul>
     </nav>
   )
 }
 
 /**
- * Fußbereich auf eigenem, tiefem Marken-Navy (#0A1A33), klar abgesetzt vom hellen Abschluss darüber: Text Klarweiß,
- * Links gedämpftes Hellblau. Der Slogan formt sich beim Hineinscrollen aus Lichtpartikeln, „müssen.“ steht im
- * Logo-Blau, danach funkeln einmal zwei, drei kleine Sterne. Darunter das Logo groß und einfarbig in Klarweiß.
+ * Seitenende (Referenz: ERA, era/06 und era/09), auf allen Seiten gleich: Ein letztes Foto füllt den Bildschirm und
+ * wird beim Weiterscrollen zum Streifen am oberen Rand, darunter schiebt sich der Footer hoch. Der Footer ist die eine
+ * dunkle Fläche am Seitenende (Marken-Navy): mittig klein das Logo-Symbol, darunter groß die Telefonnummer, klein
+ * Adresse und Erreichbarkeit, dann der Slogan aus Lichtpartikeln in mittlerer Größe, die Linkspalten kompakt und
+ * ganz unten die Rechtszeile.
  */
 export function Footer() {
   const year = new Date().getFullYear()
   return (
-    <footer className="on-dark relative bg-night pb-24 text-paper lg:pb-0">
-      <div className="container-site">
-        <div className="grid-site gap-y-12 pt-20 lg:pt-28">
-          <div className="col-span-12 border-t border-line-dark pt-5 md:col-span-6 lg:col-span-4">
-            <h2 className="t-label">Kontakt</h2>
-            <ul className="mt-5 space-y-3">
-              <li>
-                <a href={company.phone.href} className="ulink text-[1.375rem] font-medium tracking-[-0.02em] text-paper">
-                  {company.phone.display}
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${company.email}`} className="ulink text-[0.9375rem] break-all text-link-dark hover:text-paper">
-                  {company.email}
-                </a>
-              </li>
-              <li>
-                <CallbackButton dark />
-              </li>
-            </ul>
-            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 font-medium tabular-nums text-[0.8125rem] text-muted-dark">
-              <dt>Adresse</dt>
-              <dd>
-                <address className="not-italic">
-                  {company.address.street}
-                  <br />
-                  {company.address.zip} {company.address.city}
-                </address>
-              </dd>
-              <dt>Erreichbar</dt>
-              <dd>24/7, Telefon und E-Mail</dd>
-              {company.vatId && (
-                <>
-                  <dt>USt-ID</dt>
-                  <dd>{company.vatId}</dd>
-                </>
-              )}
-            </dl>
+    <footer className="relative">
+      {/* Letztes Bild: steht, bis der Footer es zum Streifen zusammenschiebt */}
+      <div className="ftr-run" aria-hidden>
+        <div className="ftr-img photo sticky top-0 overflow-hidden">
+          <Picture id="after-office" aspect="absolute inset-0 size-full" sizes="100vw" />
+        </div>
+      </div>
+
+      <div className="ftr-body on-dark relative z-[1] bg-night pb-24 text-paper lg:pb-0">
+        <div className="container-site">
+          {/* Kontakt mittig: Symbol, große Telefonnummer, Adresse */}
+          <div className="flex flex-col items-center pt-20 text-center lg:pt-28">
+            <HomeLink label={`${company.name}, zur Startseite`} className="block text-paper">
+              <Logo mono symbol className="w-11" />
+            </HomeLink>
+            <p className="t-label mt-10">Rufen Sie uns an</p>
+            <a href={company.phone.href} className="ftr-phone mt-4 font-medium tabular-nums text-paper">
+              <Roll text={company.phone.display} />
+            </a>
+            <p className="mt-6 text-[0.9375rem] text-muted-dark">
+              {company.address.street}, {company.address.zip} {company.address.city} · 24/7 erreichbar
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+              <QuoteButton variant="link" className="text-paper">
+                Kostenlose Besichtigung anfragen
+              </QuoteButton>
+              <CallbackButton dark />
+              <a href={`mailto:${company.email}`} className="ulink text-[0.9375rem] text-link-dark hover:text-paper">
+                {company.email}
+              </a>
+            </div>
+            <ParticleSlogan text={brand.promiseSet} accentLast={1} textClassName="t-h1 text-center" className="mx-auto mt-20 w-full max-w-4xl lg:mt-28" />
           </div>
 
-          <Column title="Leistungen" className="col-span-12 min-[400px]:col-span-6 md:col-span-3 lg:col-span-2">
-            {services.map((s) => (
-              <li key={s.slug}>
-                <FooterLink to={`/leistungen/${s.slug}`}>{s.name}</FooterLink>
-              </li>
-            ))}
-          </Column>
-
-          <Column title="Unternehmen" className="col-span-12 min-[400px]:col-span-6 md:col-span-3 lg:col-span-2">
-            {companyLinks.map((l) => (
-              <li key={l.to}>
-                <FooterLink to={l.to}>{l.label}</FooterLink>
-              </li>
-            ))}
-          </Column>
-
-          <Column title={'Wissen und\u00A0Werkzeuge'} className="col-span-12 min-[400px]:col-span-6 md:col-span-3 lg:col-span-2">
-            {knowledgeLinks.map((l) => (
-              <li key={l.to}>
-                <FooterLink to={l.to}>{l.label}</FooterLink>
-              </li>
-            ))}
-          </Column>
-
-          <Column title="Einzugsgebiet" className="col-span-12 min-[400px]:col-span-6 md:col-span-3 lg:col-span-2">
-            {places
-              .filter((l) => l.major)
-              .map((l) => (
-                <li key={l.slug}>
-                  {officeCitySlugs.includes(l.slug) ? (
-                    <FooterLink to={`/bueroreinigung/${l.slug}`}>Büroreinigung {shortName(l)}</FooterLink>
-                  ) : (
-                    <FooterLink to={`/einzugsgebiet/${l.slug}`}>Reinigungsfirma {shortName(l)}</FooterLink>
-                  )}
+          {/* Links kompakt */}
+          <div className="grid-site mt-20 gap-y-10 lg:mt-28">
+            <Column title="Leistungen" className="col-span-6 md:col-span-3">
+              {services.map((s) => (
+                <li key={s.slug}>
+                  <FooterLink to={`/leistungen/${s.slug}`}>{s.name}</FooterLink>
                 </li>
               ))}
-            <li>
-              <FooterLink to="/einzugsgebiet">Alle {places.length} Orte</FooterLink>
-            </li>
-          </Column>
-        </div>
-
-        {/* Schluss: die Leitidee in der Display-Schrift, darunter das Logo groß und einfarbig */}
-        <div className="mt-24 grid-site gap-y-10 border-t border-line-dark pt-16 lg:mt-36 lg:pt-24">
-          <AnimatedText as="p" text={brand.promiseSet} className="t-display col-span-12 text-paper" orphans={false} />
-          <div className="col-span-12 flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
-            <QuoteButton variant="link" className="text-lg text-paper">
-              Kostenlose Besichtigung anfragen
-            </QuoteButton>
-            <a href={company.phone.href} className="ulink self-start font-medium tabular-nums text-[0.9375rem] text-link-dark hover:text-paper sm:self-auto">
-              {company.phone.display} · {company.availability}
-            </a>
-          </div>
-        </div>
-        <div className="mt-16 lg:mt-24">
-          <HomeLink label={`${company.name}, zur Startseite`} className="block text-paper">
-            <Logo mono className="w-full max-w-[64rem]" />
-          </HomeLink>
-        </div>
-
-        <div className="mt-10 flex flex-col gap-4 border-t border-line-dark py-6 font-medium tabular-nums text-[0.8125rem] text-muted-dark sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {year} {company.legalName}, {company.seat}
-          </p>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2">
-            <li>
-              <FooterLink to="/impressum">Impressum</FooterLink>
-            </li>
-            <li>
-              <FooterLink to="/datenschutz">Datenschutz</FooterLink>
-            </li>
-            {!__PREVIEW__ && (
+            </Column>
+            <Column title="Unternehmen" className="col-span-6 md:col-span-3">
+              {companyLinks.map((l) => (
+                <li key={l.to}>
+                  <FooterLink to={l.to}>{l.label}</FooterLink>
+                </li>
+              ))}
+            </Column>
+            <Column title={'Wissen und\u00A0Werkzeuge'} className="col-span-6 md:col-span-3">
+              {knowledgeLinks.map((l) => (
+                <li key={l.to}>
+                  <FooterLink to={l.to}>{l.label}</FooterLink>
+                </li>
+              ))}
+            </Column>
+            <Column title="Einzugsgebiet" className="col-span-6 md:col-span-3">
+              {places
+                .filter((l) => l.major)
+                .map((l) => (
+                  <li key={l.slug}>
+                    {officeCitySlugs.includes(l.slug) ? (
+                      <FooterLink to={`/bueroreinigung/${l.slug}`}>Büroreinigung {shortName(l)}</FooterLink>
+                    ) : (
+                      <FooterLink to={`/einzugsgebiet/${l.slug}`}>Reinigungsfirma {shortName(l)}</FooterLink>
+                    )}
+                  </li>
+                ))}
               <li>
-                <a href="/sitemap.xml" className="ulink py-0.5 text-link-dark hover:text-paper">
-                  Sitemap
-                </a>
+                <FooterLink to="/einzugsgebiet">Alle {places.length} Orte</FooterLink>
               </li>
-            )}
-          </ul>
+            </Column>
+          </div>
+
+          <div className="mt-16 flex flex-col gap-4 border-t border-line-dark py-6 font-medium tabular-nums text-[0.8125rem] text-muted-dark sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              © {year} {company.legalName}, {company.seat}
+              {company.vatId ? ` · USt-ID ${company.vatId}` : ''}
+            </p>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              <li>
+                <FooterLink to="/impressum">Impressum</FooterLink>
+              </li>
+              <li>
+                <FooterLink to="/datenschutz">Datenschutz</FooterLink>
+              </li>
+              {!__PREVIEW__ && (
+                <li>
+                  <a href="/sitemap.xml" className="ulink py-0.5 text-link-dark hover:text-paper">
+                    Sitemap
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </footer>

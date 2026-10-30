@@ -1,4 +1,4 @@
-/* global window, document, innerHeight, innerWidth, getComputedStyle, Node, NodeFilter -- Code in page.evaluate läuft im Browser */
+/* global window, document, innerHeight, innerWidth, getComputedStyle, NodeFilter -- Code in page.evaluate läuft im Browser */
 // Übergangs-Test: An keiner Scrollposition darf der Bildschirm leer sein, und sichtbare Texte dürfen sich nicht
 // überschneiden.
 //

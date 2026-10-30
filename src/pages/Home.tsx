@@ -2,8 +2,9 @@ import { Suspense, type ReactNode } from 'react'
 import { Hero } from '@/components/home/Hero'
 import { NightHero } from '@/features/night/NightHero'
 import { features } from '@/content/features'
-import { ServicesCarousel } from '@/components/home/ServicesCarousel'
+import { ServicesHorizontal } from '@/components/home/ServicesHorizontal'
 import { Arrival } from '@/components/home/Arrival'
+import { PlantMoment, CloudsReveal } from '@/components/home/Moments'
 import { ProblemSolution } from '@/components/home/ProblemSolution'
 import { CostTeaser } from '@/components/home/CostTeaser'
 import { Proof } from '@/components/home/Proof'
@@ -42,16 +43,18 @@ export default function Home() {
       {features.signatureScene ? <NightHero /> : <Hero />}
       <Chunk>
         <Arrival />
-        <ServicesCarousel />
+        <ServicesHorizontal />
         <CostTeaser />
       </Chunk>
       <Chunk>
         <ProblemSolution />
+        <PlantMoment id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." />
         <Founders />
         <Proof />
       </Chunk>
       <Chunk>
-        <AreaTeaser />
+        <CloudsReveal />
+        <AreaTeaser moment={'Unser Zuhause:\ndie Ortenau.'} />
         <MappeTeaser />
         <Answer question={answers.home.question} className="section-top" bottom="pb-4">
           {answers.home.text}

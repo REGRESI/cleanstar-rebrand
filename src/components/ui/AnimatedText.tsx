@@ -101,6 +101,7 @@ export function AnimatedText({
   className,
   id,
   immediate,
+  trigger,
   kicker,
   kickerAfter,
   wordsClassName,
@@ -115,6 +116,8 @@ export function AnimatedText({
   id?: string
   /** headline: sofort starten (Seitenkopf), nicht erst beim Hineinscrollen */
   immediate?: boolean
+  /** headline: von außen starten (statt beim Hineinscrollen) */
+  trigger?: boolean
   /** Vorzeile innerhalb derselben Überschrift (z. B. Keyword-Zeile zur Leitidee), ohne Effekt */
   kicker?: ReactNode
   /** Vorzeile optisch unter die Wörter setzen; im HTML bleibt sie vorn */
@@ -151,9 +154,13 @@ export function AnimatedText({
           done.current?.()
         }, waveMs(lines) + 80)
         return () => window.clearTimeout(t)
-        return
       }
       playHeadline(el, () => done.current?.())
+      return
+    }
+    // von außen gesteuert (z. B. Wisch-Zeile): erst starten, wenn trigger wahr wird
+    if (trigger !== undefined) {
+      if (trigger) playHeadline(el, () => done.current?.())
       return
     }
     const io = new IntersectionObserver(
@@ -166,7 +173,7 @@ export function AnimatedText({
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [mode, immediate, text])
+  }, [mode, immediate, text, trigger])
 
   // paragraph: Färbung an die Scrollposition gekoppelt
   useEffect(() => {
