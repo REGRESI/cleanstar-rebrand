@@ -2777,28 +2777,59 @@ button:hover > .seal .seal-ring {
   }
 }
 
-/* Ablauf-Schritte (ProcessTimeline.tsx, Variante line): Linie zeichnet sich scroll-gesteuert, Kästchen füllen sich */
-.steps-rail {
-  position: absolute;
-  top: 0.5rem;
-  bottom: 0.5rem;
-  left: 1.15rem;
-  width: 1px;
-  background: var(--color-line);
-}
-.steps-bar {
+/* Ablauf-Schritte (ProcessTimeline.tsx, Variante line): Linie mit runden Kurven, Leuchtpunkt fährt sie ab */
+.steps-svg {
   position: absolute;
   inset: 0;
-  width: 2px;
-  margin-left: -0.5px;
-  background: var(--color-blue);
-  transform: scaleY(0);
-  transform-origin: 50% 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
-@media (min-width: 640px) {
-  .steps-rail {
-    left: 1.6rem;
+.steps-svg path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* Grundlinie in hellem Grau-Blau, deutlich sichtbarer als bei der Referenz */
+.steps-base {
+  stroke: #a9b8cf;
+  stroke-width: 1.5;
+}
+.steps-fill {
+  stroke: var(--color-blue);
+  stroke-width: 2;
+}
+.steps-tail {
+  stroke: #5b8cff;
+  stroke-width: 7;
+  opacity: 0.35;
+  filter: blur(3px);
+}
+.steps-dot {
+  transition: opacity 0.3s ease;
+}
+.steps-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.steps-svg[data-idle] .steps-halo {
+  animation: comet-pulse 1.6s ease-in-out infinite;
+}
+@keyframes comet-pulse {
+  50% {
+    scale: 1.45;
+    opacity: 0.65;
   }
+}
+@media (prefers-reduced-motion: reduce) {
+  .steps-dot {
+    display: none;
+  }
+}
+/* Text liegt über der Linie */
+.step > div {
+  z-index: 1;
 }
 .step-box {
   background: var(--color-paper);

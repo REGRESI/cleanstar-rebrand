@@ -13,8 +13,10 @@ const pad = (v: number) => String(Math.round(v)).padStart(2, '0')
 
 /**
  * Ablauf in zwei Varianten:
- * line: nummerierte Schritte an einer senkrechten Linie (Startseite, Seite „Ablauf“), scroll-gesteuert: Die Linie
- *       zeichnet sich von oben nach unten; erreicht sie einen Schritt, füllt sich dessen Nummernkästchen in Markenblau
+ * line: nummerierte Schritte an einer feinen Linie (Startseite, Seite „Ablauf“; Referenz terminal/04-linie-komet): Die
+ *       Linie läuft in runden 90-Grad-Kurven hinter dem Text von Kästchen zu Kästchen, seitlich aus und zurück. Ein
+ *       leuchtender Punkt (Lichthof, kurzer Schweif) fährt scroll-gesteuert entlang, hinter ihm ist die Linie blau; ruht
+ *       er, pulsiert er leicht. Erreicht er einen Schritt, füllt sich dessen Nummernkästchen in Markenblau
  *       (weiße Zahl), der Glanz-Stern funkelt, der Titel kommt mit der Farbwelle, der Text blendet ein. Der aktuelle
  *       Schritt ist kräftig, durchlaufene bleiben gefüllt, kommende sind blass. Beim Hochscrollen alles rückwärts.
  *       Desktop: Überschrift links bleibt stehen, solange die Schritte durchlaufen.
@@ -55,53 +57,147 @@ export function ProcessTimeline({
   )
 }
 
+/**
+ * Pfad der Linie: senkrecht an jedem Kästchen vorbei; im Abstand zwischen zwei Schritten schwingt sie in runden
+ * 90-Grad-Kurven seitlich aus und kommt zurück (abwechselnd weit und weniger weit), so kreuzt sie nie den Text.
+ * Rückgabe: Pfad, Gesamtlänge und Länge bis zur Mitte jedes Kästchens.
+ */
+function geometry(ol: HTMLElement, boxes: HTMLElement[]) {
+  const o = ol.getBoundingClientRect()
+  const W = ol.clientWidth
+  const mobile = W < 520
+  const rel = (r: DOMRect) => ({ x: r.left - o.left + r.width / 2, top: r.top - o.top, bottom: r.bottom - o.top, y: r.top - o.top + r.height / 2 })
+  const c = boxes.map((b) => rel(b.getBoundingClientRect()))
+  // Unterkante des Texts je Schritt
+  const textBottom = boxes.map((b) => {
+    const t = b.parentElement?.lastElementChild as HTMLElement | null
+    return t ? t.getBoundingClientRect().bottom - o.top : b.getBoundingClientRect().bottom - o.top
+  })
+  const x = c[0].x
+  const lead = mobile ? 24 : 40
+  let d = `M ${x} ${c[0].y - lead}`
+  let len = 0
+  let y = c[0].y - lead
+  const at: number[] = []
+  const arc = (r: number) => (Math.PI * r) / 2
+  for (let i = 0; i < c.length; i++) {
+    // bis zur Kästchenmitte
+    len += c[i].y - y
+    y = c[i].y
+    at.push(len)
+    if (i === c.length - 1) {
+      d += ` L ${x} ${y}`
+      break
+    }
+    const gTop = textBottom[i]
+    const gBot = c[i + 1].top
+    const gap = gBot - gTop
+    const R = Math.max(6, Math.min(mobile ? 10 : 16, gap * 0.28))
+    const y1 = gTop + (gap - 2 * R) * 0.25
+    const y2 = y1 + Math.max(2 * R, (gap - 2 * R) * 0.5)
+    const xs = mobile ? x + (i % 2 ? 56 : 92) : x + W * (i % 2 ? 0.5 : 0.82)
+    // senkrecht bis kurz vor die Lücke, Kurve nach rechts, quer, Kurve nach unten, Kurve zurück, quer, Kurve nach unten
+    d += ` L ${x} ${y1 - R} A ${R} ${R} 0 0 0 ${x + R} ${y1} L ${xs - R} ${y1} A ${R} ${R} 0 0 1 ${xs} ${y1 + R}`
+    d += ` L ${xs} ${y2 - R} A ${R} ${R} 0 0 1 ${xs - R} ${y2} L ${x + R} ${y2} A ${R} ${R} 0 0 0 ${x} ${y2 + R}`
+    len += y1 - R - y + arc(R) + (xs - R - (x + R)) + arc(R) + (y2 - R - (y1 + R)) + arc(R) + (xs - R - (x + R)) + arc(R)
+    y = y2 + R
+  }
+  return { d, total: len, at }
+}
+
 function Line({ steps }: { steps: Step[] }) {
   const list = useRef<HTMLOListElement>(null)
-  const bar = useRef<HTMLSpanElement>(null)
+  const svg = useRef<SVGSVGElement>(null)
   // Index des zuletzt erreichten Schritts (-1: keiner); ohne Bewegung alle erreicht
   const [at, setAt] = useState(-1)
   const [still, setStill] = useState(false)
 
   useEffect(() => {
     const ol = list.current
-    if (!ol) return
-    if (prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
-      setStill(true)
-      setAt(steps.length - 1)
-      return
-    }
+    const sv = svg.current
+    if (!ol || !sv) return
+    const reduced = prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')
     const boxes = Array.from(ol.querySelectorAll<HTMLElement>('[data-box]'))
-    const apply = (p: number) => {
-      const h = ol.offsetHeight
-      const tip = p * h
-      if (bar.current) bar.current.style.transform = `scaleY(${p.toFixed(4)})`
-      // erreicht, sobald die Spitze der Linie die Mitte des Kästchens passiert
+    const [base, fill, tail] = Array.from(sv.querySelectorAll<SVGPathElement>('path'))
+    const dot = sv.querySelector<SVGGElement>('[data-dot]')!
+    let g = geometry(ol, boxes)
+    let prog = reduced ? 1 : 0
+    let idle = 0
+    const draw = () => {
+      const s = prog * g.total
+      fill.style.strokeDasharray = `${g.total}`
+      fill.style.strokeDashoffset = `${g.total - s}`
+      const TL = Math.min(90, s)
+      tail.style.strokeDasharray = `0 ${Math.max(0, s - TL)} ${TL} ${g.total}`
+      const p = fill.getPointAtLength(Math.max(0, Math.min(g.total, s)))
+      dot.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`)
+      dot.style.opacity = s > 1 && s < g.total + 1 ? '1' : '0'
       let k = -1
-      const top = ol.getBoundingClientRect().top
-      boxes.forEach((b, i) => {
-        const r = b.getBoundingClientRect()
-        if (tip >= r.top - top + r.height / 2 - 1) k = i
+      g.at.forEach((l, i) => {
+        if (s >= l - 2) k = i
       })
       setAt(k)
+      // ruht der Punkt, pulsiert er leicht
+      sv.removeAttribute('data-idle')
+      clearTimeout(idle)
+      idle = window.setTimeout(() => sv.setAttribute('data-idle', ''), 260)
+    }
+    const layout = () => {
+      g = geometry(ol, boxes)
+      sv.setAttribute('viewBox', `0 0 ${ol.clientWidth} ${ol.clientHeight}`)
+      base.setAttribute('d', g.d)
+      fill.setAttribute('d', g.d)
+      tail.setAttribute('d', g.d)
+      draw()
+    }
+    const ro = new ResizeObserver(layout)
+    ro.observe(ol)
+    layout()
+    if (reduced) {
+      setStill(true)
+      setAt(steps.length - 1)
+      return () => ro.disconnect()
     }
     const st = ScrollTrigger.create({
       trigger: ol,
       start: 'top 62%',
       end: 'bottom 62%',
-      scrub: 0.4,
+      scrub: 0.5,
       animation: gsap.to({}, { duration: 1 }),
-      onUpdate: (s) => apply(s.progress),
-      onRefresh: (s) => apply(s.progress),
+      onUpdate: (x) => {
+        prog = x.progress
+        draw()
+      },
     })
-    apply(st.progress)
-    return () => st.kill()
+    prog = st.progress
+    draw()
+    return () => {
+      st.kill()
+      ro.disconnect()
+      clearTimeout(idle)
+    }
   }, [steps.length])
 
   return (
     <ol ref={list} className="steps relative col-span-12 lg:col-span-7 lg:col-start-6">
-      <span aria-hidden className="steps-rail">
-        <span ref={bar} className="steps-bar" style={still ? { transform: 'scaleY(1)' } : undefined} />
-      </span>
+      {/* Linie hinter dem Text, Leuchtpunkt mit Lichthof und kurzem Schweif */}
+      <svg ref={svg} aria-hidden className="steps-svg" preserveAspectRatio="none">
+        <defs>
+          <radialGradient id="comet-halo">
+            <stop offset="0" stopColor="#1a4fe0" stopOpacity="0.55" />
+            <stop offset="0.45" stopColor="#3d7bff" stopOpacity="0.2" />
+            <stop offset="1" stopColor="#3d7bff" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <path className="steps-base" />
+        <path className="steps-fill" />
+        <path className="steps-tail" />
+        <g data-dot className="steps-dot">
+          <circle className="steps-halo" r="26" fill="url(#comet-halo)" />
+          <circle r="5" fill="#1a4fe0" />
+          <circle r="2.2" fill="#fff" />
+        </g>
+      </svg>
       {steps.map((s, i) => {
         const state = i > at ? 'next' : i === at ? 'now' : 'past'
         return (
@@ -110,7 +206,7 @@ function Line({ steps }: { steps: Step[] }) {
               {pad(i + 1)}
               <Sparkle play={i <= at && !still} className="absolute -top-2 -right-2 size-4 sm:size-5" />
             </span>
-            <div className="pt-1 sm:pt-2.5">
+            <div className="relative pt-1 sm:pt-2.5">
               <p className="step-meta t-meta">{s.duration}</p>
               <AnimatedText as="h3" text={s.title} trigger={still || i <= at} orphans={false} className={cn('step-title at-soft mt-2 text-[1.5rem] leading-[1.2] font-medium tracking-[-0.02em] sm:text-[1.75rem]')} />
               <p className="step-text measure mt-3 text-ink-2">{s.text}</p>
