@@ -14,7 +14,7 @@ def noise1d(n,wl,rng):
     f=f*f*(3-2*f)
     return pts[i]*(1-f)+pts[i+1]*f
 edge=np.zeros(W)
-for wl,amp in ((1500,150),(640,80),(260,30),(95,12),(34,5),(11,2.4),(4,1.1)):
+for wl,amp in ((1700,250),(700,120),(280,40),(95,13),(34,5),(11,2.4),(4,1.1)):
     edge+=amp*noise1d(W,wl,rng)
 edge=edge-edge.min()+40   # Kante zwischen 40 und ~ 40+Spannweite
 print('span',edge.max()-edge.min())
@@ -23,7 +23,7 @@ ss=4  # Kantenglättung
 d=Y-edge[None,:]           # >0 unter der Kante
 paper=np.clip(0.5-d,0,1)   # 1 über der Kante, weicher Übergang 1px
 # Faserrand: dichtes, helles Band, Außenkante fein ausgefranst (Rauschen in hoher Frequenz)
-rimw=11+5*noise1d(W,70,rng)+3*noise1d(W,13,rng)
+rimw=14+6*noise1d(W,70,rng)+3.5*noise1d(W,13,rng)
 fray=np.zeros((H,W))
 for wl,a in ((1.6,0.55),(3.2,0.3),(7,0.15)):
     g=rng.uniform(0,1,(int(H/wl)+3,int(W/wl)+3))

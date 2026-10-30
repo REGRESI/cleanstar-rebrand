@@ -53,7 +53,7 @@ export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode
         <div aria-hidden className="pr-edge">
           <picture>
             <source type="image/avif" srcSet="/images/deko/papierkante-1920.avif 1920w, /images/deko/papierkante-3840.avif 3840w" sizes="130vw" />
-            <img src="/images/deko/papierkante-1920.webp" srcSet="/images/deko/papierkante-1920.webp 1920w, /images/deko/papierkante-3840.webp 3840w" sizes="130vw" width={3840} height={346} alt="" loading="lazy" decoding="async" />
+            <img src="/images/deko/papierkante-1920.webp" srcSet="/images/deko/papierkante-1920.webp 1920w, /images/deko/papierkante-3840.webp 3840w" sizes="130vw" width={3840} height={420} alt="" loading="lazy" decoding="async" />
           </picture>
         </div>
       </div>
