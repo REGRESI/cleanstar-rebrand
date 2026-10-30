@@ -55,7 +55,7 @@ export default function Careers() {
           </p>
         </div>
       </section>
-      <div className="container-site pb-20 sm:pb-28 lg:pb-36">
+      <div className="container-site pb-20 sm:pb-24 lg:pb-16">
         <Collage
           className="mx-auto max-w-6xl"
           layers={[{ id: 'team-work' }, { id: 'partner-onboarding' }, { node: <LoopVideo name="wischen" className="size-full" position="30% 50%" /> }]}

@@ -151,7 +151,7 @@ export function RoomFan() {
     )
 
   return (
-    <section className="section-tight overflow-x-clip bg-paper" aria-labelledby="fan-title">
+    <section className="section-tight overflow-x-clip bg-paper lg:pt-0" aria-labelledby="fan-title">
       <div className="container-site grid-site gap-y-10 lg:items-center">
         <div className="col-span-12 lg:col-span-5">
           <Heading />
