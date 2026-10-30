@@ -17,6 +17,23 @@ import { span, spanEase } from '@/lib/scrollScene'
 export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode; image: ImageId; word: string; line: string; id?: string }) {
   const run = useRef<HTMLDivElement>(null)
   const text = useRef<HTMLDivElement>(null)
+  const gl = useRef<HTMLCanvasElement>(null)
+  // lebende Kante (WebGL, eigener Chunk); bis sie steht und ohne WebGL bleibt die feste Kante als Bild
+  useEffect(() => {
+    const cv = gl.current
+    if (!cv || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
+    let stop: (() => void) | null = null
+    let dead = false
+    import('./paperEdge').then(({ startPaperEdge }) => {
+      if (dead) return
+      stop = startPaperEdge(cv, () => cv.closest('.pr')?.setAttribute('data-gl', ''))
+    })
+    return () => {
+      dead = true
+      stop?.()
+      cv.closest('.pr')?.removeAttribute('data-gl')
+    }
+  }, [])
   useEffect(() => {
     const el = run.current
     const t = text.current
@@ -50,6 +67,7 @@ export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode
     <div className="pr">
       <div className="pr-sheet">
         {sheet}
+        <canvas ref={gl} aria-hidden className="pr-gl" />
         <div aria-hidden className="pr-edge">
           <picture>
             <source type="image/avif" srcSet="/images/deko/papierkante-1920.avif 1920w, /images/deko/papierkante-3840.avif 3840w" sizes="130vw" />
