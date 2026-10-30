@@ -41,8 +41,10 @@ export function Picture({ id, className, ratio, aspect: aspectOverride, sizes = 
   const aspect = aspectOverride ?? ratioClass[ratio ?? spec.ratio]
   const objectPosition = spec.position ?? '50% 50%'
   // 'now': deckt sich sofort per CSS auf (Seitenkopf, LCP); true: beim Scrollen
-  const revealCls = reveal === 'now' ? 'img-up-now' : undefined
-  const dataAttrs = reveal === true ? { 'data-reveal-img': '' } : {}
+  // Aufdecken entfernt (Feinschliff 3: nur noch die Systeme des Text- und Übergangs-Systems); Eigenschaft bleibt erlaubt
+  void reveal
+  const revealCls = undefined
+  const dataAttrs = {}
 
   // Maße fürs HTML (gegen Layoutverschiebungen): Seitenverhältnis des Fotos, die Darstellung bestimmt weiter CSS
   const [rw, rh] = (ratio && ratio in ratioClass ? ratio : spec.ratio).split(':').map(Number)

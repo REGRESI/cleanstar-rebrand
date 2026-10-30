@@ -2,12 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Download, Loader2 } from 'lucide-react'
 import { Picture } from '@/components/ui/Picture'
-import { WaterImage } from '@/features/water/WaterImage'
 import { services, type Service } from '@/content/services'
 import { cn } from '@/lib/cn'
 
 /**
- * Leistungsübersicht als nummerierte Kapitel: großes Foto (mit Wasser-Effekt beim Überfahren, Desktop), Kurzsatz,
+ * Leistungsübersicht als nummerierte Kapitel: großes Foto, Kurzsatz,
  * Leistungsverzeichnis als PDF (im Browser aus den Inhaltsdaten erzeugt) und Link zur Detailseite.
  * Links ein mitlaufender Kapitel-Index (Desktop), der aktuelle Eintrag ist hervorgehoben.
  */
@@ -78,13 +77,11 @@ function Chapter({ s, i, innerRef }: { s: Service; i: number; innerRef: (el: HTM
           {s.name}
         </Link>
       </h2>
-      <WaterImage id={s.image} className="mt-10">
-        <Link to={`/leistungen/${s.slug}`} tabIndex={-1} aria-hidden className="block">
+      <Link to={`/leistungen/${s.slug}`} tabIndex={-1} aria-hidden className="block">
           <Picture id={s.image} reveal aspect="aspect-[4/3] sm:aspect-[16/9]" sizes="(min-width:1024px) 70vw, 100vw" />
         </Link>
-      </WaterImage>
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-        <p className="t-lead max-w-[48ch] text-ink" data-reveal>
+        <p className="t-lead max-w-[48ch] text-ink">
           {s.short}
         </p>
         <div className="flex flex-wrap items-center gap-x-8 gap-y-4">

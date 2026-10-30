@@ -14,7 +14,7 @@ export function AreaTeaser() {
       <div className="container-site">
         <SectionHeading layout="rail" eyebrow={home.area.eyebrow} title={home.area.headline} id="area-title" />
         <div className="grid-site mt-16 gap-y-12 lg:mt-24">
-          <div className="col-span-12 grid grid-cols-2 gap-x-5 lg:col-span-5 lg:col-start-4 lg:gap-x-8" data-reveal>
+          <div className="col-span-12 grid grid-cols-2 gap-x-5 lg:col-span-5 lg:col-start-4 lg:gap-x-8">
             <div className="border-t border-line pt-6">
               <p className="t-num">{places.length}</p>
               <p className="t-meta mt-4">Orte im {company.serviceArea}</p>

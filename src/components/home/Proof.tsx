@@ -25,7 +25,7 @@ export function Proof() {
             </div>
             <ul className="border-b border-line">
               {proof.objects.map((o, i) => (
-                <li key={i} className="grid grid-cols-2 gap-x-5 gap-y-1 border-t border-line py-6 lg:grid-cols-12 lg:gap-x-8 lg:py-7" data-reveal>
+                <li key={i} className="grid grid-cols-2 gap-x-5 gap-y-1 border-t border-line py-6 lg:grid-cols-12 lg:gap-x-8 lg:py-7">
                   <p className="col-span-2 text-[1.375rem] font-medium tracking-[-0.02em] lg:col-span-4">{o.sector}</p>
                   <p className="font-medium tabular-nums text-[0.875rem] text-ink-2 lg:col-span-2">{o.area}</p>
                   <p className="font-medium tabular-nums text-[0.875rem] text-ink-2 lg:col-span-2">{o.place}</p>
@@ -40,7 +40,7 @@ export function Proof() {
         {quotes.length > 0 && (
           <ul className="mt-20 space-y-16 lg:mt-28 lg:space-y-24">
             {quotes.map((q, i) => (
-              <li key={i} className="grid-site" data-reveal>
+              <li key={i} className="grid-site">
                 <blockquote className="col-span-12 lg:col-span-9 lg:col-start-4">
                   <p className="t-h3">„{q.quote}“</p>
                   <footer className="t-meta mt-6">

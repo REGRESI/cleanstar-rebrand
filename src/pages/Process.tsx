@@ -1,4 +1,3 @@
-import { NightClock } from '@/components/scenes/NightClock'
 import { ScrubStatement } from '@/components/ui/ScrubStatement'
 import { statements } from '@/content/statements'
 import { Seo } from '@/components/ui/Seo'
@@ -91,14 +90,13 @@ export default function Process() {
       </Answer>
       <ScrubStatement {...statements.ablauf} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
       <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" />
-      <NightClock />
       <section className="section bg-surface" aria-labelledby="details-title">
         <div className="container-site">
           <SectionHeading layout="rail" eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />
           <ul className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mt-24 lg:grid-cols-4">
             {details.map((d) => (
-              <li key={d.title} className="relative pt-6" data-reveal>
-                <span aria-hidden data-reveal-rule className="rule absolute inset-x-0 top-0" />
+              <li key={d.title} className="relative pt-6">
+                <span aria-hidden className="rule absolute inset-x-0 top-0" />
                 <h3 className="text-[1.375rem] leading-[1.2] font-medium tracking-[-0.02em]">{d.title}</h3>
                 <ul className="mt-5 border-t border-line">
                   {d.items.map((i) => (
@@ -117,11 +115,11 @@ export default function Process() {
           <div className="col-span-12 lg:col-span-6">
             <p className="t-label mb-6">Erster Monat</p>
             <RevealText as="h2" text="Erst überzeugen, dann binden." id="trial-title" className="t-h1" />
-            <p className="t-lead measure mt-8" data-reveal>
+            <p className="t-lead measure mt-8">
               Im ersten Monat können Sie jederzeit kündigen, ohne Frist. Sie sehen jeden Morgen, wie Ihr Büro aussieht, und entscheiden dann. Eine einzelne Probereinigung vor dem
               Start ist auf Wunsch nach Absprache möglich.
             </p>
-            <div className="mt-10" data-reveal>
+            <div className="mt-10">
               <RiskFreeSeal variant="card" dark />
             </div>
           </div>
@@ -139,7 +137,7 @@ export default function Process() {
             id="switch-title"
             text="Geben Sie Ihre aktuelle Kündigungsfrist ein. Sie sehen, bis wann Sie kündigen müssen und ab wann wir starten können."
           />
-          <div className="mt-14 lg:mt-20" data-reveal>
+          <div className="mt-14 lg:mt-20">
             <SwitchCalculator />
           </div>
         </div>

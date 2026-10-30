@@ -24,13 +24,13 @@ export function FaqBlock({
   return (
     <section className={className} aria-labelledby={id}>
       <div className="container-site grid-site gap-y-10">
-        <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+        <span aria-hidden className="rule col-span-12 mb-4" />
         <div className="col-span-12 lg:col-span-4">
           <p className="t-label mb-6">{label}</p>
           <RevealText as="h2" text={title} id={id} className="t-h3 max-w-[16ch]" />
         </div>
         <div className="col-span-12 lg:col-span-8">
-          <div data-reveal>
+          <div>
             <Accordion items={items} dark={dark} />
           </div>
           {children}

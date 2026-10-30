@@ -72,22 +72,22 @@ export default function Location() {
           </>
         }
       >
-        <div className="fade-up-now mt-5" style={{ ['--d' as string]: '0.65s' }}>
+        <div className="mt-5">
           <CallbackButton />
         </div>
-        <p className="t-meta fade-up-now mt-10 border-t border-line pt-4" style={{ ['--d' as string]: '0.7s' }}>
+        <p className="t-meta mt-10 border-t border-line pt-4">
           {hq ? 'Unser Sitz' : `ca.\u00A0${l.minutes}\u00A0Min. von Offenburg`} · {company.serviceArea}
         </p>
       </PageHero>
 
       <section className="section" aria-labelledby="loc-detail">
         <div className="container-site grid-site gap-y-10">
-          <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+          <span aria-hidden className="rule col-span-12 mb-4" />
           <div className="col-span-12 lg:col-span-4">
             <p className="t-label mb-6">Für Unternehmen in {short}</p>
             <RevealText as="h2" text="So arbeiten wir bei Ihnen." id="loc-detail" className="t-h3" />
           </div>
-          <div className="col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
+          <div className="col-span-12 lg:col-span-7 lg:col-start-6">
             <p className="t-lead">{l.detail}</p>
             <div className="mt-12 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2">
               <div className="border-t border-line pt-5">

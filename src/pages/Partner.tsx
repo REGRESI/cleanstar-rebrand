@@ -68,7 +68,7 @@ export default function Partner() {
           </>
         }
       >
-        <p className="t-label fade-up-now mt-8" style={{ ['--d' as string]: '0.7s' }}>
+        <p className="t-label mt-8">
           {page.hero.note}
         </p>
       </PageHero>
@@ -151,12 +151,12 @@ export default function Partner() {
       <Chunk>
         <section className="section bg-surface" aria-labelledby="conditions-title">
           <div className="container-site grid-site gap-y-10">
-            <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+            <span aria-hidden className="rule col-span-12 mb-4" />
             <div className="col-span-12 lg:col-span-4">
               <p className="t-label mb-6">Konditionen</p>
               <RevealText as="h2" text="Klare Zahlen. Im Gespräch, nicht im Kleingedruckten." id="conditions-title" className="t-h3" />
             </div>
-            <div className="col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
+            <div className="col-span-12 lg:col-span-7 lg:col-start-6">
               {partnerFlags.showConditions ? (
                 <dl className="border-t border-line">
                   {partnerConditions.map((c) => (
@@ -181,7 +181,7 @@ export default function Partner() {
       <Chunk>
         <section id="bewerbung" className="section scroll-mt-24" aria-labelledby="apply-title">
           <div className="container-site grid-site gap-y-14">
-            <span aria-hidden data-reveal-rule className="rule col-span-12" />
+            <span aria-hidden className="rule col-span-12" />
             <div className="col-span-12 lg:col-span-4">
               <SectionHeading
                 eyebrow="Partneranfrage"
@@ -190,7 +190,7 @@ export default function Partner() {
                 size="h3"
                 text="Ein paar Angaben zu Ihnen und Ihrer Region. Wir melden uns persönlich und vereinbaren ein Erstgespräch."
               />
-              <ol className="mt-10 border-t border-line" data-reveal>
+              <ol className="mt-10 border-t border-line">
                 {['Unverbindlich und kostenlos', 'Persönliche Rückmeldung', 'Verbindlich ist erst ein schriftlicher Partnervertrag'].map((t, i) => (
                   <li key={t} className="flex gap-5 border-b border-line py-3.5">
                     <span className="t-label w-6 shrink-0 pt-0.5">{String(i + 1).padStart(2, '0')}</span>
@@ -198,7 +198,7 @@ export default function Partner() {
                   </li>
                 ))}
               </ol>
-              <a href={company.phone.href} className="ulink mt-8 inline-block text-ink" data-reveal>
+              <a href={company.phone.href} className="ulink mt-8 inline-block text-ink">
                 Lieber direkt sprechen? {company.phone.display}
               </a>
             </div>
@@ -260,17 +260,17 @@ export default function Partner() {
         {/* Abschluss hell, damit sich der dunkle Footer klar absetzt; der rechtliche Hinweis gehört mit hinein */}
         <section className="section bg-surface text-ink" aria-labelledby="pcta-title">
           <div className="container-site grid-site gap-y-10 lg:items-end">
-            <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+            <span aria-hidden className="rule col-span-12 mb-4" />
             <div className="col-span-12 lg:col-span-8">
-              <p className="t-label mb-6" data-reveal>
+              <p className="t-label mb-6">
                 {page.closing.eyebrow}
               </p>
               <RevealText as="h2" id="pcta-title" text={page.closing.headline} className="t-h1" />
-              <p className="t-lead measure mt-8" data-reveal>
+              <p className="t-lead measure mt-8">
                 {page.closing.text}
               </p>
             </div>
-            <div className="col-span-12 flex flex-col gap-6 lg:col-span-4 lg:items-end" data-reveal>
+            <div className="col-span-12 flex flex-col gap-6 lg:col-span-4 lg:items-end">
               <Button href="#bewerbung" size="lg" arrow onClick={(e) => (e.preventDefault(), toForm())}>
                 Zur Partneranfrage
               </Button>

@@ -6,7 +6,7 @@ export function PartnerTeaser({ className = 'pb-24 lg:pb-36' }: { className?: st
   return (
     <section aria-label="Partnerprogramm" className={className}>
       <div className="container-site">
-        <Link to="/partner" className="group grid-site gap-y-3 border-y border-line py-7" data-reveal>
+        <Link to="/partner" className="group grid-site gap-y-3 border-y border-line py-7">
           <span className="t-label col-span-12 lg:col-span-3 lg:pt-1">Partnerprogramm</span>
           <span className="col-span-12 lg:col-span-7">
             <span className="block text-[1.25rem] font-medium tracking-[-0.015em]">Sie führen eine Reinigungsfirma oder möchten eine gründen?</span>

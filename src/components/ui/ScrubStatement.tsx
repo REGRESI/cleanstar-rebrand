@@ -1,19 +1,29 @@
 import { Fragment, useEffect, useRef, type CSSProperties } from 'react'
-import { Letters } from '@/components/ui/ScrubText'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { paintLetters } from '@/lib/scrollScene'
 import { prefersReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
-import { TILES, type TileId } from '@/content/statements'
+import type { TileId } from '@/content/statements'
 
 /**
- * Kernsatz einer Seite im Färbe-Effekt der Startseite: Der Satz färbt sich beim Durchscrollen Buchstabe für Buchstabe
- * vom hellen Grau zum vollen Textton, der Schlusssatz ins Markenblau. Kleine Bildkacheln im Text tauchen auf, sobald
- * die Färbung sie erreicht. Nicht gepinnt, gekoppelt an die Lage im Bildschirm.
+ * Kernsatz einer Seite im Text-System, Modus „paragraph“ (siehe AnimatedText.tsx): Der Satz färbt sich beim
+ * Durchscrollen Buchstabe für Buchstabe, erst blass, an der Spitze Markenblau, dahinter die Textfarbe. Kleine
+ * Bildkacheln im Text tauchen auf, sobald die Färbung sie erreicht. Nicht gepinnt, gekoppelt an die Lage im Bildschirm.
  *
  * Text mit Bildmarken in eckigen Klammern, z. B. „Von Offenburg aus [region] sind wir …“ (siehe content/statements.ts).
- * Im HTML steht der Text vollständig in voller Farbe; ohne Bewegung bleibt er so, die Bilder sind sichtbar.
+ * Im HTML steht der Satz einmal vollständig (sr-only); ohne Bewegung steht er fertig, die Bilder sind sichtbar.
  */
+
+/** Buchstaben eines Worts als gezeichnete Spans (Teil des Text-Systems) */
+function Letters({ text }: { text: string }) {
+  return (
+    <>
+      {Array.from(text).map((ch, i) => (
+        <span key={i} data-l className="at-c at-p" data-c={ch} />
+      ))}
+    </>
+  )
+}
 
 type Token = { kind: 'word'; text: string; blue: boolean } | { kind: 'img'; img: TileId; after: string }
 
@@ -28,11 +38,10 @@ function tokenize(text: string, blue: boolean): Token[] {
 }
 
 function Tile({ img, rot }: { img: TileId; rot: number }) {
-  const t = TILES[img]
   return (
     <span className="story-tile" style={{ '--r': `${rot}deg` } as CSSProperties}>
       <span>
-        <img src={`/images/scrub/${img}.webp`} alt={t.alt} width={96} height={96} loading="lazy" decoding="async" />
+        <img src={`/images/scrub/${img}.webp`} alt="" width={96} height={96} loading="lazy" decoding="async" />
       </span>
     </span>
   )
@@ -68,11 +77,11 @@ export function ScrubStatement({
     const tiles = Array.from(el.querySelectorAll<HTMLElement>('[data-tile]'))
     const last = new Float32Array(letters.length).fill(-1)
     const apply = (t: number) => {
-      paintLetters(letters, t, last)
+      paintLetters(letters, t, last, 10)
       for (const tile of tiles) tile.toggleAttribute('data-on', last[lastOf[Number(tile.dataset.tile)]] > 0.55)
     }
     apply(0)
-    const st = ScrollTrigger.create({ trigger: el, start: 'top 82%', end: 'bottom 48%', scrub: 0.6, animation: gsap.to({}, { duration: 1 }), onUpdate: (s) => apply(s.progress) })
+    const st = ScrollTrigger.create({ trigger: el, start: 'top 82%', end: 'bottom 50%', scrub: 0.5, animation: gsap.to({}, { duration: 1 }), onUpdate: (s) => apply(s.progress) })
     apply(st.progress)
     return () => st.kill()
   }, [])
@@ -87,7 +96,7 @@ export function ScrubStatement({
     if (t.kind === 'img') continue
     w++
     const word = (
-      <span data-w className={cn('story-w', t.blue ? (dark ? 'is-blue text-logo-sky' : 'is-blue text-blue') : dark ? 'text-paper' : 'text-ink')}>
+      <span data-w className="story-w">
         <Letters text={t.text} />
       </span>
     )
@@ -104,7 +113,7 @@ export function ScrubStatement({
               <Tile img={next.img} rot={ROT[n++ % ROT.length]} />
             </span>
             {next.after && (
-              <span data-w className={cn('story-w', dark ? 'text-paper' : 'text-ink')}>
+              <span data-w className="story-w">
                 <Letters text={next.after} />
               </span>
             )}
@@ -127,8 +136,9 @@ export function ScrubStatement({
         <h2 id={id} className="sr-only">
           {label}
         </h2>
-        <p ref={ref} className="statement-text max-w-[22ch] sm:max-w-[26ch] lg:max-w-[30ch]">
-          {nodes}
+        <p ref={ref} className="statement-text at-para max-w-[22ch] sm:max-w-[26ch] lg:max-w-[30ch]">
+          <span className="sr-only">{[text, final].filter(Boolean).join(' ').replace(/\[\w+\]/g, '').replace(/ +/g, ' ')}</span>
+          <span aria-hidden>{nodes}</span>
         </p>
       </div>
     </section>

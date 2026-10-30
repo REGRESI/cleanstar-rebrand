@@ -2,6 +2,7 @@ import type { ReactNode, ComponentPropsWithoutRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { Roll } from './Roll'
 
 /**
  * primary: Markenblau, für die eine Hauptaktion pro Bildschirm
@@ -43,14 +44,14 @@ type ButtonProps = CommonProps &
     | ({ to?: never; href?: never } & Omit<ComponentPropsWithoutRef<'button'>, 'className' | 'children'>)
   )
 
-/** Rechteckiger Button bzw. Textlink mit Pfeil. Keine Pillen, kein Magnet-Effekt. */
+/** Rechteckiger Button bzw. Textlink mit Pfeil. Text rollt beim Überfahren (Roll-System), kein Größensprung. */
 export function Button(props: ButtonProps) {
   const { variant = 'primary', size = 'md', className, children, arrow, icon, full, wrapClassName, ...rest } = props
   const isLink = variant === 'link'
   const content = (
     <>
       {icon}
-      <span className="min-w-0">{children}</span>
+      <span className="min-w-0">{typeof children === 'string' ? <Roll text={children} /> : children}</span>
       {(arrow || isLink) && <ArrowRight aria-hidden className="btn-arrow size-4 shrink-0" strokeWidth={1.75} />}
     </>
   )

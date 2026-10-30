@@ -24,6 +24,10 @@ interface Options {
   play: number
   /** wird bei jedem Scroll-Update mit Gesamtfortschritt und Sequenzfortschritt aufgerufen */
   onProgress?: (p: number, seq: number) => void
+  /** eigene Abbildung Gesamtfortschritt → Sequenzfortschritt (sonst p / play) */
+  seqOf?: (p: number) => number
+  /** Länge der Scrollstrecke auch ohne Sequenz einrichten (Pin bleibt, gezeichnet wird nicht) */
+  pinOnly?: boolean
 }
 
 /**
@@ -31,16 +35,18 @@ interface Options {
  * nur bei Änderung (requestAnimationFrame auf Anforderung)
  * (Darstellung per object-fit im Browser) und scharfe Standbilder an Schlüsselmomenten, wenn man stehen bleibt.
  */
-export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, lengthVh, play, onProgress }: Options) {
+export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, lengthVh, play, onProgress, seqOf, pinOnly }: Options) {
   const target = useRef(0)
   const progressCb = useRef(onProgress)
   progressCb.current = onProgress
+  const seqRef = useRef(seqOf)
+  seqRef.current = seqOf
   const [load, setLoad] = useState(false)
   const [drawn, setDrawn] = useState(false)
   const [activeKey, setActiveKey] = useState<string | null>(null)
   // Zeichnen nur auf Anforderung (Scroll-Update oder neu dekodiertes Frame), nicht dauerhaft
   const kick = useRef<() => void>(() => {})
-  const { frame, progress, failed } = useFrameSequence(urls, enabled && load, () => kick.current())
+  const { frame, progress, failed } = useFrameSequence(urls, enabled && !pinOnly && load, () => kick.current())
 
   // Frames erst laden, wenn die Seite steht (LCP und Interaktivität zuerst)
   useEffect(() => {
@@ -81,7 +87,7 @@ export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, l
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
-        target.current = Math.min(1, self.progress / play)
+        target.current = seqRef.current ? seqRef.current(self.progress) : Math.min(1, self.progress / play)
         progressCb.current?.(self.progress, target.current)
         activity()
         kick.current()
@@ -101,7 +107,7 @@ export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, l
   // Zeichnen: weich zum Ziel-Frame interpolieren, 1:1 ohne Skalierung. Die Schleife läuft nur, solange sich
   // das Bild noch ändert, und hält danach an; außerhalb des Bildschirms wird gar nicht gezeichnet.
   useEffect(() => {
-    if (!enabled || !load) return
+    if (!enabled || !load || pinOnly) return
     const cv = canvas.current
     const ctx = cv?.getContext('2d', { alpha: false })
     if (!cv || !ctx) return
@@ -152,7 +158,7 @@ export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, l
       if (raf) cancelAnimationFrame(raf)
       io.disconnect()
     }
-  }, [enabled, load, urls, frame, canvas])
+  }, [enabled, load, urls, frame, canvas, pinOnly])
 
   return { load, drawn, activeKey, progress, failed }
 }

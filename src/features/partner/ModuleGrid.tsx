@@ -15,7 +15,7 @@ export function ModuleGrid() {
       {modules.map((m, i) => {
         const isOpen = open === m.id
         return (
-          <li key={m.id} className="border-t border-line" data-reveal>
+          <li key={m.id} className="border-t border-line">
             <button
               type="button"
               aria-expanded={isOpen}

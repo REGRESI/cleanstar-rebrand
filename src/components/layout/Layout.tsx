@@ -14,7 +14,6 @@ import { ScrollTrigger } from '@/lib/gsap'
 import { onIdle } from '@/lib/idle'
 import { EASE_CS_ARRAY } from '@/lib/ease'
 import { inlineMarkTones, markSectionTones } from '@/lib/tones'
-import { setupCurtains } from '@/lib/curtains'
 
 const hasViewTransitions = typeof document !== 'undefined' && 'startViewTransition' in document
 
@@ -43,24 +42,23 @@ function Shell() {
     first.current = false
     ;(window as Window & { __csReady?: boolean }).__csReady = true
     const cancel = prefersReducedMotion() ? () => {} : onIdle(() => startSmoothScroll(), 2500)
-    // Reveal-Flag: Sobald eine CSS-Einblendung (Titel Wort für Wort, fade-up) fertig ist, wird das Element markiert
-    // und bleibt im Endzustand. So läuft sie genau einmal, auch wenn das Element später verschoben wird.
-    const onAnimEnd = (e: AnimationEvent) => {
-      const t = e.target as HTMLElement
-      if (e.animationName === 'word-up') {
-        const host = t.closest('.reveal-now')
-        const words = host?.querySelectorAll('[data-reveal-word]')
-        if (host && words && t === words[words.length - 1]) host.setAttribute('data-revealed', '')
-      } else if ((e.animationName === 'fade-up' || e.animationName === 'fade-up-lcp') && t.classList.contains('fade-up-now')) t.setAttribute('data-revealed', '')
-      else if (e.animationName === 'img-up' && t.classList.contains('img-up-now')) t.setAttribute('data-revealed', '')
-    }
-    document.addEventListener('animationend', onAnimEnd)
     // iOS zeigt :active-Stile (Rückmeldung beim Tippen) nur, wenn ein touchstart-Listener existiert
     const noop = () => {}
     document.addEventListener('touchstart', noop, { passive: true })
+    // Roll-System auf Touch-Geräten: Beim Antippen rollt der Text einmal, die Aktion läuft sofort (keine Verzögerung)
+    const onTap = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse') return
+      const host = (e.target as Element | null)?.closest?.('a, button')
+      if (!host || !host.querySelector('.roll')) return
+      host.classList.remove('is-roll')
+      void (host as HTMLElement).offsetWidth
+      host.classList.add('is-roll')
+      window.setTimeout(() => host.classList.remove('is-roll'), 700)
+    }
+    document.addEventListener('pointerdown', onTap, { passive: true })
     return () => {
+      document.removeEventListener('pointerdown', onTap)
       document.removeEventListener('touchstart', noop)
-      document.removeEventListener('animationend', onAnimEnd)
       cancel()
       stopSmoothScroll()
     }
@@ -101,19 +99,6 @@ function Shell() {
       window.clearTimeout(t)
       window.clearTimeout(r)
       window.removeEventListener('resize', onResize)
-    }
-  }, [pathname])
-
-  // Vorhang-Übergänge an Farbwechseln: nach dem Aufbau der Seite (Linien markiert, Abschnitte nachgeladen)
-  useEffect(() => {
-    // Im Leerlauf einrichten, damit das Laden der Seite nicht blockiert wird
-    let stop = () => {}
-    let cancel = () => {}
-    const t = window.setTimeout(() => (cancel = onIdle(() => (stop = setupCurtains(pathname)), 1500)), 450)
-    return () => {
-      window.clearTimeout(t)
-      cancel()
-      stop()
     }
   }, [pathname])
 

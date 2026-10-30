@@ -58,7 +58,7 @@ export default function OfficeCity() {
           </>
         }
       >
-        <div className="fade-up-now mt-5" style={{ ['--d' as string]: '0.65s' }}>
+        <div className="mt-5">
           <CallbackButton />
         </div>
       </PageHero>
@@ -67,7 +67,7 @@ export default function OfficeCity() {
         <div className="container-site grid-site gap-y-16">
           <div className="col-span-12 space-y-16 lg:col-span-7">
             {c.sections.map((s, i) => (
-              <article key={s.title} className="border-t border-line pt-6" data-reveal>
+              <article key={s.title} className="border-t border-line pt-6">
                 <p className="t-label">{String(i + 1).padStart(2, '0')}</p>
                 <h2 className="t-h3 mt-5">{s.title}</h2>
                 {s.paragraphs.map((p) => (
@@ -88,7 +88,7 @@ export default function OfficeCity() {
             ))}
           </div>
           <aside className="col-span-12 space-y-16 lg:col-span-4 lg:col-start-9">
-            <div className="lg:sticky lg:top-28" data-reveal>
+            <div className="lg:sticky lg:top-28">
               <div className="on-dark bg-night p-6 text-paper sm:p-8">
                 <p className="t-label">Beispielrechnung {c.name}</p>
                 <p className="mt-4 text-[1.25rem] font-medium tracking-[-0.015em]">{c.example.label}</p>

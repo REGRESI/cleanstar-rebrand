@@ -41,7 +41,7 @@ export function PageHero({
         <div className="grid-site gap-y-8 lg:gap-y-12">
           <div className="col-span-12 lg:col-span-11">
             {eyebrow && (
-              <p className="t-label fade-up-now mb-6 lg:mb-8" style={{ ['--d' as string]: '0s' }}>
+              <p className="t-label mb-6 lg:mb-8">
                 {eyebrow}
               </p>
             )}
@@ -50,12 +50,12 @@ export function PageHero({
           {(lead || actions || children) && (
             <div className="col-span-12 md:col-span-9 lg:col-span-6 lg:col-start-7 xl:col-span-5 xl:col-start-8">
               {lead && (
-                <div className={cn('t-lead fade-up-now fade-lcp', dark ? 'text-paper' : 'text-ink')} style={{ ['--d' as string]: '0.35s' }}>
+                <div className={cn('t-lead', dark ? 'text-paper' : 'text-ink')}>
                   {lead}
                 </div>
               )}
               {actions && (
-                <div className="btn-row fade-up-now mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6" style={{ ['--d' as string]: '0.5s' }}>
+                <div className="btn-row mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
                   {actions}
                 </div>
               )}

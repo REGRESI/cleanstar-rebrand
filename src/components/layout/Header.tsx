@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from 'react'
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import { Logo } from '@/components/ui/Logo'
@@ -14,6 +14,7 @@ import type { ImageId } from '@/content/images'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { useQuote } from '@/features/configurator/QuoteContext'
 import { cn } from '@/lib/cn'
+import { Roll } from '@/components/ui/Roll'
 import { lockScroll } from '@/lib/smooth-scroll'
 import { EASE_CS_ARRAY } from '@/lib/ease'
 import { prefersReducedMotion } from '@/lib/env'
@@ -109,11 +110,6 @@ export function Header() {
         )}
         onPointerLeave={(e) => e.pointerType === 'mouse' && megaHover.closeSoon()}
       >
-        {scrolled && !menu && !mega && (
-          <span aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-            <span className="glass-glint" />
-          </span>
-        )}
         <div className="container-site relative flex h-16 items-center justify-between gap-6 lg:h-[4.75rem]">
           <HomeLink label={`${company.name}, zur Startseite`} className="shrink-0" onNavigate={() => setMenu(false)}>
             <Logo mono={dark} className={cn('w-[124px] lg:w-[142px]', dark && 'text-paper')} />
@@ -188,7 +184,7 @@ function DesktopNav({ mega, setMega }: { mega: boolean; setMega: (v: boolean) =>
           item.to === '/leistungen' ? (
             <li key={item.to} className="flex items-center gap-1" onPointerEnter={(e) => e.pointerType === 'mouse' && megaHover.openSoon()}>
               <NavLink to={item.to} className={cn('navlink py-1 text-[0.9375rem] whitespace-nowrap text-ink', mega && 'is-open')}>
-                {item.label}
+                <Roll text={item.label} />
               </NavLink>
               <button
                 ref={toggle}
@@ -205,7 +201,7 @@ function DesktopNav({ mega, setMega }: { mega: boolean; setMega: (v: boolean) =>
           ) : (
             <li key={item.to} onPointerEnter={(e) => e.pointerType === 'mouse' && mega && megaHover.closeSoon()}>
               <NavLink to={item.to} className="navlink py-1 text-[0.9375rem] whitespace-nowrap text-ink">
-                {item.label}
+                <Roll text={item.label} />
               </NavLink>
             </li>
           ),
@@ -267,7 +263,7 @@ function MegaMenu({ onClose }: { onClose: () => void }) {
                     )}
                   >
                     <span className="flex items-baseline gap-4">
-                      {s.name}
+                      <Roll text={s.name} />
                       {s.slug === 'bueroreinigung' && <span className="t-label text-blue">Schwerpunkt</span>}
                     </span>
                     <ArrowRight
@@ -375,11 +371,9 @@ function MenuButton({ open, onToggle }: { open: boolean; onToggle: () => void })
 
 function MobileMenu({ onClose }: { onClose: () => void }) {
   const ref = useRef<HTMLDivElement>(null)
-  const navigate = useNavigate()
   const { open } = useQuote()
   const reduced = prefersReducedMotion()
   const [hover, setHover] = useState<string | null>(null)
-  const [tapped, setTapped] = useState<string | null>(null)
   const contact = newClientContact()
 
   // Seite sperren, Escape schließt, Fokus bleibt im Menü (inklusive Schließen-Button in der Kopfzeile)
@@ -409,14 +403,6 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
   }, [onClose])
 
   const at = `${origin.x}px ${origin.y}px`
-  // Tippen: Der Punkt färbt sich Buchstabe für Buchstabe ein, dann Seitenwechsel
-  const go = (e: ReactMouseEvent<HTMLAnchorElement>, to: string) => {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || reduced) return
-    e.preventDefault()
-    setTapped(to)
-    window.setTimeout(() => navigate(to), 320)
-  }
-
   return (
     <motion.div
       ref={ref}
@@ -447,22 +433,16 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
               <motion.div initial={reduced ? false : { y: '100%' }} animate={{ y: 0 }} transition={{ duration: 0.7, ease: EASE_CS_ARRAY, delay: 0.18 + 0.05 * i }}>
                 <NavLink
                   to={item.to}
-                  onClick={(e) => go(e, item.to)}
                   onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(item.to)}
                   onPointerLeave={() => setHover(null)}
                   className={({ isActive }) =>
                     cn(
                       'menu-item block py-3.5 text-[2.125rem] leading-[1.08] font-medium tracking-[-0.035em] min-[400px]:text-[2.5rem]',
                       isActive ? 'text-blue-on-dark' : 'text-paper',
-                      tapped === item.to && 'is-tapped',
                     )
                   }
                 >
-                  {Array.from(item.label).map((ch, k) => (
-                    <span key={k} className="menu-l" style={{ '--i': k } as CSSProperties}>
-                      {ch}
-                    </span>
-                  ))}
+                  <Roll text={item.label} />
                 </NavLink>
               </motion.div>
             </li>

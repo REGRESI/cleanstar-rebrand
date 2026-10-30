@@ -25,6 +25,7 @@ import { guides } from '@/content/ratgeber'
 import { CostCalculator } from '@/features/cost/CostCalculator'
 import { PerEmployeeCalculator } from '@/features/cost/PerEmployeeCalculator'
 import { FloorPlan } from '@/features/floorplan/FloorPlan'
+import { CheckpointView } from '@/features/lines/CheckpointView'
 import { LeadMagnet } from '@/features/forms/LeadMagnet'
 import { breadcrumbSchema, faqSchema, serviceSchema } from '@/lib/schema'
 import NotFound from './NotFound'
@@ -73,6 +74,7 @@ export default function ServiceDetail() {
 
       {/* Vorher/nachher im Wisch-Effekt (Büroreinigung) */}
       {s.slug === 'bueroreinigung' && <ProblemSolution id="office-wipe" {...wipes.bueroreinigung} />}
+      {s.slug === 'bueroreinigung' && <CheckpointView />}
 
       {/* Leistungsverzeichnis */}
       <section className="section" aria-labelledby="scope-title">
@@ -92,7 +94,7 @@ export default function ServiceDetail() {
                 </div>
               </div>
             )}
-            <div className={main ? 'col-span-12 lg:col-span-7 lg:col-start-6' : 'col-span-12 lg:col-span-9 lg:col-start-4'} data-reveal>
+            <div className={main ? 'col-span-12 lg:col-span-7 lg:col-start-6' : 'col-span-12 lg:col-span-9 lg:col-start-4'}>
               <Accordion
                 defaultOpen={0}
                 items={s.scope.map((g) => ({
@@ -122,18 +124,18 @@ export default function ServiceDetail() {
       <section className="section bg-surface" aria-label="Intervalle und Zielgruppen">
         <div className="container-site grid-site gap-y-16">
           <div className="col-span-12 lg:col-span-6">
-            <h2 className="t-h3" data-reveal>
+            <h2 className="t-h3">
               Intervalle
             </h2>
             <NumberedRows className="mt-8" layout="stack" items={s.intervals.map((i) => ({ title: i.label, text: i.text, key: i.label }))} />
           </div>
           <div className="col-span-12 lg:col-span-5 lg:col-start-8">
-            <h2 className="t-h3" data-reveal>
+            <h2 className="t-h3">
               Für wen geeignet
             </h2>
             <ul className="mt-8 border-b border-line">
               {s.suitableFor.map((t) => (
-                <li key={t} className="border-t border-line py-4 text-[1.125rem]" data-reveal>
+                <li key={t} className="border-t border-line py-4 text-[1.125rem]">
                   {t}
                 </li>
               ))}
@@ -155,7 +157,7 @@ export default function ServiceDetail() {
                 id="plan-title"
                 text="Tippen Sie auf einen Bereich. Sie sehen, was dort gemacht wird und wie oft. Ohne Kleingedrucktes."
               />
-              <div className="mt-14 lg:mt-20" data-reveal>
+              <div className="mt-14 lg:mt-20">
                 <FloorPlan />
               </div>
             </div>
@@ -163,7 +165,7 @@ export default function ServiceDetail() {
           <section className="on-dark section bg-night text-paper" aria-labelledby="ba2-title">
             <div className="container-site">
               <SectionHeading layout="split" eyebrow={home.beforeAfter.eyebrow} title={home.beforeAfter.headline} id="ba2-title" text={home.beforeAfter.lead} />
-              <div className="mt-14 lg:mt-20" data-reveal>
+              <div className="mt-14 lg:mt-20">
                 <BeforeAfter before="before-office" after="after-office" />
               </div>
             </div>
@@ -177,7 +179,7 @@ export default function ServiceDetail() {
                 id="pe-title"
                 text="Ein Monatsbetrag sagt wenig. Umgerechnet auf Ihre Mitarbeiter und Arbeitstage sehen Sie, was ein sauberes Büro pro Kopf wirklich kostet."
               />
-              <div className="mt-14 lg:mt-20" data-reveal>
+              <div className="mt-14 lg:mt-20">
                 <PerEmployeeCalculator />
               </div>
             </div>
@@ -192,7 +194,7 @@ export default function ServiceDetail() {
                 id="cost-title"
                 text="Eigene Reinigungskräfte kosten mehr als den Stundenlohn. Der Rechner zeigt alle Posten offen. Und wenn eigenes Personal für Sie günstiger ist, sagt er Ihnen das auch."
               />
-              <div className="mt-14 lg:mt-20" data-reveal>
+              <div className="mt-14 lg:mt-20">
                 <CostCalculator />
               </div>
             </div>
@@ -206,7 +208,7 @@ export default function ServiceDetail() {
                 id="yplan-title"
                 text="Laufende Reinigung, Fenster, Grundreinigung, Teppichpflege: Wählen Sie die Intervalle, und Sie sehen, wann was ansteht. Als PDF zum Weitergeben."
               />
-              <div className="mt-14 lg:mt-20" data-reveal>
+              <div className="mt-14 lg:mt-20">
                 <YearPlan />
               </div>
             </div>
@@ -217,12 +219,12 @@ export default function ServiceDetail() {
       {/* FAQ */}
       <section className="section bg-surface" aria-labelledby="sfaq-title">
         <div className="container-site grid-site gap-y-10">
-          <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+          <span aria-hidden className="rule col-span-12 mb-4" />
           <div className="col-span-12 lg:col-span-4">
             <p className="t-label mb-6">Fragen</p>
             <RevealText as="h2" text={`${s.name}: häufige Fragen`} id="sfaq-title" className="t-h3" />
           </div>
-          <div className="col-span-12 lg:col-span-8" data-reveal>
+          <div className="col-span-12 lg:col-span-8">
             <Accordion items={s.faqs.map((f) => ({ title: f.q, content: f.a }))} />
           </div>
         </div>

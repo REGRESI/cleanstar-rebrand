@@ -10,7 +10,7 @@ import { Todo } from '@/components/ui/Todo'
 import { FinalCta } from '@/components/home/FinalCta'
 import { faqs, type Faq as FaqItem } from '@/content/faq'
 import { breadcrumbSchema, faqSchema } from '@/lib/schema'
-import { cn } from '@/lib/cn'
+import { Roll } from '@/components/ui/Roll'
 
 const trail = [
   { name: 'Startseite', path: '/' },
@@ -43,33 +43,22 @@ export default function Faq() {
       </Answer>
       <ScrubStatement {...statements.faq} id="statement-title" className="pt-6 pb-0 sm:pt-8 lg:pt-12" />
       <section className="pt-12 pb-24 lg:pt-16 lg:pb-40">
-        <div className="container-site grid-site gap-y-12">
-          <aside className="col-span-12 lg:col-span-3">
-            <div className="space-y-10 lg:sticky lg:top-28">
-              <label className="block">
-                <span className="t-label mb-1 block">Fragen durchsuchen</span>
-                <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Suchbegriff" className="field" />
-              </label>
-              <nav aria-label="Kategorien">
-                <p className="t-label mb-3">Kategorien</p>
-                <ul className="flex flex-wrap gap-x-6 gap-y-1 lg:flex-col">
-                  {(['Alle', ...categories] as const).map((c) => (
-                    <li key={c}>
-                      <button
-                        type="button"
-                        aria-pressed={cat === c}
-                        onClick={() => setCat(c)}
-                        className={cn('ulink py-1.5 text-left text-[1rem] transition-colors', cat === c ? 'bg-[length:100%_1px] text-ink' : 'text-muted hover:text-ink')}
-                      >
-                        {c}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
+        <div className="container-site grid-site gap-y-10">
+          {/* Kategorien als Chips über der Liste, daneben die Suche */}
+          <div className="col-span-12 flex flex-col gap-6 lg:col-span-10 lg:col-start-2 lg:flex-row lg:items-end lg:justify-between">
+            <div role="group" aria-label="Kategorien" className="flex flex-wrap gap-2">
+              {(['Alle', ...categories] as const).map((c) => (
+                <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className="chip">
+                  <Roll text={c} />
+                </button>
+              ))}
             </div>
-          </aside>
-          <div className="col-span-12 lg:col-span-8 lg:col-start-5">
+            <label className="block w-full lg:max-w-xs">
+              <span className="t-label mb-1 block">Fragen durchsuchen</span>
+              <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Suchbegriff" className="field" />
+            </label>
+          </div>
+          <div className="col-span-12 lg:col-span-10 lg:col-start-2">
             {list.length === 0 ? (
               <p className="border-t border-line pt-6 text-ink-2">Keine passende Frage gefunden. Rufen Sie uns gern an.</p>
             ) : (

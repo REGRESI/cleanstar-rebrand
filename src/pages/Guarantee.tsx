@@ -90,7 +90,7 @@ export default function Guarantee() {
             ))}
           </ol>
 
-          <div className="mt-16 flex flex-col gap-5 border-t border-line-dark pt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8" data-reveal>
+          <div className="mt-16 flex flex-col gap-5 border-t border-line-dark pt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8">
             <span className="t-label">Melden Sie es direkt</span>
             <a href={company.phone.href} className="btn btn-light">
               {company.phone.display}
@@ -116,11 +116,11 @@ export default function Guarantee() {
           <div className="col-span-12 lg:col-span-6 lg:col-start-7">
             <p className="t-label mb-6">Qualitätskontrolle</p>
             <RevealText as="h2" text="Wir kontrollieren selbst. Bevor Sie es müssen." id="qc-title" className="t-h2" />
-            <p className="t-lead measure mt-8" data-reveal>
+            <p className="t-lead measure mt-8">
               Wir prüfen regelmäßig vor Ort, anhand einer Checkliste, die auf Ihr Leistungsverzeichnis abgestimmt ist. Auffälligkeiten besprechen wir direkt mit dem Team und, wenn
               nötig, mit Ihnen.
             </p>
-            <p className="mt-6 text-ink-2" data-reveal>
+            <p className="mt-6 text-ink-2">
               Die Kontrollen führt {company.founders[1]?.name ?? 'Ihr Ansprechpartner'} persönlich durch. Den Rhythmus legen wir gemeinsam mit Ihnen im Angebot fest.
             </p>
           </div>

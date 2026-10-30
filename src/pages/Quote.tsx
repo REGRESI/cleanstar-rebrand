@@ -25,14 +25,14 @@ export default function Quote() {
           <Breadcrumbs trail={trail} />
           <div className="grid-site gap-y-14">
             <div className="col-span-12 lg:col-span-4">
-              <p className="t-label fade-up-now mb-6" style={{ ['--d' as string]: '0s' }}>
+              <p className="t-label mb-6">
                 Angebot anfragen
               </p>
               <RevealText as="h1" text="In 60 Sekunden zum Angebot." immediate className="t-h1 max-w-[12ch] lg:text-[4.5rem]" />
-              <p className="t-lead fade-up-now fade-lcp mt-8" style={{ ['--d' as string]: '0.4s' }}>
+              <p className="t-lead mt-8">
                 Ein paar Angaben zu Ihrem Objekt. Kennen Sie Ihre aktuellen Reinigungszeiten, zeigen wir Ihnen sofort eine Richtpreis-Spanne.
               </p>
-              <ol className="fade-up-now mt-10 border-t border-line" style={{ ['--d' as string]: '0.55s' }}>
+              <ol className="mt-10 border-t border-line">
                 {[
                   `Antwort innerhalb von ${company.promises.responseHours}\u00A0Stunden`,
                   `Angebot innerhalb von ${company.promises.offerHours}\u00A0Stunden`,

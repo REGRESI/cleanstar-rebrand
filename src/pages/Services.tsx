@@ -5,7 +5,6 @@ import { PageHero } from '@/components/ui/PageHero'
 import { answers } from '@/content/answers'
 import { Answer } from '@/components/ui/Answer'
 import { Collage } from '@/components/ui/Collage'
-import { WipeScene } from '@/components/scenes/WipeScene'
 import { ServiceChapters } from '@/components/services/ServiceChapters'
 import { FinalCta } from '@/components/home/FinalCta'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -58,7 +57,6 @@ export default function Services() {
       </Answer>
       <ScrubStatement {...statements.leistungen} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
       <ServiceChapters />
-      <WipeScene />
       <section className="on-dark tone-dark section bg-night text-paper" aria-labelledby="incl-title">
         <div className="container-site">
           <SectionHeading
@@ -72,7 +70,7 @@ export default function Services() {
           <div className="grid-site mt-14 gap-y-16 lg:mt-20 lg:items-center">
             <ol className="col-span-12 lg:col-span-6">
               {included.map((t, i) => (
-                <li key={t} className="flex items-baseline gap-5 border-b border-line py-5 first:border-t" data-reveal>
+                <li key={t} className="flex items-baseline gap-5 border-b border-line py-5 first:border-t">
                   <span className="t-label w-7 shrink-0">{String(i + 1).padStart(2, '0')}</span>
                   <span className="text-[1.25rem] tracking-[-0.015em]">{t}</span>
                 </li>

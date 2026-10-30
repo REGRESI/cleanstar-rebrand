@@ -60,7 +60,7 @@ export default function Guides() {
                 {guides
                   .filter((g) => g.category === c.id)
                   .map((g) => (
-                    <li key={g.slug} data-reveal>
+                    <li key={g.slug}>
                       <GuideCard g={g} />
                     </li>
                   ))}
@@ -82,7 +82,7 @@ export default function Guides() {
           <ul className="mt-14 border-b border-line lg:mt-20">
             {tools.map((t, i) => (
               <li key={t.to} className="border-t border-line">
-                <Link to={t.to} className="group grid grid-cols-[2.75rem_1fr_auto] items-baseline gap-x-4 py-6 lg:grid-cols-12 lg:gap-x-8" data-reveal>
+                <Link to={t.to} className="group grid grid-cols-[2.75rem_1fr_auto] items-baseline gap-x-4 py-6 lg:grid-cols-12 lg:gap-x-8">
                   <span className="t-label lg:col-span-3">{String(i + 1).padStart(2, '0')}</span>
                   <span className="min-w-0 lg:col-span-8">
                     <span className="ulink text-[1.25rem] font-medium min-[400px]:text-[1.5rem] tracking-[-0.02em]">{t.title}</span>

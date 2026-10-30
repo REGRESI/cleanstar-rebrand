@@ -72,7 +72,7 @@ export default function Careers() {
               text="Keine passende Stelle dabei? Bewerben Sie sich trotzdem, wir freuen uns über gute Leute."
             />
           </div>
-          <div className="col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
+          <div className="col-span-12 lg:col-span-7 lg:col-start-6">
             <Accordion
               defaultOpen={0}
               items={open.map((j) => ({
@@ -128,7 +128,7 @@ export default function Careers() {
               size="h3"
               text="Name, Telefonnummer, wann Sie können. Mehr brauchen wir nicht für den ersten Schritt. Wir rufen Sie zurück."
             />
-            <p className="mt-8 text-muted-dark" data-reveal>
+            <p className="mt-8 text-muted-dark">
               Oder rufen Sie direkt an:{' '}
               <a href={company.phone.href} className="ulink font-medium text-paper">
                 {company.phone.display}

@@ -9,7 +9,6 @@ import { CompanyDocs } from '@/features/forms/CompanyDocs'
 import { ContactPerson } from '@/components/ui/ContactPerson'
 import { company, fullAddress } from '@/content/company'
 import { breadcrumbSchema, localBusinessSchema } from '@/lib/schema'
-import { RevealText } from '@/components/ui/RevealText'
 
 const trail = [
   { name: 'Startseite', path: '/' },
@@ -46,7 +45,7 @@ export default function Contact() {
             <ul className="mt-12 border-b border-line">
               {cards.map((c) => (
                 <li key={c.label} className="border-t border-line">
-                  <a href={c.href} {...(c.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})} className="group block py-5" data-reveal>
+                  <a href={c.href} {...(c.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})} className="group block py-5">
                     <span className="t-label block">{c.label}</span>
                     <span className="ulink mt-2 inline-block text-[1.375rem] font-medium tracking-[-0.02em] min-[420px]:text-[1.625rem]">
                       {c.value.includes('@') ? (
@@ -63,7 +62,7 @@ export default function Contact() {
                 </li>
               ))}
             </ul>
-            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 font-medium tabular-nums text-[0.8125rem]" data-reveal>
+            <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 font-medium tabular-nums text-[0.8125rem]">
               <dt className="text-muted">Firma</dt>
               <dd>{company.legalName}</dd>
               <dt className="text-muted">Adresse</dt>
@@ -74,10 +73,13 @@ export default function Contact() {
               <dd>{company.availability}. Kein Callcenter: Sie erreichen direkt einen der drei Gründer.</dd>
             </dl>
           </div>
-          <div className="col-span-12 lg:col-span-6 lg:col-start-7">
-            <p className="t-label mb-6">Nachricht</p>
-            <RevealText as="h2" text="Schreiben Sie uns." className="t-h3 mb-10" />
-            <ContactForm />
+          {/* Anfrageformular als Karte mit Reiter (wie die Leistungsmappe) */}
+          <div className="tab-shadow col-span-12 lg:col-span-6 lg:col-start-7">
+            <div className="tab-card is-white p-6 sm:p-10">
+              <p className="t-label tab-label">Nachricht</p>
+              <h2 className="t-h3 mb-10">Schreiben Sie uns.</h2>
+              <ContactForm />
+            </div>
           </div>
         </div>
       </section>
@@ -92,7 +94,7 @@ export default function Contact() {
             id="booking-title"
             text="Wir sehen uns Ihre Räume an und schicken Ihnen innerhalb von 48 Stunden ein schriftliches Angebot."
           />
-          <div className="mt-14 lg:mt-20" data-reveal>
+          <div className="mt-14 lg:mt-20">
             <BookingEmbed />
           </div>
         </div>
@@ -107,7 +109,7 @@ export default function Contact() {
             id="docs-title"
             text="Alles, was Sie brauchen, um uns als Dienstleister anzulegen. Zum Kopieren und Herunterladen."
           />
-          <div className="mt-14 lg:mt-20" data-reveal>
+          <div className="mt-14 lg:mt-20">
             <CompanyDocs />
           </div>
         </div>

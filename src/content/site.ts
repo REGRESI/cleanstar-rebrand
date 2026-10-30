@@ -38,16 +38,24 @@ export const home = {
     /** Große Zeile der H1: das Markenversprechen */
     headline: 'Sauber.\nOhne dass Sie nachfragen müssen.',
     cta: 'Kostenlose Besichtigung',
-    /** Untertitel zum Scroll-Video: Flug ins Gebäude, Feierabend und Reinigung, Morgen */
-    sceneSteps: ['Scrollen Sie, um durch das Büro zu gehen', 'Wir kommen, wenn Sie gehen', 'Am Morgen: makellos'],
+    /** Getippte Sätze im Hero (Feierabend, Staub, Plan, Morgen); stehen zusätzlich als Text im HTML */
+    typed: ['Wenn Ihr Team geht,', 'kommen wir.', 'Raum für Raum, nach Checkliste.', 'Und morgen früh ist alles bereit.'],
+    /** Satz an der Kreiskante beim Übergang in die Leistungen */
+    circle: 'Ein festes Team, das Ihr Büro kennt',
     imageAlt: 'Bürogebäude in der Abenddämmerung vor bewaldeten Hügeln',
     imageAltMorning: 'Aufgeräumtes, sauberes Großraumbüro am Morgen',
-    /** Handy: Sequenz als Karte mit Überschrift und drei Schritten */
+    /** Leistungsmappe: Überschrift und drei Schritte der Nacht */
     sequenceTitle: 'Ihr Büro über Nacht',
     sequenceSteps: [
       { title: 'Feierabend', text: 'Ihr Team geht nach Hause.' },
       { title: 'Reinigung', text: 'Wir kommen, wenn Sie gehen.' },
       { title: 'Am Morgen makellos', text: 'Alles bereit, bevor der Erste kommt.' },
+    ],
+    stillAlts: [
+      'Großraumbüro am Abend nach Feierabend, auf den Tischen liegen noch Tassen und Papier',
+      'Dasselbe Büro, links schon als Linienzeichnung, rechts noch als Foto',
+      'Linienzeichnung des Büros mit abgehakten Prüfpunkten',
+      'Dasselbe Büro am Morgen, aufgeräumt und sauber',
     ],
   },
   /** Die drei Versprechen in einem Satz: der Beweis für die Leitidee */

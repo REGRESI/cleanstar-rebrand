@@ -53,7 +53,7 @@ export function AreaMap({ className }: { className?: string }) {
       <div className="lg:col-span-8">
         <div
           ref={frame}
-          className="relative aspect-square overflow-hidden border border-line bg-paper sm:aspect-[4/3]"
+          className="card-shadow relative aspect-square overflow-hidden rounded-[14px] bg-paper sm:aspect-[4/3]"
           role="region"
           aria-label="Karte des Einzugsgebiets im Ortenaukreis"
         >

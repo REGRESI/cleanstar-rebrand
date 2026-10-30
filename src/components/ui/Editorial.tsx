@@ -49,9 +49,9 @@ export function NumberedRows({
     <List className={cn('border-b', dark ? 'border-line-dark' : 'border-line', className)}>
       {items.map((it, i) => (
         <li key={it.key ?? i} className="relative">
-          <span aria-hidden data-reveal-rule className={cn('rule absolute inset-x-0 top-0', dark && 'bg-line-dark')} />
+          <span aria-hidden className={cn('rule absolute inset-x-0 top-0', dark && 'bg-line-dark')} />
           {layout === 'row' ? (
-            <div className="grid-site gap-y-3 py-7 sm:py-9 lg:py-10" data-reveal>
+            <div className="grid-site gap-y-3 py-7 sm:py-9 lg:py-10">
               {numbered && <p className={cn('t-label col-span-12 lg:pt-1.5', total ? 'lg:col-span-2' : 'lg:col-span-1')}>{num(i)}</p>}
               <div className={cn('col-span-12', numbered ? (total ? 'lg:col-span-4' : 'lg:col-span-5') : 'lg:col-span-6')}>
                 <Title className={titleCls}>{it.title}</Title>
@@ -60,7 +60,7 @@ export function NumberedRows({
               {it.text && <div className={cn('col-span-12 measure lg:col-span-5 lg:col-start-8', dark ? 'text-muted-dark' : 'text-ink-2')}>{it.text}</div>}
             </div>
           ) : (
-            <div className={cn('grid gap-x-5 py-6 sm:py-7', !numbered ? 'grid-cols-1' : total ? 'grid-cols-[4.5rem_1fr]' : 'grid-cols-[2.75rem_1fr]')} data-reveal>
+            <div className={cn('grid gap-x-5 py-6 sm:py-7', !numbered ? 'grid-cols-1' : total ? 'grid-cols-[4.5rem_1fr]' : 'grid-cols-[2.75rem_1fr]')}>
               {numbered && <p className="t-label pt-1">{num(i)}</p>}
               <div className="min-w-0">
                 <Title className={titleCls}>{it.title}</Title>
@@ -104,8 +104,8 @@ export function FeatureColumns({
   return (
     <ul className={cn('grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:gap-x-8', cols, className)}>
       {items.map((it, i) => (
-        <li key={i} className="relative pt-6" data-reveal>
-          <span aria-hidden data-reveal-rule className={cn('rule absolute inset-x-0 top-0', dark && 'bg-line-dark')} />
+        <li key={i} className="relative pt-6">
+          <span aria-hidden className={cn('rule absolute inset-x-0 top-0', dark && 'bg-line-dark')} />
           <p className="t-label">{String(i + 1).padStart(2, '0')}</p>
           <Title className="mt-6 text-[1.375rem] leading-[1.2] font-medium tracking-[-0.02em]">{it.title}</Title>
           <p className={cn('mt-3', dark ? 'text-muted-dark' : 'text-ink-2')}>{it.text}</p>

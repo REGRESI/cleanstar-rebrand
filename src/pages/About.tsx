@@ -65,7 +65,7 @@ export default function About() {
           <ul className="grid-site mt-16 gap-y-16 lg:mt-24">
             {founders.map((f, i) => (
               <li key={i} className="col-span-12 md:col-span-4">
-                <span aria-hidden data-reveal-rule className="rule mb-6 block" />
+                <span aria-hidden className="rule mb-6 block" />
                 <h3 className="text-[2.25rem] leading-none font-medium tracking-[-0.04em] lg:text-[2.75rem]">{f.name ?? `Gründer ${i + 1}`}</h3>
                 <p className="t-meta mt-3">{f.role.replace('Gründer · ', '')}</p>
                 <p className="mt-5 text-ink-2">{f.bio}</p>
@@ -119,7 +119,7 @@ export default function About() {
             {responsibilities.map((r) => {
               const f = founders[r.who]
               return (
-                <li key={r.topic} className="grid grid-cols-1 gap-x-8 gap-y-1 border-t border-line py-5 lg:grid-cols-12 lg:py-6" data-reveal>
+                <li key={r.topic} className="grid grid-cols-1 gap-x-8 gap-y-1 border-t border-line py-5 lg:grid-cols-12 lg:py-6">
                   <span className="text-[1.25rem] font-medium tracking-[-0.015em] lg:col-span-4">{r.topic}</span>
                   <span className="text-ink-2 lg:col-span-5">{r.example}</span>
                   {f && <span className="mt-2 font-medium tabular-nums text-[0.8125rem] lg:col-span-3 lg:mt-1 lg:text-right">{f.name}</span>}
@@ -137,13 +137,13 @@ export default function About() {
 
       <section className="section bg-surface" aria-labelledby="story-title">
         <div className="container-site grid-site gap-y-10">
-          <span aria-hidden data-reveal-rule className="rule col-span-12 mb-4" />
+          <span aria-hidden className="rule col-span-12 mb-4" />
           <div className="col-span-12 lg:col-span-4">
             <p className="t-label mb-6">Unsere Geschichte</p>
             <RevealText as="h2" text="Warum es CleanStar gibt." id="story-title" className="t-h3" />
             <Collage className="mt-12 max-w-md lg:mt-16" layers={[{ id: 'inspection' }, { id: 'quality-check' }, { id: 'svc-buero-detail' }]} />
           </div>
-          <div className="prose-cs col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
+          <div className="prose-cs col-span-12 lg:col-span-7 lg:col-start-6">
             <p className="t-lead">
               Viele Unternehmen kennen das: Die Reinigungsfirma kommt, aber niemand weiß genau, wer und wann. Beschwerden landen in einer Warteschleife, und nach ein paar Monaten
               lässt die Qualität nach.
@@ -175,7 +175,7 @@ export default function About() {
             <SectionHeading layout="rail" eyebrow="Meilensteine" title="Unser Weg bisher." id="timeline-title" />
             <ol className="mt-14 border-b border-line lg:mt-20">
               {timeline.map((t) => (
-                <li key={t.title} className="grid-site gap-y-2 border-t border-line py-7" data-reveal>
+                <li key={t.title} className="grid-site gap-y-2 border-t border-line py-7">
                   <p className="col-span-12 font-medium tabular-nums text-[0.9375rem] lg:col-span-3">{t.year}</p>
                   <h3 className="col-span-12 text-[1.5rem] leading-tight font-medium tracking-[-0.02em] lg:col-span-4">{t.title}</h3>
                   <p className="col-span-12 text-ink-2 lg:col-span-5">{t.text}</p>
@@ -201,7 +201,7 @@ export default function About() {
             <p className="t-label mb-6">Team</p>
             <RevealText as="h2" text="Feste Teams statt ständig neuer Gesichter." id="team-title" className="t-h2" />
           </div>
-          <p className="t-lead col-span-12 measure text-paper lg:col-span-5 lg:col-start-8" data-reveal>
+          <p className="t-lead col-span-12 measure text-paper lg:col-span-5 lg:col-start-8">
             Unsere Mitarbeitenden arbeiten in festen Objekten und werden dort eingearbeitet. So entsteht Routine, und Sie wissen, wer bei Ihnen arbeitet.
           </p>
         </div>
