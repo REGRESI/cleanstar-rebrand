@@ -3,6 +3,11 @@ import { ScrollTrigger } from '@/lib/gsap'
 import { replay } from '@/lib/replay'
 import { prefersReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
+import { writeCap } from './pen'
+
+// Füller-Pfade erst laden, wenn eine Moment-Überschrift auf der Seite ist
+let penData: Promise<Record<string, number[][]>> | null = null
+const loadPen = () => (penData ??= import('./penStrokes').then((m) => m.PEN))
 
 /**
  * Moment-Überschrift (Referenz: why.zero, „You Believed“): schmale Serifenschrift (Instrument Serif) mit EINEM
@@ -69,26 +74,64 @@ export function MomentHeading({
       el.setAttribute('data-mo', 'done')
       return
     }
-    const show = () => el.setAttribute('data-mo', 'on')
+    // Erscheinen: zuerst schreibt der Füller den Großbuchstaben, danach kommen die Wörter aus dem Nebel
+    let pen: { cancel: () => void } | null = null
+    let alive = true
+    const capEl = el.querySelector<HTMLElement>('.moment-cap')
+    const color = capEl ? getComputedStyle(capEl).color : '#12306e'
+    const pens = loadPen()
+    const show = () => {
+      pen?.cancel()
+      pen = null
+      el.removeAttribute('data-pen')
+      el.style.removeProperty('--pen-d')
+      el.setAttribute('data-mo', 'on')
+      pens.then((all) => {
+        if (!alive || el.getAttribute('data-mo') !== 'on' || !capEl) return
+        const strokes = all[cap]
+        if (!strokes) return
+        el.setAttribute('data-pen', 'run')
+        const r = writeCap(capEl, cap, strokes, color, () => el.setAttribute('data-pen', 'done'))
+        if (!r) return el.removeAttribute('data-pen')
+        pen = r
+        el.style.setProperty('--pen-d', `${(r.duration * 0.82).toFixed(2)}s`)
+      })
+    }
     // rückwärts nur, wenn sie zu sehen war (sonst bliebe der Ruhezustand „idle“)
-    const hide = () => el.getAttribute('data-mo') === 'on' && el.setAttribute('data-mo', 'out')
+    const hide = () => {
+      if (el.getAttribute('data-mo') !== 'on') return
+      pen?.cancel()
+      pen = null
+      el.setAttribute('data-pen', 'done')
+      el.setAttribute('data-mo', 'out')
+    }
+    const stop = () => {
+      alive = false
+      pen?.cancel()
+    }
     if (play !== undefined) {
       if (play) show()
       else hide()
-      return
+      return stop
     }
     // bei jedem Durchqueren: hinein erscheinen, hinaus (in beide Richtungen) rückwärts verschwinden
-    return replay(el, show, hide, { start: 'top 82%', end: 'bottom 4%' })
-  }, [play])
+    const off = replay(el, show, hide, { start: 'top 82%', end: 'bottom -14%' })
+    return () => {
+      stop()
+      off()
+    }
+  }, [play, cap])
 
   // Verschwinden nach oben, an die Scrollposition gekoppelt
   useEffect(() => {
     const el = ref.current
     if (!el || !vanish || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
+    // Lesbar, bis die Überschrift das obere Viertel erreicht und mindestens 70 % der Bildschirmhöhe gescrollt wurde
+    // (sie erscheint bei 82 %, verschwindet also frühestens ab 12 %); dann nach oben
     const st = ScrollTrigger.create({
       trigger: el,
-      start: 'top 22%',
-      end: 'bottom -5%',
+      start: 'top 12%',
+      end: 'bottom -12%',
       onUpdate: (s) => el.style.setProperty('--out', s.progress.toFixed(3)),
     })
     return () => st.kill()
@@ -114,7 +157,12 @@ export function MomentHeading({
           <Fragment key={k}>
             {/* Großbuchstabe und erstes Wort bleiben zusammen */}
             <span className="moment-w">
-              {k === 0 && <span className="moment-cap" style={capCss} data-c={cap} />}
+              {k === 0 && (
+                <span className="moment-cap" style={capCss} data-c={cap}>
+                  {/* Messpunkt auf der Grundlinie hinter der Glyphe (für den Füller-Effekt) */}
+                  <i className="mo-probe" />
+                </span>
+              )}
               {letters}
             </span>
             {k < words.length - 1 && words[k + 1] !== '\n' ? ' ' : null}
