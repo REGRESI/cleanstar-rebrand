@@ -58,7 +58,7 @@ export default function Home() {
         <CloudsReveal />
         <AreaTeaser moment={'Unser Zuhause:\ndie Ortenau.'} />
         <MappeTeaser />
-        <Answer question={answers.home.question} className="section-top" bottom="pb-4">
+        <Answer question={answers.home.question} bottom="pb-4">
           {answers.home.text}
         </Answer>
       </Chunk>

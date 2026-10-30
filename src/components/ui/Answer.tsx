@@ -71,7 +71,7 @@ export function Answer({
   const list = [...extraFacts, ...(facts ?? baseFacts())]
   const [lead, more] = splitAnswer(children)
   return (
-    <section aria-labelledby="answer-title" className={cn('section bg-paper text-ink', className)}>
+    <section aria-labelledby="answer-title" className={cn('section-tight bg-paper text-ink', className)}>
       <div className="container-site">
         <p className="t-label">{question ? 'Kurz beantwortet' : 'Auf einen Blick'}</p>
         <h2 id="answer-title" className="mt-3 text-[1rem] font-medium text-ink-2">
