@@ -99,17 +99,19 @@ export function Arrival({
       onUpdate: (s) => apply(s.progress),
       onRefresh: (s) => {
         apply(s.progress)
-        show(s.scroll() >= s.start)
+        show(s.scroll() >= s.start, s.start)
       },
       // Die Bühne überlappt das Ende des gepinnten Heros: erst sichtbar, wenn sie genau dort steht (gleiches Bild)
-      onEnter: () => show(true),
-      onLeaveBack: () => show(false),
+      onEnter: (s) => show(true, s.start),
+      onLeaveBack: (s) => show(false, s.start),
     })
-    function show(on: boolean) {
-      if (stage.current) stage.current.style.visibility = on || !overlap ? 'visible' : 'hidden'
+    // Start bei 0 heißt: Der Hero ist noch nicht gepinnt (sein Pin entsteht erst nach dem Umschalten), die Bühne läge
+    // dann über dem Hero-Anfang. Erst zeigen, wenn der Start hinter dem Hero liegt (sonst Sprung beim Laden, CLS).
+    function show(on: boolean, start: number) {
+      if (stage.current) stage.current.style.visibility = !overlap || (on && start > 0) ? 'visible' : 'hidden'
     }
     apply(st.progress)
-    show(st.scroll() >= st.start)
+    show(st.scroll() >= st.start, st.start)
     return () => st.kill()
   }, [EDGE.length, overlap])
 

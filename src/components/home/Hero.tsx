@@ -371,11 +371,15 @@ export function Hero() {
   const webgl = engine === 'webgl'
 
   return (
-    <section ref={section} aria-labelledby="hero-title" className="relative" data-tone-start="dark" data-tone-end={pinned ? 'surface' : 'dark'}>
-      <div ref={spacer}>
+    // Kante unten schon im ersten HTML wie im gepinnten Zustand (Modus steht dort noch nicht fest): Sonst nimmt die
+    // Übergangsmarkierung (tones.ts) dem Text vor dem Laden den unteren Abstand und gibt ihn danach zurück (CLS)
+    <section ref={section} aria-labelledby="hero-title" className="relative" data-tone-start="dark" data-tone-end={mode === 'stills' ? 'dark' : 'surface'}>
+      {/* Der Pin-Weg (lengthVh = 4.6) ist schon im CSS reserviert (.hero-spacer), sonst springt beim Laden alles darunter */}
+      <div ref={spacer} className={mode === 'stills' ? undefined : 'hero-spacer'}>
         <div ref={pin} className="hero-pin relative h-[100svh] min-h-[560px] overflow-hidden bg-night">
-          {/* Bildfenster: Desktop bildschirmfüllend, Handy ein hohes Fenster oben (Text darunter auf Navy) */}
-          <div ref={box} className={cn('hero-box photo absolute overflow-hidden bg-night', pinned ? 'is-pinned' : 'inset-0')}>
+          {/* Bildfenster: Desktop bildschirmfüllend, Handy ein hohes Fenster oben (Text darunter auf Navy). Die Maße stehen
+              schon im ersten HTML fest (nicht erst nach dem Umschalten auf „pinned“), sonst springt das Fenster (CLS) */}
+          <div ref={box} className="hero-box is-pinned photo absolute overflow-hidden bg-night">
             {/* Startbild als normales Bild (LCP) */}
             <img
               src={hero.desktop[0] ?? hero.still['aussen-d']}
@@ -448,8 +452,10 @@ export function Hero() {
                 kickerAfter
                 wordsClassName="t-display block text-paper"
               />
-              <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8 lg:mt-12">
-                <QuoteButton size="lg" arrow full={isMobile}>
+              {/* Höhe vorab reserviert (Button 3,75 rem, Abstand, Textlink): Der Browser zeichnet das erste Bild, bevor er
+                  diesen Teil gelesen hat; ohne Reserve rutscht die unten ausgerichtete Überschrift danach hoch (CLS) */}
+              <div className="mt-9 flex min-h-[6.9375rem] flex-col gap-5 sm:min-h-[3.75rem] sm:flex-row sm:items-center sm:gap-8 lg:mt-12">
+                <QuoteButton size="lg" arrow wrapClassName="flex max-md:w-full md:inline-flex" className="max-md:w-full">
                   {home.hero.cta}
                 </QuoteButton>
                 <a href={company.phone.href} className="tlink self-center text-paper sm:self-auto">

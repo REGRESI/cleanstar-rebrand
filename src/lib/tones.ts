@@ -11,10 +11,13 @@ function markTones(doc: Document) {
   const wrap = main && main.firstElementChild
   if (!wrap) return
   const blocks: HTMLElement[] = []
+  // Platzhalter (<template> aus dem Vorrendern) bleiben drin: Dahinter steht noch nicht geladener Inhalt, dessen Fläche
+  // unbekannt ist. Kanten daneben bleiben unangetastet (sonst entfällt ein Abstand und kommt nach dem Laden zurück).
   for (const el of Array.from(wrap.children) as HTMLElement[]) if (el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE') blocks.push(el)
   const footer = doc.querySelector<HTMLElement>('body footer')
   if (footer) blocks.push(footer)
   const tone = (el: HTMLElement, edge: 'Start' | 'End') => {
+    if (el.tagName === 'TEMPLATE') return null
     const own = el.dataset['tone' + edge] || el.dataset.tone
     if (own) return own
     if (el.tagName === 'FIGURE') return 'image'
@@ -44,8 +47,9 @@ function markTones(doc: Document) {
   blocks.forEach((el, i) => {
     const prev = blocks[i - 1]
     const next = blocks[i + 1]
-    const top = !!prev && tone(prev, 'End') !== tone(el, 'Start')
-    const bottom = !!next && tone(next, 'Start') !== tone(el, 'End')
+    if (el.tagName === 'TEMPLATE') return
+    const top = !!prev && tone(prev, 'End') !== null && tone(prev, 'End') !== tone(el, 'Start')
+    const bottom = !!next && tone(next, 'Start') !== null && tone(next, 'Start') !== tone(el, 'End')
     if (top || bottom) jobs.push({ el, top, bottom })
   })
   if (footer && jobs.some((j) => j.el === footer && j.top)) footer.setAttribute('data-no-top', '')

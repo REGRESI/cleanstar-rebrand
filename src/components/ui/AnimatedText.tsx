@@ -255,7 +255,9 @@ export const TypeText = forwardRef<TypeHandle, { text: string; className?: strin
   return (
     <span ref={host} className={className}>
       <span className="sr-only">{text}</span>
-      <span aria-hidden>
+      {/* Zeile verborgen, nur getippte Buchstaben sichtbar: Sonst zählt der Browser die Leerzeichen als gezeichneten Text
+          (großes LCP-Element, das erst nach dem Laden erscheint) */}
+      <span aria-hidden className="ty-line">
         {text.split(' ').map((w, i, arr) => (
           <Fragment key={i}>
             <span className="whitespace-nowrap">

@@ -727,6 +727,7 @@ html.lenis body {
 }
 
 /* type (Hero): 0 noch nicht da, 1 fertig, 2 Spitze in hellem Blau, 3 neuester Buchstabe blass, 4 weggetippt */
+.ty-line,
 .ty-c {
   visibility: hidden;
 }
@@ -2253,6 +2254,12 @@ footer[data-no-top] {
 .arrive-run {
   height: 220svh;
 }
+/* Pin-Weg des Heros vorab reservieren (gleich lengthVh in Hero.tsx); GSAP setzt danach denselben Wert inline */
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion .hero-spacer {
+    padding-bottom: calc(100vh * 4.6);
+  }
+}
 /* Überlappt das Ende des Heros: Die Bühne liegt genau dort, wo der gepinnte Hero beim Loslassen steht (gleiches Bild) */
 .js-motion .arrive.is-overlap {
   z-index: 2;
@@ -2261,6 +2268,13 @@ footer[data-no-top] {
 @media (prefers-reduced-motion: reduce) {
   .js-motion .arrive.is-overlap {
     margin-top: 0;
+  }
+}
+/* Bis das Skript die Bühne an ihren Platz gesetzt hat, bleibt sie verborgen: Im ersten HTML läge sie sonst über dem
+   Hero und würde nach dem Anlegen des Pin-Abstands nach unten springen (CLS) */
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion .arrive.is-overlap .arrive-stage {
+    visibility: hidden;
   }
 }
 .arrive-cards {
@@ -2400,7 +2414,8 @@ footer[data-no-top] {
 .svh-text {
   display: block;
   padding-bottom: 0.5rem;
-  opacity: calc(0.2 + var(--k, 1) * 0.8);
+  /* nur Bewegung, keine Transparenz: Der Text hat in jedem Moment vollen Kontrast */
+  transform: translate3d(calc((1 - var(--k, 1)) * 3rem), 0, 0);
 }
 .svh-arrow svg {
   transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);

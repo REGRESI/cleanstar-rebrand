@@ -22,7 +22,7 @@ for (const [device, viewport] of [
   for (let i = 0; i < RUNS; i++) {
     // Neuladen an einer zufälligen Stelle (vor, im oder nach dem Scroll-Text)
     const pre = await page.evaluate(() => {
-      const s = document.querySelector('.story')
+      const s = document.querySelector('.statement-text')
       return { top: s.getBoundingClientRect().top + window.scrollY, h: s.offsetHeight, vh: window.innerHeight }
     })
     const at = Math.round(Math.random() * (pre.top + pre.h))
@@ -30,21 +30,23 @@ for (const [device, viewport] of [
     await page.reload({ waitUntil: 'networkidle' })
     await page.waitForTimeout(1200)
     const s = await page.evaluate(() => {
-      const st = document.querySelector('.story')
+      const st = document.querySelector('.statement-text')
       return { top: st.getBoundingClientRect().top + window.scrollY, h: st.offsetHeight, vh: window.innerHeight }
     })
-    // in den Abschnitt scrollen (Mitte des Färbewegs) und Zustand lesen
-    const target = s.top + (s.h - s.vh) * (0.3 + Math.random() * 0.4)
+    // in den Färbeweg scrollen (Oberkante bei 82 % bis Unterkante bei 50 % der Bildschirmhöhe, siehe ScrubStatement)
+    const from = s.top - s.vh * 0.82
+    const len = s.top + s.h - s.vh * 0.5 - from
+    const target = from + len * (0.3 + Math.random() * 0.4)
     await page.evaluate((y) => (window.__lenis ? window.__lenis.scrollTo(y, { immediate: true }) : window.scrollTo(0, y)), target)
     await page.waitForTimeout(1300)
     const read = () =>
       page.evaluate(() => {
-        const ls = [...document.querySelectorAll('.story [data-l]')]
+        const ls = [...document.querySelectorAll('.statement-text [data-l]')]
         const p = ls.map((l) => Number(l.style.getPropertyValue('--p') || 0))
         return { full: p.filter((v) => v >= 1).length, n: p.length, sum: p.reduce((a, b) => a + b, 0) }
       })
     const a = await read()
-    await page.evaluate(() => (window.__lenis ? window.__lenis.scrollTo(window.scrollY + 260, { immediate: true }) : window.scrollBy(0, 260)))
+    await page.evaluate((d) => (window.__lenis ? window.__lenis.scrollTo(window.scrollY + d, { immediate: true }) : window.scrollBy(0, d)), Math.round(len * 0.15))
     await page.waitForTimeout(1300)
     const b = await read()
     const ok = a.full > 0 && a.full < a.n && b.sum > a.sum
