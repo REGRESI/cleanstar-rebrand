@@ -3213,12 +3213,26 @@ button:hover > .seal .seal-ring {
   --cw: 20rem;
   --ch: 29.5rem;
   position: relative;
-  height: calc(var(--ch) * 1.42);
+  height: calc(var(--ch) * 1.26);
   display: grid;
   place-items: center;
   perspective: 1400px;
   outline: none;
   touch-action: pan-y;
+}
+.rf-pick {
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9375rem;
+  color: var(--color-ink-2);
+  background: var(--color-paper);
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.rf-pick:hover,
+.rf-pick.is-on {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
 }
 .rf-stage:focus-visible {
   outline: 2px solid var(--color-blue);

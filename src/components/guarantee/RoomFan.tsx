@@ -61,6 +61,17 @@ export function RoomFan() {
     })
   }
 
+  // Raum aus der Liste wählen: Karte nach oben holen und aufdecken
+  const pick = (id: number) => {
+    setGone((g) => {
+      const rest = { ...g }
+      delete rest[id]
+      return rest
+    })
+    setOrder((o) => [...o.filter((i) => i !== id), id])
+    setOpen(id)
+  }
+
   // Escape legt die offene Karte zurück
   useEffect(() => {
     if (open === null) return
@@ -140,17 +151,27 @@ export function RoomFan() {
     )
 
   return (
-    <section className="section overflow-x-clip bg-paper" aria-labelledby="fan-title">
+    <section className="section-tight overflow-x-clip bg-paper" aria-labelledby="fan-title">
       <div className="container-site grid-site gap-y-10 lg:items-center">
-        <div className="col-span-12 lg:col-span-4">
+        <div className="col-span-12 lg:col-span-5">
           <Heading />
           <p className="mt-6 max-w-[34ch] text-ink-2">Klicken oder tippen Sie eine Karte an, um die Prüfpunkte zu sehen. Ziehen Sie eine Karte zur Seite, liegt die nächste oben.</p>
           <button type="button" className="tlink mt-8 inline-flex items-center gap-2" onClick={reshuffle}>
             <RotateCcw className="size-4" aria-hidden />
             Stapel neu mischen
           </button>
+          {/* Desktop: alle Räume auf einen Blick, ein Klick holt die Karte nach oben und dreht sie um */}
+          <ul className="mt-12 hidden max-w-[30rem] flex-wrap gap-2.5 lg:flex" aria-hidden>
+            {zones.map((z, i) => (
+              <li key={z.id}>
+                <button type="button" tabIndex={-1} onClick={() => pick(i)} className={cn('rf-pick', open === i && 'is-on')}>
+                  {z.name}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="col-span-12 lg:col-span-8">
+        <div className="col-span-12 lg:col-span-7">
           <div
             className={cn('rf-stage', spread && 'is-spread', open !== null && 'is-open')}
             role="group"
