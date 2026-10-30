@@ -200,6 +200,10 @@ html.lenis body {
   .section-tight {
     padding-block: clamp(4rem, 2.5rem + 5vw, 7.5rem);
   }
+  /* Abschnitt nach einem mit derselben Fläche (tones.ts): der Abstand darüber kommt schon vom vorigen */
+  .section[data-tight-top] {
+    padding-top: clamp(2.5rem, 1rem + 4vw, 5rem);
+  }
 
   /* Alte Klassennamen, auf das neue System abgebildet */
   .heading-display {
@@ -1175,6 +1179,9 @@ footer[data-no-top] {
   opacity: 0;
   will-change: transform, opacity;
 }
+.map-hud {
+  z-index: 3;
+}
 .map-meter {
   position: absolute;
   left: 1rem;
@@ -1186,6 +1193,15 @@ footer[data-no-top] {
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.3s var(--ease-cs), transform 0.3s var(--ease-cs);
+}
+@media (max-width: 767px) {
+  /* Handy: oben links, unten liegt der Quellenhinweis der Karte */
+  .map-meter {
+    top: 0.75rem;
+    bottom: auto;
+    left: 0.75rem;
+    padding: 0.5rem 0.7rem;
+  }
 }
 .map-hud[data-on] .map-meter {
   opacity: 1;
@@ -1227,6 +1243,18 @@ footer[data-no-top] {
   from {
     opacity: 0;
     transform: translateY(10px);
+  }
+}
+/* Ort weit oben im Bild: Karte unter die Markierung, nicht abgeschnitten */
+.map-arrive.is-below .map-arrive-card {
+  top: 18px;
+  bottom: auto;
+}
+@media (max-width: 767px) {
+  .map-arrive-card {
+    left: auto;
+    right: -4rem;
+    min-width: 10.5rem;
   }
 }
 .map-arrive-name.moment {

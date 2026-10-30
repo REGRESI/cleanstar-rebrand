@@ -2,7 +2,8 @@
  * Übergänge zwischen Abschnitten: Hat der Abschnitt davor bzw. danach eine andere Fläche (hell, Papierfläche,
  * dunkel, randloses Bild), entfällt die Haarlinie, die genau am Anfang bzw. Ende seines Inhalts liegt, samt ihrem
  * Innenabstand. So bleibt am Übergang nur der Abschnittsabstand, oben wie unten gleich.
- * Elemente bekommen dafür data-no-top bzw. data-no-bottom (CSS in index.css).
+ * Elemente bekommen dafür data-no-top bzw. data-no-bottom (CSS in index.css). Folgt ein Abschnitt auf einen mit derselben
+ * Fläche, bekommt er data-tight-top (kleinerer Abstand oben, sonst addieren sich beide Innenabstände).
  * Abweichende Kanten lassen sich mit data-tone-start / data-tone-end festlegen (z. B. Seitenkopf, der mit einem Bild endet).
  * Positionen werden über offsetTop bestimmt, also ohne Transformationen (Einblend-Animationen verfälschen nichts).
  */
@@ -39,15 +40,19 @@ function markTones(doc: Document) {
       parseFloat(cs.borderRightWidth) === 0 &&
       !e.matches('.btn, .field, .choice, input, select, textarea, button'))
 
-  doc.querySelectorAll('[data-no-top],[data-no-bottom]').forEach((e) => {
+  doc.querySelectorAll('[data-no-top],[data-no-bottom],[data-tight-top]').forEach((e) => {
     e.removeAttribute('data-no-top')
     e.removeAttribute('data-no-bottom')
+    e.removeAttribute('data-tight-top')
   })
   const jobs: { el: HTMLElement; top: boolean; bottom: boolean }[] = []
   blocks.forEach((el, i) => {
     const prev = blocks[i - 1]
     const next = blocks[i + 1]
     if (el.tagName === 'TEMPLATE') return
+    // Gleiche Fläche wie davor: Die Innenabstände beider Abschnitte addieren sich sonst zu einer großen leeren Fläche;
+    // der zweite Abschnitt beginnt dann mit kleinerem Abstand
+    if (prev && tone(prev, 'End') !== null && tone(prev, 'End') === tone(el, 'Start') && el.classList.contains('section')) el.setAttribute('data-tight-top', '')
     const top = !!prev && tone(prev, 'End') !== null && tone(prev, 'End') !== tone(el, 'Start')
     const bottom = !!next && tone(next, 'Start') !== null && tone(next, 'Start') !== tone(el, 'End')
     if (top || bottom) jobs.push({ el, top, bottom })

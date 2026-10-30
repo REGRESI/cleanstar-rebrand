@@ -75,7 +75,7 @@ export function Arrival({
       setPlay(t > 0.08)
       // Satz und Bilder kommen schon, während der Kreis wächst (keine leere untere Hälfte); das kleine Bild schiebt
       // sich danach etwas über das große
-      const c = span(t, 0.42, 0.7)
+      const c = span(t, 0.3, 0.58)
       rest.current.style.opacity = String(c)
       rest.current.style.transform = `translate3d(0, ${((1 - c) * 40).toFixed(1)}px, 0)`
       rest.current.style.setProperty('--slide', span(t, 0.5, 1).toFixed(3))

@@ -143,7 +143,7 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
               e.preventDefault()
               // Karte erst ins Bild holen, wenn sie kaum sichtbar ist; der Flug startet danach
               const r = frame.current?.getBoundingClientRect()
-              const visible = r ? Math.min(r.bottom, innerHeight) - Math.max(r.top, 0) > r.height * 0.6 : true
+              const visible = r ? Math.min(r.bottom, innerHeight) - Math.max(r.top, 0) > r.height * 0.92 : true
               if (!visible) frame.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
               window.setTimeout(() => api.current?.fly(l), visible ? 0 : 700)
               return true

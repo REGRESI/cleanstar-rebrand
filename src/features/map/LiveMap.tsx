@@ -541,7 +541,7 @@ export default function LiveMap({
           </span>
         </p>
         {arrive && (
-          <div className="map-arrive" style={{ left: arrive.xy[0], top: arrive.xy[1] }}>
+          <div className={arrive.xy[1] < 210 ? 'map-arrive is-below' : 'map-arrive'} style={{ left: arrive.xy[0], top: arrive.xy[1] }}>
             <span className="map-pulse" aria-hidden />
             <Sparkle play className="absolute -top-6 left-3 size-5" />
             <div className="map-arrive-card">
