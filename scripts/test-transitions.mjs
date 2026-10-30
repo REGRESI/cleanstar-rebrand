@@ -98,6 +98,11 @@ const textBoxes = () => {
   const add = (r0, el, label) => {
     const r = clip(r0, el)
     if (!r || r.width < 2 || r.height < 4) return
+    // Kartenstapel (Qualitätsgarantie): nur Texte, die wirklich oben liegen (Karten darunter und Rückseiten sind verdeckt)
+    if (el.closest('.rf-stage')) {
+      const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)
+      if (!hit || !(el.contains(hit) || hit.contains(el))) return
+    }
     if (r.bottom < 0 || r.top > vh || r.right < 0 || r.left > vw) return
     for (const c of covers) if (r.top < c.bottom && r.bottom > c.top && r.left < c.right && r.right > c.left) return
     out.push({ x: r.left, y: r.top, w: r.width, h: r.height, label, id: out.length, el })
