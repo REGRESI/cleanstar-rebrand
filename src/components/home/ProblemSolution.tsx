@@ -127,7 +127,9 @@ function Squeegee({ children }: { children: ReactNode }) {
         film.current.style.setProperty('--len', `${Math.hypot(W, 2 * s).toFixed(0)}px`)
       }
     }
-    const st = ScrollTrigger.create({ trigger: tail, start: 'top bottom', end: 'bottom top', scrub: 0.3, onUpdate: (x) => apply(x.progress), onRefresh: (x) => apply(x.progress) })
+    // Die Kante zieht schneller als gescrollt wird durch den Auslauf (Oberkante des Auslaufs von 95 % auf 50 % der
+    // Bildschirmhöhe): So bleibt nie eine große leere Navy-Fläche stehen
+    const st = ScrollTrigger.create({ trigger: tail, start: 'top 95%', end: 'top 50%', scrub: 0.3, onUpdate: (x) => apply(x.progress), onRefresh: (x) => apply(x.progress) })
     apply(st.progress)
     return () => {
       st.kill()

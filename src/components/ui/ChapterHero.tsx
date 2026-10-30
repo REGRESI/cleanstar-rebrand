@@ -123,7 +123,8 @@ export function ChapterHero({
       </div>
       <div className="container-site pt-10 sm:pt-12">
         <Breadcrumbs trail={trail} />
-        {children && <div className="grid-site mt-8"><div className="col-span-12 md:col-span-9 lg:col-span-7">{children}</div></div>}
+        {/* Einleitung links, Aktionen am Desktop rechts daneben (keine leere rechte Bildschirmhälfte) */}
+        {children && <div className="grid-site mt-8"><div className="col-span-12 md:col-span-9 lg:col-span-12 lg:flex lg:items-end lg:justify-between lg:gap-16">{children}</div></div>}
       </div>
     </section>
   )

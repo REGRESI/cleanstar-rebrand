@@ -48,8 +48,8 @@ export default function ServiceDetail() {
       <Seo title={s.seoTitle} description={s.seoDescription} path={path} ogType="leistung" schema={[serviceSchema(s, path), breadcrumbSchema(trail), faqSchema(s.faqs)]} />
       {/* Kapitel-Wort: Leistungsname steigt riesig über dem Foto auf und wird zur Seitenüberschrift */}
       <ChapterHero trail={trail} word={s.name} line={s.headline} image={s.image}>
-        <p className="t-lead text-ink">{s.intro}</p>
-        <div className="btn-row mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
+        <p className="t-lead text-ink lg:max-w-[40rem]">{s.intro}</p>
+        <div className="btn-row mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 lg:mt-0 lg:shrink-0">
           <QuoteButton size="lg" arrow />
           <Button to="/kontakt#besichtigung" variant="link">
             Besichtigung buchen
@@ -228,7 +228,7 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      <section className="section" aria-label="Checkliste zum Herunterladen">
+      <section className="section-tight" aria-label="Checkliste zum Herunterladen">
         <div className="container-site">
           <LeadMagnet />
         </div>

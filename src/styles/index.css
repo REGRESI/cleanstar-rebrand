@@ -189,13 +189,13 @@ html.lenis body {
     @apply grid grid-cols-12 gap-x-5 lg:gap-x-8;
   }
 
-  /* Vertikaler Rhythmus: Abschnitte 112 bis 216 px (viel Luft, wie bei den Referenzen) */
+  /* Vertikaler Rhythmus: Abschnitte 112 bis 184 px (viel Luft, aber keine leeren Bildschirmhälften an den Übergängen) */
   .section {
-    padding-block: clamp(7rem, 4rem + 10vw, 13.5rem);
+    padding-block: clamp(7rem, 4rem + 7.2vw, 11.5rem);
   }
   /* Abstand oben wie zwischen zwei Abschnitten, für Blöcke ohne eigenes .section */
   .section-top {
-    padding-top: clamp(7rem, 4rem + 10vw, 13.5rem);
+    padding-top: clamp(7rem, 4rem + 7.2vw, 11.5rem);
   }
   .section-tight {
     padding-block: clamp(4rem, 2.5rem + 5vw, 7.5rem);

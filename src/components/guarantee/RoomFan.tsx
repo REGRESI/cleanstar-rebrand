@@ -73,7 +73,7 @@ export function RoomFan() {
         const up = EASE_CS(span(p, c0, c0 + d * 0.45))
         const down = EASE_CS(span(p, c0 + d * 0.75, c0 + d * 1.05))
         if (mobile) {
-          const aside: Pose = { x: -cw * 0.42 + i * 3, y: H * 0.62 - ch / 2 + i * 4, r: -14 + i * 1.5, s: 0.58, o: 0.95 }
+          const aside: Pose = { x: -cw * 0.42 + i * 3, y: H * 0.62 - ch / 2 + i * 4, r: -14 + i * 1.5, s: 0.58, o: 1 }
           const lifted: Pose = { x: W / 2 - cw / 2, y: H * 0.46 - ch / 2, r: 0, s: 1.02, o: 1 }
           pose = mix(mix(pose, lifted, up), aside, down)
         } else {
@@ -81,7 +81,7 @@ export function RoomFan() {
           pose = mix(pose, lifted, up * (1 - down))
           // die übrigen treten zurück, solange eine Karte oben ist
           const active = Math.max(0, Math.min(n - 1, Math.floor((p - seq0) / d)))
-          if (p > seq0 && p < seq1 && i !== active) pose = { ...pose, o: 0.55, y: pose.y + 30 }
+          if (p > seq0 && p < seq1 && i !== active) pose = { ...pose, y: pose.y + 30 }
           // Ende: alle ordentlich nebeneinander (vier Spalten, zwei Reihen)
           const cols = 4
           const head = st0.querySelector<HTMLElement>('.rf-head')

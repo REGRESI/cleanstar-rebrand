@@ -123,6 +123,18 @@ const textBoxes = () => {
     if (!shown(el)) continue
     add(el.getBoundingClientRect(), el, 'getippt ' + el.dataset.c)
   }
+  // Liegt an der Überschneidung eine deckende Fläche (z. B. eine Karte im Stapel), die nur einen der beiden Texte enthält,
+  // ist der andere verdeckt und keine Überschneidung
+  const covered = (a, b, x, y) => {
+    let e = document.elementFromPoint(x, y)
+    for (; e && e !== document.body; e = e.parentElement) {
+      const cs = getComputedStyle(e)
+      const bg = cs.backgroundColor.match(/[\d.]+/g)
+      if (bg && (bg.length < 4 || Number(bg[3]) === 1) && Number(cs.opacity) === 1) break
+    }
+    if (!e || e === document.body) return false
+    return e.contains(a.el) !== e.contains(b.el)
+  }
   // Paare prüfen (Elemente in Vorfahr-Beziehung sind gewollt verschachtelt)
   const bad = []
   for (let i = 0; i < out.length; i++)
@@ -137,7 +149,7 @@ const textBoxes = () => {
       if (ix <= 0 || iy <= 0) continue
       const area = ix * iy
       const small = Math.min(a.w * a.h, b.w * b.h)
-      if (area > 0.2 * small && iy > 6) bad.push(`„${a.label}“ ↔ „${b.label}“`)
+      if (area > 0.2 * small && iy > 6 && !covered(a, b, Math.max(a.x, b.x) + ix / 2, Math.max(a.y, b.y) + iy / 2)) bad.push(`„${a.label}“ ↔ „${b.label}“`)
     }
   return bad
 }
