@@ -1,21 +1,24 @@
 /* global document, window -- Code in page.evaluate läuft im Browser */
-// Neuladen-Test für den Scroll-Text der Startseite: 20 Mal neu laden (Desktop und Handy), jeweils an eine zufällige
+// Neuladen-Test für den Scroll-Text (ScrubStatement): 20 Mal neu laden (Desktop und Handy), jeweils an eine zufällige
 // Stelle im Abschnitt scrollen und prüfen, dass die Färbung zur Scrollposition passt und beim Weiterscrollen mitläuft.
-// Aufruf: B=http://localhost:4177 node scripts/test-reload.mjs
+// Aufruf: B=http://localhost:4177 node scripts/test-reload.mjs (PAGES=/leistungen/,/einzugsgebiet/ wählt die Seiten)
+// Die Startseite hat seit der Finalen Runde keinen Scroll-Text mehr; geprüft werden Unterseiten mit Scroll-Text.
 import { createRequire } from 'node:module'
 // playwright wird nur für Tests installiert (npm i --no-save playwright), daher über require mit NODE_PATH
 const { chromium } = createRequire(import.meta.url)('playwright')
 
 const B = process.env.B || 'http://localhost:4177'
 const RUNS = Number(process.env.RUNS || 20)
+const PAGES = (process.env.PAGES || '/leistungen/,/einzugsgebiet/').split(',')
 let fails = 0
 const browser = await chromium.launch()
-for (const [label, viewport] of [
+for (const [device, viewport] of [
   ['Desktop', { width: 1440, height: 900 }],
   ['Mobile', { width: 390, height: 844 }],
-]) {
+]) for (const path of PAGES) {
+  const label = `${device} ${path}`
   const page = await (await browser.newContext({ viewport })).newPage()
-  await page.goto(B + '/', { waitUntil: 'networkidle' })
+  await page.goto(B + path, { waitUntil: 'networkidle' })
   for (let i = 0; i < RUNS; i++) {
     // Neuladen an einer zufälligen Stelle (vor, im oder nach dem Scroll-Text)
     const pre = await page.evaluate(() => {
@@ -48,7 +51,8 @@ for (const [label, viewport] of [
     if (!ok) fails++
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${label} Lauf ${i + 1}: neu geladen bei ${at} px, gefärbt ${a.full}/${a.n}, nach Weiterscrollen ${b.full}/${b.n}`)
   }
+  await page.context().close()
 }
 await browser.close()
-console.log(fails ? `✗ ${fails} Fehler` : `✓ alle ${RUNS * 2} Neuladen-Läufe bestanden`)
+console.log(fails ? `✗ ${fails} Fehler` : `✓ alle ${RUNS * 2 * PAGES.length} Neuladen-Läufe bestanden`)
 process.exit(fails ? 1 : 0)
