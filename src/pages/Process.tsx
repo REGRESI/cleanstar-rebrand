@@ -7,6 +7,7 @@ import { Answer } from '@/components/ui/Answer'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Picture } from '@/components/ui/Picture'
 import { ProcessTimeline } from '@/components/home/ProcessTimeline'
+import { FloatingRequests } from '@/components/process/FloatingRequests'
 import { FinalCta } from '@/components/home/FinalCta'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { Button } from '@/components/ui/Button'
@@ -87,6 +88,8 @@ export default function Process() {
       />
       <ScrubStatement {...statements.ablauf} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
       <ProcessTimeline title="Vom ersten Anruf bis zum sauberen Büro." eyebrow="Schritt für Schritt" />
+      {/* Ein Ansprechpartner für alles: schwebende Beispiel-Anfragen */}
+      <FloatingRequests />
       <section className="section bg-surface" aria-labelledby="details-title">
         <div className="container-site">
           <SectionHeading layout="rail" eyebrow="Im Detail" title="Was in den einzelnen Phasen passiert." id="details-title" />

@@ -3074,3 +3074,96 @@ button:hover > .seal .seal-ring {
     animation: none;
   }
 }
+
+/* Schwebende Anliegen (FloatingRequests.tsx): Fokus wandert beim Scrollen; blass über Filter (Text bleibt Tinte) */
+.fr-run {
+  height: 260svh;
+}
+.fr-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+.fr-field {
+  position: relative;
+  height: 66svh;
+}
+.fr-card {
+  --s: 0.9;
+  --b: 1.4px;
+  --o: 0.5;
+  --w: min(20rem, 46%);
+  position: absolute;
+  /* nie über den rechten Rand der Fläche hinaus */
+  left: min(var(--x, 0%), calc(100% - var(--w)));
+  width: var(--w);
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 24px -18px rgb(10 26 51 / 0.35);
+  list-style: none;
+  transform: scale(var(--s));
+  filter: blur(var(--b)) opacity(var(--o));
+  transition:
+    transform 0.55s var(--ease-cs),
+    filter 0.55s var(--ease-cs),
+    box-shadow 0.55s var(--ease-cs);
+  animation: tc-float var(--fl, 9s) ease-in-out infinite alternate;
+}
+.fr-card[data-z='0'] {
+  --s: 0.96;
+  --b: 0.7px;
+  --o: 0.68;
+}
+.fr-card[data-z='2'] {
+  --s: 0.84;
+  --b: 2.2px;
+  --o: 0.38;
+}
+.fr-card.is-focus {
+  --s: 1.06;
+  --b: 0px;
+  --o: 1;
+  z-index: 10;
+  box-shadow:
+    0 40px 80px -40px rgb(10 26 51 / 0.45),
+    0 14px 32px -20px rgb(10 26 51 / 0.25);
+}
+.fr-card.static {
+  position: static;
+  width: auto;
+  transform: none;
+  animation: none;
+}
+.fr-reply {
+  max-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.5s var(--ease-cs),
+    opacity 0.4s var(--ease-cs),
+    margin-top 0.5s var(--ease-cs);
+}
+.fr-card.is-focus .fr-reply {
+  max-height: 4rem;
+  margin-top: 0.8rem;
+  opacity: 1;
+}
+@media (max-width: 1023px) {
+  .fr-field {
+    height: 50svh;
+  }
+  .fr-card {
+    --w: min(17rem, 64%);
+    padding: 0.8rem 0.9rem;
+  }
+}
+:root:not(.js-motion) .fr-run {
+  height: auto;
+}
+:root:not(.js-motion) .fr-stage {
+  position: relative;
+  height: auto;
+}
