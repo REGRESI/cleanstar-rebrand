@@ -2617,9 +2617,9 @@ footer[data-no-top] {
   filter: drop-shadow(0 24px 30px rgb(10 26 51 / 0.14));
 }
 .plant-a {
-  top: 0;
+  top: -2.5rem;
   right: 0;
-  width: clamp(15rem, 26vw, 30rem);
+  width: clamp(16rem, 30vw, 34rem);
 }
 .plant-a img {
   transform-origin: 70% 0;
@@ -2628,7 +2628,7 @@ footer[data-no-top] {
 .plant-b {
   left: 0;
   bottom: 0;
-  width: clamp(12rem, 22vw, 26rem);
+  width: clamp(15rem, 32vw, 36rem);
 }
 .plant-b img {
   transform-origin: 0 100%;
@@ -2644,10 +2644,11 @@ footer[data-no-top] {
 }
 @media (max-width: 767px) {
   .plant-a {
-    width: 46vw;
+    top: -16vw;
+    width: 42vw;
   }
   .plant-b {
-    width: 40vw;
+    width: 56vw;
   }
 }
 @media (prefers-reduced-motion: reduce) {

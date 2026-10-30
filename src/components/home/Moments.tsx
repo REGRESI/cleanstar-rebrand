@@ -29,15 +29,15 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
     const ctx = gsap.context(() => {
       const st = { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 0.6 }
       gsap.fromTo('[data-plant="a"]', { y: -30 }, { y: 60, ease: 'none', scrollTrigger: st })
-      gsap.fromTo('[data-plant="b"]', { y: 50 }, { y: -30, ease: 'none', scrollTrigger: st })
+      gsap.fromTo('[data-plant="b"]', { y: 24 }, { y: -10, ease: 'none', scrollTrigger: st })
     }, el)
     return () => ctx.revert()
   }, [])
   return (
     <section ref={root} className={cn('plant-moment relative overflow-hidden bg-paper', className)} aria-labelledby={id}>
       <MomentGlow />
-      <Deko data-plant="a" name="pflanze-ecke-1" widths={[640, 1024]} w={1024} h={1536} sizes="(min-width: 768px) 26vw, 46vw" className="plant plant-a" />
-      <Deko data-plant="b" name="pflanze-ecke-2" widths={[700, 1312]} w={1312} h={1199} sizes="(min-width: 768px) 22vw, 44vw" className="plant plant-b" />
+      <Deko data-plant="a" name="pflanze-ecke-1" widths={[640, 1024]} w={1024} h={1536} sizes="(min-width: 768px) 30vw, 50vw" className="plant plant-a" />
+      <Deko data-plant="b" name="pflanze-ecke-2" widths={[700, 1312]} w={1312} h={1199} sizes="(min-width: 768px) 32vw, 56vw" className="plant plant-b" />
       <div className="container-site relative flex min-h-[78svh] flex-col items-center justify-center py-28 text-center">
         {eyebrow && <p className="t-label">{eyebrow}</p>}
         <MomentHeading id={id} text={title} className="mt-6" />
