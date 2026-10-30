@@ -5,6 +5,16 @@
    Instrument Sans: eine Schrift für alles, auch Labels und Metadaten (SIL Open Font License 1.1)
    Schrift tauschen: Datei in src/assets/fonts ablegen und hier sowie in --font-sans eintragen.
    ========================================================================== */
+/* Ersatzschrift mit angeglichenen Maßen (aus den Metriken von Instrument Sans berechnet): Bis die Webschrift geladen
+   ist, laufen Zeilen gleich um, beim Tausch springt nichts (CLS 0) */
+@font-face {
+  font-family: 'Instrument Sans Fallback';
+  src: local('Arial'), local('Liberation Sans'), local('Helvetica');
+  size-adjust: 103.9%;
+  ascent-override: 93.4%;
+  descent-override: 24.1%;
+  line-gap-override: 0%;
+}
 @font-face {
   font-family: 'Instrument Sans';
   font-style: normal;
@@ -66,7 +76,7 @@
   --color-ink-3: var(--color-night-2);
 
   --font-hand: 'Caveat', 'Segoe Print', cursive;
-  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Instrument Sans', 'Instrument Sans Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   /* Formen: rechteckig, höchstens 4 px */
   --radius-card: 2px;
