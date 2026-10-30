@@ -163,7 +163,15 @@ export function CloudCover({ children, className }: { children: ReactNode; class
     if (cv)
       import('./cloudGl').then(({ startClouds }) => {
         if (dead) return
-        stopGl = startClouds(cv, () => prog, () => el.setAttribute('data-gl', ''))
+        stopGl = startClouds(
+          cv,
+          () => prog,
+          () => el.setAttribute('data-gl', ''),
+          () => {
+            el.removeAttribute('data-gl')
+            cv.style.display = 'none'
+          },
+        )
       })
     return () => {
       dead = true

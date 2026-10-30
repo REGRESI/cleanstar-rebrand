@@ -44,9 +44,13 @@ vec4 layer(sampler2D tex, vec4 r, vec4 pm, float flip, float seed, float pale) {
   // weiche Oberkante, auslaufende Unterkante
   float f = smoothstep(0.0, 0.16, v) * smoothstep(1.0, 0.74, v);
   // Auflösen von unten nach oben in Fetzen
-  float field = v * 0.6 + fbm(vec2(u * 3.2, v * 3.0) + seed + uT * 0.02) * 0.6;
-  float cut = 1.25 - pm.y * 1.45;
-  float keep = 1.0 - smoothstep(cut - 0.06, cut + 0.06, field);
+  float keep = 1.0;
+  if (pm.y > 0.0) {
+    vec2 fp = vec2(u * 3.2, v * 3.0) + seed + uT * 0.02;
+    float field = v * 0.6 + (noise(fp) * 0.55 + noise(fp * 2.1 + 5.0) * 0.3 + noise(fp * 4.3 + 9.0) * 0.15) * 0.6;
+    float cut = 1.25 - pm.y * 1.45;
+    keep = 1.0 - smoothstep(cut - 0.06, cut + 0.06, field);
+  }
   float a = pm.x * f * keep;
   return vec4(rgb, c.a) * a;
 }
@@ -73,7 +77,8 @@ const LAYERS: Layer[] = [
 const span = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)))
 
 /** progress(): Fortschritt 0 bis 1 des Übergangs (ScrollTrigger des Bereichs) */
-export function startClouds(canvas: HTMLCanvasElement, progress: () => number, onReady: () => void) {
+/** onSlow: das Gerät schafft es auch in der kleinsten Stufe nicht flüssig, die Bild-Ebenen übernehmen */
+export function startClouds(canvas: HTMLCanvasElement, progress: () => number, onReady: () => void, onSlow: () => void) {
   let q
   try {
     q = createQuad(canvas, FS)
@@ -99,17 +104,49 @@ export function startClouds(canvas: HTMLCanvasElement, progress: () => number, o
       quad.texture('uB', imgs[1], true)
       quad.texture('uC', imgs[2], true)
       let ready = false
-      stop = loopWhileVisible(canvas, (t) => {
+      let cleared = false
+      // Leistung: Auflösung stufenweise senken, wenn ein Bild länger als ~22 ms braucht (unter ~45 fps)
+      const levels = [0.75, 0.55, 0.4]
+      let level = 0
+      let acc = 0
+      let n = 0
+      stop = loopWhileVisible(canvas, (t, dt) => {
+        if (dt > 0 && progress() > 0.02 && progress() < 0.98) {
+          acc += dt
+          // nach 30 Bildern oder 0,5 s prüfen; sehr langsam (über 60 ms) gleich auf die Bild-Ebenen
+          if (++n >= 30 || acc > 0.5) {
+            const avg = acc / n
+            if (avg > 0.06 || (avg > 0.022 && level === levels.length - 1)) {
+              stop?.()
+              onSlow()
+              return
+            }
+            if (avg > 0.022) level++
+            acc = 0
+            n = 0
+          }
+        }
         const ext = vw() * 0.4
         canvas.style.top = `${-ext}px`
         canvas.style.height = `calc(100% + ${ext}px)`
-        const [w, h] = quad.resize(Math.min(1, window.devicePixelRatio || 1))
+        const p = progress()
+        // vorbei oder noch nicht da: nichts zeichnen (nur einmal leeren)
+        if (p >= 0.999) {
+          if (!cleared) {
+            quad.gl.disable(quad.gl.SCISSOR_TEST)
+            quad.gl.clearColor(0, 0, 0, 0)
+            quad.gl.clear(quad.gl.COLOR_BUFFER_BIT)
+            cleared = true
+          }
+          return
+        }
+        cleared = false
+        const [w, h] = quad.resize(Math.min(levels[level], window.devicePixelRatio || 1) * (vw() < 768 ? 1.33 : 1))
         const W = canvas.clientWidth
         const H = canvas.clientHeight - ext
         const k = w / W
         quad.set('uRes', w, h)
         quad.set('uT', t)
-        const p = progress()
         const rise = 1 - span(p, 0, 0.35)
         const out = span(p, 0.42, 1)
         const mobile = vw() < 768
@@ -123,9 +160,12 @@ export function startClouds(canvas: HTMLCanvasElement, progress: () => number, o
           quad.set(`uR${i}`, y * k, lh * k, lw * k, (t * L.drift) * k)
           quad.set(`uP${i}`, a, dissolve, L.blur, L.light)
         })
-        quad.gl.clearColor(0, 0, 0, 0)
-        quad.gl.clear(quad.gl.COLOR_BUFFER_BIT)
-        quad.draw()
+        // nur der sichtbare Streifen wird geleert und gezeichnet
+        if (quad.clip()) {
+          quad.gl.clearColor(0, 0, 0, 0)
+          quad.gl.clear(quad.gl.COLOR_BUFFER_BIT)
+          quad.draw()
+        }
         if (!ready) {
           ready = true
           onReady()

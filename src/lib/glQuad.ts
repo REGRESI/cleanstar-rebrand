@@ -29,6 +29,8 @@ export type Quad = {
   /** Zeichenfläche an die CSS-Größe anpassen (höchstens dpr), gibt die Größe in Gerätepixeln zurück */
   resize: (dpr?: number) => [number, number]
   draw: () => void
+  /** nur den sichtbaren Teil der Zeichenfläche zeichnen; false, wenn nichts davon im Bild ist */
+  clip: () => boolean
   /** Textur aus einem Bild laden (Einheit = Reihenfolge des Aufrufs) */
   texture: (name: string, img: TexImageSource, mirrorX?: boolean) => void
   dispose: () => void
@@ -83,6 +85,16 @@ export function createQuad(canvas: HTMLCanvasElement, fs: string): Quad | null {
       return [w, h]
     },
     draw: () => gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4),
+    clip: () => {
+      const r = canvas.getBoundingClientRect()
+      const top = Math.max(0, -r.top)
+      const bottom = Math.min(r.height, window.innerHeight - r.top)
+      if (bottom <= top || r.height <= 0) return false
+      const k = canvas.height / r.height
+      gl.enable(gl.SCISSOR_TEST)
+      gl.scissor(0, Math.floor((r.height - bottom) * k), canvas.width, Math.ceil((bottom - top) * k) + 1)
+      return true
+    },
     texture: (name, img, mirrorX) => {
       const unit = texs.length
       const t = gl.createTexture()!
