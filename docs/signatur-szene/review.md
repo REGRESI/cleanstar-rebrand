@@ -44,6 +44,19 @@ Handy: alle Phasen geprüft, Kamera weiter zurück und höher, damit das Büro i
 
 Weiter offen für die Freigabe: Ton (optional, nicht umgesetzt), die Szene im Hero der Startseite ist vorbereitet, aber ausgeschaltet.
 
+## Runde 4: Texte und Video
+
+Aus dem ersten Video der gesamten Fahrt: Die Headline brach Wort für Wort um (zu schmale Spalte), weiße Zeilen waren über hellen Stellen kaum lesbar, um 21:45 über dem weißen Grundriss gar nicht. Behoben: Zeilen und Nacht-Lineal auf ruhigem Navy-Glas, Einstieg (18:00) und Schluss (7:00) in Tinte auf dem hellen Himmel, Headline-Spalte korrigiert.
+
+Video der gesamten Fahrt: `fahrt-desktop.mp4` (1280 × 720) und `fahrt-mobil.mp4` (390 × 844), Bild für Bild aufgenommen (Software-Rendering, deshalb ohne Bewegungsunschärfe und etwas weicher als auf echter Grafik).
+
+## Leistung
+
+- Eigener Chunk (three.js nur auf der Szene), Start erst nach dem load-Ereignis; davor steht das beim Build gerenderte Standbild (LCP, kein Sprung).
+- Desktop: 20.000 Partikel, Schatten 2048, Bloom; schwächere Rechner (4 Kerne oder weniger): 9.000 Partikel, kein Bloom; Handy: 5.000 Partikel, Pixeldichte höchstens 1,5, kein Bloom.
+- Pausiert außerhalb des Bildes und bei verstecktem Tab. Erste 70 Bilder werden gemessen; zu langsam → Standbilder.
+- Eine echte Bildrate auf Laptop und Mittelklasse-Handy lässt sich in dieser Umgebung nicht messen (keine Grafikhardware, nur Software-Rendering). Bitte auf echten Geräten prüfen: `/labor/nacht`.
+
 ## Entscheidungen
 
 | Thema | Entscheidung |

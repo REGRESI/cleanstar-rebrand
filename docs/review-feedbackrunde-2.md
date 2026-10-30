@@ -19,7 +19,22 @@ Art-Director-Durchgang über alle geänderten Stellen bei 1440 × 900 und 390 ×
 
 ## Durchgang 2
 
-Siehe Abschnitt „Messwerte“ und Bericht: nach dem Neubau erneut aufgenommen, keine neuen Befunde an den geänderten Stellen.
+Nach dem Neubau erneut aufgenommen (1440 und 390 px). Neue Befunde:
+
+| Stelle | Befund | Behebung |
+| --- | --- | --- |
+| Partner | dunkler Abschluss, darunter schmaler heller Streifen mit Rechtshinweis, dann Navy-Footer | Abschluss hell, Hinweis darin, „Auf einen Blick“ davor auf Navy |
+| Einzugsgebiet auf Geräten ohne Grafikhardware | 3D-Gelände zu langsam, Seitenwechsel nach dem Vogelflug verzögert | dort nur Schummerung, 3D-Gelände bleibt auf allen Geräten mit Grafikhardware |
+| Zurück/Vor unter Last | Position einer Seite konnte im kurzen Moment zwischen Adresswechsel und Seitenaufbau unter dem falschen Verlaufseintrag gespeichert werden | Positionen werden nur gespeichert, wenn Verlauf und angezeigte Seite übereinstimmen |
+| Startseite Lighthouse | in einem von zwei Läufen CLS 0,104: Hero-Text sprang, wenn die Webschrift nach dem ersten Bild kam | Ersatzschrift mit angeglichenen Maßen (size-adjust und Höhen aus den echten Metriken von Instrument Sans) |
+
+## Messwerte
+
+- Navigationstest: 5284 von 5284 Prüfungen bestanden (alle Seiten der Sitemap, Desktop und Handy)
+- Mappen-Test: Desktop 80 von 80, Handy 67 von 67 (zweimal; ein einzelner Wisch-Aussetzer in einem dritten Lauf, ohne Änderung an der Mappe)
+- Neuladen-Test: 40 von 40
+- Lighthouse mobil Startseite: 91, 92, 91 (CLS 0 in allen drei Läufen), Barrierefreiheit, Best Practices, SEO je 100
+- Lighthouse mobil Einzugsgebiet: 93 und 94, Rest je 100
 
 ## Lizenzprüfung Luftbild (LGL Baden-Württemberg)
 
