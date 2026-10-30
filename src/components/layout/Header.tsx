@@ -32,7 +32,7 @@ const navImage: Record<string, ImageId> = {
   '/qualitaetsgarantie': 'quality-check',
   '/ablauf': 'inspection',
   '/einzugsgebiet': 'region',
-  '/ueber-uns': 'team-work',
+  '/ueber-uns': 'team-briefing',
   '/kontakt': 'contact',
 }
 

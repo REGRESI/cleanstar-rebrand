@@ -1,5 +1,6 @@
 import { PortraitHeadline } from '@/components/ui/PortraitPulse'
 import { Picture } from '@/components/ui/Picture'
+import type { ImageId } from '@/content/images'
 import { Button } from '@/components/ui/Button'
 import { RiskFreeSeal } from '@/components/ui/RiskFreeSeal'
 import { home } from '@/content/site'
@@ -12,7 +13,7 @@ import { useOfficeWay } from '@/features/office/officeWay'
  * kurzer Satz, zwei Buttons, daneben ein Foto. Danach folgt das Seitenende (Bild zum Streifen, Footer).
  * tone: Fläche, passend zum Abschnitt davor
  */
-export function FinalCta({ headline = home.finalCta.headline, tone = 'surface' }: { headline?: string; tone?: 'surface' | 'paper' }) {
+export function FinalCta({ headline = home.finalCta.headline, tone = 'surface', image }: { headline?: string; tone?: 'surface' | 'paper'; image?: ImageId }) {
   const [way] = useOfficeWay()
   return (
     <section className={tone === 'surface' ? 'section bg-surface text-ink' : 'section bg-paper text-ink'} aria-labelledby="cta-title">
@@ -30,13 +31,20 @@ export function FinalCta({ headline = home.finalCta.headline, tone = 'surface' }
               {`Anrufen: ${company.phone.display}`}
             </Button>
           </div>
-          <RiskFreeSeal label="Laufzeit und Kündigung auf einen Blick" className="mt-10" />
+          {image && <RiskFreeSeal label="Laufzeit und Kündigung auf einen Blick" className="mt-10" />}
         </div>
-        <div className="col-span-12 lg:col-span-5 lg:col-start-8">
-          <div className="card-shadow overflow-hidden rounded-[14px]">
-            <Picture id="trial-clean" aspect="aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5]" sizes="(min-width:1024px) 36vw, 100vw" />
+        {/* Kein festes Foto mehr (es stand auf jeder Seite gleich); optional ein Bild, das auf der Seite sonst nicht vorkommt */}
+        {image ? (
+          <div className="col-span-12 lg:col-span-5 lg:col-start-8">
+            <div className="card-shadow overflow-hidden rounded-[14px]">
+              <Picture id={image} aspect="aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5]" sizes="(min-width:1024px) 36vw, 100vw" />
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="col-span-12 lg:col-span-5 lg:col-start-8 lg:justify-self-end">
+            <RiskFreeSeal label="Laufzeit und Kündigung auf einen Blick" />
+          </div>
+        )}
       </div>
     </section>
   )

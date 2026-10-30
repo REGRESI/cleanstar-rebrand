@@ -9,7 +9,6 @@ import { ChapterHero } from '@/components/ui/ChapterHero'
 import { TaskCloud } from '@/components/services/TaskCloud'
 import { serviceAnswer } from '@/content/answers'
 import { Answer } from '@/components/ui/Answer'
-import { ImageBand } from '@/components/ui/ImageBand'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
 import { RevealText } from '@/components/ui/RevealText'
@@ -139,8 +138,6 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      {!main && <ImageBand id="team-work" />}
-
       {main && (
         <>
           <section id="grundriss" className="section scroll-mt-24" aria-labelledby="plan-title">
@@ -179,7 +176,6 @@ export default function ServiceDetail() {
               </div>
             </div>
           </section>
-          <ImageBand id="team-work" />
           <section className="section" aria-labelledby="cost-title">
             <div className="container-site">
               <SectionHeading

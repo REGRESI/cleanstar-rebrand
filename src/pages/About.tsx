@@ -16,7 +16,6 @@ import { Collage } from '@/components/ui/Collage'
 import { PartnerTeaser } from '@/features/partner/PartnerTeaser'
 import { company } from '@/content/company'
 import { values } from '@/content/site'
-import type { ImageId } from '@/content/images'
 import { breadcrumbSchema, organizationSchema, personSchemas } from '@/lib/schema'
 
 /** Wer ist wofür zuständig? who = Index in company.founders */
@@ -85,14 +84,11 @@ export default function About() {
         </div>
       </section>
 
-      {/* Zitat: große Typografie, Porträt daneben, kein Kasten */}
+      {/* Zitat: große Typografie, kein Kasten (das Porträt steht schon bei den Gründern, jedes Foto nur einmal je Seite) */}
       {founders[1] && (
         <section className="on-dark section bg-night text-paper" aria-label="Zitat">
           <figure className="container-site grid-site gap-y-10 lg:items-end">
-            <div className="col-span-5 sm:col-span-4 lg:col-span-3">
-              <Picture id={founders[1].image as ImageId} ratio="4:5" reveal tone="dark" sizes="(min-width:1024px) 25vw, 40vw" />
-            </div>
-            <blockquote className="col-span-12 lg:col-span-8 lg:col-start-5">
+            <blockquote className="col-span-12 lg:col-span-10">
               <RevealText as="p" text={`„${founders[1].statement}“`} className="t-h2" />
               <figcaption className="t-meta mt-8">
                 {founders[1].name}, {founders[1].role.replace('Gründer · ', '')}
@@ -142,7 +138,7 @@ export default function About() {
           <div className="col-span-12 lg:col-span-4">
             <p className="t-label mb-6">Unsere Geschichte</p>
             <RevealText as="h2" text="Warum es CleanStar gibt." id="story-title" className="t-h3" />
-            <Collage className="mt-12 max-w-md lg:mt-16" layers={[{ id: 'inspection' }, { id: 'quality-check' }, { id: 'svc-buero-detail' }]} />
+            <Collage className="mt-12 max-w-md lg:mt-16" layers={[{ id: 'quality-check' }, { id: 'svc-buero-detail' }, { id: 'svc-unterhalt' }]} />
           </div>
           <div className="prose-cs col-span-12 lg:col-span-7 lg:col-start-6">
             <p className="t-lead">
@@ -161,7 +157,7 @@ export default function About() {
         </div>
       </section>
 
-      <Arrival image="team-work" id="about-moment" title={'Drei Gründer.\nEin Versprechen.'} edge="GEGRÜNDET IN OFFENBURG">
+      <Arrival image="evening-clean" id="about-moment" title={'Drei Gründer.\nEin Versprechen.'} edge="GEGRÜNDET IN OFFENBURG">
         <div className="container-site text-center">
           <p className="t-lead mx-auto max-w-[40ch] text-ink-2">Nico Schütterle, Lino Resham und Eknoor Singh führen den Betrieb selbst und sind direkt für Sie erreichbar.</p>
           {/* versetztes Bildpaar wie auf der Startseite (48 % und 34 %, siehe .arrive-cards) */}
@@ -209,7 +205,7 @@ export default function About() {
         </div>
       )}
 
-      <ImageBand id="team-work" loop="wagen" />
+      <ImageBand id="after-office" loop="wagen" />
       <section className="on-dark section bg-night text-paper" aria-labelledby="team-title">
         <div className="container-site grid-site gap-y-8 lg:items-end">
           <div className="col-span-12 lg:col-span-6">

@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { Logo } from '@/components/ui/Logo'
 import { HomeLink } from '@/components/ui/HomeLink'
 import { ParticleSlogan } from '@/components/ui/ParticleSlogan'
 import { Picture } from '@/components/ui/Picture'
+import type { ImageId } from '@/content/images'
 import { Roll } from '@/components/ui/Roll'
 import { company } from '@/content/company'
 import { services } from '@/content/services'
@@ -21,6 +22,18 @@ const knowledgeLinks = [
   { label: 'Kalkulation für Gründer', to: '/reinigungsfirma-kalkulieren' },
   { label: 'CleanStar auf einen Blick', to: '/fakten' },
 ]
+
+/**
+ * Bild am Seitenende je Seite: passend zur Seite, auf der Seite sonst nicht zu sehen und auf keiner anderen Seite als
+ * Abschluss (Test: scripts/test-images.mjs). Seiten ohne Eintrag enden direkt mit dem Footer.
+ */
+const endImage: Record<string, ImageId> = {
+  '/': 'quality-check',
+  '/leistungen': 'svc-buero-detail',
+  '/kontakt': 'after-office',
+  '/ablauf': 'inspection',
+  '/einzugsgebiet': 'region',
+}
 
 /** Kombiseiten „Büroreinigung [Ort]“ (siehe content/officeCities.ts) */
 const officeCitySlugs = ['offenburg', 'lahr', 'kehl', 'achern', 'oberkirch']
@@ -71,16 +84,20 @@ function Column({ title, children, className }: { title: ReactNode; children: Re
  */
 export function Footer() {
   const year = new Date().getFullYear()
+  const { pathname } = useLocation()
+  const end = endImage[pathname.replace(/\/$/, '') || '/']
   return (
     <footer className="relative">
-      {/* Letztes Bild: steht, bis der Footer es zum Streifen zusammenschiebt */}
-      <div className="ftr-run" aria-hidden>
-        <div className="ftr-img photo sticky top-0 overflow-hidden">
-          <Picture id="team-work" aspect="absolute inset-0 size-full" sizes="100vw" />
+      {/* Letztes Bild: steht, bis der Footer es zum Streifen zusammenschiebt; je Seite ein passendes, sonst keins */}
+      {end && (
+        <div className="ftr-run" aria-hidden>
+          <div className="ftr-img photo sticky top-0 overflow-hidden">
+            <Picture id={end} aspect="absolute inset-0 size-full" sizes="100vw" />
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="ftr-body on-dark relative z-[1] bg-night pb-24 text-paper lg:pb-0">
+      <div className={cn('ftr-body on-dark relative z-[1] bg-night pb-24 text-paper lg:pb-0', !end && 'ftr-flat')}>
         <div className="container-site">
           {/* Kontakt mittig: Symbol, große Telefonnummer, Adresse */}
           <div className="flex flex-col items-center pt-20 text-center lg:pt-28">

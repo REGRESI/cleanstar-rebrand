@@ -80,7 +80,7 @@ export default function Services() {
             </ol>
             <Collage
               className="col-span-12 sm:col-span-10 sm:col-start-2 lg:col-span-5 lg:col-start-8"
-              layers={[{ id: 'svc-fenster' }, { id: 'svc-treppenhaus' }, { id: 'svc-hygiene' }]}
+              layers={[{ id: 'team-briefing' }, { id: 'inspection' }, { id: 'after-office' }]}
             />
           </div>
         </div>

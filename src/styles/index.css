@@ -2495,6 +2495,10 @@ footer[data-no-top] {
 .js-motion .ftr-body {
   margin-top: -80svh;
 }
+/* Seiten ohne Abschlussbild: der Footer folgt direkt */
+.js-motion .ftr-body.ftr-flat {
+  margin-top: 0;
+}
 @media (prefers-reduced-motion: reduce) {
   .js-motion .ftr-run,
   .ftr-run {
