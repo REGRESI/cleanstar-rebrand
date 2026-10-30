@@ -31,14 +31,15 @@ vec4 layer(sampler2D tex, vec4 r, vec4 pm, float flip, float seed, float pale) {
   vec2 q = vec2(u, v) + (vec2(noise(vec2(u * 6.0, v * 5.0) + uT * 0.05 + seed), noise(vec2(u * 6.0 + 9.0, v * 5.0) - uT * 0.04 + seed)) - 0.5) * 0.014;
   vec4 c = texture(tex, q, pm.z);
   if (c.a < 0.002) return vec4(0.0);
-  // Licht: Oberseite heller, Unterseite grau-blau
-  float au = texture(tex, q - vec2(0.0, 0.04), pm.z + 1.0).a;
-  float ad = texture(tex, q + vec2(0.0, 0.04), pm.z + 1.0).a;
-  float top = clamp(c.a - au, 0.0, 1.0);
-  float bot = clamp(c.a - ad, 0.0, 1.0);
+  // Licht: Oberseite etwas heller, Unterseite leicht grau-blau (weich, innerhalb der Deckkraft)
+  float au = texture(tex, q - vec2(0.0, 0.05), pm.z + 2.0).a;
+  float ad = texture(tex, q + vec2(0.0, 0.05), pm.z + 2.0).a;
+  float top = smoothstep(0.0, 0.6, c.a - au);
+  float bot = smoothstep(0.0, 0.6, c.a - ad);
   vec3 rgb = c.rgb;
-  rgb += vec3(1.0) * c.a * top * 0.3 * pm.w;
-  rgb = mix(rgb, vec3(0.66, 0.74, 0.85) * c.a, clamp(bot * 0.55 + smoothstep(0.55, 1.0, v) * 0.18, 0.0, 1.0) * pm.w);
+  rgb = mix(rgb, vec3(c.a), top * 0.22 * pm.w);
+  rgb = mix(rgb, vec3(0.70, 0.77, 0.87) * c.a, clamp(bot * 0.35 + smoothstep(0.55, 1.0, v) * 0.15, 0.0, 1.0) * pm.w);
+  rgb = min(rgb, vec3(c.a));
   rgb = mix(rgb, vec3(0.95, 0.97, 0.99) * c.a, pale);
   // weiche Oberkante, auslaufende Unterkante
   float f = smoothstep(0.0, 0.16, v) * smoothstep(1.0, 0.74, v);
