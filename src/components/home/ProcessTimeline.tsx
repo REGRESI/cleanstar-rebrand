@@ -47,7 +47,7 @@ export function ProcessTimeline({
       <div className="container-site grid-site gap-y-14 lg:items-start">
         <div className="col-span-12 lg:sticky lg:top-32 lg:col-span-4">
           <p className="t-label">{eyebrow}</p>
-          <RevealText as="h2" id={id} text={title} className="t-h2 mt-5 max-w-[16ch]" />
+          <RevealText as="h2" id={id} text={title} className="t-h2 mt-5 max-w-[16ch]" scope="section" />
         </div>
         <Line steps={steps} />
       </div>
@@ -77,8 +77,10 @@ function Line({ steps }: { steps: Step[] }) {
       if (bar.current) bar.current.style.transform = `scaleY(${p.toFixed(4)})`
       // erreicht, sobald die Spitze der Linie die Mitte des Kästchens passiert
       let k = -1
+      const top = ol.getBoundingClientRect().top
       boxes.forEach((b, i) => {
-        if (tip >= b.offsetTop + b.offsetHeight / 2 - 1) k = i
+        const r = b.getBoundingClientRect()
+        if (tip >= r.top - top + r.height / 2 - 1) k = i
       })
       setAt(k)
     }

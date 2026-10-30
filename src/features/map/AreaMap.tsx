@@ -164,7 +164,7 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
                   </Link>
                 ) : (
                   // Ort ohne eigene Seite: Karte fliegt hin und zeigt Name und Fahrzeit
-                  <button type="button" {...hover} onClick={(e) => flyTo(e) || setActive({ p: l, xy: null })} className={cls} aria-label={`${l.name}, ${l.minutes} Minuten ab Offenburg, auf der Karte zeigen`}>
+                  <button type="button" {...hover} onClick={(e) => flyTo(e) || setActive({ p: l, xy: null })} className={cls} aria-label={`${shortName(l)} ${l.minutes === 0 ? "Sitz" : `${l.minutes} Min.`}, ab Offenburg, auf der Karte zeigen`}>
                     {inner}
                   </button>
                 )}

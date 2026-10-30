@@ -118,6 +118,7 @@ export function AnimatedText({
   orphans = true,
   onDone,
   onOut,
+  scope,
   children,
 }: {
   as?: ElementType
@@ -140,6 +141,9 @@ export function AnimatedText({
   onDone?: () => void
   /** headline: beim Verlassen (Welle läuft rückwärts), z. B. Porträt wieder ausblenden */
   onOut?: () => void
+  /** headline: Vorfahr (Selektor), dessen Lage das Ein- und Ausblenden steuert, z. B. „section“ bei einer stehenden
+   *  (sticky) Überschrift, deren eigene Lage der Scroll-Auslöser nicht kennt */
+  scope?: string
   /** Zusatz hinter dem Text (z. B. Porträt am Ende der Überschrift) */
   children?: ReactNode
 }) {
@@ -177,14 +181,14 @@ export function AnimatedText({
     }
     // Bei jedem Durchqueren: hinein vorwärts, hinaus rückwärts (auch beim Hochscrollen)
     return replay(
-      el,
+      (scope && el.closest(scope)) || el,
       () => playHeadline(el, () => done.current?.()),
       () => {
         hideHeadline(el)
         out.current?.()
       },
     )
-  }, [mode, immediate, text, trigger])
+  }, [mode, immediate, text, trigger, scope])
 
   // paragraph: Färbung an die Scrollposition gekoppelt
   useEffect(() => {
