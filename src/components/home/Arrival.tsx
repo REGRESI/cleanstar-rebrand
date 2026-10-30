@@ -53,7 +53,6 @@ export function Arrival({
       setPlay(true)
       return
     }
-    let played = false
     const apply = (t: number) => {
       const st = layer.current
       if (!st || !titleEl.current || !rest.current) return
@@ -72,14 +71,14 @@ export function Arrival({
       const finalTop = H * (W < 768 ? 0.13 : 0.15)
       const y = Math.max(finalTop, top + H * 0.1)
       titleEl.current.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
-      if (!played && t > 0.08) {
-        played = true
-        setPlay(true)
-      }
-      // Rest erscheint, wenn der Kreis voll ist
-      const c = span(t, 0.74, 0.96)
+      // Überschrift erscheint, sobald der Kreis aufgeht, und läuft beim Zurückscrollen rückwärts
+      setPlay(t > 0.08)
+      // Satz und Bilder kommen schon, während der Kreis wächst (keine leere untere Hälfte); das kleine Bild schiebt
+      // sich danach etwas über das große
+      const c = span(t, 0.42, 0.7)
       rest.current.style.opacity = String(c)
       rest.current.style.transform = `translate3d(0, ${((1 - c) * 40).toFixed(1)}px, 0)`
+      rest.current.style.setProperty('--slide', span(t, 0.5, 1).toFixed(3))
       // Satz an der Kreiskante (innen), solange der Kreis wächst
       if (svg.current && track.current && label.current) {
         svg.current.setAttribute('viewBox', `0 0 ${W} ${H}`)
@@ -152,11 +151,11 @@ export function Arrival({
                 <MomentHeading id={id} text={title} play={play} vanish={false} className="mx-auto w-fit" />
               </div>
             </div>
-            <div ref={rest} className="absolute inset-x-0 bottom-0 top-[44svh] sm:top-[46svh]" style={still ? undefined : { opacity: 0 }}>
+            <div ref={rest} className="absolute inset-x-0 bottom-0 top-[31svh] sm:top-[43svh]" style={still ? { ['--slide' as string]: 1 } : { opacity: 0 }}>
               {children ?? (
-                <div className="container-site grid h-full grid-cols-12 gap-x-5 lg:gap-x-8">
+                <div className="container-site grid h-full grid-cols-12 content-start gap-x-5 lg:gap-x-8">
                   <p className="t-lead col-span-12 text-center text-ink-2 sm:col-span-10 sm:col-start-2 lg:col-span-6 lg:col-start-4">{home.promise.statement}</p>
-                  <div className="arrive-cards col-span-12 mt-6 lg:col-span-10 lg:col-start-2">
+                  <div className="arrive-cards col-span-12 mt-5 lg:mt-6">
                     <div className="card-shadow arrive-card overflow-hidden rounded-[10px]">
                       <Picture id="evening-clean" aspect="size-full" sizes="(min-width:1024px) 34vw, 60vw" />
                     </div>

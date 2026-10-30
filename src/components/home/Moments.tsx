@@ -28,9 +28,9 @@ export function PlantMoment({ title, text, id, eyebrow }: { title: string; text:
       <MomentGlow />
       <img data-plant="a" src="/images/deko/pflanze-ecke.webp" alt="" aria-hidden width={884} height={840} loading="lazy" decoding="async" className="plant plant-a" />
       <img data-plant="b" src="/images/deko/pflanze-ecke.webp" alt="" aria-hidden width={884} height={840} loading="lazy" decoding="async" className="plant plant-b" />
-      <div className="container-site relative flex min-h-[86svh] flex-col items-center justify-center py-32 text-center">
+      <div className="container-site relative flex min-h-[66svh] flex-col items-center justify-center py-24 text-center">
         {eyebrow && <p className="t-label">{eyebrow}</p>}
-        <MomentHeading id={id} text={title} className="mt-6" capStyle={{ ['--cap-gap' as string]: '0.16em' }} />
+        <MomentHeading id={id} text={title} className="mt-6" />
         <p className="t-lead mt-8 max-w-[40ch] text-ink-2">{text}</p>
       </div>
     </section>

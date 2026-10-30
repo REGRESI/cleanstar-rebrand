@@ -2,6 +2,7 @@ import { createContext, lazy, Suspense, useCallback, useContext, useMemo, useSta
 import { ArrowRight } from 'lucide-react'
 import { Modal } from '@/components/ui/Modal'
 import { cn } from '@/lib/cn'
+import { Roll } from '@/components/ui/Roll'
 
 const CallbackForm = lazy(() => import('./CallbackForm'))
 
@@ -37,7 +38,7 @@ export function CallbackButton({ className, dark, label = 'Rückruf anfordern' }
   const { open } = useCallbackRequest()
   return (
     <button type="button" onClick={open} className={cn('tlink text-[0.9375rem]', dark ? 'text-paper' : 'text-ink', className)}>
-      {label}
+      <Roll text={label} />
       <ArrowRight aria-hidden className="size-4" strokeWidth={1.75} />
     </button>
   )

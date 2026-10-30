@@ -6,6 +6,7 @@ import { Roll } from '@/components/ui/Roll'
 import { monthlyRange, perEmployeeDay, pricing } from '@/content/pricing'
 import { formatEuro, formatEuro2 } from '@/lib/format'
 import { cn } from '@/lib/cn'
+import { replay } from '@/lib/replay'
 
 /**
  * Zahl, deren Ziffern beim Ändern rollen (wie ein Zählwerk): Jede Ziffer ist ein senkrechter Streifen 0 bis 9,
@@ -54,9 +55,8 @@ export function CostTeaser() {
   useEffect(() => {
     const el = card.current
     if (!el) return
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && (setSeen(true), io.disconnect()), { threshold: 0.35 })
-    io.observe(el)
-    return () => io.disconnect()
+    // Balken wachsen bei jedem Hineinscrollen und ziehen sich beim Verlassen zurück
+    return replay(el, () => setSeen(true), () => setSeen(false), { start: 'top 75%', end: 'bottom 15%' })
   }, [])
 
   const rows = [

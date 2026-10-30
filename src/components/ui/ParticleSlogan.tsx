@@ -281,7 +281,6 @@ export function ParticleSlogan({
         finished = true
         ctx.clearRect(0, 0, W, H)
         cv.style.display = 'none'
-        stop()
         done.current?.()
         return
       }
@@ -304,6 +303,21 @@ export function ParticleSlogan({
     const io = new IntersectionObserver(
       ([e]) => {
         visible = e.isIntersecting && e.intersectionRatio >= 0.35
+        // Ganz aus dem Bild: zurücksetzen, damit sich der Slogan beim nächsten Hineinscrollen wieder formt
+        if (!e.isIntersecting && started) {
+          cancelAnimationFrame(raf)
+          raf = 0
+          started = false
+          finished = false
+          elapsed = 0
+          last = 0
+          fadeStart = -1
+          sparks = []
+          ctx.clearRect(0, 0, cv.width, cv.height)
+          cv.style.display = 'none'
+          p.dataset.state = 'idle'
+          return
+        }
         if (visible && !finished) {
           if (!started) {
             if (document.fonts?.status === 'loaded') start()

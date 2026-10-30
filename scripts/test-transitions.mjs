@@ -8,6 +8,12 @@
 //    damit Text als Fläche zählt) und die Standardabweichung der Helligkeit klein (unter 10),
 // 3. Überschneidung: Zeilenboxen sichtbarer Texte (auch gezeichnete Buchstaben des Text-Systems) überlappen sich um
 //    mehr als 20 % der kleineren Box. Texte unter der festen Kopfzeile bzw. Handy-Leiste zählen nicht (verdeckt).
+// 4. Moment-Überschriften (je Seite einmal): Die Tinte des Schreibschrift-Großbuchstabens darf keinem anderen Buchstaben
+//    näher als 0,08 em kommen. Pixelgenau: Großbuchstabe und übrige Buchstaben getrennt gezeichnet, Tinte des
+//    Großbuchstabens um 0,08 em verbreitert, gemeinsame Pixel zählen als Überschneidung.
+// 5. Leere Fläche (nur Desktop): Bildschirm in 32 × 20 Kacheln (je etwa 45 px); eine Kachel ist leer, wenn sie praktisch
+//    einfarbig ist und kein Inhalt näher als zwei Kacheln liegt (normaler Abstand um Inhalte zählt nicht). Mehr als
+//    40 % leere Fläche gelten als Fehler.
 // Fehlerbilder: docs/review-reparatur/fehler/
 //
 // Aufruf: npm run build && node scripts/... (statischer Server auf dist), dann
@@ -108,8 +114,8 @@ const textBoxes = () => {
     for (const r of range.getClientRects()) add(r, el, t.textContent.trim().slice(0, 30))
     seen.set(el, true)
   }
-  // Gezeichnete Wörter (Text-System, Roll, Tippen)
-  for (const el of document.querySelectorAll('#main .at-w, #main .roll-a, footer .at-w')) {
+  // Gezeichnete Wörter (Text-System, Tippen); der Roll zeigt in Ruhe echten Text
+  for (const el of document.querySelectorAll('#main .at-w, footer .at-w')) {
     if (!shown(el)) continue
     add(el.getBoundingClientRect(), el, (el.textContent || [...el.querySelectorAll('[data-c]')].map((c) => c.dataset.c).join('')).slice(0, 30))
   }
@@ -134,6 +140,108 @@ const textBoxes = () => {
       if (area > 0.2 * small && iy > 6) bad.push(`„${a.label}“ ↔ „${b.label}“`)
     }
   return bad
+}
+
+/** Pixelgenaue Prüfung einer Moment-Überschrift: berührt der Schreibschrift-Buchstabe (plus 0,08 em) andere Buchstaben? */
+async function momentClash(page, i) {
+  const info = await page.evaluate((i) => {
+    const m = document.querySelectorAll('.moment')[i]
+    m.scrollIntoView({ block: 'center' })
+    if (window.__lenis) window.__lenis.scrollTo(m.getBoundingClientRect().top + window.scrollY - innerHeight / 2 + m.offsetHeight / 2, { immediate: true, force: true })
+    m.setAttribute('data-mo', 'done')
+    const v = m.querySelector('.moment-v')
+    if (v) v.style.cssText += ';transform:none;filter:none;opacity:1'
+    let st = document.getElementById('mo-chk')
+    if (!st) {
+      st = document.createElement('style')
+      st.id = 'mo-chk'
+      st.textContent = '.moment-glow{display:none!important}[data-chk=base] .mo-c,[data-chk=base] .moment-cap,[data-chk=cap] .mo-c,[data-chk=txt] .moment-cap{visibility:hidden!important}*{animation-play-state:paused!important}'
+      document.head.appendChild(st)
+    }
+    const r = m.getBoundingClientRect()
+    const fs = parseFloat(getComputedStyle(m).fontSize)
+    const pad = fs * 1.6
+    return { x: Math.max(0, r.left - pad), y: Math.max(0, r.top - pad), w: Math.min(innerWidth, r.right + pad) - Math.max(0, r.left - pad), h: Math.min(innerHeight, r.bottom + pad) - Math.max(0, r.top - pad), fs, text: m.textContent.trim().slice(0, 40) }
+  }, i)
+  await page.waitForTimeout(200)
+  const clip = { x: Math.round(info.x), y: Math.round(info.y), width: Math.round(info.w), height: Math.round(info.h) }
+  const grab = async (mode) => {
+    await page.evaluate(([i, mode]) => document.querySelectorAll('.moment')[i].setAttribute('data-chk', mode), [i, mode])
+    await page.waitForTimeout(60)
+    const png = await page.screenshot({ clip })
+    return sharp(png).greyscale().raw().toBuffer({ resolveWithObject: true })
+  }
+  const base = await grab('base')
+  const cap = await grab('cap')
+  const txt = await grab('txt')
+  await page.evaluate((i) => document.querySelectorAll('.moment')[i].removeAttribute('data-chk'), i)
+  const { width: W, height: H } = base.info
+  const ink = (a) => {
+    const m = new Uint8Array(W * H)
+    for (let k = 0; k < m.length; k++) m[k] = Math.abs(a.data[k] - base.data[k]) > 28 ? 1 : 0
+    return m
+  }
+  const mc = ink(cap)
+  const mt = ink(txt)
+  // Tinte des Großbuchstabens um 0,08 em verbreitern (quadratischer Kern, zwei Durchgänge)
+  const r = Math.max(1, Math.round(info.fs * 0.08))
+  const tmp = new Uint8Array(W * H)
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      let v = 0
+      for (let d = -r; d <= r && !v; d++) {
+        const xx = x + d
+        if (xx >= 0 && xx < W && mc[y * W + xx]) v = 1
+      }
+      tmp[y * W + x] = v
+    }
+  let hits = 0
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      if (!mt[y * W + x]) continue
+      for (let d = -r; d <= r; d++) {
+        const yy = y + d
+        if (yy >= 0 && yy < H && tmp[yy * W + x]) {
+          hits++
+          break
+        }
+      }
+    }
+  return { hits, text: info.text, png: hits > 4 ? await page.screenshot({ clip }) : null }
+}
+
+/** Anteil leerer Kacheln (nahezu einfarbig) im Bildschirm */
+async function emptyShare(png) {
+  const { data, info } = await sharp(png).resize({ width: 320, height: 200, fit: 'fill' }).greyscale().raw().toBuffer({ resolveWithObject: true })
+  const CW = 10
+  const TX = info.width / CW
+  const TY = info.height / CW
+  let content = new Uint8Array(TX * TY)
+  for (let ty = 0; ty < TY; ty++)
+    for (let tx = 0; tx < TX; tx++) {
+      let mn = 255
+      let mx = 0
+      for (let y = ty * CW; y < ty * CW + CW; y++)
+        for (let x = tx * CW; x < tx * CW + CW; x++) {
+          const v = data[y * info.width + x]
+          if (v < mn) mn = v
+          if (v > mx) mx = v
+        }
+      content[ty * TX + tx] = mx - mn > 4 ? 1 : 0
+    }
+  // Normaler Abstand um Inhalte (zwei Kacheln, etwa 90 px) zählt nicht als leer
+  for (let pass = 0; pass < 2; pass++) {
+    const d = content.slice()
+    for (let ty = 0; ty < TY; ty++)
+      for (let tx = 0; tx < TX; tx++) {
+        if (content[ty * TX + tx]) continue
+        if ((tx > 0 && content[ty * TX + tx - 1]) || (tx < TX - 1 && content[ty * TX + tx + 1]) || (ty > 0 && content[(ty - 1) * TX + tx]) || (ty < TY - 1 && content[(ty + 1) * TX + tx])) d[ty * TX + tx] = 1
+      }
+    content = d
+  }
+  let empty = 0
+  for (const v of content) if (!v) empty++
+  return empty / content.length
 }
 
 let failures = 0
@@ -161,12 +269,24 @@ for (const [dev, opts] of devices) {
       shots++
       const e = await emptiness(png)
       const overlaps = await page.evaluate(textBoxes)
+      const blank = dev === 'Desktop' ? await emptyShare(png) : 0
       const name = `${dev}-${path.replace(/\//g, '_') || 'start'}-${String(y).padStart(6, '0')}`
-      if (e.empty || overlaps.length) {
+      if (e.empty || overlaps.length || blank > 0.4) {
         failures++
         pageFails++
         await sharp(png).jpeg({ quality: 70 }).toFile(`${OUT}/${name}.jpg`)
-        console.log(`✗ ${dev} ${path} y=${y}: ${e.empty ? `leer (einfarbig ${(e.uniform * 100).toFixed(1)} %, Abweichung ${e.sd.toFixed(1)})` : ''}${overlaps.length ? ' Überschneidung: ' + overlaps.slice(0, 3).join('; ') : ''}`)
+        console.log(`✗ ${dev} ${path} y=${y}: ${e.empty ? `leer (einfarbig ${(e.uniform * 100).toFixed(1)} %, Abweichung ${e.sd.toFixed(1)})` : ''}${blank > 0.4 ? ` leere Fläche ${(blank * 100).toFixed(0)} %` : ''}${overlaps.length ? ' Überschneidung: ' + overlaps.slice(0, 3).join('; ') : ''}`)
+      }
+    }
+    // Moment-Überschriften: Schwung gegen übrige Buchstaben, pixelgenau
+    const moments = await page.locator('.moment').count()
+    for (let i = 0; i < moments; i++) {
+      const c = await momentClash(page, i)
+      if (c.hits > 4) {
+        failures++
+        pageFails++
+        if (c.png) await sharp(c.png).jpeg({ quality: 80 }).toFile(`${OUT}/${dev}-${path.replace(/\//g, '_') || 'start'}-moment-${i}.jpg`)
+        console.log(`✗ ${dev} ${path}: Moment „${c.text}“: Schwung berührt andere Buchstaben (${c.hits} Pixel unter 0,08 em)`)
       }
     }
     console.log(`${pageFails ? '✗' : '✓'} ${dev} ${path}: ${Math.floor(total / STEP) + 1} Positionen, ${pageFails} Fehler`)

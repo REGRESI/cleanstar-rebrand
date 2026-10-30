@@ -9,7 +9,7 @@ const MAX_ACTIVE = 3
 let active = 0
 
 /**
- * Glanz-Stern aus dem Markenzeichen: blitzt einmal kurz auf (Skalierung 0 → 1 → 0, leichte Drehung), wenn etwas
+ * Glanz-Stern aus dem Markenzeichen: blitzt je Auslösung einmal kurz auf (Skalierung 0 → 1 → 0, leichte Drehung), wenn etwas
  * „sauber wird“. Keine Dauer-Animation. Bei reduzierter Bewegung erscheint er nicht.
  * Auslöser: `play` (z. B. abgehakter Prüfpunkt) oder `onReveal` (sobald der umgebende [data-reveal]-Block fertig ist).
  */
@@ -52,10 +52,16 @@ export function Sparkle({
 
   const go = play || trigger
   const done = useRef(false)
-  // Nur einmal, nur mit Bewegung und nur, solange weniger als drei Sterne funkeln.
-  // Der Zähler wird unabhängig vom Komponentenleben wieder freigegeben.
+  // Einmal je Auslösung (fällt der Auslöser weg, z. B. beim Zurückscrollen, darf er beim nächsten Mal wieder funkeln),
+  // nur mit Bewegung und nur, solange weniger als drei Sterne funkeln. Der Zähler wird unabhängig vom Komponentenleben
+  // wieder freigegeben.
   useEffect(() => {
-    if (!go || done.current || prefersReducedMotion() || active >= MAX_ACTIVE) return
+    if (!go) {
+      done.current = false
+      setFired(false)
+      return
+    }
+    if (done.current || prefersReducedMotion() || active >= MAX_ACTIVE) return
     done.current = true
     active++
     setFired(true)

@@ -1,6 +1,7 @@
 import { createElement, Fragment, forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, type ElementType, type ReactNode } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { paintLetters } from '@/lib/scrollScene'
+import { replay } from '@/lib/replay'
 import { prefersReducedMotion } from '@/lib/env'
 import { noOrphan } from '@/lib/format'
 import { cn } from '@/lib/cn'
@@ -77,22 +78,31 @@ export function markGlyphLines(host: Element) {
 /** Dauer der Welle in ms für n Zeilen (muss zu den CSS-Werten passen, siehe .at-h in index.css) */
 export const waveMs = (lines: number) => (lines - 1) * 120 + 250 + 550 + 500
 
-/** Startet die Welle (Zeilen bestimmen, Endfarbe festhalten) und markiert sie danach als gelaufen */
+const timers = new WeakMap<HTMLElement, number>()
+
+/**
+ * Startet die Welle vorwärts (Zeilen bestimmen, Endfarbe festhalten). Läuft bei jedem Hineinscrollen erneut:
+ * Zustand data-at="in" (einlaufen, danach stehen) bzw. "out" (rückwärts ausblenden), siehe .at-h in index.css.
+ */
 export function playHeadline(el: HTMLElement, onDone?: () => void) {
-  if (el.hasAttribute('data-at-done') || el.hasAttribute('data-at-on')) return
+  if (el.hasAttribute('data-at-done') || el.dataset.at === 'in') return
   const lines = markGlyphLines(el)
   el.style.setProperty('--at-to', getComputedStyle(el).color)
-  el.setAttribute('data-at-on', '')
-  window.setTimeout(() => {
-    el.removeAttribute('data-at-on')
-    el.setAttribute('data-at-done', '')
-    onDone?.()
-  }, waveMs(lines) + 80)
+  el.dataset.at = 'in'
+  window.clearTimeout(timers.get(el))
+  timers.set(el, window.setTimeout(() => onDone?.(), waveMs(lines) + 80))
+}
+
+/** Welle rückwärts: Buchstaben werden wieder blass, Wörter sinken weg (beim Verlassen, in beide Richtungen) */
+export function hideHeadline(el: HTMLElement) {
+  if (el.dataset.at !== 'in') return
+  window.clearTimeout(timers.get(el))
+  el.dataset.at = 'out'
 }
 
 // Dasselbe als Inline-Skript direkt nach einer sofort startenden Überschrift: läuft im vorgerenderten HTML noch vor
 // dem ersten Zeichnen, damit der Seitenkopf nicht auf JavaScript wartet
-const inlinePlay = `(function(h){if(!h||!document.documentElement.classList.contains('js-motion'))return;var t=null,l=-1,r=[];h.querySelectorAll('.at-w').forEach(function(w){var y=w.offsetTop;if(t===null||Math.abs(y-t)>4){t=y;l++;r.push([])}w.style.setProperty('--l',l);r[l].push(w)});r.forEach(function(row){var c=[];row.forEach(function(w){c=c.concat([].slice.call(w.children))});var n=Math.max(1,c.length-1);c.forEach(function(e,i){e.style.setProperty('--x',(i/n).toFixed(3))})});h.style.setProperty('--at-to',getComputedStyle(h).color);h.setAttribute('data-at-on','')})(document.currentScript&&document.currentScript.previousElementSibling)`
+const inlinePlay = `(function(h){if(!h||!document.documentElement.classList.contains('js-motion'))return;var t=null,l=-1,r=[];h.querySelectorAll('.at-w').forEach(function(w){var y=w.offsetTop;if(t===null||Math.abs(y-t)>4){t=y;l++;r.push([])}w.style.setProperty('--l',l);r[l].push(w)});r.forEach(function(row){var c=[];row.forEach(function(w){c=c.concat([].slice.call(w.children))});var n=Math.max(1,c.length-1);c.forEach(function(e,i){e.style.setProperty('--x',(i/n).toFixed(3))})});h.style.setProperty('--at-to',getComputedStyle(h).color);h.setAttribute('data-at','in')})(document.currentScript&&document.currentScript.previousElementSibling)`
 
 export function AnimatedText({
   as = 'h2',
@@ -107,6 +117,7 @@ export function AnimatedText({
   wordsClassName,
   orphans = true,
   onDone,
+  onOut,
   children,
 }: {
   as?: ElementType
@@ -127,12 +138,16 @@ export function AnimatedText({
   orphans?: boolean
   /** headline: nach der Welle (z. B. Ring-Puls am Porträt danach) */
   onDone?: () => void
+  /** headline: beim Verlassen (Welle läuft rückwärts), z. B. Porträt wieder ausblenden */
+  onOut?: () => void
   /** Zusatz hinter dem Text (z. B. Porträt am Ende der Überschrift) */
   children?: ReactNode
 }) {
   const ref = useRef<HTMLElement>(null)
   const done = useRef(onDone)
   done.current = onDone
+  const out = useRef(onOut)
+  out.current = onOut
   const shown = text.includes('\n') || !orphans ? text : noOrphan(text, as === 'h1' ? 18 : 20)
 
   // headline: sofortiger Start bei Seitenwechseln im Browser (kein vorgerendertes HTML), sonst beim Hineinscrollen
@@ -144,35 +159,31 @@ export function AnimatedText({
       done.current?.()
       return
     }
-    if (immediate) {
-      if (el.hasAttribute('data-at-on')) {
-        // vom Inline-Skript gestartet: nur noch das Ende markieren
-        const lines = markGlyphLines(el)
-        const t = window.setTimeout(() => {
-          el.removeAttribute('data-at-on')
-          el.setAttribute('data-at-done', '')
-          done.current?.()
-        }, waveMs(lines) + 80)
-        return () => window.clearTimeout(t)
-      }
-      playHeadline(el, () => done.current?.())
-      return
-    }
-    // von außen gesteuert (z. B. Wisch-Zeile): erst starten, wenn trigger wahr wird
+    // von außen gesteuert (z. B. Wisch-Zeile): vorwärts, solange trigger wahr ist, sonst rückwärts
     if (trigger !== undefined) {
       if (trigger) playHeadline(el, () => done.current?.())
+      else {
+        hideHeadline(el)
+        out.current?.()
+      }
       return
     }
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) return
-        io.disconnect()
-        playHeadline(el, () => done.current?.())
+    if (immediate) {
+      if (el.dataset.at === 'in') {
+        // vom Inline-Skript gestartet: Zeilen sind markiert, nur noch das Ende melden
+        const t = window.setTimeout(() => done.current?.(), waveMs(markGlyphLines(el)) + 80)
+        timers.set(el, t)
+      } else playHeadline(el, () => done.current?.())
+    }
+    // Bei jedem Durchqueren: hinein vorwärts, hinaus rückwärts (auch beim Hochscrollen)
+    return replay(
+      el,
+      () => playHeadline(el, () => done.current?.()),
+      () => {
+        hideHeadline(el)
+        out.current?.()
       },
-      { rootMargin: '0px 0px -12% 0px' },
     )
-    io.observe(el)
-    return () => io.disconnect()
   }, [mode, immediate, text, trigger])
 
   // paragraph: Färbung an die Scrollposition gekoppelt

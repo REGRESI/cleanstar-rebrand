@@ -6,7 +6,7 @@ import { cn } from '@/lib/cn'
 
 /**
  * Überschrift mit rundem Gründer-Porträt am Ende (Referenz: learnwithzero): Nach der Farbwelle erscheint das Porträt
- * mit einem kurzen Ring-Puls in Markenblau. Liegt später eine Sprachnachricht vor, wird das Porträt zum Abspielknopf;
+ * mit einem kurzen Ring-Puls in Markenblau, bei jedem Hineinscrollen erneut. Liegt später eine Sprachnachricht vor, wird das Porträt zum Abspielknopf;
  * bis dahin ist es nur ein Bild.
  */
 export function PortraitHeadline({
@@ -27,7 +27,7 @@ export function PortraitHeadline({
   const f = company.founders[founder] ?? company.founders[0]
   const img = images[f.image as ImageId]
   return (
-    <AnimatedText as={as} id={id} text={text} className={className} onDone={() => setOn(true)}>
+    <AnimatedText as={as} id={id} text={text} className={className} onDone={() => setOn(true)} onOut={() => setOn(false)}>
       {' '}
       <span className={cn('pp', on && 'is-on')}>
         <img src={`/images/${img.file}-640.webp`} alt="" width={96} height={96} loading="lazy" decoding="async" />

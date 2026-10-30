@@ -11,11 +11,10 @@ import { prefersReducedMotion } from '@/lib/env'
  * Übergang C „Horizontal-Scroll“ (Referenz: ERA, era/04): Beim Scrollen nach unten fährt der Abschnitt nach rechts
  * (der Inhalt wandert nach links, die Bühne steht). Erst gleitet ein großer Titel herein, dann folgen die sechs
  * Leistungen nacheinander: großes Foto (kommt von rechts und wird größer), daneben Nummer, Name, zwei Sätze und ein
- * Pfeil. Jede Leistung ist als Ganzes ein Link. Unten eine feine Fortschrittslinie mit „01 / 06“.
+ * Pfeil. Jede Leistung ist als Ganzes ein Link. Titel „6 Leistungen. Ein Team.“ (Zahl aus den Daten). Unten eine feine Fortschrittslinie mit „01 / 06“.
  * Im Dokument ist es eine normale Liste von Links (Tastatur, Screenreader); Fokus scrollt die Leistung ins Bild.
  * Reduzierte Bewegung: dieselben Leistungen untereinander.
  */
-const TITLE = ['Sechs Leistungen.', 'Ein Team.']
 
 export function ServicesHorizontal() {
   const list = [...services].sort((a, b) => Number(!!b.featured) - Number(!!a.featured))
@@ -107,9 +106,10 @@ export function ServicesHorizontal() {
               <div ref={title}>
                 <p className="t-label">Leistungen</p>
                 <h2 id="services-title" className="svh-title-text mt-6">
-                  {TITLE[0]}
+                  {/* Anzahl aus den Daten gezählt, nicht fest geschrieben */}
+                  {n} Leistungen.
                   <br />
-                  {TITLE[1]}
+                  Ein Team.
                 </h2>
                 <p className="mt-6 max-w-[34ch] text-[1.0625rem] text-ink-2">Büroreinigung ist unser Kern. Die übrigen Leistungen kommen dazu, wenn Sie sie brauchen.</p>
               </div>

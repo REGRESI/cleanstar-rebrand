@@ -9,10 +9,11 @@ const LiveMap = lazy(() => import('./LiveMap'))
 
 /**
  * Einzugsgebiet: echte Karte (MapLibre, selbst gehostete Kacheln) mit Ortsliste daneben.
- * Bis die Karte geladen ist (und ohne JavaScript) steht an ihrer Stelle eine schematische Karte mit Links.
+ * Bis die Karte geladen ist (und ohne JavaScript) steht an ihrer Stelle eine schematische Karte mit Links bzw. auf der
+ * Startseite ein Standbild der Geländekarte (die Orte sind dann über die Liste daneben erreichbar).
  * Die Karte lädt erst, wenn sie in die Nähe des sichtbaren Bereichs kommt.
  */
-export function AreaMap({ className }: { className?: string }) {
+export function AreaMap({ className, still }: { className?: string; /** Platzhalter als Standbild der Geländekarte statt der schematischen Karte (Startseite) */ still?: boolean }) {
   const navigate = useNavigate()
   const frame = useRef<HTMLDivElement>(null)
   const api = useRef<MapApi | null>(null)
@@ -57,10 +58,23 @@ export function AreaMap({ className }: { className?: string }) {
           role="region"
           aria-label="Karte des Einzugsgebiets im Ortenaukreis"
         >
-          {/* Platzhalter: schematische Karte, bis die echte Karte steht */}
+          {/* Platzhalter: Standbild der Geländekarte (Startseite) bzw. schematische Karte, bis die echte Karte steht */}
+          {still && (
+            <img
+              src="/images/karte-ortenau-1328.webp"
+              srcSet="/images/karte-ortenau-800.webp 800w, /images/karte-ortenau-1328.webp 1328w"
+              sizes="(min-width: 1024px) 60vw, 100vw"
+              alt=""
+              width={1329}
+              height={998}
+              loading="lazy"
+              decoding="async"
+              className={cn('absolute inset-0 size-full object-cover transition-opacity duration-500', ready && 'opacity-0')}
+            />
+          )}
           <svg
             viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`}
-            className={cn('absolute inset-0 m-auto h-full w-auto transition-opacity duration-500', ready && 'opacity-0')}
+            className={cn('absolute inset-0 m-auto h-full w-auto transition-opacity duration-500', (ready || still) && 'opacity-0', still && 'invisible')}
             aria-hidden={ready || undefined}
           >
             <path d={toPath(RHINE, false)} fill="none" stroke="#bccbdb" strokeWidth="2.5" strokeLinecap="round" />

@@ -1,8 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import maplibregl, { type LngLatBoundsLike, type StyleSpecification } from 'maplibre-gl'
 import { Protocol } from 'pmtiles'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { places, shortName, type Place } from '@/content/places'
+import { hq, places, shortName, type Place } from '@/content/places'
+import { getLocation } from '@/content/locations'
+import { services } from '@/content/services'
+import { MomentHeading } from '@/components/ui/MomentHeading'
+import { Sparkle } from '@/components/ui/Sparkle'
 import { EASE_CS } from '@/lib/ease'
 import { prefersReducedMotion } from '@/lib/env'
 
@@ -12,10 +16,12 @@ import { prefersReducedMotion } from '@/lib/env'
  *   erzeugt mit scripts/map/build_dem.py) als Schummerung und als echtes 3D-Gelände mit Neigung.
  * - Landbedeckung, Gewässer, Orte, Straßen, Grenzen: Vektorkacheln aus OpenStreetMap-Daten über Overture Maps
  *   (public/map/ortenau.pmtiles, scripts/map/build_tiles.py).
- * Keine Schriften von außen: Ortsnamen sind HTML-Beschriftungen. Nur auf der Seite Einzugsgebiet, per dynamischem Import.
+ * Keine Schriften von außen: Ortsnamen sind HTML-Beschriftungen. Seite Einzugsgebiet und Startseite, per dynamischem Import.
  *
- * Klick auf einen Ort: Vogelflug in einer leichten Kurve über das Relief (Kamera kippt, Wolkenschichten ziehen durch
- * und lichten sich am Ziel), danach öffnet sich die Ortsseite. Reduzierte Bewegung: direkter Seitenwechsel.
+ * Klick auf einen Ort: Vogelflug (siehe birdFlight) mit Wolkenschichten, Durchflug durch eine dichte Wolke,
+ * Wolkenschatten, Anfahrtslinie und mitlaufender Fahrzeit; Ankunft mit Markierung, Glanz-Stern und Ortsname in der
+ * Moment-Schrift, danach die Ortsseite. Etwa 3,5 Sekunden, mit Escape oder Klick überspringbar. Reduzierte Bewegung:
+ * direkter Seitenwechsel.
  */
 
 export type MapApi = { fly: (p: Place) => void; highlight: (slug: string | null) => void }
@@ -203,44 +209,56 @@ function style(): StyleSpecification {
 }
 
 /**
- * Vogelflug in einer leichten Kurve: Der Weg zum Ziel biegt seitlich aus (über die Schwarzwaldkämme im Osten bzw. über
- * die Rheinebene im Westen), die Kamera steigt zuerst etwas auf, kippt und dreht sich leicht in die Kurve, dann sinkt
- * sie zum Ort ab. Gezeichnet Bild für Bild, das Relief bleibt dabei unter der Kamera.
+ * Vogelflug: Die Kamera startet über Offenburg, kippt nach vorn, fliegt in einer weichen Kurve über das Relief zum Ort
+ * (der Weg biegt zur Seite der Schwarzwaldkämme bzw. der Rheinebene aus), steigt unterwegs etwas auf, dreht und neigt
+ * sich leicht in die Kurve und senkt sich am Ende auf den Ort. Gezeichnet Bild für Bild; onFrame bekommt den Fortschritt
+ * auf der Strecke (0 bis 1) für Anfahrtslinie und Fahrzeit. Gibt eine Abbruchfunktion zurück.
  */
-function curvedFlight(map: maplibregl.Map, to: [number, number], o: { zoom: number; pitch: number; duration: number }) {
-  const from = map.getCenter()
+type LL = [number, number]
+function routeCurve(from: LL, to: LL) {
+  const dx = to[0] - from[0]
+  const dy = to[1] - from[1]
+  const len = Math.hypot(dx, dy) || 1e-6
+  const side = to[0] > 8.0 ? 1 : -1
+  const flip = (-dy / len) * side < 0 ? -1 : 1
+  const bend = Math.min(0.1, len * 0.3)
+  const c: LL = [(from[0] + to[0]) / 2 + (-dy / len) * flip * bend, (from[1] + to[1]) / 2 + (dx / len) * flip * bend]
+  const at = (e: number): LL => {
+    const u = 1 - e
+    return [u * u * from[0] + 2 * u * e * c[0] + e * e * to[0], u * u * from[1] + 2 * u * e * c[1] + e * e * to[1]]
+  }
+  return { at, len, side }
+}
+
+function birdFlight(map: maplibregl.Map, home: LL, to: LL, o: { zoom: number; pitch: number; duration: number; onFrame: (route: number, k: number) => void }) {
+  const start = map.getCenter()
   const z0 = map.getZoom()
   const p0 = map.getPitch()
   const b0 = map.getBearing()
-  const dx = to[0] - from.lng
-  const dy = to[1] - from.lat
-  const len = Math.hypot(dx, dy) || 1e-6
-  // Kontrollpunkt seitlich der Strecke, zur Seite der Schwarzwaldkämme (Osten) bzw. der Rheinebene (Westen)
-  const side = to[0] > 8.0 ? 1 : -1
-  const flip = (-dy / len) * side < 0 ? -1 : 1
-  const nx = (-dy / len) * flip
-  const ny = (dx / len) * flip
-  const bend = Math.min(0.12, len * 0.35)
-  const cx = (from.lng + to[0]) / 2 + nx * bend
-  const cy = (from.lat + to[1]) / 2 + ny * bend
-  const lift = Math.min(1.1, len * 6)
+  const curve = routeCurve(home, to)
+  const lift = Math.min(1.2, curve.len * 6)
   const t0 = performance.now()
+  let raf = 0
+  // Abschnitte: 0 bis 0,16 über Offenburg einschwenken und nach vorn kippen, bis 0,84 Kurve, danach absenken
   const step = (now: number) => {
     const k = Math.min(1, (now - t0) / o.duration)
-    const e = EASE_CS(k)
-    const u = 1 - e
-    const lng = u * u * from.lng + 2 * u * e * cx + e * e * to[0]
-    const lat = u * u * from.lat + 2 * u * e * cy + e * e * to[1]
+    const a = EASE_CS(Math.min(1, k / 0.16))
+    const r = EASE_CS(Math.max(0, Math.min(1, (k - 0.14) / 0.72)))
+    const d = EASE_CS(Math.max(0, (k - 0.8) / 0.2))
+    const onCurve = curve.at(r)
+    const center: LL = k < 0.16 ? [start.lng + (home[0] - start.lng) * a, start.lat + (home[1] - start.lat) * a] : onCurve
     map.jumpTo({
-      center: [lng, lat],
-      zoom: z0 + (o.zoom - z0) * e - Math.sin(Math.PI * Math.min(1, k * 1.15)) * lift,
-      pitch: p0 + (o.pitch - p0) * Math.min(1, e * 1.4),
-      // dreht sich unterwegs leicht in die Kurve und kommt mit -8° am Ziel an
-      bearing: b0 + (-8 - b0) * e - Math.sin(Math.PI * e) * 7 * side,
+      center,
+      zoom: z0 + 0.35 * a + (o.zoom - z0 - 0.35) * r * 0.75 + (o.zoom - z0) * 0.25 * d - Math.sin(Math.PI * r) * lift,
+      pitch: p0 + (Math.min(o.pitch, 58) - p0) * a + (o.pitch - Math.min(o.pitch, 58)) * d,
+      // in die Kurve drehen und leicht neigen, am Ziel mit -8° ankommen
+      bearing: b0 + (-8 - b0) * r - Math.sin(Math.PI * r) * 11 * curve.side,
     })
-    if (k < 1) requestAnimationFrame(step)
+    o.onFrame(r, k)
+    if (k < 1) raf = requestAnimationFrame(step)
   }
-  requestAnimationFrame(step)
+  raf = requestAnimationFrame(step)
+  return { cancel: () => cancelAnimationFrame(raf), curve }
 }
 
 /** Läuft WebGL ohne Grafikhardware (z. B. SwiftShader, llvmpipe)? */
@@ -265,6 +283,11 @@ export default function LiveMap({
 }) {
   const box = useRef<HTMLDivElement>(null)
   const clouds = useRef<HTMLDivElement>(null)
+  const overlay = useRef<HTMLDivElement>(null)
+  const [arrive, setArrive] = useState<{ p: Place; xy: [number, number] } | null>(null)
+  const onArrive = (p: Place | null, at: [number, number] | null) => setArrive(p && at ? { p, xy: at } : null)
+  const loc = arrive ? getLocation(arrive.p.slug) : undefined
+  const asked = (loc?.focus ?? []).slice(0, 3).map((f) => services.find((x) => x.slug === f.service)?.name).filter(Boolean)
 
   useEffect(() => {
     if (!box.current) return
@@ -358,32 +381,124 @@ export default function LiveMap({
       if (p) fly(p)
     })
 
+    // Anfahrtslinie (wird während des Flugs von Offenburg zum Ort gezeichnet)
+    const HOME: LL = [hq.lng, hq.lat]
+    map.once('style.load', () => {
+      map.addSource('route', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: [] } } })
+      map.addLayer(
+        { id: 'route', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': C.blue, 'line-width': 3.2, 'line-opacity': 0.9 } },
+        'hq-ring',
+      )
+    })
+
     let flying = false
+    let stop: (() => void) | null = null
     function fly(p: Place) {
       if (prefersReducedMotion()) return onOpen(p)
       if (flying) return
       flying = true
       onHover(null, null)
-      const duration = small ? 1700 : 2600
-      curvedFlight(map, [p.lng, p.lat], { zoom: small ? 12.4 : 12.8, pitch: small ? 50 : 60, duration })
-      // Wolken ziehen durch (zwei Schichten mit unterschiedlichem Tempo, Handy: eine) und lichten sich am Ziel
-      const layers = Array.from(clouds.current?.children ?? []) as HTMLElement[]
-      layers.slice(0, small ? 1 : 2).forEach((el, i) => {
-        el.animate(
-          [
-            { opacity: 0, transform: 'translate3d(6%, 4%, 0) scale(1.1)' },
-            { opacity: small ? 0.55 : i ? 0.65 : 0.8, offset: 0.4 },
-            { opacity: small ? 0.45 : i ? 0.5 : 0.7, offset: 0.7 },
-            { opacity: 0, transform: `translate3d(${i ? -26 : -14}%, ${i ? -12 : -7}%, 0) scale(${i ? 1.5 : 1.3})` },
-          ],
-          { duration: duration + 250, easing: 'cubic-bezier(0.2, 0.7, 0.1, 1)', fill: 'none' },
+      // __csFlightSlow: nur für Bildfolgen in Tests (Zeitlupe), sonst 1
+      const duration = (small ? 2300 : 2700) * ((window as { __csFlightSlow?: number }).__csFlightSlow ?? 1)
+      const timers: number[] = []
+      const anims: Animation[] = []
+      const hud = overlay.current
+      const meter = hud?.querySelector<HTMLElement>('[data-meter]')
+      hud?.setAttribute('data-on', 'fly')
+      const route = map.getSource('route') as maplibregl.GeoJSONSource | undefined
+      const flight = birdFlight(map, HOME, [p.lng, p.lat], {
+        zoom: small ? 12.4 : 12.8,
+        pitch: small ? 52 : 62,
+        duration,
+        onFrame: (r) => {
+          // Linie bis zur aktuellen Stelle, Fahrzeit läuft mit (ungefährer Wert aus places.ts)
+          if (route) {
+            const n = Math.max(2, Math.round(40 * r))
+            const pts = Array.from({ length: n }, (_, i) => flight.curve.at((i / (n - 1)) * r))
+            route.setData({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: pts } })
+          }
+          if (meter) meter.textContent = String(Math.round(p.minutes * r))
+        },
+      })
+      // Wolken: drei bis vier Schichten (Handy zwei) mit eigenem Tempo und eigener Größe; auf dem Höhepunkt fliegt die
+      // Kamera durch eine dichte Wolke (kurz fast weiß), dann reißt sie auf. Wolkenschatten wandern über das Gelände.
+      const layers = Array.from(clouds.current?.querySelectorAll<HTMLElement>('[data-cloud]') ?? [])
+      layers.slice(0, small ? 2 : 4).forEach((el, i) => {
+        const dir = i % 2 ? -1 : 1
+        anims.push(
+          el.animate(
+            [
+              { opacity: 0, transform: `translate3d(${8 * dir}%, ${5 + i * 2}%, 0) scale(${1.05 + i * 0.12})` },
+              { opacity: 0.55 + i * 0.08, offset: 0.3 },
+              { opacity: 0.85, offset: 0.48 },
+              { opacity: 0.4, offset: 0.66 },
+              { opacity: 0, transform: `translate3d(${-(18 + i * 9) * dir}%, ${-(8 + i * 4)}%, 0) scale(${1.4 + i * 0.25})` },
+            ],
+            { duration: duration * (0.9 + i * 0.05), easing: 'cubic-bezier(0.3, 0.6, 0.2, 1)', fill: 'none' },
+          ),
         )
       })
-      // Seitenwechsel nach der festen Flugdauer (unabhängig von Zwischenereignissen der Kamera)
-      window.setTimeout(() => {
+      const dense = clouds.current?.querySelector<HTMLElement>('[data-dense]')
+      if (dense)
+        anims.push(
+          dense.animate(
+            [
+              { opacity: 0, transform: 'scale(0.85)' },
+              { opacity: 0, transform: 'scale(0.9)', offset: 0.34 },
+              { opacity: 0.93, transform: 'scale(1.15)', offset: 0.5 },
+              { opacity: 0, transform: 'scale(1.9)', offset: 0.66 },
+              { opacity: 0, transform: 'scale(1.9)' },
+            ],
+            { duration, easing: 'linear', fill: 'none' },
+          ),
+        )
+      const shade = clouds.current?.querySelector<HTMLElement>('[data-shade]')
+      if (shade)
+        anims.push(
+          shade.animate(
+            [
+              { opacity: 0, transform: 'translate3d(18%, 6%, 0)' },
+              { opacity: 1, offset: 0.25 },
+              { opacity: 1, offset: 0.8 },
+              { opacity: 0, transform: 'translate3d(-22%, -8%, 0)' },
+            ],
+            { duration, easing: 'linear', fill: 'none' },
+          ),
+        )
+
+      // Ankunft: Markierung pulsiert, Glanz-Stern, Ortsname in der Moment-Schrift mit Fahrzeit und gefragten Leistungen;
+      // danach weicher Übergang zur Ortsseite. Jederzeit mit Escape oder Klick überspringbar.
+      timers.push(
+        window.setTimeout(() => {
+          hud?.setAttribute('data-on', 'arrive')
+          onArrive(p, xy(p))
+        }, duration),
+      )
+      timers.push(window.setTimeout(() => finish(), duration + 1000 * ((window as { __csFlightSlow?: number }).__csFlightSlow ?? 1)))
+      const skip = (e: Event) => {
+        if (e instanceof KeyboardEvent && e.key !== 'Escape') return
+        finish()
+      }
+      function finish() {
+        if (!flying) return
         flying = false
+        stop = null
+        flight.cancel()
+        timers.forEach((t) => window.clearTimeout(t))
+        anims.forEach((a) => a.cancel())
+        removeEventListener('keydown', skip)
+        removeEventListener('pointerdown', skip, true)
+        hud?.removeAttribute('data-on')
+        route?.setData({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: [] } })
+        onArrive(null, null)
         onOpen(p)
-      }, duration + 200)
+      }
+      stop = finish
+      // erst nach dem auslösenden Klick lauschen
+      window.setTimeout(() => {
+        addEventListener('keydown', skip)
+        addEventListener('pointerdown', skip, true)
+      }, 0)
     }
 
     api.current = {
@@ -397,6 +512,7 @@ export default function LiveMap({
     }
     map.once('load', () => onReady())
     return () => {
+      stop?.()
       api.current = null
       labels.forEach((m) => m.remove())
       map.remove()
@@ -410,8 +526,31 @@ export default function LiveMap({
         <div ref={box} className="size-full" />
       </div>
       <div ref={clouds} aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="map-cloud" style={{ backgroundImage: 'url(/map/wolken-1.webp)' }} />
-        <div className="map-cloud" style={{ backgroundImage: 'url(/map/wolken-2.webp)' }} />
+        <div data-shade className="map-shade" />
+        {['/map/wolken-1.webp', '/images/deko/wolken-2.webp', '/map/wolken-2.webp', '/images/deko/wolken-3.webp'].map((src, i) => (
+          <div key={src} data-cloud className="map-cloud" style={{ backgroundImage: `url(${src})`, inset: `${-18 - i * 6}%` }} />
+        ))}
+        <div data-dense className="map-dense" />
+      </div>
+      {/* Fahrzeit während des Flugs, Ankunft mit Ortsname */}
+      <div ref={overlay} className="map-hud pointer-events-none absolute inset-0" aria-live="polite">
+        <p className="map-meter">
+          <span className="t-label">Fahrzeit ab Offenburg</span>
+          <span className="block font-medium tabular-nums text-[1.5rem] leading-none text-ink">
+            ca. <span data-meter>0</span> Min.
+          </span>
+        </p>
+        {arrive && (
+          <div className="map-arrive" style={{ left: arrive.xy[0], top: arrive.xy[1] }}>
+            <span className="map-pulse" aria-hidden />
+            <Sparkle play className="absolute -top-6 left-3 size-5" />
+            <div className="map-arrive-card">
+              <MomentHeading as="p" text={shortName(arrive.p)} play vanish={false} className="map-arrive-name" />
+              <p className="mt-2 font-medium tabular-nums text-[0.8125rem] text-muted">{arrive.p.minutes === 0 ? 'Unser Sitz' : `ca. ${arrive.p.minutes} Min. ab Offenburg`}</p>
+              {asked.length > 0 && <p className="mt-1 text-[0.8125rem] text-ink-2">Gefragt: {asked.join(', ')}</p>}
+            </div>
+          </div>
+        )}
       </div>
     </>
   )

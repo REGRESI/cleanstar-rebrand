@@ -1,5 +1,6 @@
 import { createElement, Fragment, useEffect, useRef, type CSSProperties, type ElementType } from 'react'
 import { ScrollTrigger } from '@/lib/gsap'
+import { replay } from '@/lib/replay'
 import { prefersReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
 
@@ -8,7 +9,7 @@ import { cn } from '@/lib/cn'
  * großen Schreibschrift-Großbuchstaben (Pinyon Script), dessen Schwung unter das Wort greift. Nur für die großen
  * Momente der Seite, nie für normale Überschriften, nur auf hellem Grund.
  *
- * Erscheinen (einmal beim Hineinscrollen, etwa 1,4 s): Buchstaben gestaffelt aus dem Nebel, erst hell, unscharf und
+ * Erscheinen (bei jedem Hineinscrollen, etwa 1,4 s; beim Verlassen rückwärts): Buchstaben gestaffelt aus dem Nebel, erst hell, unscharf und
  * senkrecht gestreckt (Bewegungsschlieren), 20 px tiefer; dann scharf an ihren Platz, die Farbe läuft als Welle von
  * leuchtendem Himmelblau zu gedecktem Marken- bzw. Navy-Blau. Der Schwung des Großbuchstabens deckt sich von links auf.
  * Verschwinden (an die Scrollposition gekoppelt): nach oben in Unschärfe und Licht.
@@ -21,6 +22,20 @@ function tone(x: number) {
   const b = [0x24, 0x53, 0xcf]
   return '#' + a.map((v, i) => Math.round(v + (b[i] - v) * x).toString(16).padStart(2, '0')).join('')
 }
+
+/**
+ * Abstände je Schreibschrift-Großbuchstabe (Pinyon Script in 2-facher Größe, Grundlinie 0,05 em tiefer), aus der
+ * Tintenfläche der Glyphe gemessen (Zeilenprofil, siehe docs/review-nachbesserung-1/README.md): [Beginn des Serifentexts in der ersten Zeile, in em der
+ * Überschrift]. Der Text beginnt erst rechts vom ganzen Schwung, der in die Höhe der Serifenbuchstaben reicht, mit
+ * mindestens 0,08 em Luft; die zweite Zeile rückt bündig darunter ein. Der Schwung oberhalb der Zeile darf frei über
+ * den Text auslaufen (er berührt ihn nicht).
+ */
+const CAP_SCALE = 2
+const CAP_START: Record<string, number> = { A: 1.81, B: 1.894, C: 1.374, D: 1.74, E: 1.384, F: 1.546, G: 1.404, H: 2.066, I: 1.614, J: 1.516, K: 1.864, L: 1.93, M: 2.08, N: 2.556, O: 1.32, P: 1.776, Q: 1.816, R: 1.81, S: 1.644, T: 1.41, U: 1.354, V: 1.716, W: 2.084, Z: 1.56 }
+// Vorschub und rechter Tintenrand je Großbuchstabe (in em der Schreibschrift); für Buchstaben ohne gemessenes Profil
+// beginnt der Text vorsichtshalber rechts von der ganzen Tinte
+const CAP_ADV: Record<string, number> = { A: 0.795, B: 0.797, C: 0.628, D: 0.792, E: 0.485, F: 0.612, G: 0.527, H: 0.853, I: 0.651, J: 0.596, K: 0.843, L: 0.75, M: 0.935, N: 0.724, O: 0.548, P: 0.629, Q: 0.702, R: 0.857, S: 0.514, T: 0.55, U: 0.504, V: 0.502, W: 0.841, Z: 0.779 }
+const CAP_INK: Record<string, number> = { A: 1.047, B: 1.016, C: 0.844, D: 1, E: 0.75, F: 1.094, G: 0.734, H: 1.188, I: 1, J: 0.953, K: 1.281, L: 1.031, M: 1.25, N: 1.391, O: 0.734, P: 0.875, Q: 0.875, R: 0.922, S: 0.891, T: 1.141, U: 0.781, V: 0.891, W: 1.469, Z: 0.875 }
 
 export function MomentHeading({
   text,
@@ -54,20 +69,16 @@ export function MomentHeading({
       el.setAttribute('data-mo', 'done')
       return
     }
+    const show = () => el.setAttribute('data-mo', 'on')
+    // rückwärts nur, wenn sie zu sehen war (sonst bliebe der Ruhezustand „idle“)
+    const hide = () => el.getAttribute('data-mo') === 'on' && el.setAttribute('data-mo', 'out')
     if (play !== undefined) {
-      if (play) el.setAttribute('data-mo', 'on')
+      if (play) show()
+      else hide()
       return
     }
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) return
-        io.disconnect()
-        el.setAttribute('data-mo', 'on')
-      },
-      { rootMargin: '0px 0px -18% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
+    // bei jedem Durchqueren: hinein erscheinen, hinaus (in beide Richtungen) rückwärts verschwinden
+    return replay(el, show, hide, { start: 'top 82%', end: 'bottom 4%' })
   }, [play])
 
   // Verschwinden nach oben, an die Scrollposition gekoppelt
@@ -85,9 +96,12 @@ export function MomentHeading({
 
   let i = 0
   const n = rest.filter((c) => c !== ' ' && c !== '\n').length
+  const start = CAP_START[cap] ?? (CAP_INK[cap] ?? 1.5) * CAP_SCALE + 0.08
+  const adv = (CAP_ADV[cap] ?? 0.8) * CAP_SCALE
+  const capCss = { '--cap-s': CAP_SCALE, '--cap-y': '0.025em', marginRight: `${((start - adv) / CAP_SCALE).toFixed(3)}em`, ...capStyle } as CSSProperties
   return createElement(
     as,
-    { ref, id, className: cn('moment', className), 'data-mo': 'idle', suppressHydrationWarning: true },
+    { ref, id, className: cn('moment', className), 'data-mo': 'idle', style: { '--hang': `${start}em` } as CSSProperties, suppressHydrationWarning: true },
     <span className="sr-only">{text.replace(/\n/g, ' ')}</span>,
     <span aria-hidden className="moment-v">
       {words.map((w, k) => {
@@ -100,7 +114,7 @@ export function MomentHeading({
           <Fragment key={k}>
             {/* Großbuchstabe und erstes Wort bleiben zusammen */}
             <span className="moment-w">
-              {k === 0 && <span className="moment-cap" style={capStyle} data-c={cap} />}
+              {k === 0 && <span className="moment-cap" style={capCss} data-c={cap} />}
               {letters}
             </span>
             {k < words.length - 1 && words[k + 1] !== '\n' ? ' ' : null}
