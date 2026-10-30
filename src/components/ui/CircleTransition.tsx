@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useEffect, useId, useImperativeHandle, useRef } from 'react'
 import { Picture } from './Picture'
 import { OrbitButton } from './OrbitButton'
 import type { ImageId } from '@/content/images'
@@ -30,6 +30,7 @@ export const CircleEdge = forwardRef<CircleHandle, { text: string; tone: CircleT
   const track = useRef<SVGPathElement>(null)
   const label = useRef<SVGTextPathElement>(null)
   const last = useRef(-1)
+  const pid = `ce${useId().replace(/:/g, '')}`
   useImperativeHandle(ref, () => ({
     set(t) {
       const el = svg.current
@@ -65,9 +66,9 @@ export const CircleEdge = forwardRef<CircleHandle, { text: string; tone: CircleT
   return (
     <svg ref={svg} aria-hidden className={cn('pointer-events-none absolute inset-0 size-full', className)} style={{ visibility: 'hidden' }}>
       <circle ref={disc} r="0" fill={FILL[tone]} />
-      <path ref={track} fill="none" id={`ce-${tone}-${text.length}`} />
+      <path ref={track} fill="none" id={pid} />
       <text fill={INK[tone]} className="circle-text" opacity="0">
-        <textPath ref={label} href={`#ce-${tone}-${text.length}`} startOffset="25%" textAnchor="middle">
+        <textPath ref={label} href={`#${pid}`} startOffset="25%" textAnchor="middle">
           {text}
         </textPath>
       </text>
