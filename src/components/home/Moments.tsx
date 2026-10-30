@@ -145,17 +145,41 @@ export function CloudCover({ children, className }: { children: ReactNode; class
         l.style.opacity = o.toFixed(3)
       })
     }
-    const st = ScrollTrigger.create({ trigger: el, start: 'top bottom', end: 'top -15%', scrub: 0.4, onUpdate: (x) => apply(x.progress), onRefresh: (x) => apply(x.progress) })
-    apply(st.progress)
+    let prog = 0
+    const st = ScrollTrigger.create({
+      trigger: el,
+      start: 'top bottom',
+      end: 'top -15%',
+      scrub: 0.4,
+      onUpdate: (x) => apply((prog = x.progress)),
+      onRefresh: (x) => apply((prog = x.progress)),
+    })
+    apply((prog = st.progress))
     el.setAttribute('data-ready', '')
+    // Wolken in WebGL (drei Tiefen, Drift, Auflösen, Licht); bis sie stehen und ohne WebGL die Bild-Ebenen
+    let stopGl: (() => void) | null = null
+    let dead = false
+    const cv = el.querySelector<HTMLCanvasElement>('.cc-gl')
+    if (cv)
+      import('./cloudGl').then(({ startClouds }) => {
+        if (dead) return
+        stopGl = startClouds(cv, () => prog, () => el.setAttribute('data-gl', ''))
+      })
     return () => {
+      dead = true
+      stopGl?.()
       st.kill()
       el.removeAttribute('data-ready')
+      el.removeAttribute('data-gl')
     }
   }, [])
   return (
     <div ref={root} className={cn('cc', className)}>
+      {/* Handy: Raum für den Wolken-Übergang über der Karte, damit die Karte erst frei ins Bild kommt, wenn sich die
+          Wolken aufgelöst haben (sonst lag sie halb verdeckt und war beim Auflösen schon vorbeigescrollt) */}
+      <div aria-hidden className="cc-space" />
       {children}
+      <canvas aria-hidden className="cc-gl" />
       <div aria-hidden className="cc-layers">
         {CLOUDS.map((c, i) => (
           <div key={i} data-cloud={c.speed} className="cc-layer" style={{ '--t': c.top, '--tm': c.topM } as CSSProperties}>

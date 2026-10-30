@@ -30,7 +30,7 @@ export type Quad = {
   resize: (dpr?: number) => [number, number]
   draw: () => void
   /** Textur aus einem Bild laden (Einheit = Reihenfolge des Aufrufs) */
-  texture: (name: string, img: TexImageSource) => void
+  texture: (name: string, img: TexImageSource, mirrorX?: boolean) => void
   dispose: () => void
 }
 
@@ -83,7 +83,7 @@ export function createQuad(canvas: HTMLCanvasElement, fs: string): Quad | null {
       return [w, h]
     },
     draw: () => gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4),
-    texture: (name, img) => {
+    texture: (name, img, mirrorX) => {
       const unit = texs.length
       const t = gl.createTexture()!
       texs.push(t)
@@ -94,7 +94,7 @@ export function createQuad(canvas: HTMLCanvasElement, fs: string): Quad | null {
       gl.generateMipmap(gl.TEXTURE_2D)
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, mirrorX ? gl.MIRRORED_REPEAT : gl.CLAMP_TO_EDGE)
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
       gl.uniform1i(u(name), unit)
     },

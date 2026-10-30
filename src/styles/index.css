@@ -2710,6 +2710,34 @@ footer[data-no-top] {
     z-index: 5;
   }
 }
+.cc-gl {
+  display: none;
+}
+.cc-space {
+  display: none;
+}
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .js-motion .cc-space {
+    display: block;
+    height: 58svh;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion .cc-gl {
+    display: block;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: 50%;
+    width: 120vw;
+    margin-left: -60vw;
+    pointer-events: none;
+    z-index: 5;
+  }
+}
+.cc[data-gl] .cc-layers {
+  visibility: hidden;
+}
 .cc-layer {
   position: absolute;
   top: var(--t);
