@@ -129,3 +129,47 @@ export const zones: Zone[] = [
     ],
   },
 ]
+
+/**
+ * Kurzformen der Aufgaben für die Aufgaben-Wolke (Seite Büroreinigung). Nur gekürzt, ohne neue Inhalte; die volle
+ * Aufgabe steht in Karte und Liste. Fehlt ein Eintrag, zeigt die Wolke die volle Aufgabe.
+ */
+export const shortTask: Record<string, string> = {
+  'Freie Schreibtischflächen feucht abwischen': 'Schreibtische abwischen',
+  'Papierkörbe leeren, Beutel wechseln': 'Papierkörbe leeren',
+  'Teppich saugen, Hartböden feucht wischen': 'Teppich saugen',
+  'Telefone und Tastaturen abwischen (ohne Bildschirme)': 'Tastaturen abwischen',
+  'Fensterbänke, Heizkörper und Regale abstauben': 'Fensterbänke abstauben',
+  'Hochstaub und Spinnweben entfernen': 'Spinnweben entfernen',
+  'Tisch und Stuhllehnen abwischen': 'Stuhllehnen abwischen',
+  'Gläser und Geschirr abräumen': 'Geschirr abräumen',
+  'Boden saugen bzw. wischen': 'Boden saugen',
+  'Whiteboard und Glaswände reinigen': 'Whiteboard reinigen',
+  'Polsterstühle absaugen': 'Polsterstühle absaugen',
+  'Arbeitsflächen und Spüle reinigen': 'Spüle reinigen',
+  'Kaffeemaschine außen abwischen, Tropfschale leeren': 'Tropfschale leeren',
+  'Boden feucht wischen': 'Boden wischen',
+  'Kühlschrank außen und Mikrowelle innen reinigen': 'Mikrowelle reinigen',
+  'Kühlschrank innen auswischen': 'Kühlschrank auswischen',
+  'Spülmaschine ein- und ausräumen': 'Spülmaschine ausräumen',
+  'WCs, Urinale und Waschbecken reinigen und desinfizieren': 'WCs desinfizieren',
+  'Spiegel und Armaturen streifenfrei': 'Armaturen polieren',
+  'Seife, Papierhandtücher und Toilettenpapier auffüllen': 'Seife auffüllen',
+  'Boden nass wischen': 'Boden nass wischen',
+  'Fliesen im Spritzbereich abwaschen': 'Fliesen abwaschen',
+  'Trennwände und Türen komplett abwaschen': 'Trennwände abwaschen',
+  'Boden saugen bzw. feucht wischen': 'Flur saugen',
+  'Türklinken und Lichtschalter desinfizierend abwischen': 'Türklinken desinfizieren',
+  'Glastüren von Fingerabdrücken befreien': 'Glastüren polieren',
+  'Fußleisten abwischen': 'Fußleisten abwischen',
+  'Theke und Ablagen abwischen': 'Theke abwischen',
+  'Eingangstür von Fingerabdrücken befreien': 'Eingangstür reinigen',
+  'Sauberlaufmatte absaugen, Boden wischen': 'Sauberlaufmatte absaugen',
+  'Sitzmöbel im Wartebereich abwischen': 'Wartebereich abwischen',
+  'Papierkörbe leeren': 'Papierkörbe leeren',
+  'Fensterbänke und Regale abstauben': 'Regale abstauben',
+  'Treppen kehren und feucht wischen': 'Treppen kehren',
+  'Handläufe abwischen': 'Handläufe abwischen',
+  'Aufzugkabine reinigen, Bedienfeld abwischen': 'Aufzug reinigen',
+  'Geländer und Fensterbänke abwischen': 'Geländer abwischen',
+}

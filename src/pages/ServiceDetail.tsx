@@ -6,6 +6,7 @@ import { getService, services } from '@/content/services'
 import { home } from '@/content/site'
 import { Seo } from '@/components/ui/Seo'
 import { ChapterHero } from '@/components/ui/ChapterHero'
+import { TaskCloud } from '@/components/services/TaskCloud'
 import { serviceAnswer } from '@/content/answers'
 import { Answer } from '@/components/ui/Answer'
 import { ImageBand } from '@/components/ui/ImageBand'
@@ -67,6 +68,8 @@ export default function ServiceDetail() {
       {/* Vorher/nachher im Wisch-Effekt (Büroreinigung) */}
       {s.slug === 'bueroreinigung' && <ProblemSolution id="office-wipe" {...wipes.bueroreinigung} />}
       {s.slug === 'bueroreinigung' && <CheckpointView />}
+      {/* Aufgaben-Wolke aus dem Muster-Leistungsverzeichnis */}
+      {s.slug === 'bueroreinigung' && <TaskCloud />}
 
       {/* Leistungsverzeichnis */}
       <section className="section" aria-labelledby="scope-title">
