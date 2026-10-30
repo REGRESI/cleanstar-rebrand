@@ -3209,9 +3209,9 @@ button:hover > .seal .seal-ring {
 
 /* Raum-Karten zum Anfassen (RoomFan.tsx): Stapel, Anheben, Umdrehen, Wegwerfen */
 .rf-stage {
-  --open-s: 1.3;
-  --cw: 20rem;
-  --ch: 29.5rem;
+  --open-s: 1.22;
+  --cw: 21.5rem;
+  --ch: 31.5rem;
   position: relative;
   height: calc(var(--ch) * 1.26);
   display: grid;
