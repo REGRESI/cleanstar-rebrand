@@ -17,7 +17,7 @@ const at = (pos: [number, number][]): Checkpoint[] => pos.map(([x, y], i) => ({ 
 
 /** Hero: Büro am Abend (public/hero/key-feierabend-*.jpg) */
 export const heroCheckpoints = at([
-  [0.31, 0.53],
+  [0.37, 0.53],
   [0.64, 0.66],
   [0.56, 0.77],
   [0.7, 0.52],

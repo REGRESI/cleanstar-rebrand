@@ -5,7 +5,6 @@ import { Sparkle } from '@/components/ui/Sparkle'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { heroCheckpoints } from '@/features/hero/checkpoints'
 import { LineSwap, type LineSwapHandle } from '@/features/lines/LineSwap'
-import { CircleEdge, type CircleHandle } from '@/components/ui/CircleTransition'
 import { home } from '@/content/site'
 import { company } from '@/content/company'
 import { useIsMobile, useReducedMotion } from '@/lib/env'
@@ -43,13 +42,12 @@ const T = {
   points: [0.47, 0.6],
   assemble: [0.67, 0.85],
   glint: 0.86,
-  circle: [0.89, 1],
   // je Satz: tippen von, bis; weg von, bis
   typed: [
     [0.06, 0.16, 0.24, 0.29],
     [0.3, 0.36, 0.44, 0.48],
     [0.49, 0.58, 0.65, 0.69],
-    [0.71, 0.81, 2, 2],
+    [0.71, 0.8, 0.9, 0.96],
   ],
 } as const
 
@@ -88,7 +86,7 @@ function Cover({ children, className }: { children: ReactNode; className?: strin
 }
 
 /** Nummerierte Prüfpunkte auf dem Plan; data-on = sichtbar, data-done = abgehakt */
-function Checkpoints({ labels, all }: { labels: boolean; all?: boolean }) {
+function Checkpoints({ all }: { all?: boolean }) {
   return (
     <>
       {heroCheckpoints.map((c, i) => (
@@ -97,7 +95,7 @@ function Checkpoints({ labels, all }: { labels: boolean; all?: boolean }) {
           data-cp={i}
           data-on={all || undefined}
           data-done={all || undefined}
-          className={cn('cp absolute', c.x > 0.6 && 'cp-left')}
+          className="cp cp-num absolute"
           style={{ left: `${c.x * 100}%`, top: `${c.y * 100}%` }}
         >
           <span className="cp-dot">
@@ -106,7 +104,6 @@ function Checkpoints({ labels, all }: { labels: boolean; all?: boolean }) {
               <path d="M3.5 8.4 6.6 11.3 12.6 4.9" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          {labels && <span className="cp-label">{c.task}</span>}
         </span>
       ))}
     </>
@@ -129,7 +126,7 @@ function Stills() {
               </picture>
               {i === 2 && (
                 <Cover>
-                  <Checkpoints labels={false} all />
+                  <Checkpoints all />
                 </Cover>
               )}
             </div>
@@ -159,7 +156,9 @@ export function Hero() {
   const planSwap = useRef<LineSwapHandle>(null)
   const morningSwap = useRef<LineSwapHandle>(null)
   const cps = useRef<HTMLDivElement>(null)
-  const circle = useRef<CircleHandle>(null)
+  const cpList = useRef<HTMLOListElement>(null)
+  const shade = useRef<HTMLDivElement>(null)
+  const cpLine = useRef<HTMLParagraphElement>(null)
   const types = useRef<(TypeHandle | null)[]>([])
   const dust = useRef<{ setEdge: (e: number) => void } | null>(null)
   const lastP = useRef(0)
@@ -205,11 +204,30 @@ export function Hero() {
         el.toggleAttribute('data-on', p >= at)
         el.toggleAttribute('data-done', p >= at + step * 1.6)
       })
-      cps.current.style.opacity = String(1 - span(p, T.assemble[0] - 0.02, T.assemble[0] + 0.03))
+      const o = String(1 - span(p, T.assemble[0] - 0.02, T.assemble[0] + 0.03))
+      cps.current.style.opacity = o
+      // Liste der Aufgaben (Desktop links) bzw. aktuelle Aufgabe (Handy unter dem Satz); der neueste Punkt ist aktiv
+      const active = p < T.points[0] ? -1 : Math.min(n - 1, Math.floor((p - T.points[0]) / step))
+      const show = span(p, T.points[0] - 0.02, T.points[0]) * Number(o)
+      if (cpList.current) {
+        cpList.current.style.opacity = String(show)
+        cpList.current.style.visibility = show > 0.01 ? 'visible' : 'hidden'
+        cpList.current.querySelectorAll('li').forEach((li, i) => {
+          li.toggleAttribute('data-on', i <= active)
+          li.toggleAttribute('data-active', i === active)
+        })
+      }
+      if (cpLine.current) {
+        cpLine.current.style.opacity = String(show)
+        cpLine.current.style.visibility = show > 0.01 ? 'visible' : 'hidden'
+        const t = heroCheckpoints[Math.max(0, active)]
+        const txt = `${Math.max(0, active) + 1} / ${n}  ${t.task}`
+        if (cpLine.current.textContent !== txt) cpLine.current.textContent = txt
+      }
     }
     T.typed.forEach((w, i) => types.current[i]?.set(span(p, w[0], w[1]), span(p, w[2], w[3])))
     setGlint(p >= T.glint)
-    circle.current?.set(span(p, T.circle[0], T.circle[1]))
+    if (shade.current) shade.current.style.opacity = String(1 - span(p, 0.94, 0.99))
   }
 
   const seq = useHeroSequence({
@@ -391,7 +409,7 @@ export function Hero() {
             <div aria-hidden className="hero-box is-pinned pointer-events-none absolute">
               <Cover>
                 <div ref={cps} className="absolute inset-0">
-                  <Checkpoints labels={!isMobile} />
+                  <Checkpoints />
                 </div>
                 {GLINTS.map((g, i) => (
                   <Sparkle
@@ -414,8 +432,8 @@ export function Hero() {
             </picture>
           </div>
 
-          {/* Lesbarkeit der Headline: ruhige Abdunklung von unten */}
-          <div aria-hidden className="pointer-events-none absolute inset-0">
+          {/* Lesbarkeit der Headline und der Sätze: ruhige Abdunklung von unten, weicht am Ende (Übergang in den nächsten Abschnitt) */}
+          <div ref={shade} aria-hidden className="pointer-events-none absolute inset-0">
             <div className="absolute inset-x-0 bottom-0 h-[78%] bg-[linear-gradient(to_top,rgb(10_26_51/0.86)_0%,rgb(10_26_51/0.62)_38%,rgb(10_26_51/0)_100%)] lg:h-[70%]" />
           </div>
 
@@ -449,12 +467,26 @@ export function Hero() {
                 {home.hero.typed.map((s, i) => (
                   <TypeText key={i} ref={(h) => void (types.current[i] = h)} text={s} className="hero-type col-start-1 row-start-1" />
                 ))}
+                <p ref={cpLine} className="hero-cpline md:hidden" style={{ visibility: 'hidden' }} />
               </div>
             </div>
           )}
 
-          {/* Kreis-Übergang in die Leistungen (Eisblau) */}
-          {pinned && <CircleEdge ref={circle} text={home.hero.circle} tone="surface" />}
+          {/* Prüfpunkte als Liste: Desktop links in einer eigenen Spalte, Handy die aktuelle Aufgabe unter dem Satz */}
+          {pinned && (
+            <div aria-hidden className="pointer-events-none absolute inset-0 max-md:hidden">
+              <div className="container-site pt-[16vh]">
+                <ol ref={cpList} className="hero-cplist" style={{ visibility: 'hidden' }}>
+                  {heroCheckpoints.map((c, i) => (
+                    <li key={i}>
+                      <span className="hero-cplist-n">{i + 1}</span>
+                      <span>{c.task}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

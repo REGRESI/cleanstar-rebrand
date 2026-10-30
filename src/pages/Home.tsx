@@ -3,6 +3,7 @@ import { Hero } from '@/components/home/Hero'
 import { NightHero } from '@/features/night/NightHero'
 import { features } from '@/content/features'
 import { ServicesCarousel } from '@/components/home/ServicesCarousel'
+import { Arrival } from '@/components/home/Arrival'
 import { ProblemSolution } from '@/components/home/ProblemSolution'
 import { CostTeaser } from '@/components/home/CostTeaser'
 import { Proof } from '@/components/home/Proof'
@@ -12,7 +13,6 @@ import { MappeTeaser } from '@/components/home/MappeTeaser'
 import { FinalCta } from '@/components/home/FinalCta'
 import { Seo } from '@/components/ui/Seo'
 import { Answer } from '@/components/ui/Answer'
-import { CircleTransition } from '@/components/ui/CircleTransition'
 import { home } from '@/content/site'
 import { answers } from '@/content/answers'
 import { faqs } from '@/content/faq'
@@ -41,12 +41,12 @@ export default function Home() {
       {/* Signatur-Szene nach Freigabe (features.signatureScene) statt des Heros; bleibt ausgeschaltet */}
       {features.signatureScene ? <NightHero /> : <Hero />}
       <Chunk>
+        <Arrival />
         <ServicesCarousel />
         <CostTeaser />
       </Chunk>
       <Chunk>
         <ProblemSolution />
-        <CircleTransition image="team-briefing" tone="paper" text="Drei Gründer aus Offenburg" orbit />
         <Founders />
         <Proof />
       </Chunk>
@@ -58,7 +58,6 @@ export default function Home() {
         </Answer>
       </Chunk>
       <Chunk>
-        <CircleTransition image="team-work" tone="surface" text="Wir kommen, wenn Sie gehen" orbit />
         <FinalCta />
       </Chunk>
     </>
