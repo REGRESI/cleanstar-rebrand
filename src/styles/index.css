@@ -2647,6 +2647,16 @@ footer[data-no-top] {
   transform-origin: 70% 0;
   animation: plant-sway 9s ease-in-out infinite alternate;
 }
+.plant-gl {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+}
+.plant[data-gl] img {
+  visibility: hidden;
+  animation: none;
+}
 .plant-b {
   left: 0;
   bottom: 0;
@@ -2676,6 +2686,9 @@ footer[data-no-top] {
 @media (prefers-reduced-motion: reduce) {
   .plant img {
     animation: none;
+  }
+  .plant-gl {
+    display: none;
   }
 }
 

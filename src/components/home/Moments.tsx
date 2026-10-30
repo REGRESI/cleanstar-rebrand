@@ -6,38 +6,102 @@ import { span } from '@/lib/scrollScene'
 import { cn } from '@/lib/cn'
 
 /** Freigestelltes Deko-Bild aus public/images/deko (AVIF/WebP mit Alpha, mehrere Breiten) */
-function Deko({ name, widths, w, h, sizes, className, ...rest }: { name: string; widths: number[]; w: number; h: number; sizes: string; className?: string; [k: `data-${string}`]: string }) {
+function Deko({ name, widths, w, h, sizes, className, children, ...rest }: { name: string; widths: number[]; w: number; h: number; sizes: string; className?: string; children?: ReactNode; [k: `data-${string}`]: string }) {
   const set = (ext: string) => widths.map((x) => `/images/deko/${name}-${x}.${ext} ${x}w`).join(', ')
   return (
-    <picture className={className} {...rest}>
-      <source type="image/avif" srcSet={set('avif')} sizes={sizes} />
-      <img src={`/images/deko/${name}-${widths[0]}.webp`} srcSet={set('webp')} sizes={sizes} width={w} height={h} alt="" loading="lazy" decoding="async" />
-    </picture>
+    <div className={className} {...rest}>
+      <picture>
+        <source type="image/avif" srcSet={set('avif')} sizes={sizes} />
+        <img src={`/images/deko/${name}-${widths[0]}.webp`} srcSet={set('webp')} sizes={sizes} width={w} height={h} alt="" loading="lazy" decoding="async" />
+      </picture>
+      {children}
+    </div>
   )
 }
 
 /**
  * Pflanzen-Abschnitt (Referenz: ERA, era/03): ruhige helle Fläche, mittig eine Moment-Überschrift und ein kurzer Satz.
  * Eine üppige, freigestellte Efeutute hängt von der oberen rechten Ecke ins Bild (etwa ein Viertel der Breite), eine
- * kleinere wächst aus der unteren linken Ecke. Leichte Parallaxe, die Ranken wiegen sich minimal.
+ * kleinere wächst aus der unteren linken Ecke. Die Pflanzen steigen beim Scrollen leicht (Parallaxe, rund 12 % ihrer
+ * Höhe) und bewegen sich im Wind (plantWind.ts): Spitzen mehr als der Ansatz, Schwung bei schnellem Scrollen, Ausweichen
+ * vor der Maus. Reduzierte Bewegung: nur die Parallaxe. Ohne WebGL: das Bild mit sanftem Wiegen per CSS.
  */
 export function PlantMoment({ title, text, id, eyebrow, className }: { title: string; text: string; id: string; eyebrow?: string; className?: string }) {
   const root = useRef<HTMLElement>(null)
   useEffect(() => {
     const el = root.current
-    if (!el || liteMotion()) return
+    if (!el) return
     const ctx = gsap.context(() => {
       const st = { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 0.6 }
-      gsap.fromTo('[data-plant="a"]', { y: -30 }, { y: 60, ease: 'none', scrollTrigger: st })
-      gsap.fromTo('[data-plant="b"]', { y: 24 }, { y: -10, ease: 'none', scrollTrigger: st })
+      gsap.fromTo('[data-plant="a"]', { yPercent: 6 }, { yPercent: -6, ease: 'none', scrollTrigger: st })
+      gsap.fromTo('[data-plant="b"]', { yPercent: 8 }, { yPercent: -4, ease: 'none', scrollTrigger: st })
     }, el)
-    return () => ctx.revert()
+    if (liteMotion()) return () => ctx.revert()
+    // Wind: gemeinsamer Zustand (Feder für den Scroll-Schwung, Maus)
+    const state = { kick: 0, mx: -9999, my: -9999, mOn: 0 }
+    let v = 0
+    let lastY = window.scrollY
+    let raf = 0
+    let mTarget = 0
+    const spring = () => {
+      const y = window.scrollY
+      const dy = y - lastY
+      lastY = y
+      // Feder: Scrollgeschwindigkeit gibt Schwung, der weich ausschwingt
+      v += (-state.kick * 0.035 - v * 0.09 + Math.max(-40, Math.min(40, dy)) * 0.00006)
+      state.kick = Math.max(-0.05, Math.min(0.05, state.kick + v))
+      state.mOn += (mTarget - state.mOn) * 0.08
+      raf = requestAnimationFrame(spring)
+    }
+    const io = new IntersectionObserver(([e]) => {
+      cancelAnimationFrame(raf)
+      if (e.isIntersecting) {
+        lastY = window.scrollY
+        raf = requestAnimationFrame(spring)
+      }
+    })
+    io.observe(el)
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return
+      state.mx = e.clientX
+      state.my = e.clientY
+      mTarget = 1
+    }
+    const leave = () => (mTarget = 0)
+    el.addEventListener('pointermove', move)
+    el.addEventListener('pointerleave', leave)
+    const stops: (() => void)[] = []
+    let dead = false
+    import('./plantWind').then(({ startPlant }) => {
+      if (dead) return
+      el.querySelectorAll<HTMLElement>('[data-plant]').forEach((p) => {
+        const img = p.querySelector('img')
+        const cv = p.querySelector('canvas')
+        if (!img || !cv) return
+        const s = startPlant(img, cv, p.dataset.plant === 'b', state, () => p.setAttribute('data-gl', ''))
+        if (s) stops.push(s)
+      })
+    })
+    return () => {
+      dead = true
+      stops.forEach((s) => s())
+      cancelAnimationFrame(raf)
+      io.disconnect()
+      el.removeEventListener('pointermove', move)
+      el.removeEventListener('pointerleave', leave)
+      el.querySelectorAll('[data-plant]').forEach((p) => p.removeAttribute('data-gl'))
+      ctx.revert()
+    }
   }, [])
   return (
     <section ref={root} className={cn('plant-moment relative overflow-hidden bg-paper', className)} aria-labelledby={id}>
       <MomentGlow />
-      <Deko data-plant="a" name="pflanze-ecke-1" widths={[640, 1024]} w={1024} h={1536} sizes="(min-width: 768px) 30vw, 50vw" className="plant plant-a" />
-      <Deko data-plant="b" name="pflanze-ecke-2" widths={[700, 1312]} w={1312} h={1199} sizes="(min-width: 768px) 32vw, 56vw" className="plant plant-b" />
+      <Deko data-plant="a" name="pflanze-ecke-1" widths={[640, 1024]} w={1024} h={1536} sizes="(min-width: 768px) 30vw, 50vw" className="plant plant-a">
+        <canvas aria-hidden className="plant-gl" />
+      </Deko>
+      <Deko data-plant="b" name="pflanze-ecke-2" widths={[700, 1312]} w={1312} h={1199} sizes="(min-width: 768px) 32vw, 56vw" className="plant plant-b">
+        <canvas aria-hidden className="plant-gl" />
+      </Deko>
       <div className="container-site relative flex min-h-[78svh] flex-col items-center justify-center py-28 text-center">
         {eyebrow && <p className="t-label">{eyebrow}</p>}
         <MomentHeading id={id} text={title} className="mt-6" />
