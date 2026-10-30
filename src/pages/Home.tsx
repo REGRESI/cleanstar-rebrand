@@ -4,7 +4,7 @@ import { NightHero } from '@/features/night/NightHero'
 import { features } from '@/content/features'
 import { ServicesHorizontal } from '@/components/home/ServicesHorizontal'
 import { Arrival } from '@/components/home/Arrival'
-import { PlantMoment, CloudsReveal } from '@/components/home/Moments'
+import { PlantMoment } from '@/components/home/Moments'
 import { ProblemSolution } from '@/components/home/ProblemSolution'
 import { PaperReveal } from '@/components/ui/PaperReveal'
 import { CostTeaser } from '@/components/home/CostTeaser'
@@ -57,7 +57,6 @@ export default function Home() {
         <ProcessTimeline />
       </Chunk>
       <Chunk>
-        <CloudsReveal />
         <AreaTeaser moment={'Unser Zuhause:\ndie Ortenau.'} />
         <MappeTeaser />
         <Answer question={answers.home.question} bottom="pb-4">

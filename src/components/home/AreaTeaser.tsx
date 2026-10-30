@@ -6,6 +6,7 @@ import { places, shortName } from '@/content/places'
 import { home } from '@/content/site'
 import { company } from '@/content/company'
 import { AreaMap } from '@/features/map/AreaMap'
+import { CloudCover } from '@/components/home/Moments'
 
 /**
  * Einzugsgebiet: mit Moment-Überschrift (Startseite) die Geländekarte samt Ortsliste und Vogelflug; sonst kompakt mit
@@ -15,7 +16,7 @@ export function AreaTeaser({ moment }: { moment?: string }) {
   const maxMin = Math.max(...places.map((p) => p.minutes))
   const major = places.filter((p) => p.major)
   return (
-    <section className={moment ? 'relative section bg-paper' : 'section'} aria-labelledby="area-title">
+    <section className={moment ? 'relative section overflow-x-clip bg-paper' : 'section'} aria-labelledby="area-title">
       <div className="container-site">
         {moment ? (
           <div className="text-center">
@@ -26,7 +27,12 @@ export function AreaTeaser({ moment }: { moment?: string }) {
           <SectionHeading layout="rail" eyebrow={home.area.eyebrow} title={home.area.headline} id="area-title" />
         )}
         {/* Startseite: dieselbe Geländekarte wie auf der Seite Einzugsgebiet, lädt erst beim Annähern (Standbild bis dahin) */}
-        {moment && <AreaMap still className="mt-14 lg:mt-20" />}
+        {/* Wolken steigen auf, decken die Karte kurz ab und ziehen nach oben weg (Wolken-Übergang) */}
+        {moment && (
+          <CloudCover className="mt-14 lg:mt-20">
+            <AreaMap still />
+          </CloudCover>
+        )}
         {!moment && (
           <div className="grid-site mt-16 gap-y-12 lg:mt-24">
             <div className="col-span-12 grid grid-cols-2 gap-x-5 lg:col-span-5 lg:col-start-4 lg:gap-x-8">

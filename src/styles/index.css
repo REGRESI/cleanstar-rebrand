@@ -2604,62 +2604,101 @@ footer[data-no-top] {
   pointer-events: none;
 }
 
-/* Übergang B: Pflanzen in zwei Ecken (Moments.tsx) */
+/* Pflanzen-Abschnitt (Moments.tsx): Efeutute hängt von oben rechts, kleinere wächst unten links; Ranken wiegen sich */
 .plant {
   position: absolute;
-  width: clamp(14rem, 34vw, 34rem);
   height: auto;
   pointer-events: none;
-  filter: drop-shadow(0 30px 40px rgb(10 26 51 / 0.12));
+}
+.plant img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 24px 30px rgb(10 26 51 / 0.14));
 }
 .plant-a {
-  left: clamp(-11rem, -14vw, -5rem);
-  top: clamp(-11rem, -12vw, -5rem);
+  top: 0;
+  right: 0;
+  width: clamp(15rem, 26vw, 30rem);
+}
+.plant-a img {
+  transform-origin: 70% 0;
+  animation: plant-sway 9s ease-in-out infinite alternate;
 }
 .plant-b {
-  right: clamp(-11rem, -14vw, -5rem);
-  bottom: clamp(-11rem, -12vw, -5rem);
-  transform: rotate(180deg);
+  left: 0;
+  bottom: 0;
+  width: clamp(12rem, 22vw, 26rem);
+}
+.plant-b img {
+  transform-origin: 0 100%;
+  animation: plant-sway 11s ease-in-out -3s infinite alternate-reverse;
+}
+@keyframes plant-sway {
+  from {
+    rotate: -0.8deg;
+  }
+  to {
+    rotate: 0.9deg;
+  }
 }
 @media (max-width: 767px) {
-  .plant {
-    width: 13rem;
-  }
   .plant-a {
-    left: -6.5rem;
-    top: -6rem;
+    width: 46vw;
   }
   .plant-b {
-    right: -6.5rem;
-    bottom: -6rem;
+    width: 40vw;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plant img {
+    animation: none;
   }
 }
 
-/* Übergang D: Wolken lösen sich über dem Bild der Region auf */
-.clouds-run {
-  height: 190svh;
-  overflow-x: clip;
+/* Wolken-Übergang (Moments.tsx, CloudCover): Wolkenbank über dem Inhalt, volle Bildschirmbreite */
+.cc {
+  position: relative;
 }
-.clouds-stage {
-  height: 100svh;
+.cc-layers {
+  display: none;
 }
-.clouds-layer {
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion .cc-layers {
+    display: block;
+    position: absolute;
+    inset: 0 auto 0 50%;
+    width: 120vw;
+    margin-left: -60vw;
+    pointer-events: none;
+    z-index: 5;
+  }
+}
+.cc-layer {
   position: absolute;
-  inset: -6% -10%;
-  width: 120%;
-  height: 112%;
-  max-width: none;
-  object-fit: cover;
+  top: var(--t);
+  left: 0;
+  width: 100%;
   will-change: transform, opacity;
 }
-@media (prefers-reduced-motion: reduce) {
-  .clouds-run,
-  .clouds-stage {
-    height: 60svh;
+.cc-layer img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 767px) {
+  .cc-layer {
+    top: var(--tm);
   }
-  .clouds-layer {
-    display: none;
-  }
+}
+/* Unterkante jeder Ebene dünnt aus (sonst beim Wegziehen eine harte waagerechte Kante) */
+.cc-layer picture {
+  display: block;
+  -webkit-mask-image: linear-gradient(to bottom, #000 74%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 74%, transparent 100%);
+}
+.cc:not([data-ready]) .cc-layer {
+  transform: translate3d(0, 38%, 0);
 }
 
 /* Kurz beantwortet (Answer.tsx): Fakten als Kacheln, Rest zum Aufklappen */

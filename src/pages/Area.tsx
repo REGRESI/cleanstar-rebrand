@@ -1,5 +1,5 @@
 import { Seo } from '@/components/ui/Seo'
-import { CloudsReveal } from '@/components/home/Moments'
+import { CloudCover } from '@/components/home/Moments'
 import { ScrubStatement } from '@/components/ui/ScrubStatement'
 import { statements } from '@/content/statements'
 import { PageHero } from '@/components/ui/PageHero'
@@ -33,14 +33,15 @@ export default function Area() {
         lead="Unser Sitz ist in Offenburg, mitten im Kreis. Von hier aus sind wir schnell bei Ihnen, ob in Kehl am Rhein, in Achern im Norden oder in Haslach im Kinzigtal."
         actions={<QuoteButton size="lg" arrow />}
       />
-      <CloudsReveal />
       <ScrubStatement {...statements.einzugsgebiet} id="statement-title" className="pt-10 pb-0 sm:pt-14 lg:pt-20" />
-      <section className="section-tight" aria-labelledby="map-title">
+      <section className="section-tight overflow-x-clip" aria-labelledby="map-title">
         <div className="container-site">
           <h2 id="map-title" className="sr-only">
             Karte des Einzugsgebiets
           </h2>
-          <AreaMap />
+          <CloudCover>
+            <AreaMap />
+          </CloudCover>
         </div>
       </section>
       <section className="on-dark section bg-night text-paper" aria-labelledby="why-local-title">
