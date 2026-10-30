@@ -6,6 +6,7 @@ import { ServicesHorizontal } from '@/components/home/ServicesHorizontal'
 import { Arrival } from '@/components/home/Arrival'
 import { PlantMoment, CloudsReveal } from '@/components/home/Moments'
 import { ProblemSolution } from '@/components/home/ProblemSolution'
+import { PaperReveal } from '@/components/ui/PaperReveal'
 import { CostTeaser } from '@/components/home/CostTeaser'
 import { Proof } from '@/components/home/Proof'
 import { Founders } from '@/components/home/Founders'
@@ -48,8 +49,9 @@ export default function Home() {
         <CostTeaser />
       </Chunk>
       <Chunk>
-        <ProblemSolution squeegee />
-        <PlantMoment className="squeegee-under" eyebrow="Ihr Team" id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." />
+        {/* Papier-Reveal: Die Ärgernisse sind das Blatt, darunter liegt fest das Büro am Morgen */}
+        <PaperReveal sheet={<ProblemSolution tone="paper" />} image="after-office" id="morning-title" word="Am Morgen" line="Alles bereit, bevor der Erste kommt." />
+        <PlantMoment eyebrow="Ihr Team" id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." />
         <Founders />
         <Proof />
         <ProcessTimeline />

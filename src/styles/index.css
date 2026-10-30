@@ -2793,72 +2793,18 @@ button:hover > .seal .seal-ring {
   animation: none;
 }
 
-/* Abzieher-Kante (ProblemSolution.tsx, Squeegee): Navy-Auslauf, darunter der nächste Abschnitt, Wasserfilm an der Kante */
-.squeegee-tail {
-  display: none;
+/* Ärgernisse hell (tone="paper", Blatt im Papier-Reveal): Problem dunkel, Lichtkante in Markenblau */
+.ps-light .ps-problem {
+  color: var(--color-ink-2);
 }
-.squeegee-film {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 120px;
-  overflow: visible;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 3;
+.ps-light .ps-problem-text {
+  text-decoration-color: rgb(11 18 32 / calc(var(--w, 0) * 0.7));
 }
-@media (prefers-reduced-motion: no-preference) {
-  .js-motion .squeegee-tail {
-    display: block;
-    height: 80svh;
-  }
-  .js-motion .squeegee + .squeegee-under {
-    position: relative;
-    z-index: 1;
-    margin-top: -80svh;
-  }
-  /* Der helle Abschnitt liegt ganz unter dem Auslauf (sonst schöbe sich der Auslauf über den Abschnitt danach) */
-  .js-motion .squeegee + .squeegee-under > .container-site {
-    min-height: 88svh;
-  }
-}
-.squeegee-glint {
-  animation: sq-glint 2.6s ease-in-out infinite;
-}
-@keyframes sq-glint {
-  0%,
-  100% {
-    opacity: 0.15;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-.squeegee-drop {
-  animation-name: sq-drop;
-  animation-timing-function: cubic-bezier(0.45, 0, 0.7, 1);
-  animation-iteration-count: infinite;
-}
-@keyframes sq-drop {
-  0% {
-    transform: translate(0, 0);
-    opacity: 0;
-  }
-  8% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(var(--len, 1400px), 6px);
-    opacity: 0;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .squeegee-film {
-    display: none;
-  }
+.ps-light .ps-edge {
+  background: var(--color-blue);
+  box-shadow:
+    0 0 12px 2px rgb(26 79 224 / 0.45),
+    0 0 36px 8px rgb(26 79 224 / 0.15);
 }
 
 /* Kapitel-Wort (ChapterHero.tsx): Endzustand ist ein gewöhnlicher Seitenkopf; mit Bewegung steht die Bühne still,
@@ -3324,4 +3270,90 @@ button:hover > .seal .seal-ring {
 }
 .sp-head :where(h2, h2 *) {
   color: var(--color-paper);
+}
+
+/* Papier-Reveal (PaperReveal.tsx): Blatt mit gerissener Kante schiebt sich weg, darunter steht das Vollbild fest */
+.pr {
+  position: relative;
+  overflow-x: clip;
+}
+.pr-sheet {
+  position: relative;
+  z-index: 2;
+  /* das Blatt ist immer deckend (Abschnitte ohne eigene Fläche, z. B. die Leistungs-Kapitel) */
+  background: var(--color-paper);
+}
+.pr-edge {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 130vw;
+  /* 3 px Überlappung mit dem Blatt; der Schatten wird oben abgeschnitten (sonst eine Linie am Blattende) */
+  transform: translate(-50%, -3px);
+  pointer-events: none;
+}
+.pr-edge img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 14px rgb(10 26 51 / 0.3)) drop-shadow(0 2px 3px rgb(10 26 51 / 0.18));
+  clip-path: inset(3px -10% -120px -10%);
+}
+.pr-run {
+  position: relative;
+  z-index: 1;
+  background: var(--color-night);
+}
+.pr-stage {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+}
+.pr-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(10 26 51 / 0.72) 0%, rgb(10 26 51 / 0.3) 45%, rgb(10 26 51 / 0) 75%);
+  opacity: calc(0.35 + var(--dim, 1) * 0.65);
+}
+.pr-text {
+  position: absolute;
+  inset: auto 0 10svh;
+  color: #fff;
+}
+.pr-word {
+  font-size: clamp(3.25rem, 0.6rem + 10.5vw, 11.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.pr-line {
+  margin-top: 1.1rem;
+  max-width: 30ch;
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-size: clamp(1.4rem, 1rem + 1.6vw, 2.4rem);
+  line-height: 1.12;
+}
+@media (max-width: 767px) {
+  /* Handy: gleiche Mechanik, feinere Kante */
+  .pr-edge {
+    width: 115vw;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion .pr-run {
+    height: 260svh;
+    margin-top: -100svh;
+  }
+  .js-motion .pr-stage {
+    position: sticky;
+    top: 0;
+  }
+  .js-motion .pr-run:not([data-ready]) :is(.pr-word, .pr-line) {
+    opacity: 0;
+  }
+  .js-motion .pr-word,
+  .js-motion .pr-line {
+    will-change: transform, opacity;
+  }
 }

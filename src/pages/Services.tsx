@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/Button'
 import { breadcrumbSchema } from '@/lib/schema'
 import { features } from '@/content/features'
 import { SparkPortal } from '@/components/services/SparkPortal'
+import { PaperReveal } from '@/components/ui/PaperReveal'
 
 const trail = [
   { name: 'Startseite', path: '/' },
@@ -55,7 +56,8 @@ export default function Services() {
         }
       />
       <ScrubStatement {...statements.leistungen} id="statement-title" className="pt-6 sm:pt-8 lg:pt-12" />
-      <ServiceChapters />
+      {/* Papier-Reveal: Die Kapitel sind das Blatt, darunter liegt fest das Bild der Abendreinigung (davor das Funken-Portal, sobald freigegeben) */}
+      <PaperReveal sheet={<ServiceChapters />} image="evening-clean" id="standard-title" word="Standard." line="Diese Punkte sind kein Extra." />
       {features.sparkPortal && <SparkPortal />}
       <section className="on-dark tone-dark section bg-night text-paper" aria-labelledby="incl-title">
         <div className="container-site">
