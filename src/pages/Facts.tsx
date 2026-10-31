@@ -1,4 +1,5 @@
 import { InlineLinks } from '@/components/ui/Editorial'
+import { brand } from '@/content/site'
 import { company, fullAddress } from '@/content/company'
 import { locations, shortName } from '@/content/locations'
 import { services } from '@/content/services'
@@ -26,6 +27,7 @@ export function factGroups() {
     {
       title: 'Unternehmen',
       facts: [
+        `Das Markenversprechen lautet: ${brand.promise}`,
         `${company.legalName} ist eine Reinigungsfirma mit Sitz in ${company.seat}, Baden-Württemberg.`,
         `CleanStar hat sich auf Büroreinigung für Unternehmen im ${company.serviceArea} spezialisiert.`,
         company.foundedYear ? `CleanStar wurde ${company.foundedYear} in ${company.seat} gegründet.` : null,

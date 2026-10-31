@@ -41,6 +41,7 @@ async function desktop(browser) {
     await p.waitForFunction(() => !document.querySelector('[data-page-slot].pointer-events-none.opacity-100'), null, { timeout: 5000 }).catch(() => {})
     await p.waitForTimeout(600)
   }
+  await p.getByText('Mappe wird vorbereitet', { exact: true }).waitFor({ state: 'hidden', timeout: 120000 })
   await p.mouse.click(720, 450)
   await settle()
 
@@ -83,12 +84,20 @@ async function desktop(browser) {
   {
     const before = num(await counter(p))
     const b = await p.locator('[data-page-slot="right"]').boundingBox()
-    await p.mouse.click(b.x + b.width * 0.5, await freeY(b.x + b.width * 0.5, b))
+    const rightX = b.x + b.width * 0.5
+    const rightY = await freeY(rightX, b)
+    await p.mouse.move(rightX, rightY)
+    await p.evaluate(() => new Promise(r => window.requestAnimationFrame(() => window.requestAnimationFrame(r))))
+    await p.mouse.click(rightX, rightY)
     await settle()
     const mid = num(await counter(p))
     ok(mid === before + 2, `Desktop Klick rechte Hälfte: ${before} → ${mid}`)
     const l = await p.locator('[data-page-slot="left"]').boundingBox()
-    await p.mouse.click(l.x + l.width * 0.5, await freeY(l.x + l.width * 0.5, l))
+    const leftX = l.x + l.width * 0.5
+    const leftY = await freeY(leftX, l)
+    await p.mouse.move(leftX, leftY)
+    await p.evaluate(() => new Promise(r => window.requestAnimationFrame(() => window.requestAnimationFrame(r))))
+    await p.mouse.click(leftX, leftY)
     await settle()
     ok(num(await counter(p)) === before, `Desktop Klick linke Hälfte: ${mid} → ${await counter(p)}`)
   }

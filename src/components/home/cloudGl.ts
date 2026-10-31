@@ -127,8 +127,6 @@ export function startClouds(canvas: HTMLCanvasElement, progress: () => number, o
           }
         }
         const ext = vw() * 0.4
-        canvas.style.top = `${-ext}px`
-        canvas.style.height = `calc(100% + ${ext}px)`
         const p = progress()
         // vorbei oder noch nicht da: nichts zeichnen (nur einmal leeren)
         if (p >= 0.999) {

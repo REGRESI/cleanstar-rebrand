@@ -67,7 +67,7 @@ export default function Services() {
             eyebrow="Bei jeder Leistung"
             title="Das ist immer dabei."
             id="incl-title"
-            text="Egal, welche Leistung Sie buchen: Diese Punkte sind kein Extra, sondern Standard. Damit Sie nicht nachfragen müssen."
+            text="Egal, welche Leistung Sie buchen: Diese Punkte sind kein Extra, sondern Standard. Sauber. Ohne Wenn und Aber."
           />
           <div className="grid-site mt-14 gap-y-16 lg:mt-20 lg:items-center">
             <ol className="col-span-12 lg:col-span-6">

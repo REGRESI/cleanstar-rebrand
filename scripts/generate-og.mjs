@@ -5,7 +5,7 @@ import sharp from 'sharp'
 
 const logoSvg = readFileSync('src/assets/brand/logo.svg', 'utf8')
 const types = {
-  start: ['Saubere Büros. Jeden Tag.', 'Büroreinigung in Offenburg und im Ortenaukreis', 'Angebot in 48 Stunden'],
+  start: ['Sauber. Ohne Wenn und Aber.', 'Büroreinigung in Offenburg und im Ortenaukreis', 'Angebot in 48 Stunden'],
   leistung: ['Reinigung für Unternehmen.', 'Büro, Fenster, Treppenhaus, Halle, Hygiene', 'Kostenlose Besichtigung'],
   standort: ['Ihre Reinigungsfirma vor Ort.', 'Feste Teams im ganzen Ortenaukreis', 'Fester Ansprechpartner'],
   ratgeber: ['Ratgeber Reinigung.', 'Wissen für Unternehmen und Gründer', 'Klar erklärt, mit Quellen'],
@@ -27,7 +27,7 @@ for (const [type, [title, sub, pill]] of Object.entries(types)) {
   <rect width="1200" height="630" fill="url(#g)"/>
   <rect width="1200" height="630" fill="url(#p)"/>
   <rect width="1200" height="630" fill="url(#r)"/>
-  <text x="80" y="330" font-family="Inter, Helvetica, Arial, sans-serif" font-size="62" font-weight="700" fill="#0a1628" letter-spacing="-2">${esc(title)}</text>
+  <text x="80" y="330" font-family="Inter, Helvetica, Arial, sans-serif" font-size="${type === 'start' ? 58 : 62}" font-weight="700" fill="#0a1628" letter-spacing="-2">${esc(title)}</text>
   <text x="80" y="400" font-family="Inter, Helvetica, Arial, sans-serif" font-size="30" fill="#5b6b82">${esc(sub)}</text>
   <rect x="80" y="460" width="${pillW}" height="64" rx="32" fill="#1f5eff"/>
   <text x="${80 + pillW / 2}" y="501" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#ffffff">${esc(pill)}</text>

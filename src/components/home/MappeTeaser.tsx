@@ -4,9 +4,10 @@ import { OrbitButton } from '@/components/ui/OrbitButton'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 
 /** Hinweis auf die Leistungsmappe: Standbild des Buchs auf dem Tisch als Karte mit Reiter (Aktenordner), Link zum Blättern */
-export function MappeTeaser() {
+export function MappeTeaser({ immersive = false }: { immersive?: boolean }) {
   return (
-    <section className="on-dark section bg-night text-paper" aria-labelledby="mappe-title">
+    <section className={`on-dark section bg-night text-paper${immersive ? ' ht-window-section' : ''}`} aria-labelledby="mappe-title">
+      {immersive && <div className="ht-window-photo" aria-hidden><img src="/mappe/teaser.webp" alt="" width={1200} height={800} loading="lazy" decoding="async" /></div>}
       <div className="container-site grid-site gap-y-12 lg:items-center">
         <div className="col-span-12 lg:col-span-5">
           <SectionHeading
@@ -21,14 +22,14 @@ export function MappeTeaser() {
             </Button>
           </div>
         </div>
-        <div className="relative col-span-12 lg:col-span-6 lg:col-start-7">
+        {!immersive && <div className="relative col-span-12 lg:col-span-6 lg:col-start-7">
           <a href="/leistungsmappe" tabIndex={-1} aria-hidden className="tab-shadow group block">
             <span className="tab-card block p-0" style={{ '--tab-bg': 'var(--color-night-2)' } as CSSProperties}>
               <img src="/mappe/teaser.webp" alt="" width={1200} height={800} loading="lazy" decoding="async" className="block h-auto w-full rounded-[0_14px_14px_14px]" />
             </span>
           </a>
           <OrbitButton className="absolute right-5 bottom-5 sm:right-8 sm:bottom-8" />
-        </div>
+        </div>}
       </div>
     </section>
   )

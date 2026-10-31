@@ -26,7 +26,12 @@ const mapOnly = /<link [^>]*href="\/assets\/(LiveMap|browser)-[^"]+\.(js|css)"[^
 for (const page of pages) {
   const file = join(dist, page, 'index.html')
   const html = readFileSync(file, 'utf8')
-  const out = html.replace(lazyOnly, '').replace(mapOnly, '')
+  let out = html.replace(lazyOnly, '').replace(mapOnly, '')
+  // Critical CSS is inline. Load the full homepage stylesheet without delaying the first paint.
+  // Event listener lives in a hashed script (not an inline onload attribute); no-JS keeps the full CSS.
+  if (page === '/') out = out.replace(/<link rel="stylesheet"([^>]*href="([^"]+)"[^>]*)>/g,
+    (_, attrs, href) => `<link rel="stylesheet"${attrs} media="print" data-full-css><script>(function(l){function ready(){l.media="all"}l.addEventListener("load",ready);if(l.sheet)ready()})(document.currentScript.previousElementSibling)</script><noscript><link rel="stylesheet" href="${href}"></noscript>`)
+
   if (out !== html) writeFileSync(file, out)
 }
 // Interne Seiten (noindex) gehören nicht in die Sitemap

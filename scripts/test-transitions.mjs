@@ -98,10 +98,12 @@ const textBoxes = () => {
   const add = (r0, el, label) => {
     const r = clip(r0, el)
     if (!r || r.width < 2 || r.height < 4) return
-    // Kartenstapel (Qualitätsgarantie): nur Texte, die wirklich oben liegen (Karten darunter und Rückseiten sind verdeckt)
-    if (el.closest('.rf-stage')) {
+    // Karten und aktive Übergangsmasken: nur tatsächlich freigelegte Texte; DOM-Rechtecke außerhalb einer polygonalen Maske sind verdeckt.
+    if (el.closest('.rf-stage, .ht-block')) {
       const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)
-      if (!hit || !(el.contains(hit) || hit.contains(el))) return
+      const plane = el.closest('.ht-plane')
+      // A common outer ancestor is not evidence of visibility through another plane's mask.
+      if (!hit || !(el.contains(hit) || (hit.contains(el) && (!plane || hit.closest('.ht-plane') === plane)))) return
     }
     if (r.bottom < 0 || r.top > vh || r.right < 0 || r.left > vw) return
     for (const c of covers) if (r.top < c.bottom && r.bottom > c.top && r.left < c.right && r.right > c.left) return
@@ -274,9 +276,29 @@ for (const [dev, opts] of devices) {
     await page.goto(B + path, { waitUntil: 'load' })
     await page.waitForFunction(() => window.__csReady === true, null, { timeout: 15000 }).catch(() => {})
     await page.waitForTimeout(1200)
+    if (path === '/') {
+      const registry = await page.evaluate(() => {
+        const root = document.querySelector('[data-home-transitions]')
+        const sections = [...root.querySelectorAll('section')]
+        const missing = []
+        sections.slice(1).forEach(section => {
+          const own = section.hasAttribute('data-home-internal') ? section : section.closest('[data-home-section]')
+          if (!own?.dataset.transition) missing.push(section.getAttribute('aria-labelledby') || section.className)
+        })
+        const footer = document.querySelector('body > #root footer[data-home-section="footer"], footer[data-home-section="footer"]')
+        if (footer?.dataset.transition !== 'image-to-stripe') missing.push('footer')
+        const types = [...root.querySelectorAll('[data-transition]')].map(n => n.dataset.transition)
+        for (let i = 1; i < types.length; i++) if (types[i] === types[i-1]) missing.push('Wiederholung: ' + types[i])
+        for (const type of ['paper-reveal', 'clouds', 'logo-house']) if (types.filter(t => t === type).length !== 1) missing.push('Anzahl ' + type)
+        if (types.filter(t => t === 'flow-color').length > 2) missing.push('Mehr als zwei Farbwechsel')
+        return { missing, count: sections.length }
+      })
+      if (registry.missing.length) { failures++; console.log('✗ Fehlende/ungültige Übergänge: ' + registry.missing.join(', ')) }
+      else console.log(`✓ ${dev}: alle ${registry.count} Startseiten-Abschnitte mit registriertem Übergang (einschließlich Footer)`)
+    }
     const total = await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)
     let pageFails = 0
-    for (let y = 0; y <= total; y += STEP) {
+    for (let y = Number(process.env.FROM || 0); y <= Math.min(total, Number(process.env.TO || total)); y += STEP) {
       await page.evaluate((v) => {
         const l = window.__lenis
         if (l) l.scrollTo(v, { immediate: true, force: true })

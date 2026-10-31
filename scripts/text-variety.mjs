@@ -2,7 +2,7 @@
 // Aufruf: npm run build && node scripts/text-variety.mjs /  (weitere Pfade möglich)
 import { readFileSync } from 'node:fs'
 
-const KEY = ['fester ansprechpartner', 'festen ansprechpartner', 'ersatz bei ausfall', 'ersatzkraft bei ausfall', 'festes team', 'festen team', 'erster monat jederzeit kündbar', 'im ersten monat jederzeit kündigen', 'ohne dass sie nachfragen müssen']
+const KEY = ['fester ansprechpartner', 'festen ansprechpartner', 'ersatz bei ausfall', 'ersatzkraft bei ausfall', 'festes team', 'festen team', 'erster monat jederzeit kündbar', 'im ersten monat jederzeit kündigen', 'ohne wenn und aber']
 
 function text(path) {
   const file = `dist${path.endsWith('/') ? path : path + '/'}index.html`

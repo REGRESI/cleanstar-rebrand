@@ -44,9 +44,10 @@ export function MobileBar() {
       data-dark={dark || undefined}
       aria-hidden={heroVisible || undefined}
       inert={heroVisible}
+      style={heroVisible ? { transform: 'translate3d(0,100%,0)' } : undefined}
       className={cn(
         'glass mobile-bar fixed inset-x-0 [view-transition-name:mobile-bar] bottom-0 z-40 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-[transform,opacity] duration-500 ease-cs lg:hidden',
-        heroVisible && 'pointer-events-none translate-y-full opacity-0',
+        heroVisible && 'pointer-events-none opacity-0',
       )}
     >
       <div className="flex h-14 divide-x divide-line">

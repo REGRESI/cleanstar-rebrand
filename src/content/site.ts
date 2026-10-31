@@ -9,12 +9,12 @@ import { company } from './company'
  * fester Ansprechpartner, Ersatz bei Ausfall, eigene Kontrollen, erster Monat kündbar.
  */
 export const brand = {
-  promise: 'Sauber. Ohne dass Sie nachfragen müssen.',
+  promise: 'Sauber. Ohne Wenn und Aber.',
   /** Mit festem Umbruch nach „Sauber.“ für große Satzspiegel */
-  promiseSet: 'Sauber.\nOhne dass Sie nachfragen müssen.',
+  promiseSet: 'Sauber.\nOhne Wenn und Aber.',
   /** Für große Satzspiegel: zwei Teile */
   promiseLead: 'Sauber.',
-  promiseRest: 'Ohne dass Sie nachfragen müssen.',
+  promiseRest: 'Ohne Wenn und Aber.',
 }
 
 export const navigation = [
@@ -31,12 +31,12 @@ export const home = {
   answer:
     'CleanStar ist eine Reinigungsfirma aus Offenburg, die sich auf Büroreinigung für Unternehmen im Ortenaukreis spezialisiert hat. Wir arbeiten mit festen Teams, einem festen Ansprechpartner und einer Ersatzkraft bei Ausfall und rechnen nach Stunden ab.',
   seoTitle: 'Büroreinigung Offenburg & Ortenaukreis',
-  seoDescription: 'Reinigungsfirma aus Offenburg für Büroreinigung im Ortenaukreis: festes Team, fester Ansprechpartner, Ersatz bei Ausfall und Angebot in 48 Stunden.',
+  seoDescription: 'Sauber. Ohne Wenn und Aber. Büroreinigung in Offenburg und im Ortenaukreis: feste Teams, eigene Kontrollen und Angebot in 48 Stunden.',
   hero: {
     /** Kleine Zeile, Teil der H1 (Keyword für Google) */
     kicker: 'Büroreinigung in Offenburg und im Ortenaukreis',
     /** Große Zeile der H1: das Markenversprechen */
-    headline: 'Sauber.\nOhne dass Sie nachfragen müssen.',
+    headline: 'Sauber.\nOhne Wenn und Aber.',
     cta: 'Kostenlose Besichtigung',
     /** Getippte Sätze im Hero (Feierabend, Staub, Plan, Morgen); stehen zusätzlich als Text im HTML */
     typed: ['Wenn Ihr Team geht,', 'kommen wir.', 'Raum für Raum, nach Checkliste.', 'Und morgen früh ist alles bereit.'],

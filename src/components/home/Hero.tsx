@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import hero from 'virtual:hero-frames'
-import { AnimatedText, TypeText, type TypeHandle } from '@/components/ui/AnimatedText'
+import { TypeText, type TypeHandle } from '@/components/ui/AnimatedText'
 import { Sparkle } from '@/components/ui/Sparkle'
 import { QuoteButton } from '@/features/configurator/QuoteLink'
 import { heroCheckpoints } from '@/features/hero/checkpoints'
@@ -346,12 +346,20 @@ export function Hero() {
       setEngine('webgl')
     }
     let cancelIdle = () => {}
-    const go = () => (cancelIdle = onIdle(() => void start(), 1500))
+    let scheduled = false
+    const go = () => {
+      if (scheduled || window.scrollY < 16) return
+      scheduled = true
+      window.removeEventListener('scroll', go)
+      cancelIdle = onIdle(() => void start(), 300)
+    }
+    window.addEventListener('scroll', go, { passive: true })
     if (document.readyState === 'complete') go()
     else window.addEventListener('load', go, { once: true })
     return () => {
       cancelled = true
       window.removeEventListener('load', go)
+      window.removeEventListener('scroll', go)
       cancelIdle()
       stop()
     }
@@ -381,6 +389,8 @@ export function Hero() {
               schon im ersten HTML fest (nicht erst nach dem Umschalten auf „pinned“), sonst springt das Fenster (CLS) */}
           <div ref={box} className="hero-box is-pinned photo absolute overflow-hidden bg-night">
             {/* Startbild als normales Bild (LCP) */}
+            <picture>
+            <source media="(max-width: 767px)" srcSet="/hero/still-aussen-m-lq.webp" />
             <img
               src={hero.desktop[0] ?? hero.still['aussen-d']}
               alt={home.hero.imageAlt}
@@ -390,6 +400,7 @@ export function Hero() {
               decoding="async"
               className="absolute inset-0 size-full object-cover max-md:hidden"
             />
+            </picture>
             {pinned && (
               <>
                 <canvas ref={frames} aria-hidden className={cn('absolute inset-0 size-full object-cover transition-opacity duration-300', seq.drawn ? 'opacity-100' : 'opacity-0')} />
@@ -443,15 +454,11 @@ export function Hero() {
           {/* Start: H1 aus Keyword-Zeile und Leitidee, Buttons */}
           <div className="on-dark container-site pointer-events-none relative flex h-full flex-col justify-end pt-24 pb-[max(2.5rem,env(safe-area-inset-bottom))] text-paper sm:pb-14 lg:pb-[9vh]">
             <div ref={copy} className="pointer-events-auto will-change-transform">
-              <AnimatedText
-                as="h1"
-                id="hero-title"
-                text={home.hero.headline}
-                immediate
-                kicker={<span className="mt-6 block text-[0.875rem] leading-[1.45] font-medium tracking-[0.03em] text-paper lg:mt-8 lg:text-[1rem]">{home.hero.kicker}</span>}
-                kickerAfter
-                wordsClassName="t-display block text-paper"
-              />
+              {/* Das Markenversprechen ist ab dem ersten Paint lesbar; die Scroll-Erzählung animiert danach. */}
+              <h1 id="hero-title" className="flex flex-col">
+                <span className="mt-6 block text-[0.875rem] leading-[1.45] font-medium tracking-[0.03em] text-paper lg:mt-8 lg:text-[1rem]">{home.hero.kicker}</span>
+                <span className="t-display -order-1 block whitespace-pre-line text-paper">{home.hero.headline}</span>
+              </h1>
               {/* Höhe vorab reserviert (Button 3,75 rem, Abstand, Textlink): Der Browser zeichnet das erste Bild, bevor er
                   diesen Teil gelesen hat; ohne Reserve rutscht die unten ausgerichtete Überschrift danach hoch (CLS) */}
               <div className="mt-9 flex min-h-[6.9375rem] flex-col gap-5 sm:min-h-[3.75rem] sm:flex-row sm:items-center sm:gap-8 lg:mt-12">

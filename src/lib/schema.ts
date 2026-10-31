@@ -1,3 +1,4 @@
+import { brand } from '@/content/site'
 import { company } from '@/content/company'
 import { places as locations } from '@/content/places'
 import { services } from '@/content/services'
@@ -32,6 +33,7 @@ export function organizationSchema() {
     '@id': ORG_ID,
     name: company.name,
     legalName: company.legalName,
+    slogan: brand.promise,
     alternateName: company.shortName,
     url: `${company.siteUrl}/`,
     logo: { '@type': 'ImageObject', url: `${company.siteUrl}/logo.png` },
@@ -94,6 +96,7 @@ export function localBusinessSchema() {
     parentOrganization: { '@id': ORG_ID },
     name: company.name,
     legalName: company.legalName,
+    slogan: brand.promise,
     alternateName: company.shortName,
     description:
       'CleanStar ist eine Reinigungsfirma aus Offenburg, die sich auf Büroreinigung für Unternehmen im Ortenaukreis spezialisiert hat. Feste Teams, fester Ansprechpartner, Ersatzkraft bei Ausfall.',

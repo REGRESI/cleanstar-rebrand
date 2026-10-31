@@ -41,7 +41,7 @@ export const services: Service[] = [
       'Büroreinigung in Offenburg und im Ortenaukreis: festes Team, Ersatzkraft bei Ausfall, Qualitätsgarantie. 35 bis 45 € brutto pro Stunde, Angebot in 48 Stunden.',
     headline: 'Büroreinigung, auf die Sie sich verlassen können.',
     intro:
-      'Ihr Büro ist morgens sauber. Jeden Tag, ohne dass Sie nachfragen müssen. Wir reinigen nach einem schriftlich vereinbarten Leistungsverzeichnis, mit festem Team und einem Ansprechpartner, der Ihr Objekt kennt.',
+      'Ihr Büro ist morgens sauber. Jeden Tag, ohne Wenn und Aber. Wir reinigen nach einem schriftlich vereinbarten Leistungsverzeichnis, mit festem Team und einem Ansprechpartner, der Ihr Objekt kennt.',
     image: 'svc-buero',
     icon: 'desk',
     featured: true,

@@ -168,3 +168,9 @@ preview/          ← fertige Einzeldatei-Vorschau
 ## Offene Punkte
 
 Siehe **`OFFENE-PUNKTE.md`**.
+
+## Markenversprechen und Startseiten-Übergänge
+
+**Sauber. Ohne Wenn und Aber.** — zentrale Quelle: `src/content/site.ts` (`brand`). Hero, Partikel-Footer und Leistungsmappe einschließlich PDF lesen denselben Text. Open Graph: `npm run og`; KI-Texte entstehen bei `npm run build`.
+
+Zuordnung, Bestandsaufnahme und Abnahme: [docs/uebergaenge-startseite.md](docs/uebergaenge-startseite.md).

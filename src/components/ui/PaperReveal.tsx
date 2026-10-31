@@ -1,3 +1,4 @@
+import { whenNear } from '@/lib/whenNear'
 import { useEffect, useRef, type ReactNode } from 'react'
 import { Picture } from './Picture'
 import type { ImageId } from '@/content/images'
@@ -24,11 +25,13 @@ export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode
     if (!cv || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
     let stop: (() => void) | null = null
     let dead = false
-    import('./paperEdge').then(({ startPaperEdge }) => {
+    const cancelNear = whenNear(cv.closest('.pr')!, () => { import('./paperEdge').then(({ startPaperEdge }) => {
       if (dead) return
       stop = startPaperEdge(cv, () => cv.closest('.pr')?.setAttribute('data-gl', ''))
     })
+    })
     return () => {
+      cancelNear()
       dead = true
       stop?.()
       cv.closest('.pr')?.removeAttribute('data-gl')
@@ -75,7 +78,7 @@ export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode
           </picture>
         </div>
       </div>
-      <section ref={run} className="pr-run on-dark" aria-labelledby={id} data-tone-start="dark" data-tone-end="dark">
+      <section ref={run} className="pr-run on-dark" data-home-internal={id === 'morning-title' ? 'morning' : undefined} data-transition="paper-reveal" aria-labelledby={id} data-tone-start="dark" data-tone-end="dark">
         <div className="pr-stage">
           <Picture id={image} aspect="absolute inset-0 size-full" sizes="100vw" />
           <span aria-hidden className="pr-shade" />

@@ -6,6 +6,7 @@ import { createServer } from 'vite'
 
 const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error' })
 const load = (p) => vite.ssrLoadModule(p)
+const { brand } = await load('/src/content/site.ts')
 const { company, fullAddress } = await load('/src/content/company.ts')
 const { services } = await load('/src/content/services.ts')
 const { locations, shortName } = await load('/src/content/locations.ts')
@@ -29,7 +30,7 @@ const tools = [
 
 const llms = `# ${company.name}
 
-> ${summary}
+> ${brand.promise} ${summary}
 
 ${groups
   .slice(0, 4)
@@ -95,7 +96,7 @@ ${tools.map(([p, n, d]) => `- [${n}](${U(p)}): ${d}`).join('\n')}
 
 const full = `# ${company.name}: ausführliche Informationen
 
-> ${summary}
+> ${brand.promise} ${summary}
 
 Stand: ${new Date().toISOString().slice(0, 10)}. Quelle: ${company.siteUrl}/
 

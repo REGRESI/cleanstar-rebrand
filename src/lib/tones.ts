@@ -11,6 +11,8 @@ function markTones(doc: Document) {
   const main = doc.getElementById('main')
   const wrap = main && main.firstElementChild
   if (!wrap) return
+  // Home owns explicit transition surfaces and spacing. Do not scan every nested scene as one giant block.
+  if (wrap.querySelector('[data-home-transitions]')) return
   const blocks: HTMLElement[] = []
   // Platzhalter (<template> aus dem Vorrendern) bleiben drin: Dahinter steht noch nicht geladener Inhalt, dessen Fläche
   // unbekannt ist. Kanten daneben bleiben unangetastet (sonst entfällt ein Abstand und kommt nach dem Laden zurück).

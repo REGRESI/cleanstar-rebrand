@@ -1,3 +1,4 @@
+/* global document, getComputedStyle -- Browser evaluation */
 // Bilder-Test: Jedes Foto höchstens einmal pro Seite; das Bild am Seitenende (Streifen vor dem Footer) nicht auf mehreren
 // Seiten dasselbe; das Teambild „team-im-einsatz“ nur an genau einer Stelle der Website.
 // Gezählt werden sichtbare Fotos ab 160 px Breite (img aus /images/, ohne Deko-Freisteller, ohne runde Porträt-Symbole

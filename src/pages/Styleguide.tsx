@@ -89,7 +89,7 @@ export default function Styleguide() {
                   <br />
                   {spec}
                 </p>
-                <p className={cls === 't-display' ? 't-display' : cls}>{cls === 't-label' ? 'Leistungen · Offenburg · 24/7' : 'Sauber. Ohne dass Sie nachfragen müssen.'}</p>
+                <p className={cls === 't-display' ? 't-display' : cls}>{cls === 't-label' ? 'Leistungen · Offenburg · 24/7' : 'Sauber. Ohne Wenn und Aber.'}</p>
               </li>
             ))}
           </ul>

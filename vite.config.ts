@@ -144,7 +144,7 @@ export default defineConfig(({ mode }) => {
       // Regeln des Bewegungsmodus für den ersten Bildschirm (.js-motion setzt erst das Skript im Kopf) immer einbetten: Beasties sieht die
       // Klasse im vorgerenderten HTML nicht und ließe sie weg; das volle Stylesheet steht am Ende von <body>, ohne diese
       // Regeln zeigte der erste Frame z. B. den Kapitel-Kopf ohne Laufstrecke (Layout-Verschiebung)
-      beastiesOptions: { logLevel: 'error', allowRules: [/\.js-motion \.(chapter|hero)-/] },
+      beastiesOptions: { logLevel: 'error', allowRules: [/\.js-motion \.(chapter|hero|ht)-/] },
       includedRoutes(paths: string[]) {
         return paths.filter((p) => !p.includes(':') && p !== '*')
       },

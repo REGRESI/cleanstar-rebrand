@@ -14,7 +14,7 @@ export function useScrollReveals(key: string) {
     let t2 = 0
     const cancel = onIdle(() => {
       t = window.setTimeout(() => ScrollTrigger.refresh(), 300)
-      t2 = window.setTimeout(() => ScrollTrigger.refresh(), 2500)
+      if (key !== '/') t2 = window.setTimeout(() => ScrollTrigger.refresh(), 2500)
     })
     const onLoad = () => window.setTimeout(() => ScrollTrigger.refresh(), 100)
     if (document.readyState !== 'complete') window.addEventListener('load', onLoad, { once: true })

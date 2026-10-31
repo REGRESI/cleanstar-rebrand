@@ -1,4 +1,4 @@
-import { Suspense, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { Hero } from '@/components/home/Hero'
 import { NightHero } from '@/features/night/NightHero'
 import { features } from '@/content/features'
@@ -16,21 +16,17 @@ import { MappeTeaser } from '@/components/home/MappeTeaser'
 import { FinalCta } from '@/components/home/FinalCta'
 import { Seo } from '@/components/ui/Seo'
 import { Answer } from '@/components/ui/Answer'
+import { HomeBlock, HomeTransitions } from '@/components/home/HomeTransitions'
+import { hasProof } from '@/content/proof'
 import { home } from '@/content/site'
 import { answers } from '@/content/answers'
 import { faqs } from '@/content/faq'
 import { faqSchema, localBusinessSchema, organizationSchema, personSchemas, websiteSchema } from '@/lib/schema'
 
-/** Eigene Suspense-Grenzen: React hydriert die Abschnitte in kleinen Häppchen (weniger Blocking Time). */
-const Chunk = ({ children }: { children: ReactNode }) => <Suspense fallback={null}>{children}</Suspense>
+/** Vollständiges statisches HTML: Inhalte bleiben auch ohne Streaming-Skripte lesbar. */
+const Chunk = ({ children }: { children: ReactNode }) => <>{children}</>
 
-/**
- * Startseite, gekürzt: Der Hero erzählt die Nacht (Feierabend, Staub, Plan, Morgen); was danach dasselbe noch einmal
- * sagte (Scroll-Text, Bildband am Abend), ist entfallen. Je Abschnitt genau eine Fläche (Klarweiß, Eisblau, Navy).
- * 1 Hero → Kreis (Eisblau) · 2 Leistungen als Karussell (Eisblau) · 3 Kostenrechner (Klarweiß, dunkle Karte) ·
- * 4 Das kennen Sie vielleicht (Navy) · Kreis über Teamfoto (Klarweiß) · 5 Gründer (Klarweiß) · Beweise (nur mit
- * Einträgen) · Ablauf in sechs Schritten · 6 Einzugsgebiet · 7 Leistungsmappe (Navy) · Kurz beantwortet · Kreis (Eisblau) · 8 Abschluss (Eisblau).
- */
+/** Übergangsplan und Abnahme: docs/uebergaenge-startseite.md. */
 export default function Home() {
   return (
     <>
@@ -42,30 +38,32 @@ export default function Home() {
         schema={[organizationSchema(), localBusinessSchema(), ...personSchemas(), websiteSchema(), faqSchema(faqs.filter((f) => f.featured && !f.todo))]}
       />
       {/* Signatur-Szene nach Freigabe (features.signatureScene) statt des Heros; bleibt ausgeschaltet */}
-      {features.signatureScene ? <NightHero /> : <Hero />}
+      <HomeTransitions>
+      <HomeBlock id="hero">{features.signatureScene ? <NightHero /> : <Hero />}</HomeBlock>
       <Chunk>
-        <Arrival />
-        <ServicesHorizontal />
-        <CostTeaser />
+        <HomeBlock id="arrival" transition="circle-title"><Arrival /></HomeBlock>
+        <HomeBlock id="services" transition="horizontal-scroll" outgoing><ServicesHorizontal /></HomeBlock>
+        <HomeBlock id="cost" transition="card-stack" outgoing><CostTeaser /></HomeBlock>
       </Chunk>
       <Chunk>
         {/* Papier-Reveal: Die Ärgernisse sind das Blatt, darunter liegt fest das Büro am Morgen */}
-        <PaperReveal sheet={<ProblemSolution tone="paper" />} image="after-office" id="morning-title" word="Am Morgen" line="Alles bereit, bevor der Erste kommt." />
-        <PlantMoment eyebrow="Ihr Team" id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." />
-        <Founders />
-        <Proof />
-        <ProcessTimeline />
+        <HomeBlock id="problems-morning" transition="flow-color" outgoing><PaperReveal sheet={<ProblemSolution tone="paper" />} image="after-office" id="morning-title" word="Am Morgen" line="Alles bereit, bevor der Erste kommt." /></HomeBlock>
+        <HomeBlock id="team" transition="light-edge" outgoing><PlantMoment eyebrow="Ihr Team" id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." /></HomeBlock>
+        <HomeBlock id="founders" transition="logo-house" outgoing><Founders /></HomeBlock>
+        {hasProof() && <HomeBlock id="proof" transition="flow-color" outgoing><Proof /></HomeBlock>}
+        <HomeBlock id="process" transition={hasProof() ? "card-stack" : "flow-color"}><ProcessTimeline /></HomeBlock>
       </Chunk>
       <Chunk>
-        <AreaTeaser moment={'Unser Zuhause:\ndie Ortenau.'} />
-        <MappeTeaser />
-        <Answer question={answers.home.question} bottom="pb-4">
+        <HomeBlock id="area" transition="clouds" outgoing><AreaTeaser moment={'Unser Zuhause:\ndie Ortenau.'} /></HomeBlock>
+        <HomeBlock id="mappe" transition="growing-window" outgoing><MappeTeaser immersive /></HomeBlock>
+        <HomeBlock id="answer" transition="card-stack" outgoing><Answer question={answers.home.question} bottom="pb-4">
           {answers.home.text}
-        </Answer>
+        </Answer></HomeBlock>
       </Chunk>
       <Chunk>
-        <FinalCta />
+        <HomeBlock id="cta" transition="light-edge"><FinalCta /></HomeBlock>
       </Chunk>
+      </HomeTransitions>
     </>
   )
 }

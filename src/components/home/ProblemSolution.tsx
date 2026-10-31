@@ -30,19 +30,25 @@ function Row({ i, problem, solution, light }: { i: number; problem: string; solu
       setGo(true)
       return
     }
+    const edge = el.querySelector<HTMLElement>('.ps-edge')
+    let width = el.querySelector<HTMLElement>('.ps-problem')?.clientWidth ?? 0
+    const apply = (p: number) => {
+      el.style.setProperty('--w', p.toFixed(3))
+      if (edge) edge.style.transform = `translate3d(${(p * width).toFixed(2)}px,0,0)`
+      setGo(p > 0.3)
+    }
     const st = ScrollTrigger.create({
       trigger: el,
       start: 'top 82%',
       end: 'top 42%',
       scrub: 0.4,
-      onUpdate: (s) => {
-        el.style.setProperty('--w', s.progress.toFixed(3))
-        // Lösung färbt sich ein und beim Zurückscrollen wieder aus
-        setGo(s.progress > 0.3)
+      onUpdate: (s) => apply(s.progress),
+      onRefresh: (s) => {
+        width = el.querySelector<HTMLElement>('.ps-problem')?.clientWidth ?? 0
+        apply(s.progress)
       },
     })
-    el.style.setProperty('--w', st.progress.toFixed(3))
-    setGo(st.progress > 0.3)
+    apply(st.progress)
     return () => st.kill()
   }, [])
   return (

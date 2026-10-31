@@ -34,7 +34,7 @@
 @font-face {
   font-family: 'Instrument Sans';
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
   font-weight: 400 700;
   src: url('../assets/fonts/instrument-sans-latin-wght.woff2') format('woff2-variations');
   unicode-range:
@@ -1547,6 +1547,7 @@ footer[data-no-top] {
 /* Lichtkante der Überblendung (ohne WebGL): schmaler heller Kern mit weichem Schein, keine Fläche */
 .hero-edge {
   position: absolute;
+  left: 0;
   top: 0;
   bottom: 0;
   width: 2px;
@@ -2616,7 +2617,8 @@ footer[data-no-top] {
   position: absolute;
   top: -0.25rem;
   bottom: -0.25rem;
-  left: calc(var(--w, 0) * 100%);
+  left: 0;
+  transform: translate3d(0,0,0);
   width: 2px;
   background: #fff;
   box-shadow:
@@ -3537,4 +3539,65 @@ button:hover > .seal .seal-ring {
   .js-motion .pr-line {
     will-change: transform, opacity;
   }
+}
+
+/* Startseite: echte, einmal gerenderte Flächen. Die Reservierung steht schon vor der Hydration fest. */
+.ht-block { position: relative; }
+.ht-plane { position: relative; }
+.ht-glint, .ht-house-mark, .ht-tail { display: none; }
+.ht-window-photo { position:absolute; inset:0; overflow:hidden; }
+.ht-window-photo img { width:100%; height:100%; object-fit:cover; }
+.ht-window-photo::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg, rgb(10 26 51 / .92), rgb(10 26 51 / .35)); }
+.ht-window-section { position:relative; min-height:100svh; display:grid; align-items:center; }
+.ht-window-section > .container-site { position:relative; }
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion .ht-hold > .ht-tail { display:block; height:100svh; }
+  .js-motion .ht-hold > .ht-plane { position:sticky; top:var(--ht-top, 0px); }
+  .js-motion .ht-incoming { margin-top:-100svh; }
+  .js-motion .ht-incoming > .ht-plane { min-height:100svh; background:var(--color-paper); }
+  .js-motion .ht-active > .ht-plane { will-change:transform,clip-path,opacity; }
+  .js-motion .ht-active[data-transition='card-stack'] > .ht-plane { box-shadow:0 -24px 60px rgb(10 26 51 / .12); }
+  .js-motion .ht-block[data-transition='light-edge'] .ht-glint { display:block; position:absolute; z-index:2; pointer-events:none; top:0; left:0; height:100svh; width:42px; transform:translate3d(calc(var(--ht-wipe,0%) - 21px), calc(-1 * var(--ht-enter-y,0px)),0); background:linear-gradient(90deg,transparent,rgb(199 235 255 / .2) 30%,rgb(255 255 255 / .9) 50%,rgb(214 243 255 / .25) 70%,transparent); filter:blur(5px); opacity:var(--ht-glow,0); }
+  .js-motion .ht-active[data-transition='logo-house'] .ht-house-mark { display:block; position:absolute; pointer-events:none; z-index:2; width:168px; height:180px; left:calc(50% - 84px); top:calc(50svh - 90px - var(--ht-enter-y,0px)); transform:scale(var(--ht-house-scale,.58)); color:var(--color-blue); opacity:var(--ht-house-opacity,0); }
+  .js-motion [data-transition='growing-window'] .ht-window-section > .container-site { opacity:var(--ht-copy,1); }
+}
+@media (max-width:767px) {
+  .ht-window-section { min-height:100svh; }
+  .ht-window-photo::after { background:linear-gradient(0deg,rgb(10 26 51 / .92),rgb(10 26 51 / .56)); }
+}
+
+.ht-home [data-home-section='cost'] .section { background:var(--color-surface); }
+.ht-home [data-home-section='process'] .section { background:var(--color-surface); }
+@media (prefers-reduced-motion: no-preference) {
+  .js-motion .ht-incoming[data-transition='flow-color'] > .ht-plane { mask-image:linear-gradient(to bottom,transparent,#000 48px); }
+  .js-motion .ht-home [data-home-section='problems-morning'] > .ht-plane { background:color-mix(in srgb,var(--color-surface) calc((1 - var(--ht-flow,1)) * 100%),var(--color-paper)); }
+  .js-motion .ht-home [data-home-section='process'] > .ht-plane { background:color-mix(in srgb,var(--color-paper) calc((1 - var(--ht-flow,1)) * 100%),var(--color-surface)); }
+}
+/* Die Pflanzenbühne füllt dieselbe feste Fläche wie die nachfolgende Hausmaske. */
+.ht-home .plant-moment > .container-site { min-height:100svh; }
+@media (prefers-reduced-motion: no-preference) {
+  /* Wolken-Leinwand: Ausdehnung vor dem ersten Frame reservieren, nicht im WebGL-Takt umsetzen. */
+  .js-motion .cc-gl { top:-40vw; height:calc(100% + 40vw); }
+}
+/* Ruhige, aber kompakte Verbindung von Ablauf und Orts-Titel. */
+.ht-home [data-home-section='process'] > .ht-plane > .section { padding-bottom:2rem; }
+.ht-home [data-home-section='area'] > .ht-plane > .section { padding-top:2rem; }
+/* An den beiden leisen Wechseln keine addierten Abschnittsabstände. */
+.ht-home [data-home-section='cost'] > .ht-plane > section,
+.ht-home [data-home-section='founders'] > .ht-plane > section { padding-bottom:2rem; }
+.ht-home [data-home-section='problems-morning'] .ps-light,
+.ht-home [data-home-section='process'] > .ht-plane > section { padding-top:3rem; }
+/* Auf der Startseite stehen die konkreten Lösungen nah am Problem-Kopf. */
+.ht-home .ps-light > .container-site > ol { margin-top:2rem; }
+.ht-home .ps-light .ps-row { padding-block:1.5rem; }
+@media (max-width:767px) and (prefers-reduced-motion: no-preference) {
+  /* Maximalen Kartenhub (2 × 56px) vor dem Gründer-Link reservieren. */
+  .ht-home [data-home-section='founders'] .offset-cards { padding-bottom:112px; }
+}
+/* Beim leisen Abschnittswechsel trägt die äußere Staffelung den Titel, ohne zweite Ausblendung. */
+.ht-home :is(#problems-title,#process-title) .at-w { animation:none!important; opacity:1!important; filter:none!important; transform:none!important; }
+.ht-home :is(#problems-title,#process-title) .at-c { animation:none!important; color:inherit!important; }
+@media (min-width:768px) {
+  .ht-home .plant-a { width:36vw; }
+  .ht-home .plant-b { width:38vw; }
 }

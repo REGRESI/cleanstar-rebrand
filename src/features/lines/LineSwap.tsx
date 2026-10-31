@@ -23,7 +23,7 @@ export const LineSwap = forwardRef<LineSwapHandle, { lines: string; linesMobile?
       if (layer.current) layer.current.style.clipPath = `inset(0 ${(1 - f) * 100}% 0 0)`
       if (edge.current) {
         edge.current.style.opacity = e > 0.001 && e < 0.999 ? '1' : '0'
-        edge.current.style.left = `${f * 100}%`
+        edge.current.style.transform = `translate3d(${f * (edge.current.parentElement?.clientWidth ?? 0)}px,0,0)`
       }
     },
   }))

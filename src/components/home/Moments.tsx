@@ -1,3 +1,4 @@
+import { whenNear } from '@/lib/whenNear'
 import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
 import { MomentHeading, MomentGlow } from '@/components/ui/MomentHeading'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
@@ -72,7 +73,7 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
     el.addEventListener('pointerleave', leave)
     const stops: (() => void)[] = []
     let dead = false
-    import('./plantWind').then(({ startPlant }) => {
+    const cancelNear = whenNear(el, () => { import('./plantWind').then(({ startPlant }) => {
       if (dead) return
       el.querySelectorAll<HTMLElement>('[data-plant]').forEach((p) => {
         const img = p.querySelector('img')
@@ -82,7 +83,9 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
         if (s) stops.push(s)
       })
     })
+    })
     return () => {
+      cancelNear()
       dead = true
       stops.forEach((s) => s())
       cancelAnimationFrame(raf)
@@ -160,8 +163,7 @@ export function CloudCover({ children, className }: { children: ReactNode; class
     let stopGl: (() => void) | null = null
     let dead = false
     const cv = el.querySelector<HTMLCanvasElement>('.cc-gl')
-    if (cv)
-      import('./cloudGl').then(({ startClouds }) => {
+    const cancelNear = cv ? whenNear(el, () => { import('./cloudGl').then(({ startClouds }) => {
         if (dead) return
         stopGl = startClouds(
           cv,
@@ -173,7 +175,9 @@ export function CloudCover({ children, className }: { children: ReactNode; class
           },
         )
       })
+    }) : () => {}
     return () => {
+      cancelNear()
       dead = true
       stopGl?.()
       st.kill()

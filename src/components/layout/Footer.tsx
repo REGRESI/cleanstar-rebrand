@@ -87,7 +87,7 @@ export function Footer() {
   const { pathname } = useLocation()
   const end = endImage[pathname.replace(/\/$/, '') || '/']
   return (
-    <footer className="relative">
+    <footer className="relative" data-home-section={pathname === '/' ? 'footer' : undefined} data-transition={pathname === '/' ? 'image-to-stripe' : undefined}>
       {/* Letztes Bild: steht, bis der Footer es zum Streifen zusammenschiebt; je Seite ein passendes, sonst keins */}
       {end && (
         <div className="ftr-run" aria-hidden>

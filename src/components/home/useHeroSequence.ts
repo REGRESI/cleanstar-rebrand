@@ -51,15 +51,17 @@ export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, l
   // Frames erst laden, wenn die Seite steht (LCP und Interaktivität zuerst)
   useEffect(() => {
     if (!enabled) return
-    const start = () => onIdle(() => setLoad(true), 1200)
-    if (document.readyState === 'complete') return start()
     let cancel = () => {}
-    const onLoad = () => (cancel = start())
-    window.addEventListener('load', onLoad, { once: true })
-    return () => {
-      window.removeEventListener('load', onLoad)
-      cancel()
+    let started = false
+    const start = () => {
+      if (started || window.scrollY < 16) return
+      started = true
+      window.removeEventListener('scroll', start)
+      cancel = onIdle(() => setLoad(true), 120)
     }
+    window.addEventListener('scroll', start, { passive: true })
+    start()
+    return () => { window.removeEventListener('scroll', start); cancel() }
   }, [enabled])
 
   // Gepinnte Sektion, Scrollfortschritt und Schlüsselmomente
