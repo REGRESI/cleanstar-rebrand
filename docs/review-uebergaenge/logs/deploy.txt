@@ -1,0 +1,10 @@
+✓ chromium ohne alten Dateien / → /leistungen/: neu geladen, H1 „Ein Ansprechpartner für alles, was saube“
+✓ chromium ohne alten Dateien /leistungen/ → /qualitaetsgarantie/: neu geladen, H1 „Was wir zusagen. Und was passiert, wenn “
+✓ chromium mit alten Dateien / → /leistungen/: ohne Neuladen, H1 „Ein Ansprechpartner für alles, was saube“
+✓ chromium mit alten Dateien /leistungen/ → /qualitaetsgarantie/: ohne Neuladen, H1 „Was wir zusagen. Und was passiert, wenn “
+✓ webkit ohne alten Dateien / → /leistungen/: neu geladen, H1 „Ein Ansprechpartner für alles, was saube“
+✓ webkit ohne alten Dateien /leistungen/ → /qualitaetsgarantie/: neu geladen, H1 „Was wir zusagen. Und was passiert, wenn “
+✓ webkit mit alten Dateien / → /leistungen/: ohne Neuladen, H1 „Ein Ansprechpartner für alles, was saube“
+✓ webkit mit alten Dateien /leistungen/ → /qualitaetsgarantie/: ohne Neuladen, H1 „Was wir zusagen. Und was passiert, wenn “
+
+✓ Deploy-Test bestanden (2 Browser)

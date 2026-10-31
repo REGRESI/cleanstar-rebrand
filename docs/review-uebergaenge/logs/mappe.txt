@@ -1,0 +1,2 @@
+FAIL Desktop Klick linke Hälfte: 3 → 19 / 21
+✗ 1 von 147 Prüfungen fehlgeschlagen

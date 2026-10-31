@@ -1,0 +1,1 @@
+[{"device":"Desktop","cls":0,"errors":[]},{"device":"Mobile","cls":0,"errors":[]}]

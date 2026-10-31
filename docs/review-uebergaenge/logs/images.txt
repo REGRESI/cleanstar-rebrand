@@ -1,0 +1,2 @@
+53 Seiten geprüft, Seitenende-Bilder: 5
+✓ Kein Bild doppelt, kein Seitenende-Bild mehrfach, Teambild nur einmal

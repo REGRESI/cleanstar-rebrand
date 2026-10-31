@@ -1,0 +1,82 @@
+[
+  {
+    "device": "Desktop",
+    "id": "cost",
+    "frames": 84,
+    "fps": 13.405039656575651,
+    "p95Ms": 133.39999999999964,
+    "over33Ms": 72
+  },
+  {
+    "device": "Desktop",
+    "id": "problems-morning",
+    "frames": 84,
+    "fps": 6.4124584907820905,
+    "p95Ms": 216.59999999999854,
+    "over33Ms": 84
+  },
+  {
+    "device": "Desktop",
+    "id": "team",
+    "frames": 84,
+    "fps": 13.194269917064585,
+    "p95Ms": 166.59999999999854,
+    "over33Ms": 62
+  },
+  {
+    "device": "Desktop",
+    "id": "founders",
+    "frames": 84,
+    "fps": 9.385789467803384,
+    "p95Ms": 183.3000000000029,
+    "over33Ms": 81
+  },
+  {
+    "device": "Desktop",
+    "id": "mappe",
+    "frames": 84,
+    "fps": 15.227322166630406,
+    "p95Ms": 133.40000000000146,
+    "over33Ms": 61
+  },
+  {
+    "device": "Mobile",
+    "id": "cost",
+    "frames": 84,
+    "fps": 34.759579574608956,
+    "p95Ms": 33.400000000000546,
+    "over33Ms": 9
+  },
+  {
+    "device": "Mobile",
+    "id": "problems-morning",
+    "frames": 84,
+    "fps": 10.980966325036604,
+    "p95Ms": 116.60000000000036,
+    "over33Ms": 82
+  },
+  {
+    "device": "Mobile",
+    "id": "team",
+    "frames": 84,
+    "fps": 32.94246833209146,
+    "p95Ms": 66.69999999999709,
+    "over33Ms": 21
+  },
+  {
+    "device": "Mobile",
+    "id": "founders",
+    "frames": 84,
+    "fps": 30.363274896078078,
+    "p95Ms": 66.60000000000218,
+    "over33Ms": 26
+  },
+  {
+    "device": "Mobile",
+    "id": "mappe",
+    "frames": 84,
+    "fps": 51.957691593987725,
+    "p95Ms": 33.39999999999782,
+    "over33Ms": 4
+  }
+]

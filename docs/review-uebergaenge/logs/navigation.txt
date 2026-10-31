@@ -1,0 +1,3 @@
+Desktop: 74 Seitenwechsel geprüft, 0 Fehler
+Mobile: 78 Seitenwechsel geprüft, 0 Fehler
+✓ Alle 152 Prüfungen bestanden (1 Seiten)
