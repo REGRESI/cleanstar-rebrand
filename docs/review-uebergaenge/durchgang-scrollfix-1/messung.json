@@ -1,0 +1,160 @@
+[
+  {
+    "device": "Desktop",
+    "sections": [
+      {
+        "id": "hero",
+        "top": 0,
+        "h": 5040
+      },
+      {
+        "id": "arrival",
+        "type": "circle-title",
+        "top": 4140,
+        "h": 1980
+      },
+      {
+        "id": "services",
+        "type": "horizontal-scroll",
+        "top": 6120,
+        "h": 8022
+      },
+      {
+        "id": "cost",
+        "type": "card-stack",
+        "top": 13242,
+        "h": 1097
+      },
+      {
+        "id": "problems-morning",
+        "type": "flow-color",
+        "top": 14339.4375,
+        "h": 3240
+      },
+      {
+        "id": "team",
+        "type": "light-edge",
+        "top": 16679.4375,
+        "h": 2700
+      },
+      {
+        "id": "founders",
+        "type": "logo-house",
+        "top": 18479.4375,
+        "h": 1282
+      },
+      {
+        "id": "process",
+        "type": "flow-color",
+        "top": 19761.609375,
+        "h": 1229
+      },
+      {
+        "id": "area",
+        "type": "clouds",
+        "top": 20990.921875,
+        "h": 2207
+      },
+      {
+        "id": "mappe",
+        "type": "growing-window",
+        "top": 22297.75,
+        "h": 1800
+      },
+      {
+        "id": "answer",
+        "type": "card-stack",
+        "top": 23197.75,
+        "h": 1800
+      },
+      {
+        "id": "cta",
+        "type": "light-edge",
+        "top": 24097.75,
+        "h": 900
+      }
+    ],
+    "cls": 0,
+    "shifts": [],
+    "errors": []
+  },
+  {
+    "device": "Mobile",
+    "sections": [
+      {
+        "id": "hero",
+        "top": 0,
+        "h": 4726
+      },
+      {
+        "id": "arrival",
+        "type": "circle-title",
+        "top": 3882,
+        "h": 1857
+      },
+      {
+        "id": "services",
+        "type": "horizontal-scroll",
+        "top": 5738.796875,
+        "h": 3795
+      },
+      {
+        "id": "cost",
+        "type": "card-stack",
+        "top": 8689.796875,
+        "h": 1649
+      },
+      {
+        "id": "problems-morning",
+        "type": "flow-color",
+        "top": 10339.109375,
+        "h": 3585
+      },
+      {
+        "id": "team",
+        "type": "light-edge",
+        "top": 13079.828125,
+        "h": 2532
+      },
+      {
+        "id": "founders",
+        "type": "logo-house",
+        "top": 14767.828125,
+        "h": 1889
+      },
+      {
+        "id": "process",
+        "type": "flow-color",
+        "top": 16656.421875,
+        "h": 1496
+      },
+      {
+        "id": "area",
+        "type": "clouds",
+        "top": 18152.546875,
+        "h": 2915
+      },
+      {
+        "id": "mappe",
+        "type": "growing-window",
+        "top": 20223.75,
+        "h": 1688
+      },
+      {
+        "id": "answer",
+        "type": "card-stack",
+        "top": 21067.75,
+        "h": 1845
+      },
+      {
+        "id": "cta",
+        "type": "light-edge",
+        "top": 22069.125,
+        "h": 1316
+      }
+    ],
+    "cls": 0,
+    "shifts": [],
+    "errors": []
+  }
+]

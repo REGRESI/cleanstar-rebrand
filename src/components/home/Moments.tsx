@@ -37,7 +37,7 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
       gsap.fromTo('[data-plant="a"]', { yPercent: 6 }, { yPercent: -6, ease: 'none', scrollTrigger: st })
       gsap.fromTo('[data-plant="b"]', { yPercent: 8 }, { yPercent: -4, ease: 'none', scrollTrigger: st })
     }, el)
-    if (liteMotion()) return () => ctx.revert()
+    if (liteMotion() || window.matchMedia('(pointer: coarse)').matches) return () => ctx.revert()
     // Wind: gemeinsamer Zustand (Feder für den Scroll-Schwung, Maus)
     const state = { kick: 0, mx: -9999, my: -9999, mOn: 0 }
     let v = 0
@@ -107,7 +107,7 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
       </Deko>
       <div className="container-site relative flex min-h-[78svh] flex-col items-center justify-center py-28 text-center">
         {eyebrow && <p className="t-label">{eyebrow}</p>}
-        <MomentHeading id={id} text={title} className="mt-6" />
+        <MomentHeading id={id} text={title} className="mt-6" animate={false} vanish={false} />
         <p className="t-lead mt-8 max-w-[40ch] text-ink-2">{text}</p>
       </div>
     </section>

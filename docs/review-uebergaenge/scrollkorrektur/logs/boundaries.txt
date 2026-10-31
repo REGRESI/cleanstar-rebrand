@@ -1,0 +1,29 @@
+{
+  "failures": [],
+  "metrics": [
+    {
+      "mobile": false,
+      "reduced": false,
+      "errors": [],
+      "cls": 0
+    },
+    {
+      "mobile": false,
+      "reduced": true,
+      "errors": [],
+      "cls": 0
+    },
+    {
+      "mobile": true,
+      "reduced": false,
+      "errors": [],
+      "cls": 0
+    },
+    {
+      "mobile": true,
+      "reduced": true,
+      "errors": [],
+      "cls": 0
+    }
+  ]
+}

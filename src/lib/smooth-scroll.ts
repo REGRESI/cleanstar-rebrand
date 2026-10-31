@@ -6,7 +6,7 @@ let lenis: Lenis | null = null
 /** Startet Lenis (Smooth Scroll) und koppelt es an GSAP ScrollTrigger. */
 export function startSmoothScroll() {
   if (lenis) return lenis
-  lenis = new Lenis({ duration: 1.05, easing: (t) => 1 - Math.pow(1 - t, 3), touchMultiplier: 1.4 })
+  lenis = new Lenis({ duration: 1.05, easing: (t) => 1 - Math.pow(1 - t, 3), touchMultiplier: 1.4, syncTouch: false })
   lenis.on('scroll', ScrollTrigger.update)
   gsap.ticker.add(tick)
   gsap.ticker.lagSmoothing(0)

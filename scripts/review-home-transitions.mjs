@@ -41,3 +41,5 @@ for (const [device, viewport] of [['Desktop',{width:1440,height:900}],['Mobile',
 await browser.close()
 writeFileSync(`${out}/messung.json`,JSON.stringify(results,null,2))
 console.log(JSON.stringify(results.map(({device,cls,errors})=>({device,cls,errors}))))
+
+if(results.some(r => r.errors.length || r.cls > 0)) process.exitCode=1

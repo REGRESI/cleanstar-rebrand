@@ -3,24 +3,24 @@
   "score": 95,
   "metrics": {
     "first-contentful-paint": {
-      "value": 2252.408,
+      "value": 2251.621,
       "display": "2.3 s"
     },
     "largest-contentful-paint": {
-      "value": 2252.408,
+      "value": 2251.621,
       "display": "2.3 s"
     },
     "total-blocking-time": {
-      "value": 120.5,
-      "display": "120 ms"
+      "value": 70.5,
+      "display": "70 ms"
     },
     "cumulative-layout-shift": {
       "value": 0,
       "display": "0"
     },
     "speed-index": {
-      "value": 2877.9847932264574,
-      "display": "2.9 s"
+      "value": 2815.5622191696557,
+      "display": "2.8 s"
     }
   }
 }

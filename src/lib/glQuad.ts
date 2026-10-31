@@ -74,7 +74,7 @@ export function createQuad(canvas: HTMLCanvasElement, fs: string): Quad | null {
       else if (v.length === 3) gl.uniform3f(l, v[0], v[1], v[2])
       else gl.uniform4f(l, v[0], v[1], v[2], v[3])
     },
-    resize: (dpr = Math.min(1.5, window.devicePixelRatio || 1)) => {
+    resize: (dpr = Math.min(window.matchMedia('(pointer: coarse)').matches ? 1 : 1.5, window.devicePixelRatio || 1)) => {
       const w = Math.max(1, Math.round(canvas.clientWidth * dpr))
       const h = Math.max(1, Math.round(canvas.clientHeight * dpr))
       if (canvas.width !== w || canvas.height !== h) {

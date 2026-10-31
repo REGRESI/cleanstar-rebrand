@@ -21,7 +21,8 @@
     "test:navigation": "node scripts/test-navigation.mjs",
     "test:transitions": "node scripts/test-transitions.mjs",
     "test:home": "node scripts/check-home-boundaries.mjs",
-    "review:transitions": "node scripts/review-home-transitions.mjs"
+    "review:transitions": "node scripts/review-home-transitions.mjs",
+    "test:home-reading": "node scripts/test-home-reading.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^6.0.0",

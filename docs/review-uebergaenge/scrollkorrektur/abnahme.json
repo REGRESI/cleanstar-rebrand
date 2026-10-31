@@ -1,0 +1,56 @@
+{
+  "base": "9e81cecdc9a391098d7f71f25c9cf86ce7071c13",
+  "checkedAt": "2026-10-31T19:06:58.379195+00:00",
+  "build": "passed",
+  "typecheck": "passed",
+  "lint": "passed",
+  "reading": "passed",
+  "nativeTouch": "passed",
+  "boundaryReducedMotionNoJS": "passed",
+  "navigation": {
+    "passed": 152,
+    "failed": 0
+  },
+  "scroll": {
+    "desktop": 329,
+    "mobile": 314,
+    "failed": 0
+  },
+  "cls": {
+    "desktop": 0,
+    "mobile": 0
+  },
+  "lighthouse": {
+    "source": "Production build served with gzip; Lighthouse default Mobile simulation",
+    "score": 95,
+    "metrics": {
+      "first-contentful-paint": {
+        "value": 2251.621,
+        "display": "2.3\u00a0s"
+      },
+      "largest-contentful-paint": {
+        "value": 2251.621,
+        "display": "2.3\u00a0s"
+      },
+      "total-blocking-time": {
+        "value": 70.5,
+        "display": "70\u00a0ms"
+      },
+      "cumulative-layout-shift": {
+        "value": 0,
+        "display": "0"
+      },
+      "speed-index": {
+        "value": 2815.5622191696557,
+        "display": "2.8\u00a0s"
+      }
+    }
+  },
+  "touchFrames": {
+    "environment": "Chromium mobile emulation with software WebGL; not a physical device guarantee",
+    "frames": 55,
+    "medianMs": 16.699999999999818,
+    "p95Ms": 16.800000000000182,
+    "maxMs": 33.400000000000546
+  }
+}

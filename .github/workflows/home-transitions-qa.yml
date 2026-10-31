@@ -36,6 +36,10 @@ jobs:
           /tmp/cleanstar-qa-tools/node_modules/.bin/playwright install --with-deps chromium webkit
           mkdir -p docs/review-uebergaenge/logs
           node scripts/qa-home-server.mjs > /tmp/cleanstar-qa-server.log 2>&1 &
+      - name: Lesephase, Rechner und native Touch-Geste
+        id: reading
+        continue-on-error: true
+        run: node scripts/test-home-reading.mjs | tee docs/review-uebergaenge/logs/reading.txt
       - name: Vollstaendiger Scroll-Test in 80px-Schritten
         id: scroll
         continue-on-error: true
@@ -79,6 +83,7 @@ jobs:
       - name: Nachweise sichern
         if: always()
         env:
+          QA_READING: ${{ steps.reading.outcome }}
           QA_SCROLL: ${{ steps.scroll.outcome }}
           QA_BOUNDARIES: ${{ steps.boundaries.outcome }}
           QA_NAVIGATION: ${{ steps.navigation.outcome }}
@@ -111,6 +116,7 @@ jobs:
       - name: Abnahme
         if: always()
         env:
+          QA_READING: ${{ steps.reading.outcome }}
           QA_SCROLL: ${{ steps.scroll.outcome }}
           QA_BOUNDARIES: ${{ steps.boundaries.outcome }}
           QA_NAVIGATION: ${{ steps.navigation.outcome }}

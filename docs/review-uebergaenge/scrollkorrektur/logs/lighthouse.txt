@@ -1,0 +1,26 @@
+{
+  "source": "Production build served with gzip; Lighthouse default Mobile simulation",
+  "score": 95,
+  "metrics": {
+    "first-contentful-paint": {
+      "value": 2251.621,
+      "display": "2.3 s"
+    },
+    "largest-contentful-paint": {
+      "value": 2251.621,
+      "display": "2.3 s"
+    },
+    "total-blocking-time": {
+      "value": 70.5,
+      "display": "70 ms"
+    },
+    "cumulative-layout-shift": {
+      "value": 0,
+      "display": "0"
+    },
+    "speed-index": {
+      "value": 2815.5622191696557,
+      "display": "2.8 s"
+    }
+  }
+}

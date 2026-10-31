@@ -5,14 +5,14 @@ import { prefersReducedMotion } from '@/lib/env'
 import { span } from '@/lib/scrollScene'
 
 export type HomeTransition = 'circle-title' | 'horizontal-scroll' | 'card-stack' | 'flow-color' | 'paper-reveal' | 'light-edge' | 'logo-house' | 'clouds' | 'growing-window'
-const animated = new Set<HomeTransition>(['card-stack', 'flow-color', 'light-edge', 'logo-house', 'growing-window'])
+const animated = new Set<HomeTransition>(['card-stack', 'light-edge', 'logo-house', 'growing-window'])
 
 /** One real incoming surface per boundary: no cloned text, snapshots or extra focus targets.
  * The preceding surface rests with its last viewport visible. The next surface is revealed
  * in that same viewport, then rejoins normal flow. CSS reserves the overlap before hydration.
  */
-export function HomeBlock({ id, transition, outgoing = false, children }: { id: string; transition?: HomeTransition; outgoing?: boolean; children: ReactNode }) {
-  return <div data-home-section={id} data-transition={transition} className={`ht-block${outgoing ? ' ht-hold' : ''}${transition && animated.has(transition) ? ' ht-incoming' : ''}`}>
+export function HomeBlock({ id, transition, outgoing = false, reading = false, children }: { id: string; transition?: HomeTransition; outgoing?: boolean; reading?: boolean; children: ReactNode }) {
+  return <div data-home-section={id} data-transition={transition} className={`ht-block${outgoing ? ' ht-hold' : ''}${reading ? ' ht-reading' : ''}${transition && animated.has(transition) ? ' ht-incoming' : ''}`}>
     <div className="ht-plane">{children}</div>
     {outgoing && <div className="ht-tail" aria-hidden />}
     {transition === 'light-edge' && <div className="ht-glint" aria-hidden />}
@@ -40,10 +40,14 @@ export function HomeTransitions({ children }: { children: ReactNode }) {
         const old = previous?.firstElementChild as HTMLElement | undefined
         if (!old) return
         const cancelNear = whenNear(block, () => {
-        let vh = window.innerHeight
+        const ruler = el.querySelector<HTMLElement>('.ht-viewport')!
+        let vh = ruler.offsetHeight
+        let width = window.innerWidth
         let oldH = old.offsetHeight
+        const touch = window.matchMedia('(pointer: coarse)').matches
         const measure = () => {
-          vh = window.innerHeight
+          vh = ruler.offsetHeight
+          width = window.innerWidth
           oldH = old.offsetHeight
           previous.style.setProperty('--ht-top', `${Math.min(0, vh - oldH)}px`)
         }
@@ -56,8 +60,9 @@ export function HomeTransitions({ children }: { children: ReactNode }) {
           block.classList.toggle('ht-active', active)
           const t = p * p * (3 - 2 * p)
           // Counter-translate only during entry: the actual next content stands behind its mask.
-          block.style.setProperty('--ht-enter-y', `${Math.max(0, block.getBoundingClientRect().top)}px`)
-          plane.style.transform = active ? `translate3d(0,${(-Math.max(0, block.getBoundingClientRect().top)).toFixed(2)}px,0)` : ''
+          const entryY = (1 - p) * vh
+          block.style.setProperty('--ht-enter-y', `${active ? entryY : 0}px`)
+          plane.style.transform = active ? `translate3d(0,${(-entryY).toFixed(2)}px,0)` : ''
           plane.style.clipPath = ''
           plane.style.opacity = ''
           plane.style.borderRadius = ''
@@ -67,33 +72,22 @@ export function HomeTransitions({ children }: { children: ReactNode }) {
             plane.style.borderRadius = `${(36 * (1 - t)).toFixed(1)}px ${(36 * (1 - t)).toFixed(1)}px 0 0`
             old.style.transformOrigin = '50% 100%'
             old.style.transform = p > 0 && p < 1 ? `scale(${(1 - t * .035).toFixed(4)})` : ''
-            old.style.filter = active ? `brightness(${(1 - t * .18).toFixed(3)})${oldH < vh * 2 ? ` blur(${(t * .9).toFixed(2)}px)` : ''}` : ''
-          } else if (type === 'flow-color') {
-            // Contents occupy disjoint vertical bands: no ghosted text in a cross-fade.
-            plane.style.transform = ''
-            old.style.transform = active ? `translate3d(0,${(-p * 36).toFixed(1)}px,0)` : ''
-            old.style.opacity = String(1 - t * .65)
-            const parts = plane.querySelectorAll<HTMLElement>(':scope > section > .container-site > *')
-            parts.forEach((part, k) => {
-              const q = span(p, .02 + Math.min(k, 5) * .035, .48 + Math.min(k, 5) * .045)
-              part.style.transform = q < 1 ? `translate3d(0,${((1 - q) * 24).toFixed(1)}px,0)` : ''
-              part.style.opacity = String(q)
-            })
-            block.style.setProperty('--ht-flow', String(t))
+            // Whole-section brightness/blur repaints a full viewport on every touch frame.
+            old.style.filter = !touch && active ? `brightness(${(1 - t * .12).toFixed(3)})` : ''
           } else if (type === 'light-edge') {
             // Soft 32px wiping edge; the content behind it is already the next section.
-            const x = t * 112 - 6
+            const x = t * 100
             plane.style.clipPath = p >= 1 ? '' : `inset(0 ${(100 - t * 100).toFixed(3)}% 0 0)`
             block.style.setProperty('--ht-wipe', `${x}vw`)
             block.style.setProperty('--ht-glow', String(Math.sin(p * Math.PI)))
           } else if (type === 'growing-window') {
-            const insetX = (1 - t) * (vh < 700 || window.innerWidth < 768 ? 12 : 34)
+            const insetX = (1 - t) * (vh < 700 || width < 768 ? 12 : 34)
             const insetY = (1 - t) * 31
-            plane.style.clipPath = p >= 1 ? '' : `inset(${insetY.toFixed(2)}vh ${insetX.toFixed(2)}% ${insetY.toFixed(2)}vh round ${(28 * (1-t)).toFixed(1)}px)`
+            plane.style.clipPath = p >= 1 ? '' : `inset(${(insetY * vh / 100).toFixed(2)}px ${insetX.toFixed(2)}% ${(insetY * vh / 100).toFixed(2)}px round ${(28 * (1-t)).toFixed(1)}px)`
             block.style.setProperty('--ht-copy', String(span(p, .45, .9)))
           } else if (type === 'logo-house') {
             // Exact house outline from Logo.tsx/preloader, scaled around the viewport centre.
-            const w = window.innerWidth
+            const w = width
             const scale = .58 + Math.pow(t, 2.1) * Math.max(w, vh) / 45
             const points = [[112,472],[179,422],[248,472],[248,566],[112,566]]
               .map(([x,y]) => `${(w/2+(x-180)*scale).toFixed(1)}px ${(vh/2+(y-494)*scale).toFixed(1)}px`).join(',')
@@ -110,7 +104,7 @@ export function HomeTransitions({ children }: { children: ReactNode }) {
           previousProgress = p
           block.dataset.progress = p.toFixed(4)
         }
-        const st = ScrollTrigger.create({ trigger: block, start: 'top bottom', end: 'top top', onRefreshInit: measure, onUpdate: s => apply(s.progress), onRefresh: s => apply(s.progress) })
+        const st = ScrollTrigger.create({ trigger: block, start: () => block.getBoundingClientRect().top + window.scrollY - vh, end: () => block.getBoundingClientRect().top + window.scrollY, onRefreshInit: measure, onUpdate: s => apply(s.progress), onRefresh: s => apply(s.progress) })
         apply(st.progress)
         // Focusing a newly revealed control must expose the real section immediately.
         const focus = () => { if (st.progress < 1) window.scrollTo({top: st.end, behavior: 'instant' as ScrollBehavior}) }
@@ -130,5 +124,5 @@ export function HomeTransitions({ children }: { children: ReactNode }) {
     mq.addEventListener('change', setup)
     return () => { dispose(); mq.removeEventListener('change', setup) }
   }, [])
-  return <div ref={root} className="ht-home" data-home-transitions>{children}</div>
+  return <div ref={root} className="ht-home" data-home-transitions><div className="ht-viewport" aria-hidden />{children}</div>
 }

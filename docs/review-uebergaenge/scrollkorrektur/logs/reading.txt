@@ -1,0 +1,15 @@
+[
+  {
+    "device": "Desktop",
+    "readingDistance": 900,
+    "viewport": 900,
+    "errors": []
+  },
+  {
+    "device": "Mobile",
+    "readingDistance": 844,
+    "viewport": 844,
+    "touchFrames": 56,
+    "errors": []
+  }
+]

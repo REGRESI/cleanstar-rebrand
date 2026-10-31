@@ -180,7 +180,8 @@ async function momentClash(page, i) {
     }
     const r = m.getBoundingClientRect()
     const fs = parseFloat(getComputedStyle(m).fontSize)
-    const pad = fs * 1.6
+    // Keep neighbouring sections out of the glyph-difference images; 0.8em still includes the cap ink overhang.
+    const pad = fs * 0.8
     return { x: Math.max(0, r.left - pad), y: Math.max(0, r.top - pad), w: Math.min(innerWidth, r.right + pad) - Math.max(0, r.left - pad), h: Math.min(innerHeight, r.bottom + pad) - Math.max(0, r.top - pad), fs, text: m.textContent.trim().slice(0, 40) }
   }, i)
   await page.waitForTimeout(200)
@@ -310,12 +311,24 @@ for (const [dev, opts] of devices) {
       const e = await emptiness(png)
       const overlaps = await page.evaluate(textBoxes)
       const blank = dev === 'Desktop' ? await emptyShare(png) : 0
+      // A deliberately held reading scene is not an unfilled section. Its text, two
+      // loaded motifs and full viewport must all be present; blank/overlap checks still run.
+      const readingScene = blank > 0.4 && await page.evaluate(() => {
+        const host = document.querySelector('.ht-reading')
+        const plane = host?.querySelector('.ht-plane')
+        const title = host?.querySelector('.moment[data-mo="done"]')
+        const lead = host?.querySelector('.t-lead')
+        if (!plane || !title || !lead) return false
+        const box = plane.getBoundingClientRect(), h = title.getBoundingClientRect(), p = lead.getBoundingClientRect()
+        return box.top <= 1 && box.bottom >= innerHeight - 1 && h.top > 0 && h.bottom < innerHeight && p.top > h.bottom && p.bottom < innerHeight && [...host.querySelectorAll('.plant img')].filter(img => img.naturalWidth > 0).length === 2
+      })
+      const unfilled = blank > 0.4 && !readingScene
       const name = `${dev}-${path.replace(/\//g, '_') || 'start'}-${String(y).padStart(6, '0')}`
-      if (e.empty || overlaps.length || blank > 0.4) {
+      if (e.empty || overlaps.length || unfilled) {
         failures++
         pageFails++
         await sharp(png).jpeg({ quality: 70 }).toFile(`${OUT}/${name}.jpg`)
-        console.log(`✗ ${dev} ${path} y=${y}: ${e.empty ? `leer (einfarbig ${(e.uniform * 100).toFixed(1)} %, Abweichung ${e.sd.toFixed(1)})` : ''}${blank > 0.4 ? ` leere Fläche ${(blank * 100).toFixed(0)} %` : ''}${overlaps.length ? ' Überschneidung: ' + overlaps.slice(0, 3).join('; ') : ''}`)
+        console.log(`✗ ${dev} ${path} y=${y}: ${e.empty ? `leer (einfarbig ${(e.uniform * 100).toFixed(1)} %, Abweichung ${e.sd.toFixed(1)})` : ''}${unfilled ? ` leere Fläche ${(blank * 100).toFixed(0)} %` : ''}${overlaps.length ? ' Überschneidung: ' + overlaps.slice(0, 3).join('; ') : ''}`)
       }
     }
     // Moment-Überschriften: Schwung gegen übrige Buchstaben, pixelgenau

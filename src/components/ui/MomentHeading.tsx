@@ -50,6 +50,7 @@ export function MomentHeading({
   capStyle,
   play,
   vanish = true,
+  animate = true,
 }: {
   /** Erster Buchstabe wird zur Schreibschrift */
   text: string
@@ -61,6 +62,8 @@ export function MomentHeading({
   play?: boolean
   /** beim Hinausscrollen nach oben verdampfen */
   vanish?: boolean
+  /** Section entrance already supplies the animation; keep the heading readable. */
+  animate?: boolean
 }) {
   const ref = useRef<HTMLElement>(null)
   // \n setzt einen festen Umbruch (im HTML-Text ein Leerzeichen)
@@ -70,7 +73,7 @@ export function MomentHeading({
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    if (prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
+    if (!animate || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
       el.setAttribute('data-mo', 'done')
       return
     }
@@ -120,12 +123,12 @@ export function MomentHeading({
       stop()
       off()
     }
-  }, [play, cap])
+  }, [play, cap, animate])
 
   // Verschwinden nach oben, an die Scrollposition gekoppelt
   useEffect(() => {
     const el = ref.current
-    if (!el || !vanish || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
+    if (!el || !animate || !vanish || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
     // Lesbar, bis die Überschrift das obere Viertel erreicht und mindestens 70 % der Bildschirmhöhe gescrollt wurde
     // (sie erscheint bei 82 %, verschwindet also frühestens ab 12 %); dann nach oben
     const st = ScrollTrigger.create({
@@ -135,7 +138,7 @@ export function MomentHeading({
       onUpdate: (s) => el.style.setProperty('--out', s.progress.toFixed(3)),
     })
     return () => st.kill()
-  }, [vanish])
+  }, [vanish, animate])
 
   let i = 0
   const n = rest.filter((c) => c !== ' ' && c !== '\n').length
@@ -144,7 +147,7 @@ export function MomentHeading({
   const capCss = { '--cap-s': CAP_SCALE, '--cap-y': '0.025em', marginRight: `${((start - adv) / CAP_SCALE).toFixed(3)}em`, ...capStyle } as CSSProperties
   return createElement(
     as,
-    { ref, id, className: cn('moment', className), 'data-mo': 'idle', style: { '--hang': `${start}em` } as CSSProperties, suppressHydrationWarning: true },
+    { ref, id, className: cn('moment', className), 'data-mo': animate ? 'idle' : 'done', style: { '--hang': `${start}em` } as CSSProperties, suppressHydrationWarning: true },
     <span className="sr-only">{text.replace(/\n/g, ' ')}</span>,
     <span aria-hidden className="moment-v">
       {words.map((w, k) => {

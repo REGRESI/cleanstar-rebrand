@@ -56,11 +56,29 @@ Vollständiger Lauf: [GitHub Actions 41194008104](https://github.com/REGRESI/cle
 
 Der geprüfte Produktionsquellstand wird auf `claude/optimistic-hypatia-a2lf28` übernommen. GitHub Pages bleibt auf `gh-pages`. Die Live-Prüfung wartet ausdrücklich auf HTML mit dem neuen Slogan und den Übergangsmarkierungen und prüft danach Desktop und Mobile, Navigation, Bilder, Metadaten und fehlende Dateien.
 
+## Nachbesserung nach der Scroll-Rückmeldung
+
+Die bisherige Abnahme hat echte Touch-Bedienung und die Lesezeit nicht ausreichend erfasst. Die folgenden Änderungen ersetzen die ursprüngliche Umsetzung an den betroffenen Stellen:
+
+- **Kosten → Probleme:** Beide Inhalte bleiben vollständig deckend im normalen Dokumentfluss. Keine Verschiebung oder Transparenz des Rechners, keine übereinanderliegenden Textflächen. Ein 96-px-Farbverlauf verbindet die Flächen. Das Blatt des Papier-Reveals bekommt mindestens eine kleine Bildschirmhöhe, damit kein Stück des späteren Bürofotos vor dem eigentlichen Papierübergang hervorschaut.
+- **Team → Gründer:** Eine zusätzliche volle Bildschirmhöhe Scrollweg liegt zwischen dem vollständig sichtbaren Team-Abschnitt und dem Start des Hauses (900 px bei 1440 × 900, 844 px bei 390 × 844). Der Team-Titel ist sofort lesbar und hat keine zusätzliche Schreib- oder Ausblendanimation.
+- **Mobile Wackeln:** Unsichtbarer Glanz und die vergrößerte Hauskontur konnten die Dokumentbreite über die Handybreite hinaus vergrößern. Reproduziert: 411 px Dokumentbreite bei 390 px Bildschirmbreite; der visuelle Viewport verschob sich beim Wischen um 46 px. `overflow-x: clip` am Übergangscontainer begrenzt die Dekorationen, ohne einen zusätzlichen Scrollcontainer für Sticky zu erzeugen. Der Touch-Regressionstest prüft jetzt 390 px Dokumentbreite, eine unveränderte Textposition beim Wischen und die Breite während des Haus-Zooms.
+- **Animationsaufwand:** Kein `getBoundingClientRect()` zwischen Style-Schreibvorgängen im laufenden Übergang. Bildschirmhöhe aus einem stabilen `100svh`-Messpunkt statt wechselnder Browserleisten-Höhe. Geometrie wird nur beim Einrichten/Refresh gemessen. Die Lichtkante bleibt direkt an ihrer Maske.
+- **Touch-Budget:** Native Touch-Bewegung (`syncTouch: false`) mit den bisherigen Navigations- und Zurück-Funktionen, Pflanzen mit Bild/CSS-Bewegung statt zwei dauernden WebGL-Flächen, keine großflächigen Kartenfilter, kleinere WebGL-Auflösung. Der Hero behält seine Erzählung; seine Partikel bekommen eine niedrigere mobile Auflösung und wechseln bei Überlastung früher auf den vorhandenen CSS-Effekt.
+
+Neue Regression: `npm run test:home-reading`. Aufnahmen und Messwerte: `docs/review-uebergaenge/scrollkorrektur/`; die zusätzliche Bildfolge liegt in `durchgang-scrollfix-1/`.
+
+Der Kacheltest unterscheidet eine absichtlich gehaltene, vollständig lesbare Szene mit beiden geladenen Pflanzenmotiven von fehlendem Inhalt; Leerbild- und Überschneidungsprüfung bleiben aktiv. Die Glyphenprüfung schneidet enger um die Überschrift, damit bewegte Nachbarabschnitte nicht als angeblich kollidierende Buchstabentinte zählen.
+
+Abnahme der Nachbesserung: Build, Typecheck und Lint bestanden; **643 Scrollaufnahmen** (329 Desktop, 314 Mobile) ohne Leerbilder oder erkannte Textüberschneidungen; **152 Navigationstests bestanden**. Lesezeit und native Touch-Geste bestanden. Grenzprüfung mit Reduced Motion und No-JS bestanden, ebenso die neue Bildfolge; **CLS 0 auf Desktop und Mobile**. Lighthouse Mobile am lokalen Gzip-Produktionsbuild: **95/100**. Die genauen Messwerte und Protokolle stehen in `scrollkorrektur/abnahme.json` und `scrollkorrektur/logs/`.
+
+Die 60-fps-Geräteabnahme bleibt eine Geräteprüfung; der neue Touch-Test ersetzt sie nicht. Er erfasst konkrete Wischgesten, Rückwärtssprünge, seitlichen Überlauf, Lesezeit und die Position des sichtbaren Textes.
+
 ## Entscheidungen
 
 - Echte, einmal gerenderte Abschnitte statt Textkopien, Screenshots oder zusätzlicher Fokusziele.
 - Ein tatsächliches, vorab reserviertes Spacer-Element hält die alte Fläche bis zur vollständigen Übernahme fest. Padding allein reicht dafür bei CSS Sticky nicht.
-- Keine zusätzlichen Scrollstrecken für Karten, Lichtkanten oder Farbwechsel. Der normale Eintritt in den Bildschirm ist ihr Übergangsweg.
+- Eine zusätzliche Lesephase vor dem Logo-Haus; keine zusätzlichen Scrollstrecken für Karten, Lichtkanten oder Farbwechsel. Der normale Eintritt in den Bildschirm ist ihr Übergangsweg.
 - Bildfenster mit dem bereits vorhandenen Foto des Mappentischs; keine doppelten Fotos.
 - Die Hauskontur stammt aus dem Logo und dem vorhandenen Preloader. Die scrollgesteuerte Hausmaske kommt genau einmal vor.
 - Bei Reduced Motion normale, lesbare Abschnitte ohne Masken oder Überlagerung; auch ohne JavaScript bleibt das vollständige HTML lesbar.

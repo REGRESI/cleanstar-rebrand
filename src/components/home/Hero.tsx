@@ -288,7 +288,7 @@ export function Hero() {
         const w = Math.max(bw, bh * RATIO)
         const h = w / RATIO
         const rect = { x: b.offsetLeft + (bw - w) / 2, y: b.offsetTop + (bh - h) / 2, w, h }
-        d.resize(W, H, rect, { x: b.offsetLeft, y: b.offsetTop, w: bw, h: bh }, Math.min(window.devicePixelRatio || 1, m ? 2 : 1.75))
+        d.resize(W, H, rect, { x: b.offsetLeft, y: b.offsetTop, w: bw, h: bh }, Math.min(window.devicePixelRatio || 1, m ? 1.25 : 1.75))
         draw()
       }
       const active = () => (e > 0.001 && e < 0.999) || (e > 1.001 && e < 1.999)
@@ -298,9 +298,9 @@ export function Hero() {
         if (active()) {
           if (prev && times.length < 45) {
             times.push(now - prev)
-            if (times.length === 45) {
-              const med = [...times].sort((a, b) => a - b)[22]
-              if (med > 34) {
+            if (times.length === 8 || times.length === 45) {
+              const med = [...times].sort((a, b) => a - b)[Math.floor(times.length / 2)]
+              if (med > (m ? 24 : 34)) {
                 fail()
                 return
               }

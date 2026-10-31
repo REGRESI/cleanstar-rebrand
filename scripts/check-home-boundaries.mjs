@@ -28,6 +28,7 @@ for(const mobile of [false,true]) for(const reduced of [false,true]) {
  const footer=await p.locator('footer[data-home-section="footer"]').getAttribute('data-transition')
  if(footer!=='image-to-stripe') failures.push('footer missing')
  metrics.push({mobile,reduced,errors:errs,cls:await p.evaluate(()=>window.shifts.reduce((a,e)=>a+e.value,0)),shifts:await p.evaluate(()=>window.shifts)})
+ if(metrics.at(-1).cls > 0)failures.push(`CLS ${mobile ? 'Mobile' : 'Desktop'}: ${metrics.at(-1).cls}`)
  failures.push(...errs)
  await p.close()
 }

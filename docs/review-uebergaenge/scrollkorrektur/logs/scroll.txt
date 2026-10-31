@@ -1,0 +1,5 @@
+✓ Desktop: alle 13 Startseiten-Abschnitte mit registriertem Übergang (einschließlich Footer)
+✓ Desktop /: 329 Positionen, 0 Fehler
+✓ Mobile: alle 13 Startseiten-Abschnitte mit registriertem Übergang (einschließlich Footer)
+✓ Mobile /: 314 Positionen, 0 Fehler
+✓ Keine leeren Bildschirme, keine Überschneidungen (643 Aufnahmen)

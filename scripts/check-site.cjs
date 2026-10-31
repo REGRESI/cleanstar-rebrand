@@ -15,7 +15,7 @@ fs.mkdirSync('site-check', { recursive: true })
   let current = false
   for (let attempt = 0; attempt < 24; attempt++) {
     const html = await (await fetch(B + '/?qa=home-transitions-' + Date.now(), { cache: 'no-store' })).text()
-    current = html.includes('data-home-section') && html.includes('Ohne Wenn und Aber.')
+    current = html.includes('ht-reading') && html.includes('Ohne Wenn und Aber.')
     if (current) break
     await new Promise((resolve) => setTimeout(resolve, 5000))
   }
@@ -44,6 +44,7 @@ fs.mkdirSync('site-check', { recursive: true })
     const og = await p.locator('meta[property="og:image"]').getAttribute('content')
     ok(og.startsWith('https://www.cleanstar-dienstleistungen.de/'), `${label}: Open Graph ${og}`)
     ok((await p.locator('[data-transition]').count()) >= 13, `${label}: alle Startseitengrenzen im Live-HTML registriert`)
+    ok((await p.locator('[data-home-section=team].ht-reading').count()) === 1, `${label}: Team-Lesephase im neuen Live-Stand reserviert`)
     const headline = (await p.getByRole('heading', { level: 1 }).first().innerText()).replace(/\s+/g, ' ')
     ok(headline.includes('Ohne Wenn und Aber.'), `${label}: neuer Slogan im Hero`)
     const hero = await p.evaluate(() => [...document.images].filter((i) => i.currentSrc.includes('/hero/')).map((i) => i.naturalWidth)[0])
