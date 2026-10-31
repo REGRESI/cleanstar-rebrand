@@ -48,7 +48,7 @@ async function desktop(browser) {
   // freie Stelle am unteren Rand (Bedienelemente wie das Inhaltsverzeichnis blockieren das Blättern absichtlich)
   const freeY = (x, b) =>
     p.evaluate(
-      ([xx, top, h, block]) => [0.95, 0.97, 0.985, 0.9, 0.08].map((f) => top + h * f).find((yy) => !document.elementFromPoint(xx, yy)?.closest(block)) ?? top + h * 0.985,
+      ([xx, top, h, block]) => [0.08, 0.12, 0.9, 0.95, 0.97, 0.985].map((f) => top + h * f).find((yy) => !document.elementFromPoint(xx, yy)?.closest(block)) ?? top + h * 0.985,
       [x, b.y, b.height, BLOCK],
     )
   // (a) Wischen: an der Unterkante der Seite (Fußzeile, keine Bedienelemente)

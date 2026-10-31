@@ -8,6 +8,9 @@ permissions:
 concurrency:
   group: home-transition-qa
   cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
 jobs:
   qa:
     runs-on: ubuntu-latest
@@ -116,5 +119,6 @@ jobs:
           QA_DEPLOY: ${{ steps.deploy.outcome }}
           QA_REVIEW1: ${{ steps.review1.outcome }}
           QA_REVIEW2: ${{ steps.review2.outcome }}
+          QA_FRAMES: ${{ steps.frames.outcome }}
           QA_LIGHTHOUSE: ${{ steps.lighthouse.outcome }}
         run: node -e 'for(const [k,v] of Object.entries(process.env).filter(([k])=>k.startsWith("QA_"))){console.log(k,v);if(v!=="success")process.exitCode=1}'
