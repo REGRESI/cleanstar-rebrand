@@ -1,26 +1,26 @@
 {
   "source": "Production build served with gzip; Lighthouse default Mobile simulation",
-  "score": 96,
+  "score": 95,
   "metrics": {
     "first-contentful-paint": {
-      "value": 2251.416,
+      "value": 2252.408,
       "display": "2.3 s"
     },
     "largest-contentful-paint": {
-      "value": 2251.416,
+      "value": 2252.408,
       "display": "2.3 s"
     },
     "total-blocking-time": {
-      "value": 38.5,
-      "display": "40 ms"
+      "value": 120.5,
+      "display": "120 ms"
     },
     "cumulative-layout-shift": {
       "value": 0,
       "display": "0"
     },
     "speed-index": {
-      "value": 2775.1988956431424,
-      "display": "2.8 s"
+      "value": 2877.9847932264574,
+      "display": "2.9 s"
     }
   }
 }
