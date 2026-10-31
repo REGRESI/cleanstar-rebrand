@@ -1,0 +1,16 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-WO8NIgYag4gMF0XUTSSf64uS0l5QI9ueNpQT7UC2P8c=' 'sha256-KtyOxSBHZqusS9FhBkOG3FghXkVxoWBytfAW7hYZkZs=' 'sha256-Ht9bxhBcSXmLHpSBG1JTXDEY1EFiuwVhE43/xghRMr0=' 'sha256-h79QUnM36Ex51DznlGmOvDqR8/xdlvEVMhBUntuwCZA=' 'sha256-7RyLYGwtqBYSVI7DvAumO+L5z3h8O6Ugx4u+uP/6+FI=' 'sha256-TlGESNXwYMIABq4CP1NNyGybLl6WR9Y1eugORkqX3MY=' 'sha256-3T3SNxfkVCsSXLoqWCnMnaafmqifqcz/19S077omPB0=' 'sha256-TNoRms4YZC22AR+kSgn2fcGG8rD4t2VG9IvxkUauvyE=' 'sha256-7mu4H06fwDCjmnxxr/xNHyuQC6pLTHr4M2E4jXw5WZs=' 'sha256-QAlSewaQLi/NPCznjAZSyvQ72heD0VdxmNDDkZeCxgc=' 'sha256-p7GE78bbMHDrE4IWzpiMSttAsTpUu7wwi5/wvnH54Os=' 'sha256-ot4uWMULOgQERJVeW+1RS4LiQazeh9VYa+IzbwCX43U=' 'sha256-D9S5KXsSSajKKVF3Jf+B22EHGKgFWMmaLff5rY6FNZc=' 'sha256-fk0hq8vVCEr/mxFfq2UBOsX/0g+NyYZ3M0/b0lAh0gs=' 'sha256-IuetB3Ay61Ha6uNWce1HGi04d/9MzcEuBz9jR3rjYgs=' 'sha256-w4pUXS9jb2sAuVmk7s+ATwD4PheVuMnEjHN+zkcgphY=' 'sha256-jEHa150ndUAFOSrdrJT4W1ZQ/mTlfK8xIwkpXJE69vQ=' 'sha256-mTF/Kz3egHNv7FPb/QG4UH/qKI+7Xhk9ewjUhtqZZ+Q=' 'sha256-Dg/gjlPqSTWzjJugJdXkv3DqTtnEdcJgA+xG1tOtA2Q=' 'sha256-eveZ++fjTz0cXqgAMZSG2jI9BjEs8Vo5bNoi8CwI2wg=' 'sha256-1SsdrvH4BAEfrOpm4gE5BHGr6fcyNtChlufSL12talU='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob: https://api.web3forms.com https://formspree.io; worker-src 'self' blob:; media-src 'self'; frame-src https://cal.com https://app.cal.com; frame-ancestors 'none'; form-action 'self' https://api.web3forms.com https://formspree.io; base-uri 'self'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/*
+  Cache-Control: public, max-age=2592000
+
+/map/*
+  Cache-Control: public, max-age=2592000
