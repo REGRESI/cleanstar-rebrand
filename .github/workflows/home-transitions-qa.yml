@@ -1,0 +1,120 @@
+name: QA Startseiten-Uebergaenge
+on:
+  push:
+    branches: [codex/startseiten-uebergaenge-checkpoint]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: home-transition-qa
+  cancel-in-progress: true
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      B: http://127.0.0.1:4177
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck und Lint
+        run: npm run typecheck && npm run lint
+      - name: Produktionsbuild
+        run: npm run build
+      - name: Browser-Testwerkzeuge getrennt installieren
+        run: |
+          npm install --prefix /tmp/cleanstar-qa-tools playwright@1.56.1 lighthouse
+          ln -s /tmp/cleanstar-qa-tools/node_modules/playwright node_modules/playwright
+          ln -s /tmp/cleanstar-qa-tools/node_modules/lighthouse node_modules/lighthouse
+          /tmp/cleanstar-qa-tools/node_modules/.bin/playwright install --with-deps chromium webkit
+          mkdir -p docs/review-uebergaenge/logs
+          node scripts/qa-home-server.mjs > /tmp/cleanstar-qa-server.log 2>&1 &
+      - name: Vollstaendiger Scroll-Test in 80px-Schritten
+        id: scroll
+        continue-on-error: true
+        run: ONLY=/ node scripts/test-transitions.mjs | tee docs/review-uebergaenge/logs/scroll.txt
+      - name: Grenzen, Reduced Motion und No-JS
+        id: boundaries
+        continue-on-error: true
+        run: node scripts/check-home-boundaries.mjs | tee docs/review-uebergaenge/logs/boundaries.txt
+      - name: Navigation
+        id: navigation
+        continue-on-error: true
+        run: ONLY=/ WORKERS=2 node scripts/test-navigation.mjs | tee docs/review-uebergaenge/logs/navigation.txt
+      - name: Bildregeln
+        id: images
+        continue-on-error: true
+        run: node scripts/test-images.mjs | tee docs/review-uebergaenge/logs/images.txt
+      - name: Leistungsmappe
+        id: mappe
+        continue-on-error: true
+        run: node scripts/test-mappe.mjs | tee docs/review-uebergaenge/logs/mappe.txt
+      - name: Deploy-Verhalten in Chromium und WebKit
+        id: deploy
+        continue-on-error: true
+        run: node scripts/test-deploy.mjs | tee docs/review-uebergaenge/logs/deploy.txt
+      - name: Bildfolgen Durchgang 1
+        id: review1
+        continue-on-error: true
+        run: PASS=1 node scripts/review-home-transitions.mjs | tee docs/review-uebergaenge/logs/review1.txt
+      - name: Bildfolgen Durchgang 2
+        id: review2
+        continue-on-error: true
+        run: PASS=2 node scripts/review-home-transitions.mjs | tee docs/review-uebergaenge/logs/review2.txt
+      - name: Bildzeiten
+        id: frames
+        continue-on-error: true
+        run: node scripts/audit-home-frames.mjs | tee docs/review-uebergaenge/logs/frames.txt
+      - name: Lighthouse Mobile
+        id: lighthouse
+        continue-on-error: true
+        run: node scripts/audit-home-mobile.mjs | tee docs/review-uebergaenge/logs/lighthouse.txt
+      - name: Nachweise sichern
+        if: always()
+        env:
+          QA_SCROLL: ${{ steps.scroll.outcome }}
+          QA_BOUNDARIES: ${{ steps.boundaries.outcome }}
+          QA_NAVIGATION: ${{ steps.navigation.outcome }}
+          QA_IMAGES: ${{ steps.images.outcome }}
+          QA_MAPPE: ${{ steps.mappe.outcome }}
+          QA_DEPLOY: ${{ steps.deploy.outcome }}
+          QA_REVIEW1: ${{ steps.review1.outcome }}
+          QA_REVIEW2: ${{ steps.review2.outcome }}
+          QA_FRAMES: ${{ steps.frames.outcome }}
+          QA_LIGHTHOUSE: ${{ steps.lighthouse.outcome }}
+        run: |
+          mkdir -p docs/review-uebergaenge
+          node -e 'const fs=require("fs");fs.writeFileSync("docs/review-uebergaenge/ci-status.json",JSON.stringify({run:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,status:Object.fromEntries(Object.entries(process.env).filter(([k])=>k.startsWith("QA_")))},null,2))'
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/review-uebergaenge
+          if ! git diff --cached --quiet; then
+            git commit -m "QA: Bildfolgen, Testprotokolle und Messwerte der Startseite"
+            git push origin HEAD:codex/startseiten-uebergaenge-checkpoint
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: home-transition-qa
+          include-hidden-files: true
+          path: |
+            docs/review-uebergaenge/
+            docs/review-reparatur/fehler/
+            .lighthouse/
+      - name: Abnahme
+        if: always()
+        env:
+          QA_SCROLL: ${{ steps.scroll.outcome }}
+          QA_BOUNDARIES: ${{ steps.boundaries.outcome }}
+          QA_NAVIGATION: ${{ steps.navigation.outcome }}
+          QA_IMAGES: ${{ steps.images.outcome }}
+          QA_MAPPE: ${{ steps.mappe.outcome }}
+          QA_DEPLOY: ${{ steps.deploy.outcome }}
+          QA_REVIEW1: ${{ steps.review1.outcome }}
+          QA_REVIEW2: ${{ steps.review2.outcome }}
+          QA_LIGHTHOUSE: ${{ steps.lighthouse.outcome }}
+        run: node -e 'for(const [k,v] of Object.entries(process.env).filter(([k])=>k.startsWith("QA_"))){console.log(k,v);if(v!=="success")process.exitCode=1}'
