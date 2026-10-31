@@ -11,6 +11,16 @@ const ok = (c, m) => {
 }
 fs.mkdirSync('site-check', { recursive: true })
 ;(async () => {
+  // HTTP 200 allein kann noch die vorherige Pages-Version sein.
+  let current = false
+  for (let attempt = 0; attempt < 24; attempt++) {
+    const html = await (await fetch(B + '/?qa=home-transitions-' + Date.now(), { cache: 'no-store' })).text()
+    current = html.includes('data-home-section') && html.includes('Ohne Wenn und Aber.')
+    if (current) break
+    await new Promise((resolve) => setTimeout(resolve, 5000))
+  }
+  ok(current, 'Live-HTML enthält die neuen Übergänge und den neuen Slogan')
+  if (!current) throw new Error('Neuer Pages-Stand nach 120 Sekunden noch nicht sichtbar')
   const b = await chromium.launch()
   for (const [label, opts] of [
     ['Desktop', { viewport: { width: 1440, height: 900 } }],
@@ -33,6 +43,9 @@ fs.mkdirSync('site-check', { recursive: true })
     ok(canonical === 'https://www.cleanstar-dienstleistungen.de/', `${label}: Canonical ${canonical}`)
     const og = await p.locator('meta[property="og:image"]').getAttribute('content')
     ok(og.startsWith('https://www.cleanstar-dienstleistungen.de/'), `${label}: Open Graph ${og}`)
+    ok((await p.locator('[data-transition]').count()) >= 13, `${label}: alle Startseitengrenzen im Live-HTML registriert`)
+    const headline = (await p.getByRole('heading', { level: 1 }).first().innerText()).replace(/\s+/g, ' ')
+    ok(headline.includes('Ohne Wenn und Aber.'), `${label}: neuer Slogan im Hero`)
     const hero = await p.evaluate(() => [...document.images].filter((i) => i.currentSrc.includes('/hero/')).map((i) => i.naturalWidth)[0])
     ok(hero > 0, `${label}: Hero-Bild geladen (${hero}px)`)
     if (label === 'Mobile') await p.screenshot({ path: 'site-check/start-mobile.png' })
