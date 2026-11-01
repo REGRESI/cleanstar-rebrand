@@ -75,8 +75,6 @@ export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, l
         const t = target.current
         const key = hero.keys.find((k) => Math.abs(k.progress - t) <= KEY_RANGE)
         if (!key) return
-        target.current = key.progress // Canvas läuft exakt auf das passende Frame
-        kick.current()
         setActiveKey(key.name)
       }, IDLE_MS)
     }
@@ -106,23 +104,20 @@ export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, l
     }
   }, [enabled, section, pin, spacer, lengthVh, play])
 
-  // Zeichnen: weich zum Ziel-Frame interpolieren, 1:1 ohne Skalierung. Die Schleife läuft nur, solange sich
-  // das Bild noch ändert, und hält danach an; außerhalb des Bildschirms wird gar nicht gezeichnet.
+  // Bild, Text und Effekte folgen derselben Scrollposition, ohne eine zweite Glättung.
+  // Pro Browserframe höchstens einmal zeichnen; neue Dekodierungen stoßen das Zeichnen erneut an.
   useEffect(() => {
     if (!enabled || !load || pinOnly) return
     const cv = canvas.current
     const ctx = cv?.getContext('2d', { alpha: false })
     if (!cv || !ctx) return
     let raf = 0
-    let current = target.current
     let lastImg: unknown = null
     let first = true
     let visible = true
     const loop = () => {
       raf = 0
-      current += (target.current - current) * 0.22
-      if (Math.abs(target.current - current) < 0.0005) current = target.current
-      const { img } = frame(Math.round(current * (urls.length - 1)))
+      const { img } = frame(Math.round(target.current * (urls.length - 1)))
       if (img && img !== lastImg) {
         const w = 'naturalWidth' in img ? img.naturalWidth : img.width
         const h = 'naturalHeight' in img ? img.naturalHeight : img.height
@@ -139,8 +134,7 @@ export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, l
           setDrawn(true)
         }
       }
-      // weiter, solange wir noch nicht am Ziel sind. Fehlt das exakte Frame noch, stößt es die Schleife an, sobald es dekodiert ist.
-      if (current !== target.current) raf = requestAnimationFrame(loop)
+      // Fehlt das exakte Frame, weckt dessen Dekodierung die Schleife wieder auf.
     }
     const start = () => {
       if (!raf && visible) raf = requestAnimationFrame(loop)
