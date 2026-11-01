@@ -95,10 +95,13 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Auf GitHub Pages veröffentlichen
         id: publication
         uses: actions/deploy-pages@v5
+        with:
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
 
 
   check:
