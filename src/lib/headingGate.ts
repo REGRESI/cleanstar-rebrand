@@ -21,6 +21,7 @@ export function headingGate(el: HTMLElement, start: () => void) {
     const overflow = root.style.overflow
     // Keep the entire title inside the reading area when a fast swipe overshoots it.
     const delta = r.top < 100 ? r.top - targetTop : 0
+    el.setAttribute('data-heading-active','')
     if (delta) {
       const y = scrollY + delta
       if (lenis) lenis.scrollTo(y, { immediate: true, force: true })
@@ -46,6 +47,7 @@ export function headingGate(el: HTMLElement, start: () => void) {
       window.removeEventListener('pointerdown', interact, true)
       root.style.overflow = overflow
       root.removeAttribute('data-heading-hold')
+      el.removeAttribute('data-heading-active')
       if (!wasStopped) lenis?.start()
       release = null
       releaseActive = null

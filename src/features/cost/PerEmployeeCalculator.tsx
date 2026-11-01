@@ -24,9 +24,9 @@ export function Range({
   const id = useId()
   return (
     <div>
-      <label htmlFor={id} className="flex flex-wrap items-baseline justify-between gap-x-3 text-ink">
+      <label htmlFor={id} className="range-label grid grid-cols-[minmax(0,1fr)_max-content] items-end gap-x-4 text-ink">
         <span className="field-label min-w-0">{label}</span>
-        <span className="text-[1.5rem] font-medium tracking-[-0.02em] whitespace-nowrap tabular-nums">
+        <span className="range-value min-w-[8ch] text-right text-[1.5rem] font-medium tracking-[-0.02em] whitespace-nowrap tabular-nums">
           {formatNumber(value)} {unit}
         </span>
       </label>

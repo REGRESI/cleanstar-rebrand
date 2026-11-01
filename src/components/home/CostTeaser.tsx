@@ -1,3 +1,4 @@
+import { SectionSeam } from '@/components/ui/SectionSeam'
 import { Fragment, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { Range } from '@/features/cost/PerEmployeeCalculator'
@@ -65,7 +66,8 @@ export function CostTeaser() {
   ]
 
   return (
-    <section className="section bg-paper" aria-labelledby="cost-title">
+    <section className="chapter-cost section bg-paper" aria-labelledby="cost-title">
+      <SectionSeam />
       <div className="container-site">
         <p className="t-label">Kosten</p>
         <AnimatedText as="h2" id="cost-title" text="Was kostet Sie Ihre Reinigung wirklich?" className="t-h2 mt-5 max-w-[18ch]" />
@@ -85,20 +87,20 @@ export function CostTeaser() {
             <div className="tab-card is-night on-dark p-6 text-paper sm:p-10" aria-live="polite">
               <span className="tab-label t-label">Ihre Spanne</span>
               <p className="t-label">Im Monat, netto</p>
-              <p className="mt-4 text-[2.5rem] leading-[1] font-medium tracking-[-0.04em] sm:text-[3.5rem] lg:text-[4rem]">
+              <p className="cost-total mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-2 text-[2.5rem] leading-[1] font-medium tracking-[-0.04em] sm:text-[3.5rem] lg:text-[4rem]">
                 <RollNumber text={formatEuro(r.netMin)} /> <span className="text-muted-dark">bis</span> <RollNumber text={formatEuro(r.netMax)} />
               </p>
               <dl className="mt-10 grid grid-cols-1 border-t border-line-dark sm:grid-cols-2">
                 <div className="border-b border-line-dark py-4 sm:border-r sm:pr-6">
                   <dt className="t-meta">Im Monat, brutto</dt>
-                  <dd className="mt-1 text-[1.25rem] font-medium">
-                    {formatEuro(r.grossMin)} bis {formatEuro(r.grossMax)}
+                  <dd className="cost-detail mt-1 text-[1.25rem] font-medium">
+                    <span>{formatEuro(r.grossMin)}</span> bis <span>{formatEuro(r.grossMax)}</span>
                   </dd>
                 </div>
                 <div className="border-b border-line-dark py-4 sm:pl-6">
                   <dt className="t-meta">Pro Mitarbeiter und Arbeitstag, netto</dt>
-                  <dd className="mt-1 text-[1.25rem] font-medium">
-                    {formatEuro2(day.min)} bis {formatEuro2(day.max)}
+                  <dd className="cost-detail mt-1 text-[1.25rem] font-medium">
+                    <span>{formatEuro2(day.min)}</span> bis <span>{formatEuro2(day.max)}</span>
                   </dd>
                 </div>
               </dl>

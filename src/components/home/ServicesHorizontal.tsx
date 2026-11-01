@@ -124,10 +124,11 @@ export function ServicesHorizontal() {
                 <li key={s.slug} data-panel className="svh-panel shrink-0" style={{ '--k': 1 } as CSSProperties}>
                   <Link to={`/leistungen/${s.slug}`} className="svh-link group" onFocus={() => onFocus(i)}>
                     <span className="svh-photo">
+                      <span className="service-photo-index" aria-hidden>{String(i + 1).padStart(2, '0')}<small> / {String(n).padStart(2, '0')}</small></span>
                       <Picture id={s.image} aspect="size-full" sizes="(min-width:1024px) 42vw, 90vw" />
                     </span>
                     <span className="svh-text">
-                      <span className="t-label block tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                      <span className="service-eyebrow t-label block">{s.featured ? 'Unser Schwerpunkt' : 'Wenn Sie mehr brauchen'}</span>
                       <span className="mt-3 block text-[1.75rem] leading-[1.1] font-medium tracking-[-0.025em] sm:text-[2.25rem]">{s.name}</span>
                       <span className="mt-4 block max-w-[34ch] text-[1rem] leading-[1.5] text-ink-2">{s.short}</span>
                       <span className="svh-arrow mt-6 inline-flex items-center gap-3 font-medium">
@@ -154,7 +155,6 @@ export function ServicesHorizontal() {
           )}
         </div>
       </div>
-      <a href="#cost-title" className="svh-cost-bridge container-site block py-10 text-blue">Ein festes Team. Ein klarer Preis. <span className="block mt-3 text-2xl text-ink">Was kostet Ihre Reinigung? ↓</span></a>
     </section>
   )
 }

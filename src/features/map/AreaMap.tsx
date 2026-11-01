@@ -4,6 +4,8 @@ import { hq, places as locations, shortName, type Place as Location } from '@/co
 import { cn } from '@/lib/cn'
 import { proj, OUTLINE, RHINE, toPath, VB } from './schematic'
 import type { MapApi } from './LiveMap'
+import { headingGate } from '@/lib/headingGate'
+import { prefersReducedMotion } from '@/lib/env'
 
 const LiveMap = lazy(() => import('./LiveMap'))
 
@@ -15,6 +17,9 @@ const LiveMap = lazy(() => import('./LiveMap'))
  */
 export function AreaMap({ className, still }: { className?: string; /** Platzhalter als Standbild der Geländekarte statt der schematischen Karte (Startseite) */ still?: boolean }) {
   const navigate = useNavigate()
+  const [query, setQuery] = useState('')
+  const [expanded, setExpanded] = useState(false)
+  useEffect(() => { setExpanded(window.matchMedia('(min-width:1024px)').matches) }, [])
   const frame = useRef<HTMLDivElement>(null)
   const api = useRef<MapApi | null>(null)
   const [load, setLoad] = useState(false)
@@ -39,6 +44,21 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
     }
     io.observe(el)
     return cleanup
+  }, [])
+
+  useEffect(() => {
+    const el = frame.current
+    if (!el || prefersReducedMotion()) return
+    let cancel = () => {}
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      io.disconnect()
+      cancel = headingGate(el, () => {
+        el.animate([{ transform:'scale(.965)', boxShadow:'0 0 0 1px #b9dafa' }, { transform:'scale(1)', boxShadow:'0 0 0 10px transparent' }], { duration:850, easing:'cubic-bezier(.2,.7,.2,1)' })
+      })
+    }, { threshold:.6 })
+    io.observe(el)
+    return () => { io.disconnect(); cancel() }
   }, [])
 
   const open = (p: Location) => {
@@ -119,10 +139,11 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
         <p className="caption">Klicken Sie auf einen Ort. Fahrzeiten sind ungefähre Richtwerte mit dem Auto.</p>
       </div>
 
-      <div className="lg:col-span-4">
-        <p className="t-label mb-4">{locations.length} Orte · Fahrzeit ab Offenburg</p>
+      <details className="map-locations lg:col-span-4" open={expanded} onToggle={e => setExpanded(e.currentTarget.open)}>
+        <summary><span className="map-place-count">{locations.length}</span><span>Orte im Ortenaukreis<small>Orte und Fahrzeiten entdecken</small></span></summary>
+        <label className="map-place-search"><span>Ort suchen</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Zum Beispiel Offenburg" type="search" /></label>
         <ul className="grid grid-cols-2 gap-x-4 border-t border-line min-[380px]:gap-x-6 lg:grid-cols-1 xl:grid-cols-2">
-          {locations.map((l) => {
+          {locations.filter(l => l.name.toLocaleLowerCase('de').includes(query.toLocaleLowerCase('de'))).map((l) => {
             const on = active?.p.slug === l.slug
             const inner = (
               <>
@@ -172,7 +193,8 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
             )
           })}
         </ul>
-      </div>
+        {query && !locations.some(l=>l.name.toLocaleLowerCase('de').includes(query.toLocaleLowerCase('de'))) && <p className="mt-4 text-ink-2">Kein passender Ort gefunden.</p>}
+      </details>
     </div>
   )
 }

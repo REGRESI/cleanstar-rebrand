@@ -67,6 +67,7 @@ export function MomentHeading({
   animate?: boolean
 }) {
   const ref = useRef<HTMLElement>(null)
+  const controls = useRef<{ show: () => void; hide: () => void } | null>(null)
   // \n setzt einen festen Umbruch (im HTML-Text ein Leerzeichen)
   const [cap, ...rest] = Array.from(text)
   const words = rest.join('').replace(/\n/g, ' \n ').split(' ').filter(Boolean)
@@ -105,12 +106,14 @@ export function MomentHeading({
       })
     }
     const show = () => {
+      if (el.hasAttribute('data-heading-active')) return
       cancelGate()
       if (as === 'h2') cancelGate = headingGate(el, animateHeading)
       else animateHeading()
     }
     // rückwärts nur, wenn sie zu sehen war (sonst bliebe der Ruhezustand „idle“)
     const hide = () => {
+      if (el.hasAttribute('data-heading-active')) return
       cancelGate()
       if (el.getAttribute('data-mo') !== 'on') return
       pen?.cancel()
@@ -120,20 +123,23 @@ export function MomentHeading({
     }
     const stop = () => {
       alive = false
+      controls.current = null
       cancelGate()
       pen?.cancel()
     }
-    if (play !== undefined) {
-      if (play) show()
-      else hide()
-      return stop
-    }
+    controls.current = { show, hide }
+    if (play !== undefined) return stop
     // bei jedem Durchqueren: hinein erscheinen, hinaus (in beide Richtungen) rückwärts verschwinden
     const off = replay(el.closest('.area-heading-read, .plant-heading-read') || el, show, hide, { start: 'top 95%', end: 'bottom -5%' })
     return () => {
       stop()
       off()
     }
+    // The external play flag must not tear down a running scroll hold on a transient progress update.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cap, animate, as])
+  useEffect(() => {
+    if (play !== undefined) (play ? controls.current?.show : controls.current?.hide)?.()
   }, [play, cap, animate, as])
 
   // Verschwinden nach oben, an die Scrollposition gekoppelt

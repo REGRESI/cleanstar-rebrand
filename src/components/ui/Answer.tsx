@@ -1,3 +1,4 @@
+import { SectionSeam } from '@/components/ui/SectionSeam'
 import type { ReactNode } from 'react'
 import { company } from '@/content/company'
 import { pricing } from '@/content/pricing'
@@ -71,7 +72,7 @@ export function Answer({
   const list = [...extraFacts, ...(facts ?? baseFacts())]
   const [lead, more] = splitAnswer(children)
   return (
-    <section aria-labelledby="answer-title" className={cn('section-tight bg-paper text-ink', className)}>
+    <section aria-labelledby="answer-title" className={cn('answer-section section-tight bg-paper text-ink', className)}>
       <div className="container-site">
         <p className="t-label">{question ? 'Kurz beantwortet' : 'Auf einen Blick'}</p>
         <h2 id="answer-title" className="mt-3 text-[1rem] font-medium text-ink-2">
@@ -80,10 +81,10 @@ export function Answer({
         <p data-answer className="t-h3 mt-5 max-w-[30ch]">
           {lead}
         </p>
-        <dl className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-          {list.map(([k, v]) => (
+        <dl className="answer-facts mt-12 grid grid-cols-2 gap-4">
+          {list.map(([k, v], i) => (
             <div key={k} className="answer-tile">
-              <FactIcon label={k} />
+              <div className="answer-fact-top"><FactIcon label={k} /><span>{String(i+1).padStart(2,'0')}</span></div>
               <dt className="mt-4 text-[0.8125rem] text-muted">{k}</dt>
               <dd className="mt-1 text-[1rem] leading-[1.35] font-medium tracking-[-0.01em] text-ink sm:text-[1.125rem]">{v}</dd>
             </div>
@@ -98,6 +99,7 @@ export function Answer({
           </details>
         )}
       </div>
+      <SectionSeam end />
     </section>
   )
 }

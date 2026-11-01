@@ -1,3 +1,4 @@
+import { SectionSeam } from '@/components/ui/SectionSeam'
 import { useEffect, useRef, useState } from 'react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { AnimatedText } from '@/components/ui/AnimatedText'
@@ -81,7 +82,8 @@ export function ProblemSolution({
 }: Props & { tone?: 'night' | 'paper' }) {
   const light = tone === 'paper'
   return (
-    <section className={light ? 'ps-light section bg-paper text-ink' : 'on-dark section bg-night text-paper'} aria-labelledby={id}>
+    <section className={light ? 'ps-light chapter-problems section bg-paper text-ink' : 'on-dark section bg-night text-paper'} aria-labelledby={id}>
+      {light && <SectionSeam />}
       <div className="container-site">
         <SectionHeading layout="split" eyebrow={eyebrow} title={headline} text={lead} id={id} />
         <ol className="mt-16 lg:mt-24">
