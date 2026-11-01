@@ -31,36 +31,22 @@ export function ServicesHorizontal() {
     const el = run.current
     const tr = track.current
     if (!el || !tr) return
-    if (prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
+    if (window.matchMedia('(max-width: 767px)').matches || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
       setFlat(true)
       return
     }
-    const mobile = window.matchMedia('(max-width: 767px)').matches
     const stage = tr.parentElement!
     let stageHeight = stage.clientHeight
     let measuredWidth = window.innerWidth
     let dist = 0
     const measure = () => {
       if (window.innerWidth !== measuredWidth) { stageHeight = stage.clientHeight; measuredWidth = window.innerWidth }
-      dist = mobile ? (n - 1) * stageHeight * .85 : Math.max(0, tr.scrollWidth - window.innerWidth)
+      dist = Math.max(0, tr.scrollWidth - window.innerWidth)
       el.style.height = `${stageHeight + dist}px`
     }
     measure()
     const panels = Array.from(tr.querySelectorAll<HTMLElement>('[data-panel]'))
     const apply = (p: number) => {
-      if (mobile) {
-        const position = p * (n - 1)
-        panels.forEach((pn, i) => {
-          const delta = i - position
-          pn.style.transform = `translate3d(${Math.max(-5, delta * 105)}%,0,0)`
-          pn.style.opacity = delta < -1 ? '0' : '1'
-          pn.style.pointerEvents = Math.abs(delta) < .5 ? 'auto' : 'none'
-          pn.inert = Math.abs(delta) >= .5
-        })
-        setIdx(Math.round(position))
-        if (bar.current) bar.current.style.transform = `scaleX(${p})`
-        return
-      }
       const x = -p * dist
       tr.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`
       const vw = window.innerWidth
@@ -110,7 +96,7 @@ export function ServicesHorizontal() {
     const pn = tr.querySelectorAll<HTMLElement>('[data-panel]')[i]
     const dist = st.end - st.start
     const total = Math.max(1, tr.scrollWidth - window.innerWidth)
-    const p = window.innerWidth < 768 ? i / Math.max(1, n - 1) : Math.max(0, Math.min(1, (pn.offsetLeft - window.innerWidth * 0.1) / total))
+    const p = Math.max(0, Math.min(1, (pn.offsetLeft - window.innerWidth * 0.1) / total))
     window.scrollTo({ top: st.start + p * dist, behavior: 'instant' as ScrollBehavior })
   }
 
@@ -123,15 +109,16 @@ export function ServicesHorizontal() {
             <div className="svh-title shrink-0" data-title>
               <div ref={title}>
                 <p className="t-label">Leistungen</p>
-                <h2 id="services-title" className="svh-title-text mt-6 text-blue">
+                <h2 id="services-title" aria-label={`${n} Leistungen. Ein Team.`} className="svh-title-text services-editorial mt-6">
                   {/* Anzahl aus den Daten gezählt, nicht fest geschrieben */}
-                  {n} Leistungen.
-                  <br />{' '}
-                  Ein Team.
+                  <span className="services-count">{String(n).padStart(2, '0')}</span>
+                  <span className="services-label">Leistungen.</span>
+                  <span className="services-team">Ein Team.</span>
                 </h2>
                 <p className="mt-6 max-w-[34ch] text-[1.0625rem] text-ink-2">Büroreinigung ist unser Kern. Die übrigen Leistungen kommen dazu, wenn Sie sie brauchen.</p>
               </div>
             </div>
+            <p className="services-swipe t-meta">Seitlich entdecken <span aria-hidden>↔</span></p>
             <ol className={flat ? 'flex flex-col gap-16' : 'flex h-full items-center'} aria-label="Leistungen">
               {list.map((s, i) => (
                 <li key={s.slug} data-panel className="svh-panel shrink-0" style={{ '--k': 1 } as CSSProperties}>

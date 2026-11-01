@@ -11,7 +11,8 @@ export function headingGate(el: HTMLElement, start: () => void) {
     pending = 0
     if (dead || !el.isConnected) return
     const r = el.getBoundingClientRect()
-    if (r.bottom <= 90 || r.top >= innerHeight - 80 || releaseActive) {
+    const targetTop = Math.max(110, innerHeight * .25)
+    if (r.bottom <= 90 || r.top > targetTop + 16 || releaseActive) {
       if (performance.now() - requested < 8000) pending = requestAnimationFrame(enter)
       return
     }
@@ -20,7 +21,7 @@ export function headingGate(el: HTMLElement, start: () => void) {
     const root = document.documentElement
     const overflow = root.style.overflow
     // Keep the entire title inside the reading area when a fast swipe overshoots it.
-    const delta = r.top < 100 ? r.top - 100 : r.bottom > innerHeight - 90 ? r.bottom - innerHeight + 90 : 0
+    const delta = r.top < 100 ? r.top - targetTop : 0
     if (delta) {
       const y = scrollY + delta
       if (lenis) lenis.scrollTo(y, { immediate: true, force: true })

@@ -13,6 +13,7 @@ try{
   await p.goto('http://127.0.0.1:4190',{waitUntil:'networkidle'});await p.waitForTimeout(1800)
   await p.locator('.area-heading-read').evaluate(e=>e.scrollIntoView())
   await p.waitForFunction(()=>document.documentElement.hasAttribute('data-heading-hold'),{timeout:4000})
+  const rect=await p.locator('#area-title').boundingBox();assert(rect.y>=90&&rect.y<=900*.4,'heading holds in upper viewport')
   const y=await p.evaluate(()=>window.scrollY)
   await p.mouse.wheel(0,500);await p.waitForTimeout(200)
   assert(Math.abs(await p.evaluate(()=>window.scrollY)-y)<2,'wheel must stay still during heading animation')

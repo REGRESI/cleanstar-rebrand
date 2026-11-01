@@ -1,4 +1,4 @@
-/* global window, document, getComputedStyle, DOMMatrixReadOnly */
+/* global window, document, getComputedStyle */
 import { chromium } from 'playwright'
 import { spawn } from 'node:child_process'
 import assert from 'node:assert/strict'
@@ -15,16 +15,33 @@ try {
     await page.goto(url,{waitUntil:'networkidle'});await page.waitForTimeout(2000)
     const service=page.locator('[data-services-stage]')
     const count=await service.locator('[data-panel]').count();assert.equal(count,6)
-    if(width<768&&!reduced){
-      const run=await service.locator(':scope > div').evaluate(e=>({top:e.getBoundingClientRect().top+window.scrollY,height:e.offsetHeight,stage:e.firstElementChild.offsetHeight}))
+    if(width<768){
+      const list=service.locator('ol')
+      await list.evaluate(e=>e.scrollIntoView({block:'center'}));await page.waitForTimeout(500)
+      const initial=await list.boundingBox()
       for(const i of [0,1,2,3,4,5,2,0]){
-        await page.evaluate(y=>window.__lenis?window.__lenis.scrollTo(y,{immediate:true,force:true}):window.scrollTo(0,y),run.top+(run.height-run.stage)*i/5)
-        await page.waitForTimeout(180)
+        await list.evaluate((e,i)=>{const card=e.querySelector('[data-panel]');e.scrollLeft=i*(card.offsetWidth+16)},i)
+        await page.waitForTimeout(250)
         const card=service.locator('[data-panel]').nth(i)
-        assert.equal(await card.evaluate(e=>e.inert),false,`card ${i} reachable`)
-        const matrix=await card.evaluate(e=>new DOMMatrixReadOnly(getComputedStyle(e).transform).m42);assert.equal(matrix,0,'mobile cards have no vertical translation');const r=await card.boundingBox();assert(r.x>=0&&r.x+r.width<=width+1&&r.y+r.height<=900,`card ${i} fits: ${JSON.stringify(r)}`);const text=await card.locator('.svh-text').boundingBox();assert(text.y+text.height<850,`card ${i} copy fits above mobile bar`)
+        assert.equal(await card.evaluate(e=>getComputedStyle(e).transform),'none','native cards never transform')
+        assert.equal(await card.evaluate(e=>e.inert),false)
+        const r=await card.boundingBox()
+        assert(Math.abs(r.y-initial.y)<2,'horizontal movement never shifts card height')
+        assert(r.x>=0&&r.x+r.width<=width+1,`native card ${i} fits: ${JSON.stringify(r)}`)
       }
-      await page.screenshot({path:`/tmp/light-thread-${width}.png`})
+      assert(await list.evaluate(e=>e.scrollWidth>e.clientWidth),'cards form a native horizontal rail')
+      const before=await page.evaluate(()=>window.scrollY)
+      const cdp=await page.context().newCDPSession(page)
+      const touchY=Math.max(120,Math.min(750,initial.y+120))
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:width-70,y:touchY}]})
+      for(let k=1;k<=10;k++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:width-70-k*22,y:touchY}]});await page.waitForTimeout(20)}
+      await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]})
+      await page.waitForTimeout(400)
+      assert(await list.evaluate(e=>e.scrollLeft)>50,'native touch swipes the cards')
+
+      await page.mouse.wheel(250,0);await page.waitForTimeout(350)
+      assert(Math.abs(await page.evaluate(()=>window.scrollY)-before)<2,'horizontal input does not move page vertically')
+      await page.screenshot({path:`/tmp/native-services-${width}.png`})
     }
     await page.locator('#area-title').evaluate(e=>e.scrollIntoView({block:'center'}));await page.waitForTimeout(2000)
     const heading=await page.locator('#area-title').evaluate(e=>({out:e.style.getPropertyValue('--out'),visible:getComputedStyle(e.querySelector('.moment-v')).opacity}))
