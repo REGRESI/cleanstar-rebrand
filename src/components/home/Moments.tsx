@@ -107,7 +107,7 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
       </Deko>
       <div className="container-site relative flex min-h-[78svh] flex-col items-center justify-center py-28 text-center">
         {eyebrow && <p className="t-label">{eyebrow}</p>}
-        <MomentHeading id={id} text={title} className="mt-6" animate={false} vanish={false} />
+        <MomentHeading id={id} text={title} className="mt-6" animate vanish={false} />
         <p className="t-lead mt-8 max-w-[40ch] text-ink-2">{text}</p>
       </div>
     </section>

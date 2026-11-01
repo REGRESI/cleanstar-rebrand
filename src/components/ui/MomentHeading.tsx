@@ -102,7 +102,7 @@ export function MomentHeading({
     }
     // rückwärts nur, wenn sie zu sehen war (sonst bliebe der Ruhezustand „idle“)
     const hide = () => {
-      if (el.getAttribute('data-mo') !== 'on') return
+      if (window.matchMedia('(max-width: 767px)').matches || el.getAttribute('data-mo') !== 'on') return
       pen?.cancel()
       pen = null
       el.setAttribute('data-pen', 'done')
@@ -128,6 +128,7 @@ export function MomentHeading({
   // Verschwinden nach oben, an die Scrollposition gekoppelt
   useEffect(() => {
     const el = ref.current
+    if (window.matchMedia('(max-width: 767px)').matches) return
     if (!el || !animate || !vanish || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
     // Lesbar, bis die Überschrift das obere Viertel erreicht und mindestens 70 % der Bildschirmhöhe gescrollt wurde
     // (sie erscheint bei 82 %, verschwindet also frühestens ab 12 %); dann nach oben

@@ -31,7 +31,7 @@ export function ServicesHorizontal() {
     const el = run.current
     const tr = track.current
     if (!el || !tr) return
-    if (prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
+    if (window.matchMedia('(max-width: 767px)').matches || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
       setFlat(true)
       return
     }
@@ -105,7 +105,7 @@ export function ServicesHorizontal() {
             <div className="svh-title shrink-0" data-title>
               <div ref={title}>
                 <p className="t-label">Leistungen</p>
-                <h2 id="services-title" className="svh-title-text mt-6">
+                <h2 id="services-title" className="svh-title-text mt-6 text-blue">
                   {/* Anzahl aus den Daten gezählt, nicht fest geschrieben */}
                   {n} Leistungen.
                   <br />

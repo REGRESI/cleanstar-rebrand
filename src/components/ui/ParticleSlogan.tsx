@@ -370,7 +370,7 @@ export function ParticleSlogan({
           return (
             <span key={i}>
               {i > 0 && words[i - 1] !== '\n' && ' '}
-              <span data-w className={cn('whitespace-nowrap', idx >= count - accentLast && 'text-logo-sky')}>
+              <span data-w className={cn('whitespace-nowrap', (idx >= count - accentLast || /^Wenn$/i.test(w)) && 'text-logo-sky')}>
                 {w}
               </span>
             </span>

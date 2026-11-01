@@ -27,7 +27,7 @@ export function ProcessTimeline({
   eyebrow = home.process.eyebrow,
   steps = processSteps,
   id = 'process-title',
-  variant = 'line',
+  variant = 'rows',
 }: {
   title?: string
   eyebrow?: string

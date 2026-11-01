@@ -3611,3 +3611,22 @@ button:hover > .seal .seal-ring {
 /* A short problem sheet must still cover the first viewport of its overlapping paper reveal. */
 .ht-home [data-home-section='problems-morning'] .pr { isolation:isolate; }
 .ht-home [data-home-section='problems-morning'] .pr-sheet { min-height:100svh; }
+
+/* Touch scrolling: keep section content in document flow, without counter-moving sticky surfaces. */
+@media (max-width:767px) {
+  .js-motion .ht-hold > .ht-plane { position:relative; top:auto; }
+  .js-motion .ht-hold > .ht-tail { display:none; }
+  .js-motion .ht-incoming { margin-top:0; }
+  .js-motion .ht-incoming > .ht-plane { min-height:0; }
+  .js-motion .ht-block[data-transition='card-stack'] > .ht-plane { border-radius:24px 24px 0 0; overflow:clip; }
+  .js-motion .ht-block .ht-glint,
+  .js-motion .ht-block .ht-house-mark { display:none; }
+  .js-motion .moment .moment-v { --out:0; }
+  .js-motion .moment[data-mo='on'] .mo-c,
+  .js-motion .moment[data-mo='on'] .moment-cap,
+  .js-motion .at-h[data-at='in'] .at-c { animation-duration:.35s; animation-delay:0s; }
+}
+@media (max-width:767px) {
+  .js-motion .at-h[data-at='in'] .at-c::before,
+  .js-motion .at-h[data-at='in'] .at-w { animation-duration:.35s; animation-delay:0s; }
+}

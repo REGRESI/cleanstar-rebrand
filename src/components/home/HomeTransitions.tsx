@@ -34,7 +34,7 @@ export function HomeTransitions({ children }: { children: ReactNode }) {
       const stops: (() => void)[] = []
       blocks.forEach((block, i) => {
         const type = block.dataset.transition as HomeTransition
-        if (!animated.has(type)) return
+        if (!animated.has(type) || window.matchMedia('(max-width: 767px)').matches) return
         const plane = block.firstElementChild as HTMLElement
         const previous = blocks[i - 1]
         const old = previous?.firstElementChild as HTMLElement | undefined
