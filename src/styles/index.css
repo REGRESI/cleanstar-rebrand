@@ -3661,3 +3661,7 @@ button:hover > .seal .seal-ring {
  .js-motion .plant-heading-copy { position:sticky; top:24svh; padding-bottom:5svh; }
  .js-motion .arrive-run { height:300svh; }
 }
+html { scrollbar-gutter:stable; }
+@media (hover:none) {
+ .js-motion [data-services-stage] .svh-photo img { transition:none; transform:none!important; }
+}

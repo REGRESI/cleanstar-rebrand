@@ -4,6 +4,7 @@ import { replay } from '@/lib/replay'
 import { prefersReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
 import { writeCap } from './pen'
+import { headingGate } from '@/lib/headingGate'
 
 // Füller-Pfade erst laden, wenn eine Moment-Überschrift auf der Seite ist
 let penData: Promise<Record<string, number[][]>> | null = null
@@ -83,7 +84,8 @@ export function MomentHeading({
     const capEl = el.querySelector<HTMLElement>('.moment-cap')
     const color = capEl ? getComputedStyle(capEl).color : '#12306e'
     const pens = loadPen()
-    const show = () => {
+    let cancelGate = () => {}
+    const animateHeading = () => {
       pen?.cancel()
       pen = null
       el.removeAttribute('data-pen')
@@ -102,8 +104,14 @@ export function MomentHeading({
         el.style.setProperty('--pen-d', `${(r.duration * 0.5).toFixed(2)}s`)
       })
     }
+    const show = () => {
+      cancelGate()
+      if (as === 'h2') cancelGate = headingGate(el, animateHeading)
+      else animateHeading()
+    }
     // rückwärts nur, wenn sie zu sehen war (sonst bliebe der Ruhezustand „idle“)
     const hide = () => {
+      cancelGate()
       if (el.getAttribute('data-mo') !== 'on') return
       pen?.cancel()
       pen = null
@@ -112,6 +120,7 @@ export function MomentHeading({
     }
     const stop = () => {
       alive = false
+      cancelGate()
       pen?.cancel()
     }
     if (play !== undefined) {
@@ -125,7 +134,7 @@ export function MomentHeading({
       stop()
       off()
     }
-  }, [play, cap, animate])
+  }, [play, cap, animate, as])
 
   // Verschwinden nach oben, an die Scrollposition gekoppelt
   useEffect(() => {
