@@ -3671,3 +3671,7 @@ html { scrollbar-gutter:stable; }
  [data-services-stage] .svh-text > .mt-3 { font-size:1.65rem; }
  [data-services-stage] .svh-arrow { margin-top:16px; }
 }
+/* The morning office is a brief reveal, not another full reading stop. */
+@media(min-width:768px) and (prefers-reduced-motion:no-preference) {
+ .js-motion .pr-run[data-home-internal='morning'] { height:180svh; }
+}
