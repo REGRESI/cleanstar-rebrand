@@ -21,7 +21,7 @@ export function AreaTeaser({ moment }: { moment?: string }) {
         {moment ? (
           <div className="relative z-[6] text-center">
             <p className="t-label">{home.area.eyebrow}</p>
-            <MomentHeading id="area-title" text={moment} className="mx-auto mt-6 w-fit" />
+            <MomentHeading id="area-title" text={moment} vanish={false} className="mx-auto mt-6 w-fit" />
           </div>
         ) : (
           <SectionHeading layout="rail" eyebrow={home.area.eyebrow} title={home.area.headline} id="area-title" />

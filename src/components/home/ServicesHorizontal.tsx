@@ -31,18 +31,33 @@ export function ServicesHorizontal() {
     const el = run.current
     const tr = track.current
     if (!el || !tr) return
-    if (window.matchMedia('(max-width: 767px)').matches || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
+    if (prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) {
       setFlat(true)
       return
     }
+    const mobile = window.matchMedia('(max-width: 767px)').matches
+    const stage = tr.parentElement!
     let dist = 0
     const measure = () => {
-      dist = Math.max(0, tr.scrollWidth - window.innerWidth)
-      el.style.height = `${window.innerHeight + dist}px`
+      dist = mobile ? (n - 1) * stage.clientHeight * .85 : Math.max(0, tr.scrollWidth - window.innerWidth)
+      el.style.height = `${stage.clientHeight + dist}px`
     }
     measure()
     const panels = Array.from(tr.querySelectorAll<HTMLElement>('[data-panel]'))
     const apply = (p: number) => {
+      if (mobile) {
+        const position = p * (n - 1)
+        panels.forEach((pn, i) => {
+          const delta = i - position
+          pn.style.transform = `translate3d(${Math.max(-5, delta * 105)}%,${Math.max(-1, -delta) * 8}px,0) scale(${1 - Math.min(1, Math.max(0, -delta)) * .04})`
+          pn.style.opacity = delta < -1 ? '0' : '1'
+          pn.style.pointerEvents = Math.abs(delta) < .5 ? 'auto' : 'none'
+          pn.inert = Math.abs(delta) >= .5
+        })
+        setIdx(Math.round(position))
+        if (bar.current) bar.current.style.transform = `scaleX(${p})`
+        return
+      }
       const x = -p * dist
       tr.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`
       const vw = window.innerWidth
@@ -82,7 +97,7 @@ export function ServicesHorizontal() {
       el.style.height = ''
       tr.style.transform = ''
     }
-  }, [])
+  }, [n])
 
   // Tastatur: fokussierte Leistung ins Bild scrollen
   const onFocus = (i: number) => {
@@ -97,7 +112,7 @@ export function ServicesHorizontal() {
   }
 
   return (
-    <section className="bg-surface text-ink [overflow-x:clip]" aria-labelledby="services-title" data-tone="surface">
+    <section className="bg-surface text-ink [overflow-x:clip]" aria-labelledby="services-title" data-tone="surface" data-services-stage>
       <div ref={run} className="relative">
         <div className={flat ? 'py-24' : 'sticky top-0 h-[100svh] overflow-hidden'}>
           <div ref={track} className={flat ? 'container-site flex flex-col gap-16' : 'svh-track flex h-full items-center'}>
@@ -108,7 +123,7 @@ export function ServicesHorizontal() {
                 <h2 id="services-title" className="svh-title-text mt-6 text-blue">
                   {/* Anzahl aus den Daten gezählt, nicht fest geschrieben */}
                   {n} Leistungen.
-                  <br />
+                  <br />{' '}
                   Ein Team.
                 </h2>
                 <p className="mt-6 max-w-[34ch] text-[1.0625rem] text-ink-2">Büroreinigung ist unser Kern. Die übrigen Leistungen kommen dazu, wenn Sie sie brauchen.</p>
@@ -149,6 +164,7 @@ export function ServicesHorizontal() {
           )}
         </div>
       </div>
+      <a href="#cost-title" className="svh-cost-bridge container-site block py-10 text-blue">Ein festes Team. Ein klarer Preis. <span className="block mt-3 text-2xl text-ink">Was kostet Ihre Reinigung? ↓</span></a>
     </section>
   )
 }

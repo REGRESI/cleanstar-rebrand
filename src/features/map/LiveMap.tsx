@@ -474,7 +474,18 @@ export default function LiveMap({
           onArrive(p, xy(p))
         }, duration),
       )
-      timers.push(window.setTimeout(() => finish(), duration + 1000 * ((window as { __csFlightSlow?: number }).__csFlightSlow ?? 1)))
+      // React mounts the arrival label after flight. Wait for both the pen and CSS letters,
+      // then leave a readable hold; never race a fixed one-second navigation timer.
+      const arrivalDeadline = performance.now() + duration + 10000
+      const awaitName = () => {
+        if (!flying) return
+        const name = document.querySelector<HTMLElement>('.map-arrive-name')
+        const ready = name && name.dataset.mo === 'on' && name.dataset.pen !== 'run'
+          && name.getAnimations({ subtree: true }).every(a => a.playState === 'finished')
+        if (ready || performance.now() > arrivalDeadline) timers.push(window.setTimeout(finish, 900))
+        else timers.push(window.setTimeout(awaitName, 100))
+      }
+      timers.push(window.setTimeout(awaitName, duration + 100))
       const skip = (e: Event) => {
         if (e instanceof KeyboardEvent && e.key !== 'Escape') return
         finish()

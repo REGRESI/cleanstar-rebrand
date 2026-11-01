@@ -49,7 +49,7 @@ export function MomentHeading({
   className,
   capStyle,
   play,
-  vanish = true,
+  vanish = false,
   animate = true,
 }: {
   /** Erster Buchstabe wird zur Schreibschrift */
@@ -88,7 +88,10 @@ export function MomentHeading({
       pen = null
       el.removeAttribute('data-pen')
       el.style.removeProperty('--pen-d')
+      const fast = ScrollTrigger.getAll().some(t => Math.abs(t.getVelocity()) > 1200)
+      el.toggleAttribute('data-fast', fast)
       el.setAttribute('data-mo', 'on')
+      if (fast) return
       pens.then((all) => {
         if (!alive || el.getAttribute('data-mo') !== 'on' || !capEl) return
         const strokes = all[cap]
@@ -118,7 +121,7 @@ export function MomentHeading({
       return stop
     }
     // bei jedem Durchqueren: hinein erscheinen, hinaus (in beide Richtungen) rückwärts verschwinden
-    const off = replay(el, show, hide, { start: 'top 92%', end: 'bottom -14%' })
+    const off = replay(el, show, hide, { start: 'top 110%', end: 'bottom -14%' })
     return () => {
       stop()
       off()

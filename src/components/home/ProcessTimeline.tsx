@@ -27,7 +27,7 @@ export function ProcessTimeline({
   eyebrow = home.process.eyebrow,
   steps = processSteps,
   id = 'process-title',
-  variant = 'rows',
+  variant = 'line',
 }: {
   title?: string
   eyebrow?: string
@@ -68,39 +68,24 @@ function geometry(ol: HTMLElement, boxes: HTMLElement[]) {
   const mobile = W < 520
   const rel = (r: DOMRect) => ({ x: r.left - o.left + r.width / 2, top: r.top - o.top, bottom: r.bottom - o.top, y: r.top - o.top + r.height / 2 })
   const c = boxes.map((b) => rel(b.getBoundingClientRect()))
-  // Unterkante des Texts je Schritt
-  const textBottom = boxes.map((b) => {
-    const t = b.parentElement?.lastElementChild as HTMLElement | null
-    return t ? t.getBoundingClientRect().bottom - o.top : b.getBoundingClientRect().bottom - o.top
-  })
-  const x = c[0].x
-  const lead = mobile ? 24 : 40
-  let d = `M ${x} ${c[0].y - lead}`
+  // A restrained spine beside the copy: one smooth S between consecutive nodes.
+  let d = `M ${c[0].x} ${c[0].y}`
   let len = 0
-  let y = c[0].y - lead
-  const at: number[] = []
-  const arc = (r: number) => (Math.PI * r) / 2
-  for (let i = 0; i < c.length; i++) {
-    // bis zur Kästchenmitte
-    len += c[i].y - y
-    y = c[i].y
-    at.push(len)
-    if (i === c.length - 1) {
-      d += ` L ${x} ${y}`
-      break
+  const at = [0]
+  for (let i = 1; i < c.length; i++) {
+    const from = c[i - 1], to = c[i]
+    const bend = mobile ? 9 : 14
+    const dy = to.y - from.y
+    d += ` C ${from.x + bend} ${from.y + dy / 3}, ${to.x - bend} ${to.y - dy / 3}, ${to.x} ${to.y}`
+    let last = { x: from.x, y: from.y }
+    for (let k = 1; k <= 40; k++) {
+      const t = k / 40, u = 1 - t
+      const x = u*u*u*from.x + 3*u*u*t*(from.x+bend) + 3*u*t*t*(to.x-bend) + t*t*t*to.x
+      const y = from.y + dy*t
+      len += Math.hypot(x-last.x, y-last.y)
+      last = { x, y }
     }
-    const gTop = textBottom[i]
-    const gBot = c[i + 1].top
-    const gap = gBot - gTop
-    const R = Math.max(6, Math.min(mobile ? 10 : 16, gap * 0.28))
-    const y1 = gTop + (gap - 2 * R) * 0.25
-    const y2 = y1 + Math.max(2 * R, (gap - 2 * R) * 0.5)
-    const xs = mobile ? x + (i % 2 ? 56 : 92) : x + W * (i % 2 ? 0.5 : 0.82)
-    // senkrecht bis kurz vor die Lücke, Kurve nach rechts, quer, Kurve nach unten, Kurve zurück, quer, Kurve nach unten
-    d += ` L ${x} ${y1 - R} A ${R} ${R} 0 0 0 ${x + R} ${y1} L ${xs - R} ${y1} A ${R} ${R} 0 0 1 ${xs} ${y1 + R}`
-    d += ` L ${xs} ${y2 - R} A ${R} ${R} 0 0 1 ${xs - R} ${y2} L ${x + R} ${y2} A ${R} ${R} 0 0 0 ${x} ${y2 + R}`
-    len += y1 - R - y + arc(R) + (xs - R - (x + R)) + arc(R) + (y2 - R - (y1 + R)) + arc(R) + (xs - R - (x + R)) + arc(R)
-    y = y2 + R
+    at.push(len)
   }
   return { d, total: len, at }
 }
@@ -193,8 +178,8 @@ function Line({ steps }: { steps: Step[] }) {
         <path className="steps-fill" />
         <path className="steps-tail" />
         <g data-dot className="steps-dot">
-          <circle className="steps-halo" r="26" fill="url(#comet-halo)" />
-          <circle r="5" fill="#1a4fe0" />
+          <circle className="steps-halo" r="17" fill="url(#comet-halo)" />
+          <circle r="3.5" fill="#78caff" />
           <circle r="2.2" fill="#fff" />
         </g>
       </svg>
