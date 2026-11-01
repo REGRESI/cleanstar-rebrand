@@ -6,14 +6,13 @@ let releaseActive: (() => void) | null = null
 export function headingGate(el: HTMLElement, start: () => void) {
   let dead = false, pending = 0, timer = 0
   let release: (() => void) | null = null
-  const requested = performance.now()
   const enter = () => {
     pending = 0
     if (dead || !el.isConnected) return
     const r = el.getBoundingClientRect()
     const targetTop = Math.max(110, innerHeight * .25)
     if (r.bottom <= 90 || r.top > targetTop + 16 || releaseActive) {
-      if (performance.now() - requested < 8000) pending = requestAnimationFrame(enter)
+      pending = requestAnimationFrame(enter)
       return
     }
     const lenis = getLenis()
