@@ -97,7 +97,7 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
     }
   }, [])
   return (
-    <section ref={root} className={cn('plant-moment relative overflow-hidden bg-paper', className)} aria-labelledby={id}>
+    <section ref={root} className={cn('plant-moment relative overflow-clip bg-paper', className)} aria-labelledby={id}>
       <MomentGlow />
       <Deko data-plant="a" name="pflanze-ecke-1" widths={[640, 1024]} w={1024} h={1536} sizes="(min-width: 768px) 30vw, 50vw" className="plant plant-a">
         <canvas aria-hidden className="plant-gl" />
@@ -105,10 +105,12 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
       <Deko data-plant="b" name="pflanze-ecke-2" widths={[700, 1312]} w={1312} h={1199} sizes="(min-width: 768px) 32vw, 56vw" className="plant plant-b">
         <canvas aria-hidden className="plant-gl" />
       </Deko>
-      <div className="container-site relative flex min-h-[78svh] flex-col items-center justify-center py-28 text-center">
+      <div className="plant-heading-read container-site relative py-28 text-center">
+        <div className="plant-heading-copy flex flex-col items-center">
         {eyebrow && <p className="t-label">{eyebrow}</p>}
         <MomentHeading id={id} text={title} className="mt-6" animate vanish={false} />
         <p className="t-lead mt-8 max-w-[40ch] text-ink-2">{text}</p>
+        </div>
       </div>
     </section>
   )

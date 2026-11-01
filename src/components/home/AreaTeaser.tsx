@@ -19,9 +19,11 @@ export function AreaTeaser({ moment }: { moment?: string }) {
     <section className={moment ? 'relative section overflow-x-clip bg-paper' : 'section'} aria-labelledby="area-title">
       <div className="container-site">
         {moment ? (
-          <div className="relative z-[6] text-center">
+          <div className="area-heading-read relative z-[6] text-center">
+            <div className="area-heading-copy">
             <p className="t-label">{home.area.eyebrow}</p>
             <MomentHeading id="area-title" text={moment} vanish={false} className="mx-auto mt-6 w-fit" />
+            </div>
           </div>
         ) : (
           <SectionHeading layout="rail" eyebrow={home.area.eyebrow} title={home.area.headline} id="area-title" />

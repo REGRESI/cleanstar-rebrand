@@ -53,7 +53,9 @@ export function Arrival({
       setPlay(true)
       return
     }
-    const apply = (t: number) => {
+    const apply = (progress: number) => {
+      // Finish the reveal early, leaving a full stable reading interval in the scene.
+      const t = Math.min(1, progress / 0.58)
       const st = layer.current
       if (!st || !titleEl.current || !rest.current) return
       const W = st.clientWidth
@@ -72,7 +74,7 @@ export function Arrival({
       const y = Math.max(finalTop, top + H * 0.1)
       titleEl.current.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
       // Überschrift erscheint, sobald der Kreis aufgeht, und läuft beim Zurückscrollen rückwärts
-      setPlay(t > 0.08)
+      setPlay(t > 0.55)
       // Satz und Bilder kommen schon, während der Kreis wächst (keine leere untere Hälfte); das kleine Bild schiebt
       // sich danach etwas über das große
       const c = span(t, 0.3, 0.58)

@@ -18,7 +18,7 @@ export function replay(
     if (v === on) return
     on = v
     if (v) onIn()
-    else if (!window.matchMedia('(max-width: 767px)').matches) onOut()
+    else onOut()
   }
   const st = ScrollTrigger.create({
     trigger: el,

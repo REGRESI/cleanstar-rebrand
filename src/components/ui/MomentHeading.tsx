@@ -88,10 +88,9 @@ export function MomentHeading({
       pen = null
       el.removeAttribute('data-pen')
       el.style.removeProperty('--pen-d')
-      const fast = ScrollTrigger.getAll().some(t => Math.abs(t.getVelocity()) > 1200)
-      el.toggleAttribute('data-fast', fast)
+      el.setAttribute('data-mo', 'idle')
+      void el.offsetWidth // restart the original CSS wave on every entrance
       el.setAttribute('data-mo', 'on')
-      if (fast) return
       pens.then((all) => {
         if (!alive || el.getAttribute('data-mo') !== 'on' || !capEl) return
         const strokes = all[cap]
@@ -105,7 +104,7 @@ export function MomentHeading({
     }
     // rückwärts nur, wenn sie zu sehen war (sonst bliebe der Ruhezustand „idle“)
     const hide = () => {
-      if (window.matchMedia('(max-width: 767px)').matches || el.getAttribute('data-mo') !== 'on') return
+      if (el.getAttribute('data-mo') !== 'on') return
       pen?.cancel()
       pen = null
       el.setAttribute('data-pen', 'done')
@@ -121,7 +120,7 @@ export function MomentHeading({
       return stop
     }
     // bei jedem Durchqueren: hinein erscheinen, hinaus (in beide Richtungen) rückwärts verschwinden
-    const off = replay(el, show, hide, { start: 'top 110%', end: 'bottom -14%' })
+    const off = replay(el.closest('.area-heading-read, .plant-heading-read') || el, show, hide, { start: 'top 95%', end: 'bottom -5%' })
     return () => {
       stop()
       off()

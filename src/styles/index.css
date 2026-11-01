@@ -3601,8 +3601,6 @@ button:hover > .seal .seal-ring {
   .ht-home [data-home-section='founders'] .offset-cards { padding-bottom:112px; }
 }
 /* Beim leisen Abschnittswechsel trägt die äußere Staffelung den Titel, ohne zweite Ausblendung. */
-.ht-home :is(#problems-title,#process-title) .at-w { animation:none!important; opacity:1!important; filter:none!important; transform:none!important; }
-.ht-home :is(#problems-title,#process-title) .at-c { animation:none!important; color:inherit!important; }
 @media (min-width:768px) {
   .ht-home .plant-a { width:36vw; }
   .ht-home .plant-b { width:38vw; }
@@ -3622,13 +3620,6 @@ button:hover > .seal .seal-ring {
   .js-motion .ht-block .ht-glint,
   .js-motion .ht-block .ht-house-mark { display:none; }
   .js-motion .moment .moment-v { --out:0; }
-  .js-motion .moment[data-mo='on'] .mo-c,
-  .js-motion .moment[data-mo='on'] .moment-cap,
-  .js-motion .at-h[data-at='in'] .at-c { animation-duration:.35s; animation-delay:0s; }
-}
-@media (max-width:767px) {
-  .js-motion .at-h[data-at='in'] .at-c::before,
-  .js-motion .at-h[data-at='in'] .at-w { animation-duration:.35s; animation-delay:0s; }
 }
 /* A continuous light thread: quiet spine, compact glow, readable content. */
 .steps-base { stroke:#bfd1e3; stroke-width:1; }
@@ -3637,10 +3628,6 @@ button:hover > .seal .seal-ring {
 .step-box { border-radius:50%; }
 .ps-edge { width:5px!important; height:5px!important; top:50%!important; border-radius:50%; background:#8ecbfa!important; box-shadow:0 0 8px #9ddaff; filter:none!important; }
 .ps-problem-text { text-decoration-thickness:1px; }
-.js-motion .moment[data-mo='idle'] .mo-c,
-.js-motion .moment[data-mo='idle'] .moment-cap { opacity:.32; }
-.js-motion .moment[data-fast][data-mo='on'] .mo-c,
-.js-motion .moment[data-fast][data-mo='on'] .moment-cap { animation-duration:.3s; animation-delay:0s; }
 .svh-cost-bridge { border-top:1px solid var(--color-line); background:linear-gradient(180deg,var(--color-surface),#eaf3fb); }
 @media(max-width:767px) and (prefers-reduced-motion:no-preference) {
  .js-motion [data-services-stage] .svh-track { display:block; padding:90px 20px 80px; }
@@ -3665,4 +3652,12 @@ button:hover > .seal .seal-ring {
  .js-motion [data-services-stage] .svh-photo { flex:1 1 0; }
  .js-motion [data-services-stage] .svh-text { flex:0 0 auto; }
  .js-motion [data-services-stage] .svh-title-text br::after { content:' '; }
+}
+/* Reading distance, not accelerated glyphs: the original pen and wave keep their timing. */
+@media(prefers-reduced-motion:no-preference) and (min-height:621px) {
+ .js-motion .area-heading-read { min-height:110svh; padding-top:12svh; }
+ .js-motion .area-heading-copy { position:sticky; top:18svh; padding-bottom:8svh; }
+ .js-motion .plant-heading-read, .js-motion .ht-home .plant-heading-read { min-height:150svh; }
+ .js-motion .plant-heading-copy { position:sticky; top:24svh; padding-bottom:5svh; }
+ .js-motion .arrive-run { height:300svh; }
 }
