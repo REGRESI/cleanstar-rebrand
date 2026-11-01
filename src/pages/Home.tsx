@@ -56,12 +56,12 @@ export default function Home() {
       <Chunk>
         <HomeBlock id="area" transition="clouds" outgoing><AreaTeaser moment={'Unser Zuhause:\ndie Ortenau.'} /></HomeBlock>
         <HomeBlock id="mappe" transition="growing-window" outgoing><MappeTeaser immersive /></HomeBlock>
-        <HomeBlock id="answer" transition="card-stack" outgoing><Answer question={answers.home.question} bottom="pb-4">
+        <HomeBlock id="answer" transition="card-stack"><Answer question={answers.home.question} bottom="pb-4">
           {answers.home.text}
         </Answer></HomeBlock>
       </Chunk>
       <Chunk>
-        <HomeBlock id="cta" transition="light-edge"><FinalCta /></HomeBlock>
+        <HomeBlock id="cta" transition="flow-color"><FinalCta /></HomeBlock>
       </Chunk>
       </HomeTransitions>
     </>

@@ -39,6 +39,16 @@ try {
    }
   }
   console.log(`${width}px: decimal stability, whole amounts, compact searchable locations, strike-through and overflow passed`)
+  if(width===1440) {
+   await p.emulateMedia({reducedMotion:'no-preference'});await p.reload({waitUntil:'networkidle'});await p.waitForTimeout(1200)
+   await p.locator('#answer-title').evaluate(e=>e.scrollIntoView());await p.waitForTimeout(400)
+   assert.equal(await p.locator('[data-home-section="answer"]').evaluate(e=>e.classList.contains('ht-hold')),false,'facts do not park underneath the final CTA')
+   assert.equal(await p.locator('[data-home-section="cta"]').getAttribute('data-transition'),'flow-color')
+   const answer=await p.locator('.answer-section').boundingBox();const cta=await p.locator('[data-home-section="cta"]').boundingBox()
+   assert(cta.y>=answer.y+answer.height-2,'final CTA follows facts without overlap')
+   await p.screenshot({path:'/tmp/cleanstar-facts-desktop-final.png'})
+   console.log('Desktop: facts and final CTA stay in document flow without overlap')
+  }
   await p.close()
  }
 }finally{await browser?.close();server.kill()}
