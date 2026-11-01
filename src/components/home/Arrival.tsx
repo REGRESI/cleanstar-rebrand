@@ -73,8 +73,8 @@ export function Arrival({
       const finalTop = H * (W < 768 ? 0.13 : 0.15)
       const y = Math.max(finalTop, top + H * 0.1)
       titleEl.current.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
-      // Überschrift erscheint, sobald der Kreis aufgeht, und läuft beim Zurückscrollen rückwärts
-      setPlay(t > 0.55)
+      // Erst am ruhenden Endpunkt stoppen: Kreismaske und Titelposition sind dann vollständig angekommen.
+      setPlay(t >= 0.999)
       // Satz und Bilder kommen schon, während der Kreis wächst (keine leere untere Hälfte); das kleine Bild schiebt
       // sich danach etwas über das große
       const c = span(t, 0.3, 0.58)

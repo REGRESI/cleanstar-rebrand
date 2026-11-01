@@ -16,7 +16,7 @@ try {
   await p.evaluate(sel=>{const e=document.querySelector(sel);const host=e.closest('.arrive-run,.plant-heading-read')||e;window.scrollTo(0,host.getBoundingClientRect().top+window.scrollY-700)},selector)
   await p.waitForTimeout(150)
   let held=false
-  for(let i=0;i<65;i++){
+  for(let i=0;i<140;i++){
    await p.mouse.wheel(0,100);await p.waitForTimeout(65)
    if(await el.evaluate(e=>e.hasAttribute('data-heading-active'))){held=true;break}
   }
