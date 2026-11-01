@@ -3729,3 +3729,16 @@ html { scrollbar-gutter:stable; }
  [data-services-stage] .svh-text > .mt-4 { margin-bottom:24px; }
  [data-services-stage] .svh-arrow > svg { width:36px; height:36px; padding:8px; border:1px solid #c1d5ea; border-radius:50%; color:var(--color-blue); }
 }
+/* The morning image passes in normal flow, with no pinned runway or hidden text. */
+.js-motion .pr-run[data-home-internal='morning'] { height:auto; margin-top:0; }
+.js-motion .pr-run[data-home-internal='morning'] .pr-stage { position:relative; top:auto; height:100svh; }
+.js-motion .pr-run[data-home-internal='morning'] :is(.pr-word,.pr-line) { opacity:1; transform:none; will-change:auto; }
+/* Refraction and foam follow scroll position; no timer, image download, or full-section motion. */
+.water-seam { height:76px; overflow:hidden; }
+.water-seam path { fill:none; vector-effect:non-scaling-stroke; stroke-linecap:round; }
+.water-bank { stroke:#e4f0f7; stroke-width:42px; opacity:.5; }
+.water-body { stroke-width:25px; opacity:.8; }
+.water-current { stroke:#b2dced; stroke-width:11px; opacity:.5; }
+.water-glint { stroke:#fff; stroke-width:1.3px; opacity:.85; stroke-dasharray:90 48 12 64; stroke-dashoffset:var(--water-flow,0); transform:translateY(-4px); }
+.water-ripple { stroke:#6cb4dc; stroke-width:.7px; opacity:.55; stroke-dasharray:36 72 120 180; stroke-dashoffset:calc(var(--water-flow,0) * -.65); transform:translateY(9px); }
+@media(prefers-reduced-motion:reduce) { .water-seam { --water-flow:0; } }

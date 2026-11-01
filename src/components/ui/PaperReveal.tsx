@@ -40,7 +40,7 @@ export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode
   useEffect(() => {
     const el = run.current
     const t = text.current
-    if (!el || !t || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
+    if (!el || !t || id === 'morning-title' || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
     const w = t.querySelector<HTMLElement>('.pr-word')
     const l = t.querySelector<HTMLElement>('.pr-line')
     const apply = (p: number) => {
@@ -64,7 +64,7 @@ export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode
       st.kill()
       el.removeAttribute('data-ready')
     }
-  }, [])
+  }, [id])
   const [cap, ...rest] = Array.from(line)
   return (
     <div className="pr">

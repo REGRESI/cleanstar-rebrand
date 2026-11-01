@@ -53,7 +53,7 @@ export function Arrival({
       setPlay(true)
       return
     }
-    const apply = (progress: number) => {
+    const apply = (progress: number, active: boolean) => {
       // Finish the reveal early, leaving a full stable reading interval in the scene.
       const t = Math.min(1, progress / 0.58)
       const st = layer.current
@@ -70,11 +70,13 @@ export function Arrival({
       st.style.clipPath = t >= 0.999 ? 'none' : `circle(${r.toFixed(1)}px at 50% ${cy.toFixed(1)}px)`
       // Titel fährt mit der Kreisoberkante hoch und bleibt an seinem Platz stehen
       const top = cy - r
-      const finalTop = H * (W < 768 ? 0.13 : 0.15)
+      const finalTop = Math.max(110, H * (W < 768 ? 0.13 : 0.15))
       const y = Math.max(finalTop, top + H * 0.1)
       titleEl.current.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
       // Erst am ruhenden Endpunkt stoppen: Kreismaske und Titelposition sind dann vollständig angekommen.
-      setPlay(t >= 0.999)
+      // Hysteresis: viewport/scroll corrections near the reveal boundary must not re-arm the pen.
+      if (!active || t < 0.25) setPlay(false)
+      else if (t >= 0.999) setPlay(true)
       // Satz und Bilder kommen schon, während der Kreis wächst (keine leere untere Hälfte); das kleine Bild schiebt
       // sich danach etwas über das große
       const c = span(t, 0.3, 0.58)
@@ -97,21 +99,23 @@ export function Arrival({
       end: 'bottom bottom',
       scrub: 0.35,
       animation: gsap.to({}, { duration: 1 }),
-      onUpdate: (s) => apply(s.progress),
+      onUpdate: (s) => apply(s.progress, s.isActive),
       onRefresh: (s) => {
-        apply(s.progress)
+        apply(s.progress, s.isActive)
         show(s.scroll() >= s.start, s.start)
       },
       // Die Bühne überlappt das Ende des gepinnten Heros: erst sichtbar, wenn sie genau dort steht (gleiches Bild)
-      onEnter: (s) => show(true, s.start),
-      onLeaveBack: (s) => show(false, s.start),
+      onEnter: (s) => { show(true, s.start); apply(s.progress, true) },
+      onEnterBack: (s) => apply(s.progress, true),
+      onLeave: () => setPlay(false),
+      onLeaveBack: (s) => { show(false, s.start); setPlay(false) },
     })
     // Start bei 0 heißt: Der Hero ist noch nicht gepinnt (sein Pin entsteht erst nach dem Umschalten), die Bühne läge
     // dann über dem Hero-Anfang. Erst zeigen, wenn der Start hinter dem Hero liegt (sonst Sprung beim Laden, CLS).
     function show(on: boolean, start: number) {
       if (stage.current) stage.current.style.visibility = !overlap || (on && start > 0) ? 'visible' : 'hidden'
     }
-    apply(st.progress)
+    apply(st.progress, st.isActive)
     show(st.scroll() >= st.start, st.start)
     return () => st.kill()
   }, [EDGE.length, overlap])

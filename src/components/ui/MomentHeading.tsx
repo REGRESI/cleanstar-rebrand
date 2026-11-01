@@ -106,7 +106,7 @@ export function MomentHeading({
       })
     }
     const show = () => {
-      if (el.hasAttribute('data-heading-active')) return
+      if (el.hasAttribute('data-heading-active') || el.getAttribute('data-mo') === 'on') return
       cancelGate()
       if (as === 'h2') cancelGate = headingGate(el, animateHeading)
       else animateHeading()
