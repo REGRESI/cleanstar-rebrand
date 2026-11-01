@@ -1,7 +1,7 @@
 # Live-Website auf GitHub Pages: https://www.cleanstar-dienstleistungen.de
 # Bei jedem Push auf den Branch wird die Live-Version gebaut (npm run build: Basis /, indexierbar, ohne Sperre)
-# und in den Branch gh-pages veröffentlicht. public/CNAME hält die eigene Domain bei jedem Deploy fest.
-# GitHub-Einstellung: Settings → Pages → Source „Deploy from a branch“, Branch „gh-pages“, Ordner „/ (root)“.
+# und direkt als Pages-Artefakt veröffentlicht. gh-pages bleibt als Dateiensicherung erhalten. public/CNAME hält die eigene Domain bei jedem Deploy fest.
+# GitHub-Einstellung: Settings → Pages → Source „GitHub Actions“.
 name: Website auf GitHub Pages
 
 on:
@@ -11,14 +11,19 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: cleanstar-pages
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publication.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -70,6 +75,11 @@ jobs:
             rm -rf old
           fi
 
+      - name: Veröffentlichungsstand kennzeichnen
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: node -e "require('fs').writeFileSync('dist/build-version.json', JSON.stringify({commit:process.env.RELEASE_SHA}))"
+
       - name: In gh-pages veröffentlichen
         run: |
           cd dist
@@ -82,6 +92,15 @@ jobs:
           git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
           echo "Website: https://www.cleanstar-dienstleistungen.de" >> "$GITHUB_STEP_SUMMARY"
 
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Auf GitHub Pages veröffentlichen
+        id: publication
+        uses: actions/deploy-pages@v5
+
+
   check:
     needs: deploy
     runs-on: ubuntu-latest
@@ -90,6 +109,21 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v4
+
+      - name: Tatsächlich ausgelieferte Version prüfen
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          for attempt in $(seq 1 30); do
+            actual=$(curl -fsS --max-time 15 -H 'Cache-Control: no-cache' "https://www.cleanstar-dienstleistungen.de/build-version.json?release=$EXPECTED_SHA&attempt=$attempt" | jq -r '.commit' 2>/dev/null || true)
+            if [ "$actual" = "$EXPECTED_SHA" ]; then
+              echo "Live bestätigt: $actual" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo '::error::Die Domain liefert nicht die erwartete Version aus.'
+          exit 1
 
       - name: DNS und Erreichbarkeit
         id: reach
