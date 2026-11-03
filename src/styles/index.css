@@ -3811,3 +3811,16 @@ html { scrollbar-gutter:stable; }
     display: none !important;
   }
 }
+.steps-svg[data-coarse] .steps-tail,
+.steps-svg[data-coarse] .steps-dot {
+  display: none;
+}
+.steps-svg[data-coarse] .steps-fill {
+  transition: stroke-dashoffset 0.5s var(--ease-cs);
+}
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  /* Schwebende Anliegen: Haltestrecke am Handy höchstens 150 svh */
+  .fr-run {
+    height: 240svh;
+  }
+}

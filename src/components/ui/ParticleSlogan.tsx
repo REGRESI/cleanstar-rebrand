@@ -77,8 +77,9 @@ export function ParticleSlogan({
     const mobile = window.innerWidth < 768
     const nav = navigator as Navigator & { deviceMemory?: number }
     const weak = (nav.hardwareConcurrency ?? 8) <= 4 || (nav.deviceMemory ?? 8) <= 4
-    const target = mobile ? (weak ? 1000 : 1700) : weak ? 2200 : 4200
-    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    // Handy: halb so viele Partikel und höchstens 1,5-fache Pixeldichte
+    const target = mobile ? (weak ? 500 : 850) : weak ? 2200 : 4200
+    const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2)
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
 
     let parts: P[] = []

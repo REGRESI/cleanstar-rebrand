@@ -108,7 +108,26 @@ function Line({ steps }: { steps: Step[] }) {
     let g = geometry(ol, boxes)
     let prog = reduced ? 1 : 0
     let idle = 0
+    // Handy und Touch: die Linie füllt sich schrittweise bis zum erreichten Kästchen (neu gezeichnet nur beim
+    // Schrittwechsel); der Punkt mit Schweif läuft nur am Desktop, sonst müsste das hohe SVG in jedem Frame neu gemalt werden
+    const coarse = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches
+    let lastK = -2
+    if (coarse) sv.setAttribute('data-coarse', '')
     const draw = () => {
+      if (coarse) {
+        const raw = prog * g.total
+        let k = -1
+        g.at.forEach((l, i) => {
+          if (raw >= l - 2) k = i
+        })
+        if (k === lastK) return
+        lastK = k
+        const s = k < 0 ? 0 : g.at[k]
+        fill.style.strokeDasharray = `${g.total}`
+        fill.style.strokeDashoffset = `${g.total - s}`
+        setAt(k)
+        return
+      }
       const s = prog * g.total
       fill.style.strokeDasharray = `${g.total}`
       fill.style.strokeDashoffset = `${g.total - s}`
@@ -129,6 +148,7 @@ function Line({ steps }: { steps: Step[] }) {
     }
     const layout = () => {
       g = geometry(ol, boxes)
+      lastK = -2
       sv.setAttribute('viewBox', `0 0 ${ol.clientWidth} ${ol.clientHeight}`)
       base.setAttribute('d', g.d)
       fill.setAttribute('d', g.d)
