@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type RefObject } from 'react'
 import hero from 'virtual:hero-frames'
 import { ScrollTrigger } from '@/lib/gsap'
 import { onIdle } from '@/lib/idle'
+import { svh } from '@/lib/svh'
 import { useFrameSequence } from './useFrameSequence'
 
 /** Ruhezeit, nach der an einem Schlüsselmoment das scharfe Standbild eingeblendet wird */
@@ -83,7 +84,8 @@ export function useHeroSequence({ enabled, urls, section, pin, spacer, canvas, l
       pin: pin.current,
       ...(spacer?.current ? { pinSpacer: spacer.current } : {}),
       start: 'top top',
-      end: () => `+=${window.innerHeight * lengthVh}`,
+      // feste Höhe in svh (kleinste Viewport-Höhe): die Adressleiste auf iOS verschiebt nichts
+      end: () => `+=${svh() * lengthVh}`,
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => {

@@ -2399,7 +2399,12 @@ footer[data-no-top] {
 /* Pin-Weg des Heros vorab reservieren (gleich lengthVh in Hero.tsx); GSAP setzt danach denselben Wert inline */
 @media (prefers-reduced-motion: no-preference) {
   .js-motion .hero-spacer {
-    padding-bottom: calc(100vh * 4.6);
+    padding-bottom: 200svh;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 767px) {
+  .js-motion .hero-spacer {
+    padding-bottom: 150svh;
   }
 }
 /* Überlappt das Ende des Heros: Die Bühne liegt genau dort, wo der gepinnte Hero beim Loslassen steht (gleiches Bild) */
@@ -3742,3 +3747,53 @@ html { scrollbar-gutter:stable; }
 .water-glint { stroke:#fff; stroke-width:1.3px; opacity:.85; stroke-dasharray:90 48 12 64; stroke-dashoffset:var(--water-flow,0); transform:translateY(-4px); }
 .water-ripple { stroke:#6cb4dc; stroke-width:.7px; opacity:.55; stroke-dasharray:36 72 120 180; stroke-dashoffset:calc(var(--water-flow,0) * -.65); transform:translateY(9px); }
 @media(prefers-reduced-motion:reduce) { .water-seam { --water-flow:0; } }
+
+/* ==========================================================================
+   Mobile und Touch: keine animierten Filter (Unschärfe, Helligkeit) und kein backdrop-filter. Stattdessen nur
+   Deckkraft und Verschiebung; Animationen mit filter in den Keyframes werden hier per !important neutralisiert
+   (wichtige Deklarationen gehen Animationen vor). Gestaltung bleibt, nur ohne teure Neuberechnung je Frame.
+   ========================================================================== */
+@media (max-width: 767px), (pointer: coarse) {
+  .js-motion .at-h .at-w,
+  .moment-v,
+  .js-motion .moment .mo-c,
+  .js-motion .moment .moment-cap,
+  .moment-glow > span,
+  .svc-card .svc-photo img,
+  .js-motion .tc .tc-pill,
+  .steps-tail,
+  .map-shade {
+    filter: none !important;
+  }
+  .fr-card {
+    filter: none !important;
+    opacity: var(--o);
+  }
+  .glass {
+    background-color: var(--color-paper) !important;
+  }
+  .glass,
+  .night-ruler,
+  .night-lines li,
+  .mappe-dim,
+  .orbit {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* Handy: Lese-Abschnitte ohne Haltestrecke (höchstens drei gepinnte Abschnitte je Seite: Hero, Kreis-Übergang,
+   Seitenende). Die Überschriften stehen im normalen Fluss und animieren beim Hineinscrollen. */
+@media (max-width: 767px) {
+  .js-motion .area-heading-read,
+  .js-motion .plant-heading-read,
+  .js-motion .ht-home .plant-heading-read {
+    min-height: 0;
+    padding-top: 0;
+  }
+  .js-motion .area-heading-copy,
+  .js-motion .plant-heading-copy {
+    position: static;
+    padding-bottom: 0;
+  }
+}

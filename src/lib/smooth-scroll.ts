@@ -3,13 +3,17 @@ import { gsap, ScrollTrigger } from './gsap'
 
 let lenis: Lenis | null = null
 
-/** Startet Lenis (Smooth Scroll) und koppelt es an GSAP ScrollTrigger. */
+/**
+ * Startet Lenis (Smooth Scroll) und koppelt es an GSAP ScrollTrigger. Nur mit Maus bzw. Trackpad: Auf Touch-Geräten
+ * (auch Tablets, auch mit zusätzlicher Maus) bleibt das native Scrollen des Systems mit seinem eigenen Schwung.
+ * gsap.ticker.lagSmoothing bleibt auf dem Standard, damit nach einem Ruckler nichts nachspringt.
+ */
 export function startSmoothScroll() {
   if (lenis) return lenis
-  lenis = new Lenis({ duration: 1.05, easing: (t) => 1 - Math.pow(1 - t, 3), touchMultiplier: 1.4, syncTouch: false })
+  if (isTouchDevice()) return null
+  lenis = new Lenis({ duration: 1.05, easing: (t) => 1 - Math.pow(1 - t, 3), syncTouch: false })
   lenis.on('scroll', ScrollTrigger.update)
   gsap.ticker.add(tick)
-  gsap.ticker.lagSmoothing(0)
   // Für automatische Tests (scripts/test-navigation.mjs)
   ;(window as Window & { __lenis?: Lenis }).__lenis = lenis
   return lenis
@@ -28,6 +32,11 @@ export function stopSmoothScroll() {
 }
 
 export const getLenis = () => lenis
+
+/** Touch-Gerät: grober Zeiger oder Touch-Punkte ohne feinen Zeiger als Hauptzeiger */
+export function isTouchDevice() {
+  return window.matchMedia('(pointer: coarse)').matches || (navigator.maxTouchPoints > 0 && !window.matchMedia('(hover: hover) and (pointer: fine)').matches)
+}
 
 /** Scrollt nach oben: sofort (Seitenwechsel) oder weich (Klick auf das Logo auf der Startseite). */
 export function scrollToTop(immediate = true) {

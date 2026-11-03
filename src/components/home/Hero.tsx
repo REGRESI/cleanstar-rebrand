@@ -10,6 +10,7 @@ import { company } from '@/content/company'
 import { useIsMobile, useReducedMotion } from '@/lib/env'
 import { setHeroVisible } from '@/lib/heroVisibility'
 import { onIdle } from '@/lib/idle'
+import { effectTier } from '@/lib/deviceClass'
 import { span } from '@/lib/scrollScene'
 import { cn } from '@/lib/cn'
 import { useHeroSequence } from './useHeroSequence'
@@ -237,7 +238,8 @@ export function Hero() {
     pin,
     spacer,
     canvas: frames,
-    lengthVh: 4.6,
+    // Pin-Weg: Desktop 200 svh, Handy 150 svh (Regel: docs/performance/pins.md); gleich .hero-spacer im CSS
+    lengthVh: isMobile ? 1.5 : 2,
     play: 1,
     seqOf: (p) => span(p, T.frames[0], T.frames[1]) * feierabend,
     onProgress: (p) => apply(p),
@@ -254,7 +256,7 @@ export function Hero() {
     let cancelled = false
     const start = async () => {
       const { Dust, dustSupported, particleBudget } = await import('@/features/hero/dust')
-      if (cancelled || !dustSupported() || !gl.current || !pin.current || !box.current) return
+      if (cancelled || effectTier() === 'none' || !dustSupported() || !gl.current || !pin.current || !box.current) return
       const m = window.matchMedia(MOBILE).matches
       const v = m ? 'p' : 'd'
       let imgs: HTMLImageElement[]
@@ -316,9 +318,12 @@ export function Hero() {
       const io = new IntersectionObserver(([x]) => {
         visible = x.isIntersecting
         if (visible) draw()
-        else if (raf) {
-          cancelAnimationFrame(raf)
+        else {
+          if (raf) cancelAnimationFrame(raf)
           raf = 0
+          // Handy: weit weg (Hero ganz verlassen) den WebGL-Kontext freigeben, damit höchstens eine Szene lebt;
+          // zurück im Hero übernehmen die Überblendungen (CSS)
+          if (effectTier() === 'single') fail()
         }
       })
       io.observe(pin.current)
@@ -382,7 +387,7 @@ export function Hero() {
     // Kante unten schon im ersten HTML wie im gepinnten Zustand (Modus steht dort noch nicht fest): Sonst nimmt die
     // Übergangsmarkierung (tones.ts) dem Text vor dem Laden den unteren Abstand und gibt ihn danach zurück (CLS)
     <section ref={section} aria-labelledby="hero-title" className="relative" data-tone-start="dark" data-tone-end={mode === 'stills' ? 'dark' : 'surface'}>
-      {/* Der Pin-Weg (lengthVh = 4.6) ist schon im CSS reserviert (.hero-spacer), sonst springt beim Laden alles darunter */}
+      {/* Der Pin-Weg (lengthVh = 2 bzw. 1,5) ist schon im CSS reserviert (.hero-spacer), sonst springt beim Laden alles darunter */}
       <div ref={spacer} className={mode === 'stills' ? undefined : 'hero-spacer'}>
         <div ref={pin} className="hero-pin relative h-[100svh] min-h-[560px] overflow-hidden bg-night">
           {/* Bildfenster: Desktop bildschirmfüllend, Handy ein hohes Fenster oben (Text darunter auf Navy). Die Maße stehen

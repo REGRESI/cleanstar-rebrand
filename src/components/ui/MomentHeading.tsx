@@ -4,7 +4,6 @@ import { replay } from '@/lib/replay'
 import { prefersReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
 import { writeCap } from './pen'
-import { headingGate } from '@/lib/headingGate'
 
 // Füller-Pfade erst laden, wenn eine Moment-Überschrift auf der Seite ist
 let penData: Promise<Record<string, number[][]>> | null = null
@@ -85,7 +84,6 @@ export function MomentHeading({
     const capEl = el.querySelector<HTMLElement>('.moment-cap')
     const color = capEl ? getComputedStyle(capEl).color : '#12306e'
     const pens = loadPen()
-    let cancelGate = () => {}
     const animateHeading = () => {
       pen?.cancel()
       pen = null
@@ -105,16 +103,13 @@ export function MomentHeading({
         el.style.setProperty('--pen-d', `${(r.duration * 0.5).toFixed(2)}s`)
       })
     }
+    // Erscheinen läuft zeitbasiert durch, auch wenn weitergescrollt wird; das Scrollen wird nie angehalten
     const show = () => {
-      if (el.hasAttribute('data-heading-active') || el.getAttribute('data-mo') === 'on') return
-      cancelGate()
-      if (as === 'h2') cancelGate = headingGate(el, animateHeading)
-      else animateHeading()
+      if (el.getAttribute('data-mo') === 'on') return
+      animateHeading()
     }
     // rückwärts nur, wenn sie zu sehen war (sonst bliebe der Ruhezustand „idle“)
     const hide = () => {
-      if (el.hasAttribute('data-heading-active')) return
-      cancelGate()
       if (el.getAttribute('data-mo') !== 'on') return
       pen?.cancel()
       pen = null
@@ -124,18 +119,18 @@ export function MomentHeading({
     const stop = () => {
       alive = false
       controls.current = null
-      cancelGate()
       pen?.cancel()
     }
     controls.current = { show, hide }
     if (play !== undefined) return stop
     // bei jedem Durchqueren: hinein erscheinen, hinaus (in beide Richtungen) rückwärts verschwinden
-    const off = replay(el.closest('.area-heading-read, .plant-heading-read') || el, show, hide, { start: 'top 95%', end: 'bottom -5%' })
+    // Start, sobald die Überschrift zu rund 30 % im Bild ist (Oberkante bei 70 % der Höhe)
+    const off = replay(el, show, hide, { start: 'top 70%', end: 'bottom -5%' })
     return () => {
       stop()
       off()
     }
-    // The external play flag must not tear down a running scroll hold on a transient progress update.
+    // Der äußere play-Schalter steuert über den zweiten Effekt; dieser hier richtet nur einmal ein
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cap, animate, as])
   useEffect(() => {

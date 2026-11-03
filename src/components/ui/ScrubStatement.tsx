@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, type CSSProperties } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
-import { paintLetters } from '@/lib/scrollScene'
+import { paintLetters, paintWords } from '@/lib/scrollScene'
 import { prefersReducedMotion } from '@/lib/env'
 import { cn } from '@/lib/cn'
 import type { TileId } from '@/content/statements'
@@ -76,7 +76,15 @@ export function ScrubStatement({
     const lastOf = words.map((w) => letters.indexOf(w.lastElementChild as HTMLElement))
     const tiles = Array.from(el.querySelectorAll<HTMLElement>('[data-tile]'))
     const last = new Float32Array(letters.length).fill(-1)
+    // Handy: Wort für Wort statt Buchstabe für Buchstabe (die Buchstaben erben --p vom Wort; weniger Stilarbeit je Frame)
+    const small = window.matchMedia('(max-width: 767px)').matches
+    const lastW = new Float32Array(words.length).fill(-1)
     const apply = (t: number) => {
+      if (small) {
+        paintWords(words, t, lastW, 2.6)
+        for (const tile of tiles) tile.toggleAttribute('data-on', lastW[Number(tile.dataset.tile)] > 0.55)
+        return
+      }
       paintLetters(letters, t, last, 10)
       for (const tile of tiles) tile.toggleAttribute('data-on', last[lastOf[Number(tile.dataset.tile)]] > 0.55)
     }

@@ -4,6 +4,7 @@ import { Picture } from './Picture'
 import type { ImageId } from '@/content/images'
 import { ScrollTrigger } from '@/lib/gsap'
 import { prefersReducedMotion } from '@/lib/env'
+import { effectTier } from '@/lib/deviceClass'
 import { span, spanEase } from '@/lib/scrollScene'
 
 /**
@@ -22,7 +23,8 @@ export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode
   // lebende Kante (WebGL, eigener Chunk); bis sie steht und ohne WebGL bleibt die feste Kante als Bild
   useEffect(() => {
     const cv = gl.current
-    if (!cv || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
+    // nur am Desktop mit voller Effektstufe; am Handy die feste Kante (keine zusätzliche WebGL-Szene)
+    if (!cv || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion') || effectTier() !== 'full') return
     let stop: (() => void) | null = null
     let dead = false
     const cancelNear = whenNear(cv.closest('.pr')!, () => { import('./paperEdge').then(({ startPaperEdge }) => {

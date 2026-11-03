@@ -194,7 +194,8 @@ export function AnimatedText({
   useEffect(() => {
     const el = ref.current
     if (!el || mode !== 'paragraph' || prefersReducedMotion() || !document.documentElement.classList.contains('js-motion')) return
-    const letters = Array.from(el.querySelectorAll<HTMLElement>('.at-p'))
+    // Handy: Wörter statt Buchstaben (Buchstaben erben --p vom Wort)
+    const letters = Array.from(el.querySelectorAll<HTMLElement>(window.matchMedia('(max-width: 767px)').matches ? '.at-w' : '.at-p'))
     const last = new Float32Array(letters.length).fill(-1)
     const st = ScrollTrigger.create({
       trigger: el,

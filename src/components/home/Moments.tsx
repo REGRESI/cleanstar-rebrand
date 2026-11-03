@@ -3,6 +3,7 @@ import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
 import { MomentHeading, MomentGlow } from '@/components/ui/MomentHeading'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import { liteMotion } from '@/lib/motionBudget'
+import { effectTier } from '@/lib/deviceClass'
 import { span } from '@/lib/scrollScene'
 import { cn } from '@/lib/cn'
 
@@ -37,7 +38,8 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
       gsap.fromTo('[data-plant="a"]', { yPercent: 6 }, { yPercent: -6, ease: 'none', scrollTrigger: st })
       gsap.fromTo('[data-plant="b"]', { yPercent: 8 }, { yPercent: -4, ease: 'none', scrollTrigger: st })
     }, el)
-    if (liteMotion() || window.matchMedia('(pointer: coarse)').matches) return () => ctx.revert()
+    // Wind (WebGL) nur am Desktop mit voller Effektstufe; sonst das Bild mit sanftem CSS-Wiegen
+    if (liteMotion() || effectTier() !== 'full') return () => ctx.revert()
     // Wind: gemeinsamer Zustand (Feder für den Scroll-Schwung, Maus)
     const state = { kick: 0, mx: -9999, my: -9999, mOn: 0 }
     let v = 0
@@ -165,7 +167,7 @@ export function CloudCover({ children, className }: { children: ReactNode; class
     let stopGl: (() => void) | null = null
     let dead = false
     const cv = el.querySelector<HTMLCanvasElement>('.cc-gl')
-    const cancelNear = cv ? whenNear(el, () => { import('./cloudGl').then(({ startClouds }) => {
+    const cancelNear = cv && effectTier() === 'full' ? whenNear(el, () => { import('./cloudGl').then(({ startClouds }) => {
         if (dead) return
         stopGl = startClouds(
           cv,

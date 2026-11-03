@@ -4,7 +4,6 @@ import { hq, places as locations, shortName, type Place as Location } from '@/co
 import { cn } from '@/lib/cn'
 import { proj, OUTLINE, RHINE, toPath, VB } from './schematic'
 import type { MapApi } from './LiveMap'
-import { headingGate } from '@/lib/headingGate'
 import { prefersReducedMotion } from '@/lib/env'
 
 const LiveMap = lazy(() => import('./LiveMap'))
@@ -49,16 +48,14 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
   useEffect(() => {
     const el = frame.current
     if (!el || prefersReducedMotion()) return
-    let cancel = () => {}
+    // kurzes Ankommen der Karte beim ersten Sichtkontakt (nur transform, kein Anhalten des Scrollens)
     const io = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return
       io.disconnect()
-      cancel = headingGate(el, () => {
-        el.animate([{ transform:'scale(.965)', boxShadow:'0 0 0 1px #b9dafa' }, { transform:'scale(1)', boxShadow:'0 0 0 10px transparent' }], { duration:850, easing:'cubic-bezier(.2,.7,.2,1)' })
-      })
-    }, { threshold:.6 })
+      el.animate([{ transform: 'scale(.965)' }, { transform: 'scale(1)' }], { duration: 850, easing: 'cubic-bezier(.2,.7,.2,1)' })
+    }, { threshold: 0.4 })
     io.observe(el)
-    return () => { io.disconnect(); cancel() }
+    return () => io.disconnect()
   }, [])
 
   const open = (p: Location) => {

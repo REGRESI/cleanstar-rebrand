@@ -10,6 +10,7 @@ import { CallbackProvider } from '@/features/callback/Callback'
 import { useScrollReveals } from '@/lib/useScrollReveals'
 import { prefersReducedMotion } from '@/lib/env'
 import { jumpTo, scrollToElement, startSmoothScroll, stopSmoothScroll } from '@/lib/smooth-scroll'
+import { measureStartFps } from '@/lib/deviceClass'
 import { ScrollTrigger } from '@/lib/gsap'
 import { onIdle } from '@/lib/idle'
 import { EASE_CS_ARRAY } from '@/lib/ease'
@@ -42,12 +43,15 @@ function Shell() {
     first.current = false
     ;(window as Window & { __csReady?: boolean }).__csReady = true
     const cancel = prefersReducedMotion() ? () => {} : onIdle(() => startSmoothScroll(), 2500)
+    // Bildrate einmal messen, sobald die Seite ruht (schwache Geräte bekommen danach die einfache Variante)
+    const cancelFps = onIdle(() => measureStartFps(), 1200)
     // iOS zeigt :active-Stile (Rückmeldung beim Tippen) nur, wenn ein touchstart-Listener existiert
     const noop = () => {}
     document.addEventListener('touchstart', noop, { passive: true })
     return () => {
       document.removeEventListener('touchstart', noop)
       cancel()
+      cancelFps()
       stopSmoothScroll()
     }
   }, [])
