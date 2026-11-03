@@ -256,7 +256,9 @@ export function Hero() {
     let cancelled = false
     const start = async () => {
       const { Dust, dustSupported, particleBudget } = await import('@/features/hero/dust')
-      if (cancelled || effectTier() === 'none' || !dustSupported() || !gl.current || !pin.current || !box.current) return
+      // Partikel-Staub nur am Desktop (volle Effektstufe): sein Aufbau ist auf Handys eine spürbare Rechenpause mitten im
+      // ersten Wischen; dort übernehmen die Überblendungen derselben Bilder (CSS)
+      if (cancelled || effectTier() !== 'full' || !dustSupported() || !gl.current || !pin.current || !box.current) return
       const m = window.matchMedia(MOBILE).matches
       const v = m ? 'p' : 'd'
       let imgs: HTMLImageElement[]

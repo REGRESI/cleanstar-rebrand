@@ -5,6 +5,7 @@ import { cn } from '@/lib/cn'
 import { proj, OUTLINE, RHINE, toPath, VB } from './schematic'
 import type { MapApi } from './LiveMap'
 import { prefersReducedMotion } from '@/lib/env'
+import { isTouchPrimary } from '@/lib/deviceClass'
 
 const LiveMap = lazy(() => import('./LiveMap'))
 
@@ -25,9 +26,13 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
   const [ready, setReady] = useState(false)
   const [active, setActive] = useState<{ p: Location; xy: [number, number] | null } | null>(null)
 
+  // Touch-Geräte: die echte Karte (MapLibre, WebGL) erst auf Tippen laden; ihr Aufbau ist eine lange Rechenpause,
+  // die beim Wischen sonst als Ruckler spürbar wäre. Bis dahin Standbild bzw. schematische Karte mit allen Orten.
+  const [touch, setTouch] = useState(false)
+  useEffect(() => setTouch(isTouchPrimary()), [])
   useEffect(() => {
     const el = frame.current
-    if (!el) return
+    if (!el || isTouchPrimary()) return
     // Die echte Karte erst laden, wenn sie in der Nähe des sichtbaren Bereichs ist UND der Besuch interagiert
     // (Scrollen, Zeiger, Tippen, Taste). So blockiert MapLibre nicht den ersten Seitenaufbau.
     let near = false
@@ -118,6 +123,11 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
             })}
             <circle cx={HX} cy={HY} r="12" fill="none" stroke="var(--color-blue)" strokeWidth="1" />
           </svg>
+          {touch && !load && (
+            <button type="button" onClick={() => setLoad(true)} className="absolute right-3 bottom-3 z-[3] rounded-full bg-night px-4 py-2.5 text-[0.875rem] font-medium text-paper shadow-[0_8px_20px_-10px_rgb(10_26_51/0.6)]">
+              Karte bewegen
+            </button>
+          )}
           {load && (
             <Suspense fallback={null}>
               <LiveMap api={api} onReady={() => setReady(true)} onOpen={open} onHover={(p, xy) => setActive(p ? { p, xy } : null)} />

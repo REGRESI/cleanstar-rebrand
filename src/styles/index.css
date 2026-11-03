@@ -3797,3 +3797,17 @@ html { scrollbar-gutter:stable; }
     padding-bottom: 0;
   }
 }
+
+/* Handy und Touch: Überschriften kommen wortweise (Verschiebung und Deckkraft), ohne Farbwelle über jeden einzelnen
+   Buchstaben (sonst liefen hunderte Farbanimationen gleichzeitig); die Buchstaben stehen gleich in der Textfarbe. */
+@media (max-width: 767px), (pointer: coarse) {
+  .js-motion .at-h .at-c {
+    animation: none !important;
+    color: var(--at-to, currentColor) !important;
+  }
+}
+@media (max-width: 767px), (pointer: coarse) {
+  .ps-edge {
+    display: none !important;
+  }
+}

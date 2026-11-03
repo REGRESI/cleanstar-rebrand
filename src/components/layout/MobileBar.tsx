@@ -18,25 +18,43 @@ export function MobileBar() {
   // Über dunklen Abschnitten dunkles Glas, sonst wirkt die helle Leiste dort grau
   const bar = useRef<HTMLDivElement>(null)
   const [dark, setDark] = useState(false)
+  // Ohne Abfrage je Scroll-Frame (elementsFromPoint erzwingt Layout): ein IntersectionObserver beobachtet die dunklen
+  // Abschnitte in einem schmalen Streifen auf Höhe der Leiste
+  const { pathname } = useLocation()
   useEffect(() => {
-    let raf = 0
-    const check = () => {
-      raf = 0
-      const el = bar.current
-      if (!el) return
-      const under = document.elementsFromPoint(innerWidth / 2, innerHeight - 28).find((n) => !el.contains(n))
-      setDark(!!under?.closest('.on-dark'))
+    const under = new Set<Element>()
+    let io: IntersectionObserver | null = null
+    const setup = () => {
+      io?.disconnect()
+      under.clear()
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) under.add(e.target)
+            else under.delete(e.target)
+          }
+          setDark(under.size > 0)
+        },
+        { rootMargin: `-${Math.max(0, window.innerHeight - 30)}px 0px -26px 0px` },
+      )
+      document.querySelectorAll('main .on-dark, footer .on-dark, footer.on-dark').forEach((n) => io!.observe(n))
     }
-    const onScroll = () => (raf ||= requestAnimationFrame(check))
-    check()
-    addEventListener('scroll', onScroll, { passive: true })
-    addEventListener('resize', onScroll)
+    // nach dem Aufbau der Seite (nachgeladene Abschnitte) einmal neu einsammeln
+    setup()
+    const t = window.setTimeout(setup, 1500)
+    let rt = 0
+    const onResize = () => {
+      window.clearTimeout(rt)
+      rt = window.setTimeout(setup, 300)
+    }
+    addEventListener('resize', onResize)
     return () => {
-      removeEventListener('scroll', onScroll)
-      removeEventListener('resize', onScroll)
-      cancelAnimationFrame(raf)
+      io?.disconnect()
+      window.clearTimeout(t)
+      window.clearTimeout(rt)
+      removeEventListener('resize', onResize)
     }
-  }, [])
+  }, [pathname])
   if (isOpen || callback.isOpen) return null
   return (
     <div
