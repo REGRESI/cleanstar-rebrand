@@ -28,7 +28,7 @@ const LIMITS = { jank: 0.05, maxFrame: 200, longTask: 100 }
 
 // Messung im Browser: Frame-Abstände, Long Tasks, Scrollverlauf mit Zeitstempel
 const PROBE = `(() => {
-  const s = (window.__perf = { frames: [], long: [], scroll: [], last: performance.now(), on: false })
+  const s = (window.__perf = { frames: [], long: [], scroll: [], marks: [], last: performance.now(), on: false })
   const tick = (t) => { if (s.on) { s.frames.push(t - s.last); s.scroll.push([t, scrollY]) } s.last = t; requestAnimationFrame(tick) }
   requestAnimationFrame(tick)
   try { new PerformanceObserver((l) => { for (const e of l.getEntries()) if (s.on) s.long.push(Math.round(e.duration)) }).observe({ type: 'longtask', buffered: false }) } catch {}
@@ -54,9 +54,12 @@ async function runChromium() {
       const gestures = []
       let dead = 0
       let atEnd = false
+      // Pro Geste nur ein Aufruf in die Seite (jeder Aufruf kostet bei gedrosselter CPU selbst einen Frame): er setzt
+      // eine Zeitmarke und liefert die Scrollposition, die zugleich der Endstand der vorigen Geste ist
+      const mark = () => page.evaluate(() => (window.__perf.marks.push(performance.now()), [scrollY, document.documentElement.scrollHeight - innerHeight]))
+      let state = await mark()
       for (let i = 0; i < 160 && !atEnd; i++) {
-        const before = await page.evaluate(() => [scrollY, document.documentElement.scrollHeight - innerHeight])
-        const t0 = await page.evaluate(() => performance.now())
+        const before = state
         // Wischen nach oben: Finger zieht in rund 130 ms über die halbe Bildschirmhöhe, danach läuft der Schwung nach
         const x = Math.round(vp.width / 2)
         const y0 = Math.round(vp.height * 0.78)
@@ -68,15 +71,14 @@ async function runChromium() {
         }
         await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
         await page.waitForTimeout(700)
-        const t1 = await page.evaluate(() => performance.now())
-        gestures.push([t0, t1])
-        const after = await page.evaluate(() => [scrollY, document.documentElement.scrollHeight - innerHeight])
-        atEnd = after[0] >= after[1] - 4
-        if (after[0] - before[0] < 8 && !atEnd && before[0] < before[1] - 4) dead++
+        state = await mark()
+        atEnd = state[0] >= state[1] - 4
+        if (state[0] - before[0] < 8 && !atEnd && before[0] < before[1] - 4) dead++
       }
       // Ruhephase: Scrollposition darf sich ohne Geste nicht mehr ändern
       await page.waitForTimeout(3000)
       const perf = await page.evaluate(() => window.__perf)
+      for (let i = 1; i < perf.marks.length; i++) gestures.push([perf.marks[i - 1], perf.marks[i]])
       await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 })
       const frames = perf.frames.filter((d) => d > 0 && d < 5000)
       const jank = frames.filter((d) => d > 33).length / Math.max(1, frames.length)
