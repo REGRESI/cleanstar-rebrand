@@ -1,3 +1,4 @@
+/* global window, document, scrollY, innerHeight, getComputedStyle -- Code in page.evaluate läuft im Browser */
 // Belegbilder für den Mobile-Abschluss (docs/mobile-finish/): feste Stellen der Startseite und des Einzugsgebiets auf
 // 390 × 844 (Chromium mit iPhone-Emulation), dazu Desktop 1440 × 900 zum Vergleich (Desktop darf sich nicht ändern).
 // Aufruf: B=http://localhost:4177 TAG=vorher|nachher node scripts/shots-mobile-finish.mjs   (DESKTOP=1: nur Desktop)

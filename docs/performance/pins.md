@@ -27,6 +27,8 @@ Ergebnis: alle Seiten halten die Regeln ein.
 | Papier-Reveal Leistungen (Mobile) | 160 svh | 150 svh |
 | Schwebende Anliegen, Ablauf (Mobile) | 160 svh | 140 svh |
 | Scroll-Sperre an Überschriften (`headingGate`) | bis 6,5 s gesperrt | entfernt |
+| Mobile-Abschluss: Papier-Reveal „Am Morgen“ (Startseite, Mobile) | im Fluss (Bild lief mit nach oben) | 100 svh, Bild steht fest |
+| Mobile-Abschluss: Seitenende-Bild (Startseite, Mobile) | 80 svh | im Fluss als Band (höchstens drei Haltestellen) |
 
 ## Bestand
 
@@ -45,7 +47,7 @@ Ergebnis: alle Seiten halten die Regeln ein.
 | /ueber-uns/ | Desktop | about-moment (.arrive-stage.sticky) | sticky | 80 |
 | /kontakt/ | Desktop | footer (.ftr-img.photo) | sticky | 80 |
 | / | Mobile | arrive-title (.arrive-stage.sticky) | sticky | 80 |
-| / | Mobile | footer (.ftr-img.photo) | sticky | 80 |
+| / | Mobile | morning-title (.pr-stage) | sticky | 100 |
 | / | Mobile | hero-title (.hero-pin.relative) | GSAP-Pin | 150 |
 | /leistungen/ | Mobile | standard-title (.pr-stage) | sticky | 150 |
 | /leistungen/ | Mobile | footer (.ftr-img.photo) | sticky | 80 |

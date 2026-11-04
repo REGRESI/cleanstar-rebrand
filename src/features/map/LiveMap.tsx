@@ -399,7 +399,10 @@ export default function LiveMap({
       for (const p of places) {
         const [x, y] = xy(p)
         const d = Math.hypot(x - e.point.x, y - e.point.y)
-        if (d <= bestD) ((best = p), (bestD = d))
+        if (d <= bestD) {
+          best = p
+          bestD = d
+        }
       }
       if (best) fly(best)
     })

@@ -18,9 +18,9 @@ const LiveMap = lazy(() => import('./LiveMap'))
 export function AreaMap({ className, still }: { className?: string; /** Platzhalter als Standbild der Geländekarte statt der schematischen Karte (Startseite) */ still?: boolean }) {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
-  // Ortsliste offen: am Desktop neben der Karte, am Handy darunter (Links für alle, die nicht auf der Karte tippen wollen).
-  // Schon im vorgerenderten HTML offen (kein Verschieben beim Laden); nur auf Tablets eingeklappt
-  const [expanded, setExpanded] = useState(true)
+  // Ortsliste offen: am Desktop neben der Karte, am Handy darunter (Links für alle, die nicht auf der Karte tippen wollen);
+  // auf Tablets eingeklappt
+  const [expanded, setExpanded] = useState(false)
   useEffect(() => { setExpanded(window.matchMedia('(min-width:1024px), (max-width:767px)').matches) }, [])
   const frame = useRef<HTMLDivElement>(null)
   const api = useRef<MapApi | null>(null)

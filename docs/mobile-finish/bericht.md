@@ -19,6 +19,8 @@ steht. Die Karte folgt im normalen Abschnittsabstand. Der Übergangstest prüft 
 - Orte sind sofort antippbar: Trefferfläche 44 × 44 px (der nächste Ort im Umkreis von 22 px). Getestet: Antippen startet den
   Vogelflug, danach öffnet sich die Ortsseite (z. B. /einzugsgebiet/kehl).
 - Darunter steht die Ortsliste mit Links jetzt auch am Handy offen (vorher eingeklappt).
+- Die Quellenangabe der Karte startet am Handy zugeklappt (Knopf „i“). Aufgeklappt wuchs sie beim Laden der Kartendaten
+  und verschob die Kartenelemente (gemessene Layout-Verschiebung 0,002; jetzt 0 in fünf Läufen).
 
 ## 3. Papierkante wie am Desktop (`3-papierkante-…`)
 - Neue Bildfolge `public/images/deko/papierkante-mobil/kante-00…09.webp` (je etwa 27 KB), erzeugt mit
@@ -61,3 +63,15 @@ Der Diagnose-Workflow ist entfernt. Im Veröffentlichungs-Workflow laufen beide 
 - Papierkante: erster Entwurf überblendete beide Bilder gegenläufig; dabei wurde das Papier halb durchsichtig (grauer
   Streifen). Jetzt bleibt das untere Bild deckend und nur das obere blendet ein.
 - Seitenende-Bild der Startseite am Handy ohne Haltestrecke (statt einer vierten Haltestelle).
+
+## Tests (Build aus `dist`, Chromium)
+
+| Test | Ergebnis |
+| --- | --- |
+| Desktop 1440 px vorher/nachher (22 Bilder, reduzierte Bewegung) | pixelgleich |
+| Übergänge Mobile, alle Seiten (jetzt mit leerer Fläche über 35 % und Pflanzen über Text) | grün, 1862 Aufnahmen; nach den letzten Änderungen Startseite und Einzugsgebiet erneut grün |
+| Übergänge Desktop, Startseite | grün, 234 Aufnahmen |
+| Lesestrecken, Abschnittsgrenzen (CLS) | grün; CLS 0 in fünf Läufen hintereinander |
+| Navigation Startseite, Einzugsgebiet | grün (152 bzw. 112 Prüfungen) |
+| Leistungsmappe, Bilder, Neuladen, Deploy, Pins | grün |
+| WebKit | im CI nur noch als Warnung |
