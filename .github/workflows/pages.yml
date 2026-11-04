@@ -156,6 +156,12 @@ jobs:
           npx playwright install --with-deps chromium
           node scripts/check-site.cjs
 
+      - name: Live-Website in WebKit (Safari-Engine, iPhone 13) - alle sechs Hauptseiten bis zum Ende scrollen
+        if: steps.reach.outputs.ok == '1'
+        run: |
+          npx playwright install --with-deps webkit
+          ENGINE=webkit B=https://www.cleanstar-dienstleistungen.de node scripts/test-performance.mjs
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:

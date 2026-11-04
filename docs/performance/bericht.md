@@ -125,6 +125,16 @@ folgenden Läufe lagen bei 93–95. Die Werte schwanken auf diesem Rechner um ±
 | Deploy (`test-deploy.mjs`) | grün (Chromium) |
 | Pins (`CHECK=1 inventory-pins.mjs`) | grün |
 
+## WebKit (Safari-Engine)
+
+- GitHub Actions, Lauf 114 (Commit `ec4de43`): Deploy-Test in Chromium und WebKit grün, WebKit-Rauchtest grün. Alle
+  sechs Seiten werden bis zum Ende gescrollt, ohne tote Gesten und ohne Skriptfehler.
+- Lauf 113 brach einmal auf `/ueber-uns/` ab, weil der WebKit-Tab geschlossen wurde. Lauf 114 mit identischem App-Code
+  lief grün; der Abbruch ließ sich nicht wiederholen. Damit ein solcher Absturz künftig als Fehler genau dieser Seite
+  gemeldet wird statt den ganzen Test abzubrechen, fängt der WebKit-Test ihn jetzt ab.
+- Neu: Nach jeder Veröffentlichung prüft der Workflow die **Live-Seite** zusätzlich in WebKit (iPhone 13) auf allen
+  sechs Hauptseiten.
+
 ## Video
 
 `docs/performance/startseite-iphone13-cpu4x.webm`: Startseite im iPhone-13-Profil, CPU vierfach gedrosselt, mit

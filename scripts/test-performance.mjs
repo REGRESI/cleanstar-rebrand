@@ -139,24 +139,30 @@ async function runWebkit() {
     const page = await ctx.newPage()
     const errors = []
     page.on('pageerror', (e) => errors.push(e.message))
-    await page.goto(B + path, { waitUntil: 'load' })
-    await page.waitForTimeout(1500)
+    // Absturz des Tabs (auf dem iPhone: „Seite wurde neu geladen“) als Fehler dieser Seite melden, nicht den Lauf abbrechen
+    page.on('crash', () => errors.push('Seite abgestürzt'))
     let atEnd = false
     let dead = 0
-    for (let i = 0; i < 200 && !atEnd; i++) {
-      const before = await page.evaluate(() => [scrollY, document.documentElement.scrollHeight - innerHeight])
-      await page.mouse.move(195, 420)
-      await page.mouse.wheel(0, 500)
-      await page.waitForTimeout(300)
-      const after = await page.evaluate(() => [scrollY, document.documentElement.scrollHeight - innerHeight])
-      atEnd = after[0] >= after[1] - 4
-      if (after[0] - before[0] < 8 && !atEnd) dead++
+    try {
+      await page.goto(B + path, { waitUntil: 'load' })
+      await page.waitForTimeout(1500)
+      for (let i = 0; i < 200 && !atEnd; i++) {
+        const before = await page.evaluate(() => [scrollY, document.documentElement.scrollHeight - innerHeight])
+        await page.mouse.move(195, 420)
+        await page.mouse.wheel(0, 500)
+        await page.waitForTimeout(300)
+        const after = await page.evaluate(() => [scrollY, document.documentElement.scrollHeight - innerHeight])
+        atEnd = after[0] >= after[1] - 4
+        if (after[0] - before[0] < 8 && !atEnd) dead++
+      }
+    } catch (e) {
+      errors.push(`abgebrochen: ${String(e.message || e).split('\n')[0]}`)
     }
     const r = { profile: 'WebKit iPhone 13', path, reachedEnd: atEnd, deadGestures: dead, errors: errors.length }
     r.ok = atEnd && dead === 0 && errors.length === 0
     results.push(r)
-    console.log(`${r.ok ? '✓' : '✗'} WebKit ${path}: Ende ${atEnd ? 'erreicht' : 'NICHT erreicht'}, tote Gesten ${dead}${errors.length ? `, Skriptfehler: ${errors[0].slice(0, 80)}` : ''}`)
-    await page.close()
+    console.log(`${r.ok ? '✓' : '✗'} WebKit ${path}: Ende ${atEnd ? 'erreicht' : 'NICHT erreicht'}, tote Gesten ${dead}${errors.length ? `, Fehler: ${errors[0].slice(0, 100)}` : ''}`)
+    await page.close().catch(() => {})
   }
   await browser.close()
   return results
