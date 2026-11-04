@@ -1,4 +1,4 @@
-/* global document, window -- Code in page.evaluate läuft im Browser */
+/* global document, window, getComputedStyle -- Code in page.evaluate läuft im Browser */
 // Neuladen-Test für den Scroll-Text (ScrubStatement): 20 Mal neu laden (Desktop und Handy), jeweils an eine zufällige
 // Stelle im Abschnitt scrollen und prüfen, dass die Färbung zur Scrollposition passt und beim Weiterscrollen mitläuft.
 // Aufruf: B=http://localhost:4177 node scripts/test-reload.mjs (PAGES=/leistungen/,/einzugsgebiet/ wählt die Seiten)
@@ -42,7 +42,8 @@ for (const [device, viewport] of [
     const read = () =>
       page.evaluate(() => {
         const ls = [...document.querySelectorAll('.statement-text [data-l]')]
-        const p = ls.map((l) => Number(l.style.getPropertyValue('--p') || 0))
+        // --p steht am Buchstaben (Desktop) oder am Wort (Handy, wortweise Färbung): der berechnete Wert gilt in beiden Fällen
+        const p = ls.map((l) => Number(getComputedStyle(l).getPropertyValue('--p') || 0))
         return { full: p.filter((v) => v >= 1).length, n: p.length, sum: p.reduce((a, b) => a + b, 0) }
       })
     const a = await read()

@@ -1,3 +1,4 @@
+/* global window, document, getComputedStyle -- Code in page.evaluate läuft im Browser */
 // Bestandsaufnahme der gepinnten Abschnitte: alle Bühnen mit position: sticky (mindestens 80 % der Bildschirmhöhe),
 // deren Container länger als die Bühne ist (Haltestrecke), und alle GSAP-Pins (.pin-spacer). Haltestrecke in svh.
 // Aufruf: B=http://localhost:4177 node scripts/test-... (statischer Server auf dist) node scripts/inventory-pins.mjs

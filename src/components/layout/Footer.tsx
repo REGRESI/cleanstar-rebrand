@@ -28,7 +28,7 @@ const knowledgeLinks = [
  * Abschluss (Test: scripts/test-images.mjs). Seiten ohne Eintrag enden direkt mit dem Footer.
  */
 const endImage: Record<string, ImageId> = {
-  '/': 'after-office',
+  '/': 'team-briefing',
   '/leistungen': 'svc-buero-detail',
   '/kontakt': 'quality-check',
   '/ablauf': 'inspection',

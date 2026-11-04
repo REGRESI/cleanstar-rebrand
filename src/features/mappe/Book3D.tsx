@@ -5,6 +5,14 @@ import { COVER_H, COVER_T, COVER_W, LEAF_T, PH, PW, bendLeaf, createBoardGeometr
 import { PAGE_H, PAGE_W } from './core'
 import { mappeAsset, tableFile } from './assets'
 
+// react-three-fiber legt intern noch eine THREE.Clock an; three meldet das ab r183 als veraltet. Nur diese eine
+// bekannte Meldung der Bibliothek ausblenden (offizieller Weg über setConsoleFunction), alles andere geht durch.
+THREE.setConsoleFunction((type: string, message: string, ...params: unknown[]) => {
+  if (type === 'warn' && typeof message === 'string' && message.includes('Clock: This module has been deprecated')) return
+  const out = type === 'error' ? console.error : type === 'warn' ? console.warn : console.log
+  out(message, ...params)
+})
+
 /** Ein sanfter Ablauf für alles: schnell an, weich aus (passt zu cubic-bezier(0.2, 0.7, 0.1, 1)) */
 const ease = (t: number) => 1 - Math.pow(1 - t, 3.2)
 

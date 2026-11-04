@@ -40,9 +40,14 @@ try {
     await jump(team)
     const founders = await top('founders')
     const readingDistance = founders - vh - team
-    assert(readingDistance >= vh - 2, `${device}: at least one full viewport of reading before the house (${readingDistance}px)`)
-    for (const [i, fraction] of [0, 0.5, 0.95].entries()) {
+    // Lesestrecke über sticky (ohne Scroll-Sperre): mindestens 60 % einer Bildschirmhöhe, in der die Überschrift ganz
+    // steht, bevor das Haus wächst (früher eine volle Bildschirmhöhe; seit dem Mobile-Abschluss ohne Haltephasen kürzer)
+    if (!mobile) assert(readingDistance >= vh * 0.6, `${device}: at least 60 % of a viewport of reading before the house (${readingDistance}px)`)
+    // Mobile: keine Lesestrecke, die Überschrift steht im normalen Fluss und wird einfach durchgescrollt
+    for (const [i, fraction] of (mobile ? [] : [0, 0.5, 0.95].entries())) {
       await jump(team + readingDistance * fraction)
+      // Überschriften laufen zeitbasiert ab (kein Halten): auf das Ende der Schreib-Animation warten
+      await page.waitForFunction(() => (h => h && ['on', 'done'].includes(h.dataset.mo) && getComputedStyle(h.querySelector('.moment-v')).opacity === '1')(document.querySelector('#team-moment')), null, { timeout: 6000 }).catch(() => {})
       const state = await page.evaluate(() => {
         const heading = document.querySelector('#team-moment')
         const visual = heading.querySelector('.moment-v')
@@ -50,7 +55,7 @@ try {
         return { top: rect.top, bottom: rect.bottom, opacity: getComputedStyle(visual).opacity, state: heading.dataset.mo, house: Number(document.querySelector('[data-home-section="founders"]').dataset.progress || 0) }
       })
       assert.equal(state.house, 0, `${device}: house must wait until reading ends`)
-      assert.equal(state.state, 'done', `${device}: heading must already be readable`)
+      assert(['on', 'done'].includes(state.state), `${device}: heading must already be readable (${state.state})`)
       assert.equal(state.opacity, '1')
       assert(state.top > 0 && state.bottom < vh, `${device}: full heading remains in view`)
       await page.screenshot({ path: `${out}/${device}-team-lesen-${i + 1}.jpg`, type: 'jpeg' })
@@ -85,9 +90,8 @@ try {
       assert(touch.every((y, i) => i === 0 || y >= touch[i - 1] - 1), 'forward touch gesture must not jump backwards')
       const headingAfterTouch = await page.locator('#team-moment').boundingBox()
       writeFileSync(`${out}/touch-heading.json`, JSON.stringify({before:headingBeforeTouch,after:headingAfterTouch}))
-      assert(Math.abs(headingAfterTouch.y - headingBeforeTouch.y) < 2, 'team text must remain still during its reading interval')
-      const house = await page.locator('[data-home-section="founders"]').getAttribute('data-progress')
-      assert.equal(Number(house || 0), 0, 'house stays out while swiping through the reading interval')
+      // ohne Haltephase: die Überschrift läuft mit der Geste mit (nie gesperrt)
+      assert(headingAfterTouch.y < headingBeforeTouch.y - 50, 'team text scrolls with the finger (no lock)')
       await page.screenshot({ path: `${out}/Mobile-team-nach-wischen.jpg`, type: 'jpeg' })
       await jump(founders - vh * 0.5)
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 390, 'the growing house must not widen the viewport either')

@@ -1,3 +1,4 @@
+/* global window, document, scrollY, innerHeight -- Code in page.evaluate läuft im Browser */
 // Performance-Test Mobile: Hauptseiten mit echten Wischgesten (Touch, mit Schwung) von oben bis unten durchscrollen,
 // auf zwei Geräteprofilen mit vierfach gedrosselter CPU. Gemessen wird pro Seite:
 //   - Ruckler: Anteil der Frames über 33 ms, gezählt ab mehr als zwei Bildschirmtakten (über 34 ms; ein Frame von genau
