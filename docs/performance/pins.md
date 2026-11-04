@@ -34,7 +34,6 @@ Ergebnis: alle Seiten halten die Regeln ein.
 | --- | --- | --- | --- | --- |
 | / | Desktop | arrive-title (.arrive-stage.sticky) | sticky | 80 |
 | / | Desktop | services-title (.sticky.top-0) | sticky | 200 |
-| / | Desktop | team (.ht-plane) | sticky | 200 |
 | / | Desktop | footer (.ftr-img.photo) | sticky | 80 |
 | / | Desktop | hero-title (.hero-pin.relative) | GSAP-Pin | 200 |
 | /leistungen/ | Desktop | standard-title (.pr-stage) | sticky | 160 |
@@ -56,4 +55,3 @@ Ergebnis: alle Seiten halten die Regeln ein.
 | /einzugsgebiet/ | Mobile | footer (.ftr-img.photo) | sticky | 80 |
 | /ueber-uns/ | Mobile | about-moment (.arrive-stage.sticky) | sticky | 80 |
 | /kontakt/ | Mobile | footer (.ftr-img.photo) | sticky | 80 |
-
