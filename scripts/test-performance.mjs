@@ -1,4 +1,4 @@
-/* global window, document, scrollY, innerHeight -- Code in page.evaluate läuft im Browser */
+/* global window, document, scrollY, innerHeight, innerWidth -- Code in page.evaluate läuft im Browser */
 // Performance-Test Mobile: Hauptseiten mit echten Wischgesten (Touch, mit Schwung) von oben bis unten durchscrollen,
 // auf zwei Geräteprofilen mit vierfach gedrosselter CPU. Gemessen wird pro Seite:
 //   - Ruckler: Anteil der Frames über 33 ms, gezählt ab mehr als zwei Bildschirmtakten (über 34 ms; ein Frame von genau
@@ -131,27 +131,46 @@ async function runChromium() {
   return results
 }
 
+// Zeitgrenze für einzelne Aufrufe in die Seite: hängt ein Tab (keine Antwort mehr), meldet der Test das für diese
+// Seite, statt endlos zu warten
+const within = (p, ms, what) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(`${what}: keine Antwort nach ${ms / 1000} s`)), ms))])
+
 async function runWebkit() {
   const browser = await pw.webkit.launch()
   const ctx = await browser.newContext({ ...pw.devices['iPhone 13'], hasTouch: false, isMobile: false })
   const results = []
-  for (const path of pages) {
+  // REPEAT=n: jede Seite n-mal (zum Eingrenzen seltener Abstürze)
+  const runs = pages.flatMap((p) => Array.from({ length: Number(process.env.REPEAT || 1) }, () => p))
+  for (const path of runs) {
     const page = await ctx.newPage()
     const errors = []
+    // zuletzt gesehene Stelle (Scrollposition und Abschnitt in der Bildmitte), für die Meldung bei einem Absturz
+    let last = '(noch nicht gescrollt)'
     page.on('pageerror', (e) => errors.push(e.message))
     // Absturz des Tabs (auf dem iPhone: „Seite wurde neu geladen“) als Fehler dieser Seite melden, nicht den Lauf abbrechen
-    page.on('crash', () => errors.push('Seite abgestürzt'))
+    page.on('crash', () => errors.push(`Seite abgestürzt bei ${last}`))
     let atEnd = false
     let dead = 0
     try {
-      await page.goto(B + path, { waitUntil: 'load' })
+      await page.goto(B + path, { waitUntil: 'load', timeout: 45000 })
       await page.waitForTimeout(1500)
-      for (let i = 0; i < 200 && !atEnd; i++) {
-        const before = await page.evaluate(() => [scrollY, document.documentElement.scrollHeight - innerHeight])
-        await page.mouse.move(195, 420)
-        await page.mouse.wheel(0, 500)
+      const t0 = Date.now()
+      for (let i = 0; i < 200 && !atEnd && Date.now() - t0 < 150000; i++) {
+        const before = await within(page.evaluate(() => [scrollY, document.documentElement.scrollHeight - innerHeight]), 20000, 'Position lesen')
+        await within(page.mouse.move(195, 420), 20000, 'Maus')
+        await within(page.mouse.wheel(0, 500), 20000, 'Scrollrad')
         await page.waitForTimeout(300)
-        const after = await page.evaluate(() => [scrollY, document.documentElement.scrollHeight - innerHeight])
+        const after = await within(
+          page.evaluate(() => {
+            const e = document.elementFromPoint(innerWidth / 2, innerHeight / 2)
+            const sec = e?.closest('section, footer, [data-home-section]')
+            const name = sec ? sec.getAttribute('aria-labelledby') || sec.id || sec.tagName.toLowerCase() : '?'
+            return [scrollY, document.documentElement.scrollHeight - innerHeight, name]
+          }),
+          20000,
+          'Position lesen',
+        )
+        last = `${Math.round(after[0])} px (${after[2]})`
         atEnd = after[0] >= after[1] - 4
         if (after[0] - before[0] < 8 && !atEnd) dead++
       }
@@ -162,9 +181,9 @@ async function runWebkit() {
     r.ok = atEnd && dead === 0 && errors.length === 0
     results.push(r)
     console.log(`${r.ok ? '✓' : '✗'} WebKit ${path}: Ende ${atEnd ? 'erreicht' : 'NICHT erreicht'}, tote Gesten ${dead}${errors.length ? `, Fehler: ${errors[0].slice(0, 100)}` : ''}`)
-    await page.close().catch(() => {})
+    await within(page.close(), 10000, 'Tab schließen').catch(() => {})
   }
-  await browser.close()
+  await within(browser.close(), 20000, 'Browser schließen').catch(() => {})
   return results
 }
 

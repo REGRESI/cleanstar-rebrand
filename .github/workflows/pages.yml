@@ -44,6 +44,7 @@ jobs:
           npx playwright install --with-deps chromium webkit
           node scripts/test-deploy.mjs
       - name: WebKit-Rauchtest (Safari-Engine, iPhone 13) - Scrollen bis zum Ende, Pins, keine Skriptfehler
+        timeout-minutes: 20
         run: |
           python3 -m http.server 4177 --directory dist > /dev/null 2>&1 &
           sleep 2
@@ -157,6 +158,7 @@ jobs:
           node scripts/check-site.cjs
 
       - name: Live-Website in WebKit (Safari-Engine, iPhone 13) - alle sechs Hauptseiten bis zum Ende scrollen
+        timeout-minutes: 20
         if: steps.reach.outputs.ok == '1'
         run: |
           npx playwright install --with-deps webkit
