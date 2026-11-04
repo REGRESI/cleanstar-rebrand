@@ -75,8 +75,9 @@ export function Arrival({
       titleEl.current.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`
       // Erst am ruhenden Endpunkt stoppen: Kreismaske und Titelposition sind dann vollständig angekommen.
       // Hysteresis: viewport/scroll corrections near the reveal boundary must not re-arm the pen.
-      if (!active || t < 0.25) setPlay(false)
-      else if (t >= 0.999) setPlay(true)
+      if (!active || t < 0.1) setPlay(false)
+      // Überschrift schreibt sich schon, während der Kreis wächst (keine leere Kreisfläche)
+      else if (t >= 0.18) setPlay(true)
       // Satz und Bilder kommen schon, während der Kreis wächst (keine leere untere Hälfte); das kleine Bild schiebt
       // sich danach etwas über das große
       const c = span(t, 0.3, 0.58)

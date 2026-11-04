@@ -3642,9 +3642,9 @@ button:hover > .seal .seal-ring {
 
 /* Reading distance, not accelerated glyphs: the original pen and wave keep their timing. */
 @media(prefers-reduced-motion:no-preference) and (min-height:621px) {
- .js-motion .area-heading-read { min-height:80svh; padding-top:8svh; }
+ .js-motion .area-heading-read { min-height:55svh; padding-top:8svh; }
  .js-motion .area-heading-copy { position:sticky; top:12svh; padding-bottom:5svh; }
- .js-motion .plant-heading-read, .js-motion .ht-home .plant-heading-read { min-height:110svh; }
+ .js-motion .plant-heading-read, .js-motion .ht-home .plant-heading-read { min-height:90svh; }
  .js-motion .plant-heading-copy { position:sticky; top:14svh; padding-bottom:5svh; }
  .js-motion .arrive-run { height:180svh; }
 }
@@ -3841,5 +3841,14 @@ html { scrollbar-gutter:stable; }
   /* Papier-Reveal am Handy: Haltestrecke höchstens 150 svh */
   .js-motion .pr-run {
     height: 250svh;
+  }
+}
+/* Handy und Touch: ohne Unschärfe treten die Anliegen im Hintergrund weit zurück (sonst lägen lesbare Texte übereinander) */
+@media (max-width: 767px), (pointer: coarse) {
+  .fr-card:not(.is-focus) {
+    opacity: calc(var(--o) * 0.22) !important;
+  }
+  .services-label {
+    margin-top: 1.7em;
   }
 }

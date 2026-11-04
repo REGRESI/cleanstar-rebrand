@@ -48,10 +48,10 @@ export default function Home() {
       <Chunk>
         {/* Papier-Reveal: Die Ärgernisse sind das Blatt, darunter liegt fest das Büro am Morgen */}
         <HomeBlock id="problems-morning" transition="flow-color"><PaperReveal sheet={<ProblemSolution tone="paper" />} image="after-office" id="morning-title" word="Am Morgen" line="Alles bereit, bevor der Erste kommt." /></HomeBlock>
-        <HomeBlock id="team" transition="flow-color" outgoing reading><PlantMoment eyebrow="Ihr Team" id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." /></HomeBlock>
+        <HomeBlock id="team" transition="card-stack" flow outgoing reading><PlantMoment eyebrow="Ihr Team" id="team-moment" title="Ihr festes Team." text="Dieselben Gesichter, Abend für Abend. Bei Urlaub oder Krankheit übernimmt eine eingewiesene Vertretung." /></HomeBlock>
         <HomeBlock id="founders" transition="logo-house"><Founders /></HomeBlock>
         {hasProof() && <HomeBlock id="proof" transition="flow-color" outgoing><Proof /></HomeBlock>}
-        <HomeBlock id="process" transition={hasProof() ? "card-stack" : "flow-color"}><ProcessTimeline /></HomeBlock>
+        <HomeBlock id="process" transition="card-stack" flow><ProcessTimeline /></HomeBlock>
       </Chunk>
       <Chunk>
         <HomeBlock id="area" transition="clouds"><AreaTeaser moment={'Unser Zuhause:\ndie Ortenau.'} /></HomeBlock>
