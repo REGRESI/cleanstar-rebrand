@@ -1,0 +1,1 @@
+import{j as t,az as n,P as o}from"./app-DJKpxOkL.js";const a=["aspect-[4/3]","aspect-[4/5]","aspect-[1/1]"];function c({layers:i,className:r}){return t.jsx(n,{overlap:!0,className:r,items:i.map((s,e)=>({key:String(e),node:"id"in s?t.jsx(o,{id:s.id,aspect:a[e%3],sizes:"(min-width:1024px) 24vw, 70vw"}):t.jsx("div",{className:a[e%3],children:s.node})}))})}export{c as C};
