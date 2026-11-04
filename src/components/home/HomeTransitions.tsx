@@ -11,8 +11,9 @@ const animated = new Set<HomeTransition>(['card-stack', 'light-edge', 'logo-hous
  * The preceding surface rests with its last viewport visible. The next surface is revealed
  * in that same viewport, then rejoins normal flow. CSS reserves the overlap before hydration.
  */
-export function HomeBlock({ id, transition, outgoing = false, reading = false, children }: { id: string; transition?: HomeTransition; outgoing?: boolean; reading?: boolean; children: ReactNode }) {
-  return <div data-home-section={id} data-transition={transition} className={`ht-block${outgoing ? ' ht-hold' : ''}${reading ? ' ht-reading' : ''}${transition && animated.has(transition) ? ' ht-incoming' : ''}`}>
+/** flow: Übergang ohne Haltestrecke im normalen Seitenfluss (Kartenkante, kein Überlappen); höchstens 5 Pins je Seite */
+export function HomeBlock({ id, transition, outgoing = false, reading = false, flow = false, children }: { id: string; transition?: HomeTransition; outgoing?: boolean; reading?: boolean; flow?: boolean; children: ReactNode }) {
+  return <div data-home-section={id} data-transition={transition} data-flow={flow || undefined} className={`ht-block${outgoing ? ' ht-hold' : ''}${reading ? ' ht-reading' : ''}${transition && animated.has(transition) && !flow ? ' ht-incoming' : ''}`}>
     <div className="ht-plane">{children}</div>
     {outgoing && <div className="ht-tail" aria-hidden />}
     {transition === 'light-edge' && <div className="ht-glint" aria-hidden />}
@@ -34,7 +35,7 @@ export function HomeTransitions({ children }: { children: ReactNode }) {
       const stops: (() => void)[] = []
       blocks.forEach((block, i) => {
         const type = block.dataset.transition as HomeTransition
-        if (!animated.has(type) || window.matchMedia('(max-width: 767px)').matches) return
+        if (!animated.has(type) || block.hasAttribute('data-flow') || window.matchMedia('(max-width: 767px)').matches) return
         const plane = block.firstElementChild as HTMLElement
         const previous = blocks[i - 1]
         const old = previous?.firstElementChild as HTMLElement | undefined

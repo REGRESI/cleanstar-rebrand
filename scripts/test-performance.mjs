@@ -55,6 +55,7 @@ async function runChromium() {
       const vp = page.viewportSize()
       const gestures = []
       let dead = 0
+      const deadAt = []
       let atEnd = false
       // Pro Geste nur ein Aufruf in die Seite (jeder Aufruf kostet bei gedrosselter CPU selbst einen Frame): er setzt
       // eine Zeitmarke und liefert die Scrollposition, die zugleich der Endstand der vorigen Geste ist
@@ -75,7 +76,11 @@ async function runChromium() {
         await page.waitForTimeout(700)
         state = await mark()
         atEnd = state[0] >= state[1] - 4
-        if (state[0] - before[0] < 8 && !atEnd && before[0] < before[1] - 4) dead++
+        if (state[0] - before[0] < 8 && !atEnd && before[0] < before[1] - 4) {
+          dead++
+          // Was lag unter dem Finger? (für den Bericht: Schieberegler oder waagerechte Liste sind gewollt)
+          deadAt.push(await page.evaluate(([x, y]) => { const e = document.elementFromPoint(x, y); return `${e?.tagName.toLowerCase()}.${(e?.getAttribute('class') || '').split(' ').slice(0, 2).join('.')} bei ${Math.round(scrollY)}` }, [x, y0]))
+        }
       }
       // Ruhephase: Scrollposition darf sich ohne Geste nicht mehr ändern
       await page.waitForTimeout(3000)
@@ -109,12 +114,13 @@ async function runChromium() {
         longestTask: Math.max(0, ...perf.long),
         jumps,
         deadGestures: dead,
+        deadAt,
         errors: errors.length,
       }
       r.ok = r.reachedEnd && jank < LIMITS.jank && maxFrame <= LIMITS.maxFrame && r.longTasks === 0 && r.jumps === 0 && r.deadGestures === 0 && r.errors === 0
       results.push(r)
       console.log(
-        `${r.ok ? '✓' : '✗'} ${prof.name} ${path}: Ruckler ${r.jankPct} % (zwei Takte ${r.twoVsyncPct} %), längster Frame ${maxFrame} ms, Long Tasks >100 ms: ${r.longTasks} (längster ${r.longestTask} ms), Sprünge ${jumps}, tote Gesten ${dead}, Gesten ${r.gestures}${atEnd ? '' : ', Ende NICHT erreicht'}${errors.length ? `, Skriptfehler: ${errors[0].slice(0, 80)}` : ''}`,
+        `${r.ok ? '✓' : '✗'} ${prof.name} ${path}: Ruckler ${r.jankPct} % (zwei Takte ${r.twoVsyncPct} %), längster Frame ${maxFrame} ms, Long Tasks >100 ms: ${r.longTasks} (längster ${r.longestTask} ms), Sprünge ${jumps}, tote Gesten ${dead}${deadAt.length ? ` (${deadAt.join('; ')})` : ''}, Gesten ${r.gestures}${atEnd ? '' : ', Ende NICHT erreicht'}${errors.length ? `, Skriptfehler: ${errors[0].slice(0, 80)}` : ''}`,
       )
       await page.close()
     }

@@ -5,6 +5,7 @@ import { Picture } from '@/components/ui/Picture'
 import { Roll } from '@/components/ui/Roll'
 import { services } from '@/content/services'
 import { ScrollTrigger } from '@/lib/gsap'
+import { svh } from '@/lib/svh'
 import { prefersReducedMotion } from '@/lib/env'
 
 /**
@@ -39,10 +40,13 @@ export function ServicesHorizontal() {
     let stageHeight = stage.clientHeight
     let measuredWidth = window.innerWidth
     let dist = 0
+    // Scrollweg höchstens 200 svh (Regel docs/performance/pins.md); die Leistungen fahren dafür etwas schneller vorbei
+    let runLen = 0
     const measure = () => {
       if (window.innerWidth !== measuredWidth) { stageHeight = stage.clientHeight; measuredWidth = window.innerWidth }
       dist = Math.max(0, tr.scrollWidth - window.innerWidth)
-      el.style.height = `${stageHeight + dist}px`
+      runLen = Math.min(dist, svh() * 2)
+      el.style.height = `${stageHeight + runLen}px`
     }
     measure()
     const panels = Array.from(tr.querySelectorAll<HTMLElement>('[data-panel]'))
@@ -73,7 +77,7 @@ export function ServicesHorizontal() {
     const st = ScrollTrigger.create({
       trigger: el,
       start: 'top top',
-      end: () => `+=${dist}`,
+      end: () => `+=${runLen}`,
       invalidateOnRefresh: true,
       onRefreshInit: measure,
       onUpdate: (s) => apply(s.progress),

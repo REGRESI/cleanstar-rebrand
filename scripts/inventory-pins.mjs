@@ -1,5 +1,5 @@
-// Bestandsaufnahme der gepinnten bzw. scroll-gesteuerten Abschnitte: alle Elemente mit position: sticky, deren
-// Container länger als das Element ist (Haltestrecke), und alle GSAP-Pins (.pin-spacer). Haltestrecke in svh.
+// Bestandsaufnahme der gepinnten Abschnitte: alle Bühnen mit position: sticky (mindestens 80 % der Bildschirmhöhe),
+// deren Container länger als die Bühne ist (Haltestrecke), und alle GSAP-Pins (.pin-spacer). Haltestrecke in svh.
 // Aufruf: B=http://localhost:4177 node scripts/test-... (statischer Server auf dist) node scripts/inventory-pins.mjs
 // Ergebnis als Markdown-Tabelle auf der Konsole (für docs/performance/pins.md); mit CHECK=1 Prüfung der Regeln:
 // Mobile höchstens 3 Pins je Seite und je höchstens 150 svh, Desktop höchstens 5 je Seite und je höchstens 200 svh.
@@ -46,8 +46,9 @@ for (const [dev, opts, maxPins, maxRun] of devices) {
         const parent = e.parentElement
         if (!parent) continue
         const run = parent.getBoundingClientRect().height - e.getBoundingClientRect().height
-        // nur echte Haltestrecken (mindestens 10 % der Bildschirmhöhe), keine Kopfzeile
-        if (run < svh * 0.1 || e.closest('header')) continue
+        // nur echte Scroll-Stopper: eine Bühne, die (fast) den ganzen Bildschirm füllt und mindestens 10 % der
+        // Bildschirmhöhe stehen bleibt; mitlaufende Seitenspalten und Überschriften (kleiner) zählen nicht
+        if (run < svh * 0.1 || e.getBoundingClientRect().height < svh * 0.8 || e.closest('header')) continue
         out.push({ name: name(e), kind: 'sticky', run: Math.round((run / svh) * 100) })
       }
       for (const s of document.querySelectorAll('.pin-spacer')) {

@@ -3824,3 +3824,22 @@ html { scrollbar-gutter:stable; }
     height: 240svh;
   }
 }
+/* Handy: keine verschachtelten Scrollflächen in der Ortsliste (eine Wischgeste soll die Seite bewegen) */
+@media (max-width: 767px) {
+  .map-locations ul {
+    max-height: none;
+    overflow: visible;
+  }
+}
+/* Übergänge im Fluss (data-flow): Kartenkante ohne Haltestrecke, auch am Desktop */
+.ht-home .ht-block[data-flow][data-transition='card-stack'] > .ht-plane {
+  border-radius: 28px 28px 0 0;
+  overflow: clip;
+  box-shadow: 0 -24px 60px rgb(10 26 51 / 0.1);
+}
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  /* Papier-Reveal am Handy: Haltestrecke höchstens 150 svh */
+  .js-motion .pr-run {
+    height: 250svh;
+  }
+}

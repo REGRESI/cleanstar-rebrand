@@ -42,8 +42,8 @@ export default function Home() {
       <HomeBlock id="hero">{features.signatureScene ? <NightHero /> : <Hero />}</HomeBlock>
       <Chunk>
         <HomeBlock id="arrival" transition="circle-title"><Arrival /></HomeBlock>
-        <HomeBlock id="services" transition="horizontal-scroll" outgoing><ServicesHorizontal /></HomeBlock>
-        <HomeBlock id="cost" transition="card-stack"><CostTeaser /></HomeBlock>
+        <HomeBlock id="services" transition="horizontal-scroll"><ServicesHorizontal /></HomeBlock>
+        <HomeBlock id="cost" transition="card-stack" flow><CostTeaser /></HomeBlock>
       </Chunk>
       <Chunk>
         {/* Papier-Reveal: Die Ärgernisse sind das Blatt, darunter liegt fest das Büro am Morgen */}
@@ -54,9 +54,9 @@ export default function Home() {
         <HomeBlock id="process" transition={hasProof() ? "card-stack" : "flow-color"}><ProcessTimeline /></HomeBlock>
       </Chunk>
       <Chunk>
-        <HomeBlock id="area" transition="clouds" outgoing><AreaTeaser moment={'Unser Zuhause:\ndie Ortenau.'} /></HomeBlock>
-        <HomeBlock id="mappe" transition="growing-window" outgoing><MappeTeaser immersive /></HomeBlock>
-        <HomeBlock id="answer" transition="card-stack"><Answer question={answers.home.question} bottom="pb-4">
+        <HomeBlock id="area" transition="clouds"><AreaTeaser moment={'Unser Zuhause:\ndie Ortenau.'} /></HomeBlock>
+        <HomeBlock id="mappe" transition="growing-window" flow><MappeTeaser immersive /></HomeBlock>
+        <HomeBlock id="answer" transition="card-stack" flow><Answer question={answers.home.question} bottom="pb-4">
           {answers.home.text}
         </Answer></HomeBlock>
       </Chunk>
