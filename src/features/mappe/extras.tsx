@@ -5,7 +5,6 @@ import { zones, freqLabel } from '@/content/floorplan'
 import { EASE_CS_ARRAY } from '@/lib/ease'
 import { cn } from '@/lib/cn'
 import { mappeAsset } from './assets'
-import './hand.css'
 import { PAGE_H, PAGE_W, PageImg, Sheet, useMappe, usePageState, type PageProps } from './core'
 
 const h2 = 'text-[30px] leading-[1.08] font-medium tracking-[-0.03em]'

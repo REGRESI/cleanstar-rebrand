@@ -52,7 +52,16 @@ function Glyphs({ text, letterClass }: { text: string; letterClass: string }) {
 }
 
 /** Zeilennummer je Wort (--l) und Lage je Buchstabe in seiner Zeile (--x, 0 bis 1) */
+const marked = new WeakMap<Element, [width: number, lines: number]>()
+
 export function markGlyphLines(host: Element) {
+  // Zeilen nur einmal je Breite bestimmen: jedes erneute Hineinscrollen würde sonst alle Wörter messen und jeden
+  // Buchstaben neu beschreiben (am Handy ein spürbarer Stil-Neuaufbau mitten im Wischen)
+  const width = window.innerWidth
+  const prev = marked.get(host)
+  if (prev && prev[0] === width) return prev[1]
+  // Handy: keine Buchstaben-Welle (siehe .at-h .at-c in index.css), dort braucht es nur die Zeilennummer der Wörter
+  const perLetter = !window.matchMedia('(max-width: 767px), (pointer: coarse)').matches
   const words = host.querySelectorAll<HTMLElement>('.at-w')
   let top: number | null = null
   let line = -1
@@ -67,12 +76,15 @@ export function markGlyphLines(host: Element) {
     w.style.setProperty('--l', String(line))
     rows[line].push(w)
   })
-  for (const row of rows) {
-    const letters = row.flatMap((w) => Array.from(w.children) as HTMLElement[])
-    const n = Math.max(1, letters.length - 1)
-    letters.forEach((c, i) => c.style.setProperty('--x', (i / n).toFixed(3)))
-  }
-  return Math.max(1, rows.length)
+  if (perLetter)
+    for (const row of rows) {
+      const letters = row.flatMap((w) => Array.from(w.children) as HTMLElement[])
+      const n = Math.max(1, letters.length - 1)
+      letters.forEach((c, i) => c.style.setProperty('--x', (i / n).toFixed(3)))
+    }
+  const lines = Math.max(1, rows.length)
+  marked.set(host, [width, lines])
+  return lines
 }
 
 /** Dauer der Welle in ms für n Zeilen (muss zu den CSS-Werten passen, siehe .at-h in index.css) */
@@ -87,7 +99,7 @@ const timers = new WeakMap<HTMLElement, number>()
 export function playHeadline(el: HTMLElement, onDone?: () => void) {
   if (el.hasAttribute('data-at-done') || el.dataset.at === 'in') return
   const lines = markGlyphLines(el)
-  el.style.setProperty('--at-to', getComputedStyle(el).color)
+  if (!el.style.getPropertyValue('--at-to')) el.style.setProperty('--at-to', getComputedStyle(el).color)
   el.dataset.at = 'in'
   window.clearTimeout(timers.get(el))
   timers.set(el, window.setTimeout(() => onDone?.(), waveMs(lines) + 80))

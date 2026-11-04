@@ -15,6 +15,18 @@
   descent-override: 24.1%;
   line-gap-override: 0%;
 }
+/* Handschrift für den Notizzettel der Leistungsmappe und den Gründerbrief (Caveat, SIL Open Font License 1.1). Die
+   Schriftdatei lädt der Browser erst, wenn Text in Caveat erscheint; die Deklaration steht trotzdem schon hier, denn
+   eine erst später (mit dem Mappen-Code) eingefügte @font-face-Regel zwingt den Browser zu einem Neuaufbau des ganzen
+   Dokuments (am Handy ein spürbarer Hänger mitten im Wischen, ausgelöst schon durch das Vorladen beim Antippen eines
+   Links). */
+@font-face {
+  font-family: 'Caveat';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('../assets/fonts/caveat-latin-500.woff2') format('woff2');
+}
 /* Moment-Schrift (nur große Momente, siehe MomentHeading.tsx): Instrument Serif und Pinyon Script, beide SIL Open Font
    License 1.1, auf die nötigen Zeichen reduziert (Pinyon Script nur Großbuchstaben) */
 @font-face {
@@ -3850,5 +3862,87 @@ html { scrollbar-gutter:stable; }
   }
   .services-label {
     margin-top: 1.7em;
+  }
+}
+
+/* Handy und Touch: dieselben Bewegungen ohne filter und text-shadow in den Keyframes. Schon ein per !important
+   ausgeschalteter Filter in den Keyframes lässt den Browser jedes Wort bzw. jeden Buchstaben als eigene Ebene führen
+   (bei einer Überschrift bis zu 120 Ebenen, die bei jedem Bild übertragen werden). Ohne Filter laufen Verschiebung
+   und Deckkraft auf wenigen Ebenen. */
+@media (max-width: 767px), (pointer: coarse) {
+  .js-motion .at-h[data-at='in'] .at-w {
+    animation-name: at-rise-m;
+  }
+  .js-motion .at-h[data-at='out'] .at-w {
+    animation-name: at-fall-m;
+  }
+  .js-motion .moment[data-mo='on'] .mo-c {
+    animation-name: mo-in-m;
+  }
+  .js-motion .moment[data-mo='out'] .mo-c {
+    animation-name: mo-out-m;
+  }
+  .js-motion .moment[data-mo='out'] .moment-cap {
+    animation-name: mo-cap-out-m;
+  }
+  .js-motion .moment[data-mo='on']:not([data-pen]) .moment-cap {
+    animation-name: mo-cap-m;
+  }
+}
+@keyframes mo-cap-m {
+  0% {
+    opacity: 0;
+    clip-path: inset(-1.2em 100% -1.2em -1.2em);
+    color: #a8e0ff;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(-1.2em -1.2em -1.2em -1.2em);
+  }
+}
+@keyframes at-rise-m {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes at-fall-m {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes mo-in-m {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scaleY(1.9);
+    color: #d6f3ff;
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(2px) scaleY(1.12);
+    color: #78c6ff;
+  }
+}
+@keyframes mo-out-m {
+  to {
+    opacity: 0;
+    transform: translateY(-14px) scaleY(1.5);
+    color: #d6f3ff;
+  }
+}
+@keyframes mo-cap-out-m {
+  to {
+    opacity: 0;
   }
 }

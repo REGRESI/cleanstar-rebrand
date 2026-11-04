@@ -1,7 +1,6 @@
 import { Todo } from '@/components/ui/Todo'
 import { founderLetter } from '@/content/letter'
 import { company } from '@/content/company'
-import '@/features/mappe/hand.css'
 
 /**
  * „Ein Brief von uns“ (Über uns): kurzer Brief der drei Gründer als Karte mit weichem Schatten, große ruhige Schrift,
