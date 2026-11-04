@@ -78,6 +78,10 @@ folgenden Läufe lagen bei 93–95. Die Werte schwanken auf diesem Rechner um ±
   `test-arrival-water`).
 - **Doppeltes Bild**: Seitenende-Bild der Startseite war dasselbe wie das „Am Morgen“-Bild (Bildtest jetzt grün).
 
+- **Seitenwechsel aus der Ortsliste** (Einzugsgebiet, Desktop): Die Karte wurde per nativem `scrollIntoView` weich ins
+  Bild geholt, während Lenis lief; die Bewegung wirkte nach dem Seitenwechsel nach, die Ortsseite stand kurz bei
+  565–621 px statt oben. Jetzt über Lenis, und vor dem Seitenwechsel wird laufendes Scrollen beendet.
+
 ## Was am Handy vereinfacht wurde
 
 - **WebGL**: höchstens eine Szene (Hero-Staub nur am Desktop; Papierkante, Pflanzen und Wolken am Handy als feste
@@ -118,7 +122,7 @@ folgenden Läufe lagen bei 93–95. Die Werte schwanken auf diesem Rechner um ±
 | Übergänge (`test-transitions.mjs`, alle Seiten, Desktop + Mobile) | grün, 3398 Aufnahmen ohne leere Bildschirme oder Überschneidungen |
 | Lesestrecken (`test-home-reading.mjs`) | grün (an die Regeln ohne Haltephase angepasst) |
 | Abschnittsgrenzen (`check-home-boundaries.mjs`) | grün, CLS 0 |
-| Navigation (`test-navigation.mjs`) | siehe Abschlussmeldung |
+| Navigation (`test-navigation.mjs`, 53 Seiten, alle internen Links) | Mobile 2661/2661 grün; Desktop 2432/2441, die 9 Fehler lagen alle auf `/einzugsgebiet/` (Ortsliste der Karte, schon vorher 8 Fehler). Behoben, Nachlauf `/einzugsgebiet/` 124/124 grün |
 | Leistungsmappe (`test-mappe.mjs`) | grün, 147 Prüfungen |
 | Neuladen Scroll-Text (`test-reload.mjs`) | grün, 80 Läufe |
 | Bilder (`test-images.mjs`) | grün, 53 Seiten |
@@ -132,6 +136,7 @@ folgenden Läufe lagen bei 93–95. Die Werte schwanken auf diesem Rechner um ±
 - Lauf 113 brach einmal auf `/ueber-uns/` ab, weil der WebKit-Tab geschlossen wurde. Lauf 114 mit identischem App-Code
   lief grün; der Abbruch ließ sich nicht wiederholen. Damit ein solcher Absturz künftig als Fehler genau dieser Seite
   gemeldet wird statt den ganzen Test abzubrechen, fängt der WebKit-Test ihn jetzt ab.
+- Lauf 115: Live-Prüfung in WebKit (iPhone 13) auf allen sechs Hauptseiten grün (nach einem einmaligen 503 des GitHub-Pages-Servers für die frisch veröffentlichte CSS-Datei, wiederholt).
 - Neu: Nach jeder Veröffentlichung prüft der Workflow die **Live-Seite** zusätzlich in WebKit (iPhone 13) auf allen
   sechs Hauptseiten.
 
