@@ -1,6 +1,8 @@
 // Performance-Test Mobile: Hauptseiten mit echten Wischgesten (Touch, mit Schwung) von oben bis unten durchscrollen,
 // auf zwei Geräteprofilen mit vierfach gedrosselter CPU. Gemessen wird pro Seite:
-//   - Ruckler: Anteil der Frames über 33 ms und längster Frame (Ziel unter 5 %, kein Frame über 200 ms)
+//   - Ruckler: Anteil der Frames über 33 ms, gezählt ab mehr als zwei Bildschirmtakten (über 34 ms; ein Frame von genau
+//     zwei Takten misst 33,3 ms) und längster Frame (Ziel unter 5 %, kein Frame über 200 ms). Zusätzlich ausgewiesen:
+//     Anteil der Frames mit genau zwei Takten (twoVsyncPct), nur zur Information
 //   - Long Tasks über 100 ms während des Scrollens (Ziel: keine)
 //   - Sprünge: Scrollposition ändert sich ohne Geste (später als 2,5 s nach der letzten Geste) oder um mehr als
 //     einen Bildschirm in einem Frame (Ziel: nie)
@@ -81,7 +83,8 @@ async function runChromium() {
       for (let i = 1; i < perf.marks.length; i++) gestures.push([perf.marks[i - 1], perf.marks[i]])
       await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 })
       const frames = perf.frames.filter((d) => d > 0 && d < 5000)
-      const jank = frames.filter((d) => d > 33).length / Math.max(1, frames.length)
+      const jank = frames.filter((d) => d > 34).length / Math.max(1, frames.length)
+      const two = frames.filter((d) => d > 20 && d <= 34).length / Math.max(1, frames.length)
       const maxFrame = Math.round(Math.max(0, ...frames))
       // Sprünge: Änderung später als 2,5 s nach der letzten Geste, oder mehr als ein Bildschirm in einem Frame
       let jumps = 0
@@ -100,6 +103,7 @@ async function runChromium() {
         gestures: gestures.length,
         reachedEnd: atEnd,
         jankPct: +(jank * 100).toFixed(1),
+        twoVsyncPct: +(two * 100).toFixed(1),
         maxFrame,
         longTasks: perf.long.filter((d) => d > LIMITS.longTask).length,
         longestTask: Math.max(0, ...perf.long),
@@ -110,7 +114,7 @@ async function runChromium() {
       r.ok = r.reachedEnd && jank < LIMITS.jank && maxFrame <= LIMITS.maxFrame && r.longTasks === 0 && r.jumps === 0 && r.deadGestures === 0 && r.errors === 0
       results.push(r)
       console.log(
-        `${r.ok ? '✓' : '✗'} ${prof.name} ${path}: Ruckler ${r.jankPct} %, längster Frame ${maxFrame} ms, Long Tasks >100 ms: ${r.longTasks} (längster ${r.longestTask} ms), Sprünge ${jumps}, tote Gesten ${dead}, Gesten ${r.gestures}${atEnd ? '' : ', Ende NICHT erreicht'}${errors.length ? `, Skriptfehler: ${errors[0].slice(0, 80)}` : ''}`,
+        `${r.ok ? '✓' : '✗'} ${prof.name} ${path}: Ruckler ${r.jankPct} % (zwei Takte ${r.twoVsyncPct} %), längster Frame ${maxFrame} ms, Long Tasks >100 ms: ${r.longTasks} (längster ${r.longestTask} ms), Sprünge ${jumps}, tote Gesten ${dead}, Gesten ${r.gestures}${atEnd ? '' : ', Ende NICHT erreicht'}${errors.length ? `, Skriptfehler: ${errors[0].slice(0, 80)}` : ''}`,
       )
       await page.close()
     }

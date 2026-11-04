@@ -43,6 +43,11 @@ jobs:
           npm i --no-save playwright@1.56.1
           npx playwright install --with-deps chromium webkit
           node scripts/test-deploy.mjs
+      - name: WebKit-Rauchtest (Safari-Engine, iPhone 13) - Scrollen bis zum Ende, Pins, keine Skriptfehler
+        run: |
+          python3 -m http.server 4177 --directory dist > /dev/null 2>&1 &
+          sleep 2
+          ENGINE=webkit B=http://localhost:4177 node scripts/test-performance.mjs
 
       - name: Prüfen, dass Domain-Datei dabei ist und nichts gesperrt ist
         run: |
