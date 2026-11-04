@@ -124,9 +124,9 @@ export function MomentHeading({
     controls.current = { show, hide }
     if (play !== undefined) return stop
     // bei jedem Durchqueren: hinein erscheinen, hinaus (in beide Richtungen) rückwärts verschwinden
-    // Start, sobald die Überschrift zu rund 30 % im Bild ist (Oberkante bei 70 % der Höhe)
+    // Start, sobald die Überschrift bzw. ihre Lese-Strecke ins Bild kommt (Oberkante bei 88 % der Höhe, die Überschrift ist dann zu rund 30 % sichtbar)
     // In einer Lese-Strecke mit klebender Überschrift gilt die Strecke als Bereich (die Überschrift selbst steht still)
-    const off = replay(el.closest('.area-heading-read, .plant-heading-read') || el, show, hide, { start: 'top 70%', end: 'bottom -5%' })
+    const off = replay(el.closest('.area-heading-read, .plant-heading-read') || el, show, hide, { start: 'top 88%', end: 'bottom -5%' })
     return () => {
       stop()
       off()

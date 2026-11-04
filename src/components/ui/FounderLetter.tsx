@@ -11,7 +11,7 @@ export function FounderLetter() {
   const names = company.founders.map((f) => f.name).filter(Boolean) as string[]
 
   return (
-    <section className="section bg-surface" aria-labelledby="letter-title">
+    <section className="section bg-surface lg:pb-24" aria-labelledby="letter-title">
       <div className="container-site">
         <div className="card-shadow mx-auto max-w-[46rem] rounded-[10px] bg-paper px-6 py-12 sm:px-14 sm:py-16 lg:px-20 lg:py-20">
           <div className="flex items-baseline justify-between gap-4">

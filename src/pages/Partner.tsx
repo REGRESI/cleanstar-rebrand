@@ -179,7 +179,7 @@ export default function Partner() {
         </section>
       </Chunk>
       <Chunk>
-        <section id="bewerbung" className="section scroll-mt-24" aria-labelledby="apply-title">
+        <section id="bewerbung" className="section scroll-mt-24 lg:pb-24" aria-labelledby="apply-title">
           <div className="container-site grid-site gap-y-14">
             <span aria-hidden className="rule col-span-12" />
             <div className="col-span-12 lg:col-span-4">
@@ -235,7 +235,7 @@ export default function Partner() {
       </Chunk>
       <Chunk>
         <FaqBlock
-          className="section bg-surface"
+          className="section bg-surface lg:pb-24"
           label="Partner-FAQ"
           title="Ehrliche Antworten auf die wichtigsten Fragen."
           id="pfaq-title"

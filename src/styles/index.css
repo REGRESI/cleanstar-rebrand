@@ -3642,9 +3642,9 @@ button:hover > .seal .seal-ring {
 
 /* Reading distance, not accelerated glyphs: the original pen and wave keep their timing. */
 @media(prefers-reduced-motion:no-preference) and (min-height:621px) {
- .js-motion .area-heading-read { min-height:55svh; padding-top:8svh; }
+ .js-motion .area-heading-read { min-height:38svh; padding-top:8svh; }
  .js-motion .area-heading-copy { position:sticky; top:12svh; padding-bottom:5svh; }
- .js-motion .plant-heading-read, .js-motion .ht-home .plant-heading-read { min-height:90svh; }
+ .js-motion .plant-heading-read, .js-motion .ht-home .plant-heading-read { min-height:75svh; }
  .js-motion .plant-heading-copy { position:sticky; top:14svh; padding-bottom:5svh; }
  .js-motion .arrive-run { height:180svh; }
 }
