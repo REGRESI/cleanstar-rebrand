@@ -6,6 +6,7 @@ import { proj, OUTLINE, RHINE, toPath, VB } from './schematic'
 import type { MapApi } from './LiveMap'
 import { prefersReducedMotion } from '@/lib/env'
 import { isTouchPrimary } from '@/lib/deviceClass'
+import { glideToCenter, jumpTo } from '@/lib/smooth-scroll'
 
 const LiveMap = lazy(() => import('./LiveMap'))
 
@@ -65,7 +66,11 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
 
   const open = (p: Location) => {
     // Orte mit eigener Seite öffnen diese; die übrigen zeigen nach dem Flug Name und Fahrzeit in der Kartenmitte
-    if (p.page) return navigate(`/einzugsgebiet/${p.slug}`)
+    // eine noch laufende weiche Scrollbewegung beenden, sonst trüge sie die neue Seite kurz nach unten
+    if (p.page) {
+      jumpTo(window.scrollY)
+      return navigate(`/einzugsgebiet/${p.slug}`)
+    }
     const r = frame.current?.getBoundingClientRect()
     setActive({ p, xy: r ? [r.width / 2, r.height / 2] : null })
   }
@@ -172,7 +177,7 @@ export function AreaMap({ className, still }: { className?: string; /** Platzhal
               // Karte erst ins Bild holen, wenn sie kaum sichtbar ist; der Flug startet danach
               const r = frame.current?.getBoundingClientRect()
               const visible = r ? Math.min(r.bottom, innerHeight) - Math.max(r.top, 0) > r.height * 0.92 : true
-              if (!visible) frame.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+              if (!visible && frame.current) glideToCenter(frame.current)
               window.setTimeout(() => api.current?.fly(l), visible ? 0 : 700)
               return true
             }

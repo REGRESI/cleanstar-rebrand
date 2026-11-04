@@ -132,11 +132,12 @@ async function runDevice(browser, label, opts) {
           )
         }
         if (!clicked) continue
-        // Ortslinks der Karte wechseln erst nach dem Vogelflug die Seite (bis etwa 2,5 s)
+        // Ortslinks der Karte wechseln erst nach dem Vogelflug die Seite (Karte ins Bild holen 0,7 s, Flug 2,7 s,
+        // Ankunft; ohne Grafikkarte im Testbrowser auch länger), daher bis zu 7 s warten
         if (norm(l.href.split('?')[0]) !== norm(src)) {
           await Promise.race([
-            page.waitForURL((u) => norm(u.pathname) !== norm(src), { timeout: 4000 }),
-            page.locator('[role=dialog]').first().waitFor({ timeout: 4000 }),
+            page.waitForURL((u) => norm(u.pathname) !== norm(src), { timeout: 7000 }),
+            page.locator('[role=dialog]').first().waitFor({ timeout: 7000 }),
           ]).catch(() => {})
           await page.waitForLoadState('domcontentloaded')
           // Gemessen wird ab dem Moment, in dem die neue Seite aufgebaut ist (bis dahin zeigt der Browser die alte Seite)

@@ -91,3 +91,15 @@ export function scrollToId(id: string) {
   if (lenis) lenis.scrollTo(el, { offset: -96 })
   else el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
 }
+
+/**
+ * Element weich in die Bildmitte holen, über Lenis, wenn es läuft (ein natives scrollIntoView mit smooth liefe sonst
+ * neben Lenis her und wirkte nach einem Seitenwechsel noch nach: die neue Seite stünde kurz nicht oben).
+ */
+export function glideToCenter(el: HTMLElement, duration = 0.7) {
+  const r = el.getBoundingClientRect()
+  const offset = -Math.max(0, (window.innerHeight - r.height) / 2)
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (lenis) lenis.scrollTo(el, { offset, duration, immediate: reduce, force: true })
+  else window.scrollTo({ top: r.top + window.scrollY + offset, behavior: (reduce ? 'instant' : 'smooth') as ScrollBehavior })
+}
