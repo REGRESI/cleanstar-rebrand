@@ -33,19 +33,25 @@ function Row({ i, problem, solution, light }: { i: number; problem: string; solu
     }
     const edge = el.querySelector<HTMLElement>('.ps-edge')
     let width = el.querySelector<HTMLElement>('.ps-problem')?.clientWidth ?? 0
-    // Handy und Touch: nicht je Frame neu zeichnen (Maske und Durchstreichung), sondern einmal umschalten
-    const coarse = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches
-    let lastStep = -1
+    // Handy und Touch: zeitbasiert statt an die Scrollposition gekoppelt. Sobald die Zeile zur Hälfte sichtbar ist,
+    // wird sie durchgestrichen (auch bei schnellem Wischen zuverlässig); zurück erst, wenn sie unten wieder hinausläuft
+    if (window.matchMedia('(max-width: 767px), (pointer: coarse)').matches) {
+      const io = new IntersectionObserver(
+        ([e]) => {
+          if (e.intersectionRatio >= 0.5) {
+            el.style.setProperty('--wt', '1')
+            setGo(true)
+          } else if (!e.isIntersecting && e.boundingClientRect.top > 0) {
+            el.style.setProperty('--wt', '0')
+            setGo(false)
+          }
+        },
+        { threshold: [0, 0.5] },
+      )
+      io.observe(el)
+      return () => io.disconnect()
+    }
     const apply = (p: number) => {
-      if (coarse) {
-        const step = p > 0.5 ? 1 : 0
-        if (step !== lastStep) {
-          lastStep = step
-          el.style.setProperty('--w', String(step))
-        }
-        setGo(p > 0.3)
-        return
-      }
       el.style.setProperty('--w', p.toFixed(3))
       if (edge) edge.style.transform = `translate3d(${(p * width).toFixed(2)}px,0,0)`
       setGo(p > 0.3)

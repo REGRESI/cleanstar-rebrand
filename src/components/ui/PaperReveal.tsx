@@ -1,5 +1,5 @@
 import { whenNear } from '@/lib/whenNear'
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Picture } from './Picture'
 import type { ImageId } from '@/content/images'
 import { ScrollTrigger } from '@/lib/gsap'
@@ -20,6 +20,39 @@ export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode
   const run = useRef<HTMLDivElement>(null)
   const text = useRef<HTMLDivElement>(null)
   const gl = useRef<HTMLCanvasElement>(null)
+  const seqBox = useRef<HTMLDivElement>(null)
+  // Handy (ohne WebGL-Kante): vorberechnete Kantenformen (scripts/deko/papierkante-serie.py) mit Faserrand und
+  // Schatten, beim Scrollen überblendet; die Form wandert dadurch wie am Desktop
+  const [seq, setSeq] = useState(false)
+  useEffect(() => {
+    if (prefersReducedMotion() || !document.documentElement.classList.contains('js-motion') || effectTier() === 'full') return
+    setSeq(true)
+  }, [])
+  useEffect(() => {
+    const box = seqBox.current
+    if (!seq || !box) return
+    const frames = Array.from(box.querySelectorAll<HTMLElement>('img'))
+    const n = frames.length
+    let last = -1
+    const apply = (p: number) => {
+      const f = p * (n - 1)
+      const i = Math.min(n - 2, Math.floor(f))
+      const k = Math.round((f - i) * 20) / 20
+      const key = i * 100 + k * 20
+      if (key === last) return
+      last = key
+      // das aktuelle Bild bleibt deckend, das nächste (im DOM darüber) blendet ein; so wird das Papier nie durchscheinend
+      frames.forEach((im, j) => (im.style.opacity = j === i ? '1' : j === i + 1 ? String(k) : '0'))
+    }
+    // vom Erscheinen der Kante unten bis zu ihrem Verschwinden oben
+    const st = ScrollTrigger.create({ trigger: box, start: 'top bottom', end: 'top top', onUpdate: (x) => apply(x.progress), onRefresh: (x) => apply(x.progress) })
+    apply(st.progress)
+    box.closest('.pr')?.setAttribute('data-seq', '')
+    return () => {
+      st.kill()
+      box.closest('.pr')?.removeAttribute('data-seq')
+    }
+  }, [seq])
   // lebende Kante (WebGL, eigener Chunk); bis sie steht und ohne WebGL bleibt die feste Kante als Bild
   useEffect(() => {
     const cv = gl.current
@@ -73,6 +106,13 @@ export function PaperReveal({ sheet, image, word, line, id }: { sheet: ReactNode
       <div className="pr-sheet">
         {sheet}
         <canvas ref={gl} aria-hidden className="pr-gl" />
+        {seq && (
+          <div ref={seqBox} aria-hidden className="pr-seq">
+            {Array.from({ length: 10 }, (_, i) => (
+              <img key={i} src={`/images/deko/papierkante-mobil/kante-${String(i).padStart(2, '0')}.webp`} width={1200} height={297} alt="" decoding="async" style={{ opacity: i === 0 ? 1 : 0 }} />
+            ))}
+          </div>
+        )}
         <div aria-hidden className="pr-edge">
           <picture>
             <source type="image/avif" srcSet="/images/deko/papierkante-1920.avif 1920w, /images/deko/papierkante-3840.avif 3840w" sizes="130vw" />

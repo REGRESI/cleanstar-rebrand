@@ -327,6 +327,19 @@ export default function LiveMap({
       },
     })
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right')
+    // Handy: Quellenangabe zugeklappt starten (Knopf „i“ öffnet sie); aufgeklappt wuchs sie beim Laden der Daten nach oben
+    // und verschob die Kartenelemente (Layout-Verschiebung)
+    // MapLibre klappt sie von selbst auf, sobald der Text da ist; dieses eine automatische Aufklappen wird zurückgenommen
+    const attrib = small ? box.current.querySelector<HTMLElement>('.maplibregl-ctrl-attrib') : null
+    let attribObs: MutationObserver | null = null
+    if (attrib) {
+      attribObs = new MutationObserver(() => {
+        if (!attrib.classList.contains('maplibregl-compact-show')) return
+        attrib.classList.remove('maplibregl-compact-show')
+        attribObs?.disconnect()
+      })
+      attribObs.observe(attrib, { attributes: true, attributeFilter: ['class'] })
+    }
     // Echtes 3D-Gelände (leicht überhöht, damit Schwarzwald und Rheinebene lesbar werden) und ein ruhiger Himmel am Horizont.
     // Ohne Grafikhardware (Software-Rendering) nur die Schummerung: 3D-Gelände wäre dort zu langsam
     map.once('style.load', () => {
@@ -376,7 +389,22 @@ export default function LiveMap({
       map.getCanvas().style.cursor = ''
       onHover(null, null)
     })
+    // Touch: jeder Ort hat eine Trefferfläche von mindestens 44 × 44 px (der nächste Ort im Umkreis von 22 px zählt);
+    // mit Maus bleibt der Treffer auf dem Punkt selbst
+    const coarse = window.matchMedia('(pointer: coarse)').matches
+    map.on('click', (e) => {
+      if (!coarse) return
+      let best: Place | null = null
+      let bestD = 22
+      for (const p of places) {
+        const [x, y] = xy(p)
+        const d = Math.hypot(x - e.point.x, y - e.point.y)
+        if (d <= bestD) ((best = p), (bestD = d))
+      }
+      if (best) fly(best)
+    })
     map.on('click', 'places', (e) => {
+      if (coarse) return
       const p = places.find((x) => x.slug === e.features?.[0]?.properties?.slug)
       if (p) fly(p)
     })
@@ -526,6 +554,7 @@ export default function LiveMap({
       stop?.()
       api.current = null
       labels.forEach((m) => m.remove())
+      attribObs?.disconnect()
       map.remove()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

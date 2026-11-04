@@ -11,9 +11,9 @@
 // 4. Moment-Überschriften (je Seite einmal): Die Tinte des Schreibschrift-Großbuchstabens darf keinem anderen Buchstaben
 //    näher als 0,08 em kommen. Pixelgenau: Großbuchstabe und übrige Buchstaben getrennt gezeichnet, Tinte des
 //    Großbuchstabens um 0,08 em verbreitert, gemeinsame Pixel zählen als Überschneidung.
-// 5. Leere Fläche (nur Desktop): Bildschirm in 32 × 20 Kacheln (je etwa 45 px); eine Kachel ist leer, wenn sie praktisch
+// 5. Leere Fläche (Desktop über 40 %, Mobile über 35 %): Bildschirm in 32 × 20 Kacheln (je etwa 45 px); eine Kachel ist leer, wenn sie praktisch
 //    einfarbig ist und kein Inhalt näher als zwei Kacheln liegt (normaler Abstand um Inhalte zählt nicht). Mehr als
-//    40 % leere Fläche gelten als Fehler.
+//    40 % (Desktop) bzw. 35 % (Mobile) leere Fläche gelten als Fehler.
 // Fehlerbilder: docs/review-reparatur/fehler/
 //
 // Aufruf: npm run build && node scripts/... (statischer Server auf dist), dann
@@ -145,6 +145,43 @@ const textBoxes = () => {
   }
   // Paare prüfen (Elemente in Vorfahr-Beziehung sind gewollt verschachtelt)
   const bad = []
+  // Pflanzen (Deko-Bilder in den Ecken) dürfen keinen Text überdecken: an der Überschneidung mit einem Text werden einige
+  // Punkte im Bild auf Deckkraft geprüft (die Bildrechtecke sind großteils durchsichtig)
+  window.__plantAlpha = window.__plantAlpha || new Map()
+  for (const img of document.querySelectorAll('.plant img')) {
+    if (!img.naturalWidth || !shown(img)) continue
+    const pr = img.getBoundingClientRect()
+    if (pr.bottom < 0 || pr.top > vh) continue
+    let data = window.__plantAlpha.get(img.currentSrc)
+    if (!data) {
+      const cv = document.createElement('canvas')
+      cv.width = 200
+      cv.height = Math.round((200 * img.naturalHeight) / img.naturalWidth)
+      const g = cv.getContext('2d')
+      g.drawImage(img, 0, 0, cv.width, cv.height)
+      try {
+        data = { w: cv.width, h: cv.height, a: g.getImageData(0, 0, cv.width, cv.height).data }
+      } catch {
+        continue
+      }
+      window.__plantAlpha.set(img.currentSrc, data)
+    }
+    // Spiegelung bzw. Drehung der Pflanze bleibt unberücksichtigt (nur leichte Bewegung)
+    for (const t of out) {
+      const ix0 = Math.max(t.x, pr.left), ix1 = Math.min(t.x + t.w, pr.right)
+      const iy0 = Math.max(t.y, pr.top), iy1 = Math.min(t.y + t.h, pr.bottom)
+      if (ix1 - ix0 < 3 || iy1 - iy0 < 3) continue
+      let hits = 0
+      for (let k = 0; k < 9; k++) {
+        const x = ix0 + ((k % 3) + 0.5) * ((ix1 - ix0) / 3)
+        const y = iy0 + (Math.floor(k / 3) + 0.5) * ((iy1 - iy0) / 3)
+        const u = Math.floor(((x - pr.left) / pr.width) * data.w)
+        const v = Math.floor(((y - pr.top) / pr.height) * data.h)
+        if (data.a[(v * data.w + u) * 4 + 3] > 60) hits++
+      }
+      if (hits >= 2) bad.push(`Pflanze über „${t.label}“`)
+    }
+  }
   for (let i = 0; i < out.length; i++)
     for (let j = i + 1; j < out.length; j++) {
       const a = out[i]
@@ -310,10 +347,12 @@ for (const [dev, opts] of devices) {
       shots++
       const e = await emptiness(png)
       const overlaps = await page.evaluate(textBoxes)
-      const blank = dev === 'Desktop' ? await emptyShare(png) : 0
+      // Leere Fläche: Desktop über 40 %, Mobile (390 px) über 35 % eines Bildschirms
+      const blank = await emptyShare(png)
+      const blankMax = dev === 'Desktop' ? 0.4 : 0.35
       // A deliberately held reading scene is not an unfilled section. Its text, two
       // loaded motifs and full viewport must all be present; blank/overlap checks still run.
-      const readingScene = blank > 0.4 && await page.evaluate(() => {
+      const readingScene = blank > blankMax && await page.evaluate(() => {
         const host = document.querySelector('.ht-reading')
         const plane = host?.querySelector('.ht-plane')
         const title = host?.querySelector('.moment[data-mo="done"]')
@@ -322,7 +361,7 @@ for (const [dev, opts] of devices) {
         const box = plane.getBoundingClientRect(), h = title.getBoundingClientRect(), p = lead.getBoundingClientRect()
         return box.top <= 1 && box.bottom >= innerHeight - 1 && h.top > 0 && h.bottom < innerHeight && p.top > h.bottom && p.bottom < innerHeight && [...host.querySelectorAll('.plant img')].filter(img => img.naturalWidth > 0).length === 2
       })
-      const unfilled = blank > 0.4 && !readingScene
+      const unfilled = blank > blankMax && !readingScene
       const name = `${dev}-${path.replace(/\//g, '_') || 'start'}-${String(y).padStart(6, '0')}`
       if (e.empty || overlaps.length || unfilled) {
         failures++

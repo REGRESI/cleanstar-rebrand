@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { useCallbackRequest } from '@/features/callback/Callback'
@@ -15,56 +14,16 @@ export function MobileBar() {
   const partner = useLocation().pathname.startsWith('/partner')
   // Auf der Startseite erst nach dem Hero-Einstieg zeigen (kein doppelter Call-to-Action)
   const heroVisible = useHeroVisible()
-  // Über dunklen Abschnitten dunkles Glas, sonst wirkt die helle Leiste dort grau
-  const bar = useRef<HTMLDivElement>(null)
-  const [dark, setDark] = useState(false)
-  // Ohne Abfrage je Scroll-Frame (elementsFromPoint erzwingt Layout): ein IntersectionObserver beobachtet die dunklen
-  // Abschnitte in einem schmalen Streifen auf Höhe der Leiste
-  const { pathname } = useLocation()
-  useEffect(() => {
-    const under = new Set<Element>()
-    let io: IntersectionObserver | null = null
-    const setup = () => {
-      io?.disconnect()
-      under.clear()
-      io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (e.isIntersecting) under.add(e.target)
-            else under.delete(e.target)
-          }
-          setDark(under.size > 0)
-        },
-        { rootMargin: `-${Math.max(0, window.innerHeight - 30)}px 0px -26px 0px` },
-      )
-      document.querySelectorAll('main .on-dark, footer .on-dark, footer.on-dark').forEach((n) => io!.observe(n))
-    }
-    // nach dem Aufbau der Seite (nachgeladene Abschnitte) einmal neu einsammeln
-    setup()
-    const t = window.setTimeout(setup, 1500)
-    let rt = 0
-    const onResize = () => {
-      window.clearTimeout(rt)
-      rt = window.setTimeout(setup, 300)
-    }
-    addEventListener('resize', onResize)
-    return () => {
-      io?.disconnect()
-      window.clearTimeout(t)
-      window.clearTimeout(rt)
-      removeEventListener('resize', onResize)
-    }
-  }, [pathname])
+  // Immer dieselbe deckende helle Leiste: keine Umschaltung je nach Abschnitt darunter (über hellen Bildteilen dunkler
+  // Abschnitte war die helle Schrift sonst unsichtbar)
   if (isOpen || callback.isOpen) return null
   return (
     <div
-      ref={bar}
-      data-dark={dark || undefined}
       aria-hidden={heroVisible || undefined}
       inert={heroVisible}
       style={heroVisible ? { transform: 'translate3d(0,100%,0)' } : undefined}
       className={cn(
-        'glass mobile-bar fixed inset-x-0 [view-transition-name:mobile-bar] bottom-0 z-40 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-[transform,opacity] duration-500 ease-cs lg:hidden',
+        'mobile-bar fixed inset-x-0 [view-transition-name:mobile-bar] bottom-0 z-40 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-[transform,opacity] duration-500 ease-cs lg:hidden',
         heroVisible && 'pointer-events-none opacity-0',
       )}
     >

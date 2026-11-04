@@ -1114,25 +1114,10 @@ footer[data-no-top] {
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.85);
   }
 }
-/* Handy-Leiste über dunklen Abschnitten: dunkles Glas mit heller Schrift */
-.mobile-bar[data-dark] {
-  background-color: var(--color-night);
-  border-top-color: var(--color-line-dark);
-}
-.mobile-bar[data-dark] > div {
-  --tw-divide-opacity: 1;
-}
-.mobile-bar[data-dark] > div > * {
-  border-color: var(--color-line-dark);
-}
-.mobile-bar[data-dark] :is(a, button):not(.bg-blue) {
-  color: var(--color-paper);
-}
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .mobile-bar[data-dark] {
-    background-color: rgb(10 26 51 / 0.74);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
-  }
+/* Handy-Leiste: immer deckend hell (keine Umschaltung je nach Abschnitt darunter) */
+.mobile-bar {
+  background-color: var(--color-paper);
+  box-shadow: 0 -8px 20px -14px rgb(10 26 51 / 0.35);
 }
 /* Lichtreflexion: ein weicher, heller Streifen, der beim Scrollen langsam durch das Glas wandert */
 
@@ -2732,15 +2717,6 @@ footer[data-no-top] {
 .cc-gl {
   display: none;
 }
-.cc-space {
-  display: none;
-}
-@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
-  .js-motion .cc-space {
-    display: block;
-    height: 58svh;
-  }
-}
 @media (prefers-reduced-motion: no-preference) {
   .js-motion .cc-gl {
     display: block;
@@ -3944,5 +3920,108 @@ html { scrollbar-gutter:stable; }
 @keyframes mo-cap-out-m {
   to {
     opacity: 0;
+  }
+}
+
+/* Karte auf Touch: ein Finger scrollt die Seite, zwei Finger bewegen und zoomen die Karte (cooperativeGestures), ohne
+   eingeblendeten Hinweis darüber */
+@media (pointer: coarse) {
+  .maplibregl-cooperative-gesture-screen {
+    display: none !important;
+  }
+}
+
+/* Die vier Ärgernisse auf Handy und Touch: zeitbasierter Wisch (ProblemSolution.tsx setzt --wt auf 0 oder 1, die
+   registrierte Eigenschaft läuft weich; --w folgt ihr) */
+@property --wt {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+@media (max-width: 767px), (pointer: coarse) {
+  .ps-row {
+    --w: var(--wt);
+    transition: --wt 0.75s cubic-bezier(0.3, 0.6, 0.2, 1);
+  }
+}
+
+/* Handy: Pflanzen-Abschnitt („Ihr festes Team.“). Pflanzen kleiner (35 % der Breite) in den Ecken, oben rechts über
+   dem Text, unten links darunter; der Text bekommt oben und unten den Platz der Pflanzen und seitlich Abstand, damit
+   nichts überdeckt wird. Der Blauschimmer läuft unten weich aus (sonst harte Kante zum nächsten Abschnitt). */
+@media (max-width: 767px) {
+  .plant-moment .plant-a {
+    top: -0.75rem;
+    right: -2vw;
+    width: 35vw;
+  }
+  .plant-moment .plant-b {
+    left: -2vw;
+    bottom: 0;
+    width: 35vw;
+  }
+  /* stärker als .js-motion .ht-home .plant-heading-read (Lese-Abschnitte ohne Abstand) */
+  section.plant-moment > .plant-heading-read.container-site {
+    padding-top: calc(52.5vw - 0.25rem);
+    padding-bottom: calc(32vw + 1.25rem);
+    padding-inline: 1.5rem;
+  }
+  .plant-moment .moment-glow {
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+}
+
+/* Handy: Kartenkante der Übergänge im Fluss nur als feine Linie mit kaum sichtbarem Schatten (der breite graue
+   Schattenstreifen über die ganze Breite wirkte wie ein Fehler) */
+@media (max-width: 767px) {
+  .ht-home .ht-block[data-flow][data-transition='card-stack'] > .ht-plane {
+    box-shadow: 0 -1px 0 rgb(10 26 51 / 0.06), 0 -10px 16px -12px rgb(10 26 51 / 0.12);
+  }
+}
+
+/* Papierkante am Handy (PaperReveal.tsx): Bildfolge statt WebGL, übereinander, nur Deckkraft wechselt */
+.pr-seq {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 115vw;
+  aspect-ratio: 1200 / 297;
+  transform: translate(-50%, -3px);
+  pointer-events: none;
+}
+.pr-seq img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.pr[data-seq] .pr-edge {
+  visibility: hidden;
+}
+
+/* Handy: Morgen-Bild der Startseite liegt beim Papier-Reveal fest (das Papier wird weggezogen, das Bild bleibt stehen);
+   sticky wie auf der Leistungsseite, Haltestrecke 100 svh (nur der Weg, den das Blatt braucht) */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .js-motion .pr-run[data-home-internal='morning'] {
+    height: 200svh;
+    margin-top: -100svh;
+  }
+  .js-motion .pr-run[data-home-internal='morning'] .pr-stage {
+    position: sticky;
+    top: 0;
+  }
+}
+/* Startseite am Handy: Seitenende-Bild im Fluss als Band (wie bei reduzierter Bewegung), damit die Seite höchstens drei
+   Haltestellen hat (Hero, Kreis-Übergang, Papier-Reveal mit feststehendem Bild) */
+@media (max-width: 767px) {
+  footer[data-home-section='footer'] .ftr-run {
+    height: 40svh;
+  }
+  footer[data-home-section='footer'] .ftr-img {
+    position: relative;
+    height: 40svh;
+  }
+  .js-motion footer[data-home-section='footer'] .ftr-body {
+    margin-top: 0;
   }
 }

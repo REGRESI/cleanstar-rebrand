@@ -270,9 +270,12 @@ export const TypeText = forwardRef<TypeHandle, { text: string; className?: strin
       if (!state.current || state.current.length !== n) state.current = new Uint8Array(n).fill(255)
       const shown = Math.round(Math.max(0, Math.min(1, typed)) * n)
       const gone = Math.round(Math.max(0, Math.min(1, deleted)) * n)
+      // Handy: von hinten löschen (wie die Rücktaste); sonst blieben in der umbrochenen Zeile verstreute Wortreste stehen
+      const fromEnd = window.matchMedia('(max-width: 767px)').matches
       for (let i = 0; i < n; i++) {
         // 0 noch nicht, 1 fertig, 2 Spitze (blau), 3 neuester (blass), 4 weggetippt
-        const s = i < gone ? 4 : i >= shown ? 0 : shown < n && i === shown - 1 ? 3 : shown < n && i >= shown - 3 ? 2 : 1
+        const del = fromEnd ? i >= n - gone : i < gone
+        const s = del ? 4 : i >= shown ? 0 : shown < n && i === shown - 1 ? 3 : shown < n && i >= shown - 3 ? 2 : 1
         if (state.current[i] !== s) {
           state.current[i] = s
           letters[i].dataset.s = String(s)

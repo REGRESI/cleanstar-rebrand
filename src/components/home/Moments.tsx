@@ -128,10 +128,12 @@ export function PlantMoment({ title, text, id, eyebrow, className }: { title: st
 // top: Lage der Ebene; die untere Hälfte jedes Wolkenbilds ist deckend (Höhe in vw, da die Ebenen 120vw breit sind)
 // Handy (topM): Karte samt Liste ist hoch, die Wolken decken nur die Karte (etwa 92vw hoch)
 const CLOUDS: { name: string; h: number; top: string; topM: string; speed: number; flip?: boolean }[] = [
-  { name: 'wolken-ebene-c', h: 1136, top: 'calc(-36vw + 0%)', topM: '-36vw', speed: 0.75 },
-  { name: 'wolken-ebene-b', h: 1080, top: 'calc(-31vw + 18%)', topM: '-10vw', speed: 1.05 },
-  { name: 'wolken-ebene-a', h: 821, top: 'calc(-22vw + 42%)', topM: '30vw', speed: 1.4 },
-  { name: 'wolken-ebene-b', h: 1080, top: 'calc(-30vw + 66%)', topM: '40vw', speed: 1.75, flip: true },
+  // topM (Handy): die Wolkenbank liegt über der Oberkante der Karte (zwischen Überschrift und Karte) und zieht nach
+  // oben weg; die Karte darunter bleibt frei und steht direkt im normalen Abschnittsabstand
+  { name: 'wolken-ebene-c', h: 1136, top: 'calc(-36vw + 0%)', topM: '-78vw', speed: 0.75 },
+  { name: 'wolken-ebene-b', h: 1080, top: 'calc(-31vw + 18%)', topM: '-64vw', speed: 1.05 },
+  { name: 'wolken-ebene-a', h: 821, top: 'calc(-22vw + 42%)', topM: '-46vw', speed: 1.4 },
+  { name: 'wolken-ebene-b', h: 1080, top: 'calc(-30vw + 66%)', topM: '-40vw', speed: 1.75, flip: true },
 ]
 export function CloudCover({ children, className }: { children: ReactNode; className?: string }) {
   const root = useRef<HTMLDivElement>(null)
@@ -153,10 +155,12 @@ export function CloudCover({ children, className }: { children: ReactNode; class
       })
     }
     let prog = 0
+    // Handy: aufgelöst, sobald die Karte ganz im Bild steht (Oberkante bei 40 % der Höhe); Desktop wie bisher
+    const small = window.matchMedia('(max-width: 767px)').matches
     const st = ScrollTrigger.create({
       trigger: el,
       start: 'top bottom',
-      end: 'top -15%',
+      end: small ? 'top 40%' : 'top -15%',
       scrub: 0.4,
       onUpdate: (x) => apply((prog = x.progress)),
       onRefresh: (x) => apply((prog = x.progress)),
@@ -191,9 +195,6 @@ export function CloudCover({ children, className }: { children: ReactNode; class
   }, [])
   return (
     <div ref={root} className={cn('cc', className)}>
-      {/* Handy: Raum für den Wolken-Übergang über der Karte, damit die Karte erst frei ins Bild kommt, wenn sich die
-          Wolken aufgelöst haben (sonst lag sie halb verdeckt und war beim Auflösen schon vorbeigescrollt) */}
-      <div aria-hidden className="cc-space" />
       {children}
       <canvas aria-hidden className="cc-gl" />
       <div aria-hidden className="cc-layers">
