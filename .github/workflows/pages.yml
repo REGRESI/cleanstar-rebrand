@@ -44,7 +44,9 @@ jobs:
           npm i --no-save playwright@1.56.1
           # die Installation hängt auf den Runnern gelegentlich: Zeitlimit je Versuch, bis zu drei Versuche
           for i in 1 2 3; do
-            timeout 300 npx playwright install --with-deps chromium webkit && break
+            # ein apt-Prozess des Runners hält nach dem Start gelegentlich die Paketsperre: darauf warten (höchstens 4 Minuten)
+            for w in $(seq 1 48); do sudo fuser /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock /var/lib/apt/lists/lock >/dev/null 2>&1 || break; sleep 5; done
+            timeout -k 10 300 npx playwright install --with-deps chromium webkit && break
             [ "$i" = 3 ] && { echo "::error::Playwright-Installation fehlgeschlagen"; exit 1; }
             echo "Installation Versuch $i abgebrochen, neuer Versuch"
           done
@@ -169,7 +171,8 @@ jobs:
         run: |
           npm i --no-save playwright@1.56.1
           for i in 1 2 3; do
-            timeout 300 npx playwright install --with-deps chromium && break
+            for w in $(seq 1 48); do sudo fuser /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock /var/lib/apt/lists/lock >/dev/null 2>&1 || break; sleep 5; done
+            timeout -k 10 300 npx playwright install --with-deps chromium && break
             [ "$i" = 3 ] && exit 1
           done
           node scripts/check-site.cjs
