@@ -4,6 +4,8 @@ const { chromium } = require('playwright')
 const fs = require('node:fs')
 
 const B = (process.env.B || 'https://www.cleanstar-dienstleistungen.de').replace(/\/$/, '')
+// Die Live-Seite ist mit Passwort gesperrt (scripts/apply-gate.mjs). LOCKED=0: Prüfung der freien Seite.
+const LOCKED = process.env.LOCKED !== '0'
 let failed = 0
 const ok = (c, m) => {
   if (!c) failed++
@@ -22,11 +24,33 @@ fs.mkdirSync('site-check', { recursive: true })
   ok(current, 'Live-HTML enthält die neuen Übergänge und den neuen Slogan')
   if (!current) throw new Error('Neuer Pages-Stand nach 120 Sekunden noch nicht sichtbar')
   const b = await chromium.launch()
+  if (LOCKED) {
+    // frischer Besuch: Passwort-Abfrage steht vor der Seite, ein falsches Passwort schaltet nicht frei
+    for (const [label, opts] of [
+      ['Desktop', { viewport: { width: 1440, height: 900 } }],
+      ['Mobile', { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }],
+    ]) {
+      const g = await (await b.newContext(opts)).newPage()
+      await g.goto(B + '/')
+      await g.waitForTimeout(1200)
+      ok(await g.locator('#cs-gate').isVisible(), `${label}: Passwort-Abfrage sichtbar`)
+      ok((await g.locator('#root').evaluate((e) => getComputedStyle(e).visibility)) === 'hidden', `${label}: Seiteninhalt verborgen`)
+      ok((await g.locator('meta[name=robots][content*=noindex]').count()) === 1, `${label}: noindex gesetzt`)
+      await g.locator('#cs-gate-pw').fill('falsches-passwort')
+      await g.locator('#cs-gate button[type=submit]').click()
+      await g.waitForTimeout(2500)
+      ok((await g.locator('#cs-gate .err').innerText()).includes('stimmt nicht') && (await g.locator('#cs-gate').isVisible()), `${label}: falsches Passwort wird abgelehnt`)
+      await g.context().close()
+    }
+  }
   for (const [label, opts] of [
     ['Desktop', { viewport: { width: 1440, height: 900 } }],
     ['Mobile', { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true }],
   ]) {
-    const p = await (await b.newContext(opts)).newPage()
+    const bctx = await b.newContext(opts)
+    // gesperrte Seite: für die Inhaltsprüfungen ist die Sitzung freigeschaltet (die Sperre selbst ist oben geprüft)
+    if (LOCKED) await bctx.addInitScript(() => sessionStorage.setItem('cs-preview', '1'))
+    const p = await bctx.newPage()
     const errs = []
     const bad = []
     p.on('pageerror', (e) => errs.push(e.message))
@@ -36,9 +60,9 @@ fs.mkdirSync('site-check', { recursive: true })
 
     await p.goto(B + '/')
     await p.waitForTimeout(1500)
-    ok(!(await p.locator('#cs-gate').count()), `${label}: keine Passwort-Sperre`)
+    ok(LOCKED || !(await p.locator('#cs-gate').count()), `${label}: ${LOCKED ? 'Sperre mit Sitzung freigeschaltet' : 'keine Passwort-Sperre'}`)
     ok(await p.getByRole('heading', { level: 1 }).first().isVisible(), `${label}: Startseite sichtbar`)
-    ok(!(await p.locator('meta[name=robots][content*=noindex]').count()), `${label}: kein noindex`)
+    ok(LOCKED ? (await p.locator('meta[name=robots][content*=noindex]').count()) === 1 : !(await p.locator('meta[name=robots][content*=noindex]').count()), `${label}: ${LOCKED ? 'noindex (gesperrt)' : 'kein noindex'}`)
     const canonical = await p.locator('link[rel=canonical]').getAttribute('href')
     ok(canonical === 'https://www.cleanstar-dienstleistungen.de/', `${label}: Canonical ${canonical}`)
     const og = await p.locator('meta[property="og:image"]').getAttribute('content')

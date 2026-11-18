@@ -1,10 +1,18 @@
-// Passwortschutz und noindex für die GitHub-Pages-Vorschau (nur Build mit PAGES=1).
-// Schlichte Sperre im Browser: hält zufällige Besucher fern, ist aber kein echter Zugriffsschutz
-// (das Repository ist öffentlich). Freischaltung gilt für die Browser-Sitzung.
+// Passwort-Sperre im Browser (Vorschau-Build PAGES=1 und die Live-Seite über scripts/apply-gate.mjs).
+// Schlichte Sperre: sie blendet die Seite aus und fragt nach dem Passwort. Sie ist KEIN echter Zugriffsschutz
+// (der HTML-Text steht weiter in den ausgelieferten Dateien, das Repository ist öffentlich); sie hält zufällige
+// Besucher und Suchmaschinen fern. Freischaltung gilt für die Browser-Sitzung.
 import { readFileSync } from 'node:fs'
 
-/** SHA-256 von „cleanstar2026“. Neues Passwort: node -e "console.log(require('crypto').createHash('sha256').update('NEU').digest('hex'))" */
-const HASH = '27579b51f2607f4007a5d806f86039f979d9c5af902404cf6d58e6c5f008b847'
+/**
+ * Passwort als gesalzener PBKDF2-Hash (SHA-256, 250 000 Runden), kein Klartext im Repository.
+ * Neues Passwort: node scripts/gate-hash.mjs 'NEUES-PASSWORT' und die Ausgabe hier einsetzen.
+ */
+export const GATE = {
+  salt: '88a8f335ee03ccbdf33ea340710f1126',
+  iterations: 250000,
+  hash: 'a474b3de87444a9ab53f0043add115249534bdce8b9363ed946695d880ec69ae',
+}
 
 const GATE_CSS = `
 html.cs-locked,html.cs-locked body{overflow:hidden!important}
@@ -24,6 +32,19 @@ html.cs-locked #cs-gate{display:flex!important;position:fixed;inset:0;z-index:21
 #cs-gate .note{margin:18px 0 0;font-size:12px;color:#5b6b82}
 `.replace(/\n/g, '')
 
+export const PREVIEW_TEXT = {
+  title: 'Vorschau der neuen Website',
+  text: 'Diese Vorschau ist nur für ausgewählte Personen. Bitte geben Sie das Passwort ein.',
+  button: 'Vorschau öffnen',
+  note: 'Vorschau-Version · nicht öffentlich',
+}
+export const LIVE_TEXT = {
+  title: 'Geschützte Website',
+  text: 'Diese Website ist nur mit Passwort zugänglich. Bitte geben Sie das Passwort ein.',
+  button: 'Öffnen',
+  note: '',
+}
+
 export function previewGateHead() {
   // Die CSS-Regeln setzt das Skript zur Laufzeit ein: Der Build-Optimierer (Beasties) würde Regeln für
   // .cs-locked sonst als ungenutzt entfernen, weil die Klasse erst im Browser gesetzt wird.
@@ -32,23 +53,24 @@ export function previewGateHead() {
 if(!locked)return;d.classList.add('cs-locked');var s=document.createElement('style');s.id='cs-gate-css';s.textContent=${JSON.stringify(GATE_CSS)};document.head.appendChild(s)})()</script>`
 }
 
-export function previewGateBody() {
+export function previewGateBody(t = PREVIEW_TEXT) {
   const logo = readFileSync(new URL('../src/assets/brand/logo.svg', import.meta.url), 'utf8').replace('<svg ', '<svg class="logo" aria-hidden="true" ')
   return `<div id="cs-gate" style="display:none" role="dialog" aria-modal="true" aria-labelledby="cs-gate-title">
 <form autocomplete="off">
 ${logo}
-<h1 id="cs-gate-title">Vorschau der neuen Website</h1>
-<p>Diese Vorschau ist nur für ausgewählte Personen. Bitte geben Sie das Passwort ein.</p>
+<h1 id="cs-gate-title">${t.title}</h1>
+<p>${t.text}</p>
 <label for="cs-gate-pw">Passwort</label>
-<input id="cs-gate-pw" type="password" placeholder="Passwort" autocomplete="current-password" required>
-<button type="submit">Vorschau öffnen</button>
+<input id="cs-gate-pw" type="password" placeholder="Passwort" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" required>
+<button type="submit">${t.button}</button>
 <div class="err" aria-live="polite"></div>
-<div class="note">Vorschau-Version · nicht öffentlich</div>
+${t.note ? `<div class="note">${t.note}</div>` : ''}
 </form>
 </div>
 <script>(function(){var g=document.getElementById('cs-gate');if(!g)return;if(!document.documentElement.classList.contains('cs-locked')){g.remove();return}var f=g.querySelector('form'),i=g.querySelector('input'),e=g.querySelector('.err');
 if(document.documentElement.classList.contains('cs-locked'))setTimeout(function(){i.focus()},50);
 function hex(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return('0'+x.toString(16)).slice(-2)}).join('')}
+function bytes(h){var a=new Uint8Array(h.length/2);for(var k=0;k<a.length;k++)a[k]=parseInt(h.substr(k*2,2),16);return a}
 f.addEventListener('submit',function(ev){ev.preventDefault();var v=i.value.trim();
-crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)).then(function(b){if(hex(b)==='${HASH}'){try{sessionStorage.setItem('cs-preview','1')}catch(x){}document.documentElement.classList.remove('cs-locked');g.remove();var c=document.getElementById('cs-gate-css');if(c)c.remove();window.dispatchEvent(new Event('resize'))}else{i.setAttribute('aria-invalid','true');e.textContent='Das Passwort stimmt nicht.';i.select()}})})})()</script>`
+crypto.subtle.importKey('raw',new TextEncoder().encode(v),'PBKDF2',false,['deriveBits']).then(function(k){return crypto.subtle.deriveBits({name:'PBKDF2',salt:bytes('${GATE.salt}'),iterations:${GATE.iterations},hash:'SHA-256'},k,256)}).then(function(b){if(hex(b)==='${GATE.hash}'){try{sessionStorage.setItem('cs-preview','1')}catch(x){}document.documentElement.classList.remove('cs-locked');g.remove();var c=document.getElementById('cs-gate-css');if(c)c.remove();window.dispatchEvent(new Event('resize'))}else{i.setAttribute('aria-invalid','true');e.textContent='Das Passwort stimmt nicht.';i.select()}}).catch(function(){e.textContent='Die Prüfung ist in diesem Browser nicht möglich (HTTPS erforderlich).'})})})()</script>`
 }

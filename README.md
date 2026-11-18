@@ -124,6 +124,8 @@ Die Website läuft unter **https://www.cleanstar-dienstleistungen.de**. Bei jede
   - `www` als CNAME auf `regresi.github.io`
   - die Domain ohne www (`@`) als A-Einträge auf `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`. GitHub leitet sie dann automatisch auf www weiter.
 
+**Passwort-Sperre der Live-Seite:** Der Veröffentlichungs-Workflow baut nach den Tests die Passwort-Abfrage in jede Seite von `dist` ein (`scripts/apply-gate.mjs`, Schritt „Passwort-Sperre einbauen“) und setzt `noindex`. Das Passwort steht nur als gesalzener Hash in `scripts/preview-gate.mjs`; ändern mit `node scripts/gate-hash.mjs 'NEUES-PASSWORT'` und die Ausgabe in `GATE` einsetzen. Entsperren: den Workflow-Schritt entfernen und `LOCKED` in `scripts/check-site.cjs` auf `process.env.LOCKED === '1'` ändern. Die Sperre ist keine echte Zugangskontrolle (Seiteninhalt und Repository sind öffentlich), sie hält Besucher und Suchmaschinen fern; die Freischaltung gilt je Browser-Tab.
+
 **Passwortgeschützte Vorschau** (z. B. für Partner): `npm run build:pages` baut eine Variante unter `/cleanstar-rebrand/` mit Passwort-Sperre (`scripts/preview-gate.mjs`) und noindex, ohne CNAME. Sie wird aktuell nicht automatisch veröffentlicht.
 
 ## Livegang

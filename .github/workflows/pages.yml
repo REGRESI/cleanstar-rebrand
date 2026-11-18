@@ -1,5 +1,5 @@
 # Live-Website auf GitHub Pages: https://www.cleanstar-dienstleistungen.de
-# Bei jedem Push auf den Branch wird die Live-Version gebaut (npm run build: Basis /, indexierbar, ohne Sperre)
+# Bei jedem Push auf den Branch wird die Live-Version gebaut (npm run build: Basis /; danach wird die Passwort-Sperre eingebaut)
 # und direkt als Pages-Artefakt veröffentlicht. gh-pages bleibt als Dateiensicherung erhalten. public/CNAME hält die eigene Domain bei jedem Deploy fest.
 # GitHub-Einstellung: Settings → Pages → Source „GitHub Actions“.
 name: Website auf GitHub Pages
@@ -52,11 +52,17 @@ jobs:
           sleep 2
           ENGINE=webkit B=http://localhost:4177 node scripts/test-performance.mjs
 
-      - name: Prüfen, dass Domain-Datei dabei ist und nichts gesperrt ist
+      - name: Prüfen, dass Domain-Datei dabei ist
+        run: test "$(cat dist/CNAME)" = "www.cleanstar-dienstleistungen.de"
+
+      # Die Website ist nur mit Passwort betretbar (scripts/preview-gate.mjs, Passwort ändern: scripts/gate-hash.mjs).
+      # Die Sperre kommt erst nach den Tests in dist, damit diese gegen die freie Version laufen.
+      # Zum Entsperren diesen Schritt und die Prüfung darunter entfernen und in scripts/check-site.cjs LOCKED auf false setzen.
+      - name: Passwort-Sperre einbauen
         run: |
-          test "$(cat dist/CNAME)" = "www.cleanstar-dienstleistungen.de"
-          if grep -l 'content="noindex' dist/index.html dist/leistungen/index.html; then echo "::error::noindex gefunden"; exit 1; fi
-          if grep -q 'cs-gate' dist/index.html; then echo "::error::Passwort-Sperre gefunden"; exit 1; fi
+          node scripts/apply-gate.mjs
+          grep -q 'id="cs-gate"' dist/index.html dist/leistungen/index.html dist/404.html
+          grep -q 'content="noindex' dist/index.html
 
       # Noch offene Seiten der vorigen Version laden beim nächsten Klick Code- und Datendateien mit altem Hash-Namen.
       # Deshalb bleiben diese Dateien aus dem bisherigen gh-pages-Stand erhalten und werden erst nach 30 Tagen
