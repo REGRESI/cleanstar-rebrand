@@ -39,9 +39,15 @@ jobs:
         run: npm run build
 
       - name: Deploy-Test (alte Seite offen, neue Version, Klick) in Chromium und WebKit
+        timeout-minutes: 15
         run: |
           npm i --no-save playwright@1.56.1
-          npx playwright install --with-deps chromium webkit
+          # die Installation hängt auf den Runnern gelegentlich: Zeitlimit je Versuch, bis zu drei Versuche
+          for i in 1 2 3; do
+            timeout 300 npx playwright install --with-deps chromium webkit && break
+            [ "$i" = 3 ] && { echo "::error::Playwright-Installation fehlgeschlagen"; exit 1; }
+            echo "Installation Versuch $i abgebrochen, neuer Versuch"
+          done
           node scripts/test-deploy.mjs
       - name: WebKit-Rauchtest (Safari-Engine, iPhone 13) - Scrollen bis zum Ende, Pins, keine Skriptfehler
         # nur Warnung: WebKit unter Linux im CI stürzt gelegentlich ab, ohne dass echte iPhones betroffen sind
@@ -162,7 +168,10 @@ jobs:
         if: steps.reach.outputs.ok == '1'
         run: |
           npm i --no-save playwright@1.56.1
-          npx playwright install --with-deps chromium
+          for i in 1 2 3; do
+            timeout 300 npx playwright install --with-deps chromium && break
+            [ "$i" = 3 ] && exit 1
+          done
           node scripts/check-site.cjs
 
       - name: Live-Website in WebKit (Safari-Engine, iPhone 13) - alle sechs Hauptseiten bis zum Ende scrollen
